@@ -34,9 +34,14 @@ postgres_function(cppgres_tests, []() -> std::optional<bool> {
   for (auto t : test_case::test_cases) {
     auto name = t.first;
     test_case *test = t.second;
-    auto _result = (*test)();
-    result = result && _result;
-    cppgres::report(NOTICE, "%s: %s", name.data(), _result ? "passed" : "failed");
+    try {
+      auto _result = (*test)();
+      result = result && _result;
+      cppgres::report(NOTICE, "%s: %s", name.data(), _result ? "passed" : "failed");
+    } catch (std::exception &e) {
+      cppgres::report(NOTICE, "%s: exception: %s", name.data(), e.what());
+      result = result && false;
+    }
   }
   return result;
 });
