@@ -1,0 +1,6 @@
+build
+cmake-build-*
+.idea
+.testdb
+doc/html
+
