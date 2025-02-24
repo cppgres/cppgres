@@ -16,7 +16,13 @@ namespace cppgres {
 struct type {
   ::Oid oid;
 
-  template <typename T> bool is() { return false; }
+  template <typename T> bool is() {
+    if constexpr (utils::is_optional<T>) {
+      return is<utils::remove_optional_t<T>>();
+    } else {
+      return false;
+    }
+  }
 
   std::string_view name() { return ::format_type_be(oid); }
 };

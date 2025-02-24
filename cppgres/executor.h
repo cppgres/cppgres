@@ -167,17 +167,34 @@ struct spi_executor : public executor {
   private:
   };
 
-  template <datumable_tuple Ret> struct results {
+  template <datumable_tuple Ret, convertible_into_nullable_datum... Args> struct results {
     ::SPITupleTable *table;
 
-    results(::SPITupleTable *table) : table(table) {}
+    results(::SPITupleTable *table) : table(table) {
+      auto natts = table->tupdesc->natts;
+      [&]<std::size_t... Is>(std::index_sequence<Is...>) {
+        (([&] {
+           auto oid = ffi_guarded(::SPI_gettypeid)(table->tupdesc, Is + 1);
+           if (!type{.oid = oid}.is<std::tuple_element_t<Is, Ret>>()) {
+             throw std::invalid_argument(
+                 std::format("invalid return type in position {} ({}), got OID {}", Is,
+                             utils::type_name<std::tuple_element_t<Is, Ret>>(), oid));
+           }
+         }()),
+         ...);
+      }(std::make_index_sequence<sizeof...(Args)>{});
+      if (natts != std::tuple_size_v<Ret>) {
+        throw std::runtime_error(
+            std::format("expected %d return values, got %d", std::tuple_size_v<Ret>, natts));
+      }
+    }
 
     result_iterator<Ret> begin() const { return result_iterator<Ret>(table); }
     size_t end() const { return table->numvals; }
   };
 
   template <datumable_tuple Ret, convertible_into_nullable_datum... Args>
-  results<Ret> query(std::string_view query, Args &&...args) {
+  results<Ret, Args...> query(std::string_view query, Args &&...args) {
     constexpr size_t nargs = sizeof...(Args);
     constexpr ::Oid types[nargs] = {type_for<Args...>().oid};
     ::Datum datums[nargs] = {into_nullable_datum(args...)};
@@ -185,13 +202,8 @@ struct spi_executor : public executor {
     auto rc = ffi_guarded(::SPI_execute_with_args)(query.data(), nargs, const_cast<::Oid *>(types),
                                                    datums, nulls, false, 0);
     if (rc == SPI_OK_SELECT) {
-      auto natts = SPI_tuptable->tupdesc->natts;
-      if (natts != std::tuple_size_v<Ret>) {
-        throw std::runtime_error(
-            std::format("expected %d return values, got %d", std::tuple_size_v<Ret>, natts));
-      }
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
-      return results<Ret>(SPI_tuptable);
+      return results<Ret, Args...>(SPI_tuptable);
     } else {
       throw std::runtime_error("spi error");
     }
@@ -206,20 +218,15 @@ struct spi_executor : public executor {
   }
 
   template <datumable_tuple Ret, convertible_into_nullable_datum... Args>
-  results<Ret> query(spi_plan<Args...> &query, Args &&...args) {
+  results<Ret, Args...> query(spi_plan<Args...> &query, Args &&...args) {
     constexpr size_t nargs = sizeof...(Args);
     constexpr ::Oid types[nargs] = {type_for<Args...>().oid};
     ::Datum datums[nargs] = {into_nullable_datum(args...)};
     const char nulls[nargs] = {into_nullable_datum(args...).is_null() ? 'n' : ' '};
     auto rc = ffi_guarded(::SPI_execute_plan)(query, datums, nulls, false, 0);
     if (rc == SPI_OK_SELECT) {
-      auto natts = SPI_tuptable->tupdesc->natts;
-      if (natts != std::tuple_size_v<Ret>) {
-        throw std::runtime_error(
-            std::format("expected %d return values, got %d", std::tuple_size_v<Ret>, natts));
-      }
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
-      return results<Ret>(SPI_tuptable);
+      return results<Ret, Args...>(SPI_tuptable);
     } else {
       throw std::runtime_error("spi error");
     }

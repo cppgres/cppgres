@@ -27,30 +27,6 @@ concept datumable_function =
       } -> convertible_into_nullable_datum;
     };
 
-template <typename T> constexpr std::string_view type_name() {
-#ifdef __clang__
-  constexpr std::string_view p = __PRETTY_FUNCTION__;
-  constexpr std::string_view key = "T = ";
-  const auto start = p.find(key) + key.size();
-  const auto end = p.find(']', start);
-  return p.substr(start, end - start);
-#elif defined(__GNUC__)
-  constexpr std::string_view p = __PRETTY_FUNCTION__;
-  constexpr std::string_view key = "T = ";
-  const auto start = p.find(key) + key.size();
-  const auto end = p.find(';', start);
-  return p.substr(start, end - start);
-#elif defined(_MSC_VER)
-  constexpr std::string_view p = __FUNCSIG__;
-  constexpr std::string_view key = "type_name<";
-  const auto start = p.find(key) + key.size();
-  const auto end = p.find(">(void)");
-  return p.substr(start, end - start);
-#else
-  return "Unsupported compiler";
-#endif
-}
-
 template <datumable_function Func> struct postgres_function {
   Func func;
 
@@ -74,8 +50,8 @@ template <datumable_function Func> struct postgres_function {
            auto typ = type{.oid = ffi_guarded(::get_fn_expr_argtype)(fc->flinfo, Is)};
            if (!typ.template is<decltype(ptyp)>()) {
              report(ERROR, "unexpected type in position %d, can't convert `%s` into `%.*s`", Is,
-                    typ.name().data(), type_name<decltype(ptyp)>().length(),
-                   type_name<decltype(ptyp)>().data());
+                    typ.name().data(), utils::type_name<decltype(ptyp)>().length(),
+                    utils::type_name<decltype(ptyp)>().data());
            }
            std::get<Is>(t) = from_nullable_datum<decltype(ptyp)>(nullable_datum(fc->args[Is]));
          }()),

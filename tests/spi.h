@@ -19,6 +19,23 @@ add_test(spi, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_type_mismatch, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+
+           bool exception_raised = false;
+           try {
+             auto res = spi.query<std::tuple<std::optional<bool>>>(
+                 "select $1 + i from generate_series(1,100) i", 1LL);
+           } catch (std::invalid_argument &e) {
+             exception_raised = true;
+           }
+
+           result = result && _assert(exception_raised);
+
+           return result;
+         }));
+
 add_test(spi_plan, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
@@ -31,6 +48,23 @@ add_test(spi_plan, ([](test_case &) {
              result = result && _assert(std::get<0>(re) == i + 1);
            }
            result = result && _assert(std::get<0>(res.begin()[0]) == 2);
+           return result;
+         }));
+
+add_test(spi_plan_mismatch, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto plan = spi.plan<int64_t>("select $1 + i from generate_series(1,100) i");
+
+           bool exception_raised = false;
+           try {
+             auto res = spi.query<std::tuple<std::optional<bool>>>(plan, 1LL);
+           } catch (std::invalid_argument &e) {
+             exception_raised = true;
+           }
+
+           result = result && _assert(exception_raised);
+
            return result;
          }));
 
