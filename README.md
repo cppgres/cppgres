@@ -26,3 +26,16 @@ cmake -S . -B build
 # run tests
 cmake --build build --target all test
 ```
+
+If you want to run tests on a specific version (or major version) of Postgres, specify the `PGVER` variable:
+
+```shell
+cmake -S . -B build -DPGVER=16
+```
+
+By default, our build process will set up its own copy of Postgres. If you'd like to use your own build,
+specify the `PG_CONFIG` variable:
+
+```shell
+cmake -S . -B build -DPG_CONFIG=/path/to/pg_config
+```

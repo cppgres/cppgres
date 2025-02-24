@@ -3,11 +3,9 @@ project(cppgres)
 
 set(CMAKE_CXX_STANDARD 20)
 
-if (NOT DEFINED PG_CONFIG)
-    find_program(PG_CONFIG NAMES pg_config REQUIRED)
-else ()
-    find_program(PG_CONFIG NAMES pg_config HINTS ${PG_CONFIG} REQUIRED)
-endif ()
+list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+
+include(FindPostgres)
 
 macro(pg_config VAR OPT)
     execute_process(
