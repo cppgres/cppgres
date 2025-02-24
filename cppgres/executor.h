@@ -15,8 +15,6 @@ extern "C" {
 
 namespace cppgres {
 
-struct executor {};
-
 template <typename Tuple, std::size_t... Is>
 constexpr bool all_convertible_from_nullable(std::index_sequence<Is...>) {
   return ((convertible_from_nullable_datum<
@@ -28,6 +26,27 @@ template <typename T>
 concept datumable_tuple = requires {
   typename std::tuple_size<T>::type;
 } && all_convertible_from_nullable<T>(std::make_index_sequence<std::tuple_size_v<T>>{});
+
+template <convertible_from_nullable_datum... Args> struct spi_plan {
+  friend class spi_executor;
+
+  operator ::SPIPlanPtr() {
+    if (ctx.resets() > 0) {
+      throw pointer_gone_exception();
+    }
+    return plan;
+  }
+
+  void keep() { ffi_guarded(::SPI_keepplan)(*this); }
+
+private:
+  spi_plan(::SPIPlanPtr plan)
+      : plan(plan), ctx(tracking_memory_context(memory_context::for_pointer(plan))) {}
+  ::SPIPlanPtr plan;
+  tracking_memory_context<memory_context> ctx;
+};
+
+struct executor {};
 
 struct spi_executor : public executor {
   spi_executor() : before_spi(::CurrentMemoryContext) {
@@ -165,6 +184,34 @@ struct spi_executor : public executor {
     const char nulls[nargs] = {into_nullable_datum(args...).is_null() ? 'n' : ' '};
     auto rc = ffi_guarded(::SPI_execute_with_args)(query.data(), nargs, const_cast<::Oid *>(types),
                                                    datums, nulls, false, 0);
+    if (rc == SPI_OK_SELECT) {
+      auto natts = SPI_tuptable->tupdesc->natts;
+      if (natts != std::tuple_size_v<Ret>) {
+        throw std::runtime_error(
+            std::format("expected %d return values, got %d", std::tuple_size_v<Ret>, natts));
+      }
+      //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
+      return results<Ret>(SPI_tuptable);
+    } else {
+      throw std::runtime_error("spi error");
+    }
+  }
+
+  template <convertible_into_nullable_datum... Args>
+  spi_plan<Args...> plan(std::string_view query) {
+    constexpr size_t nargs = sizeof...(Args);
+    constexpr ::Oid types[nargs] = {type_for<Args...>().oid};
+    return spi_plan<Args...>(
+        ffi_guarded(::SPI_prepare)(query.data(), nargs, const_cast<::Oid *>(types)));
+  }
+
+  template <datumable_tuple Ret, convertible_into_nullable_datum... Args>
+  results<Ret> query(spi_plan<Args...> &query, Args &&...args) {
+    constexpr size_t nargs = sizeof...(Args);
+    constexpr ::Oid types[nargs] = {type_for<Args...>().oid};
+    ::Datum datums[nargs] = {into_nullable_datum(args...)};
+    const char nulls[nargs] = {into_nullable_datum(args...).is_null() ? 'n' : ' '};
+    auto rc = ffi_guarded(::SPI_execute_plan)(query, datums, nulls, false, 0);
     if (rc == SPI_OK_SELECT) {
       auto natts = SPI_tuptable->tupdesc->natts;
       if (natts != std::tuple_size_v<Ret>) {
