@@ -220,7 +220,6 @@ struct spi_executor : public executor {
   template <datumable_tuple Ret, convertible_into_nullable_datum... Args>
   results<Ret, Args...> query(spi_plan<Args...> &query, Args &&...args) {
     constexpr size_t nargs = sizeof...(Args);
-    constexpr ::Oid types[nargs] = {type_for<Args...>().oid};
     ::Datum datums[nargs] = {into_nullable_datum(args...)};
     const char nulls[nargs] = {into_nullable_datum(args...).is_null() ? 'n' : ' '};
     auto rc = ffi_guarded(::SPI_execute_plan)(query, datums, nulls, false, 0);
