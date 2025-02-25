@@ -54,4 +54,16 @@ add_test(varlena_text, [](test_case &) {
   return result;
 });
 
+add_test(varlena_bytea, ([](test_case &) {
+           bool result = true;
+           auto nd = cppgres::nullable_datum(::PointerGetDatum(::cstring_to_text("test")));
+           auto s = cppgres::from_nullable_datum<cppgres::bytea>(nd);
+           cppgres::byte_array ba = *s;
+           result = result && _assert(ba[0] == std::byte('t'));
+           result = result && _assert(ba[1] == std::byte('e'));
+           result = result && _assert(ba[2] == std::byte('s'));
+           result = result && _assert(ba[3] == std::byte('t'));
+           return result;
+         }));
+
 } // namespace tests

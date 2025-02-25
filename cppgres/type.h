@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+#include <span>
 #include <string>
 
 #include "datum.h"
@@ -68,6 +70,17 @@ struct text : public varlena {
   operator std::string_view() {
     void *value = *this;
     return {static_cast<char *>(value), VARSIZE_ANY_EXHDR(this->ptr())};
+  }
+};
+
+using byte_array = std::span<const std::byte>;
+
+struct bytea : public varlena {
+  using varlena::varlena;
+
+  operator byte_array() {
+    void *value = *this;
+    return {reinterpret_cast<std::byte *>(value), VARSIZE_ANY_EXHDR(this->ptr())};
   }
 };
 
