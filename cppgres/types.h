@@ -43,38 +43,6 @@ template <> nullable_datum into_nullable_datum(bool &t) {
   return nullable_datum(static_cast<::Datum>(t));
 }
 
-template <> nullable_datum into_nullable_datum(std::optional<int64_t> &t) {
-  if (t.has_value()) {
-    return nullable_datum(static_cast<::Datum>(*t));
-  } else {
-    return nullable_datum();
-  }
-}
-
-template <> nullable_datum into_nullable_datum(std::optional<int32_t> &t) {
-  if (t.has_value()) {
-    return nullable_datum(static_cast<::Datum>(*t));
-  } else {
-    return nullable_datum();
-  }
-}
-
-template <> nullable_datum into_nullable_datum(std::optional<int16_t> &t) {
-  if (t.has_value()) {
-    return nullable_datum(static_cast<::Datum>(*t));
-  } else {
-    return nullable_datum();
-  }
-}
-
-template <> nullable_datum into_nullable_datum(std::optional<bool> &t) {
-  if (t.has_value()) {
-    return nullable_datum(static_cast<::Datum>(*t));
-  } else {
-    return nullable_datum();
-  }
-}
-
 template <> std::optional<int64_t> from_nullable_datum(nullable_datum &d) {
   return d._ndatum.isnull ? std::nullopt : std::optional(d._ndatum.value);
 }

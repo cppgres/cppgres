@@ -69,8 +69,20 @@ private:
 
 };
 
+template <typename T> struct unsupported_type {};
+
 template <typename T> std::optional<T> from_nullable_datum(nullable_datum &d);
-template <typename T> nullable_datum into_nullable_datum(T &v);
+template <typename T> nullable_datum into_nullable_datum(T &v) {
+  if constexpr (utils::is_optional<T>) {
+    if (v.has_value()) {
+      return into_nullable_datum(*v);
+    } else {
+      return nullable_datum();
+    }
+  } else {
+    return into_nullable_datum<unsupported_type<T>>(v);
+  }
+}
 
 template <typename T>
 concept convertible_from_nullable_datum = requires(nullable_datum d) {
