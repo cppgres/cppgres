@@ -46,7 +46,8 @@ template <datumable_function Func> struct postgres_function {
 
       [&]<std::size_t... Is>(std::index_sequence<Is...>) {
         (([&] {
-           auto ptyp = remove_optional_t<std::remove_reference_t<decltype(std::get<Is>(t))>>();
+           auto ptyp =
+               utils::remove_optional_t<std::remove_reference_t<decltype(std::get<Is>(t))>>();
            auto typ = type{.oid = ffi_guarded(::get_fn_expr_argtype)(fc->flinfo, Is)};
            if (!typ.template is<decltype(ptyp)>()) {
              report(ERROR, "unexpected type in position %d, can't convert `%s` into `%.*s`", Is,
