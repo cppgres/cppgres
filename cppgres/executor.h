@@ -30,6 +30,8 @@ concept datumable_tuple = requires {
 template <convertible_from_nullable_datum... Args> struct spi_plan {
   friend class spi_executor;
 
+  spi_plan(spi_plan &&p) : ctx(std::move(p.ctx)), plan(p.plan), kept(p.kept) { p.kept = false; }
+
   operator ::SPIPlanPtr() {
     if (ctx.resets() > 0) {
       throw pointer_gone_exception();
@@ -37,11 +39,21 @@ template <convertible_from_nullable_datum... Args> struct spi_plan {
     return plan;
   }
 
-  void keep() { ffi_guarded(::SPI_keepplan)(*this); }
+  void keep() {
+    ffi_guarded(::SPI_keepplan)(*this);
+    kept = true;
+  }
+
+  ~spi_plan() {
+    if (kept) {
+      ffi_guarded(::SPI_freeplan)(*this);
+    }
+  }
 
 private:
+  bool kept;
   spi_plan(::SPIPlanPtr plan)
-      : plan(plan), ctx(tracking_memory_context(memory_context::for_pointer(plan))) {}
+      : plan(plan), ctx(tracking_memory_context(memory_context::for_pointer(plan))), kept(false) {}
   ::SPIPlanPtr plan;
   tracking_memory_context<memory_context> ctx;
 };

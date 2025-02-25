@@ -93,22 +93,36 @@ add_test(spi_plan_gone, ([](test_case &) {
 add_test(spi_keep_plan, ([](test_case &) {
            bool result = true;
 
-           auto plan = ({
+           ::SPIPlanPtr ptr = nullptr;
+           {
+             auto plan = ({
+               cppgres::spi_executor spi;
+               auto plan = spi.plan<int64_t>("select $1 + i from generate_series(1,100) i");
+               plan.keep();
+               std::move(plan);
+             });
+
+             ptr = plan;
+
              cppgres::spi_executor spi;
-             auto plan = spi.plan<int64_t>("select $1 + i from generate_series(1,100) i");
-             plan.keep();
-             plan;
-           });
+             auto res = spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
 
-           cppgres::spi_executor spi;
-           auto res = spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
-
-           int i = 0;
-           for (auto &re : res) {
-             i++;
-             result = result && _assert(std::get<0>(re) == i + 1);
+             int i = 0;
+             for (auto &re : res) {
+               i++;
+               result = result && _assert(std::get<0>(re) == i + 1);
+             }
+             result = result && _assert(std::get<0>(res.begin()[0]) == 2);
            }
-           result = result && _assert(std::get<0>(res.begin()[0]) == 2);
+
+           // Now the plan should be gone – destroyed and inaccessible
+           bool exception_raised = false;
+           try {
+             auto ctx = cppgres::memory_context::for_pointer(ptr);
+           } catch (std::exception &e) {
+             exception_raised = true;
+           }
+           result = result && _assert(exception_raised);
 
            return result;
          }));

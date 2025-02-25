@@ -8,6 +8,7 @@
 
 extern "C" {
 #include <utils/memutils.h>
+#include <utils/memutils_memorychunk.h>
 }
 
 namespace cppgres {
@@ -37,6 +38,9 @@ struct memory_context : public abstract_memory_context {
   explicit memory_context(abstract_memory_context &&context) : context(context) {}
 
   static memory_context for_pointer(void *ptr) {
+    if (ptr == nullptr || ptr != (void *)MAXALIGN(ptr)) {
+      throw std::runtime_error("invalid pointer");
+    }
     return memory_context(ffi_guarded(::GetMemoryChunkContext)(ptr));
   }
 
