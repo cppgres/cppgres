@@ -23,7 +23,13 @@ void error(pg_exception e) {
   __builtin_unreachable();
 }
 
-template <std::size_t N, typename... Args>
+template <typename T>
+concept error_formattable =
+    std::integral<std::decay_t<T>> ||
+    (std::is_pointer_v<std::decay_t<T>> &&
+     std::same_as<std::remove_cv_t<std::remove_pointer_t<std::decay_t<T>>>, char>);
+
+template <std::size_t N, error_formattable... Args>
 void report(int elevel, const char (&fmt)[N], Args... args) {
   ::errstart(elevel, TEXTDOMAIN);
 #ifdef __GNUC__
