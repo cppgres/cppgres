@@ -30,8 +30,8 @@ add_test(exception_to_error, ([](test_case &) {
              cppgres::ffi_guarded(::SPI_execute)("select raise_exception()", false, 0);
            } catch (cppgres::pg_exception &e) {
              result = _assert(std::string_view(e.message()) == "exception: raised an exception");
-             cppgres::ffi_guarded(::RollbackAndReleaseCurrentSubTransaction)();
            }
+           cppgres::ffi_guarded(::RollbackAndReleaseCurrentSubTransaction)();
            cppgres::ffi_guarded(::SPI_finish)();
            return result;
          }));

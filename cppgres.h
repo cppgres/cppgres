@@ -21,6 +21,7 @@
 
 #include "cppgres/datum.h"
 #include "cppgres/error.h"
+#include "cppgres/exception_impl.h"
 #include "cppgres/executor.h"
 #include "cppgres/function.h"
 #include "cppgres/guard.h"

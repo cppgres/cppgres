@@ -29,18 +29,17 @@ template <typename Func> struct ffi_guard {
     }(std::make_index_sequence<std::tuple_size_v<decltype(t)>>{});
 
     int state;
-    ::MemoryContext mcxt;
     sigjmp_buf *pbuf;
     ::ErrorContextCallback *cb;
     sigjmp_buf buf;
+    ::MemoryContext mcxt = ::CurrentMemoryContext;
 
-    mcxt = ::CurrentMemoryContext;
+    pbuf = ::PG_exception_stack;
+    cb = ::error_context_stack;
+    ::PG_exception_stack = &buf;
 
     state = sigsetjmp(buf, 1);
     if (state == 0) {
-      pbuf = ::PG_exception_stack;
-      cb = ::error_context_stack;
-      ::PG_exception_stack = &buf;
       if constexpr (std::is_void_v<return_type>) {
         std::apply(func, t);
         ::error_context_stack = cb;

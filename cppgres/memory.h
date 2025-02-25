@@ -3,6 +3,7 @@
 #include <concepts>
 #include <memory>
 
+#include "guard.h"
 #include "imports.h"
 
 extern "C" {

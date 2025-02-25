@@ -5,11 +5,7 @@ class pg_exception : public std::exception {
   ::MemoryContext mcxt;
   ::ErrorData *error;
 
-  pg_exception(::MemoryContext mcxt) : mcxt(mcxt) {
-    ::CurrentMemoryContext = mcxt;
-    error = ::CopyErrorData();
-    FlushErrorState();
-  }
+  pg_exception(::MemoryContext mcxt);
 
   const char *what() const noexcept override { return error->message; }
 
