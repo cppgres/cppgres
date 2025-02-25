@@ -2,6 +2,10 @@
 
 #include "tests.h"
 
+extern "C" {
+#include <executor/spi_priv.h>
+}
+
 namespace tests {
 
 add_test(spi, ([](test_case &) {
@@ -94,7 +98,7 @@ add_test(spi_keep_plan, ([](test_case &) {
            bool result = true;
 
            ::SPIPlanPtr ptr = nullptr;
-           {
+           auto context = ({
              auto plan = ({
                cppgres::spi_executor spi;
                auto plan = spi.plan<int64_t>("select $1 + i from generate_series(1,100) i");
@@ -113,16 +117,13 @@ add_test(spi_keep_plan, ([](test_case &) {
                result = result && _assert(std::get<0>(re) == i + 1);
              }
              result = result && _assert(std::get<0>(res.begin()[0]) == 2);
-           }
+             auto p = static_cast<_SPI_plan *>(ptr);
+             cppgres::tracking_memory_context(cppgres::memory_context(p->plancxt));
+           });
 
            // Now the plan should be gone – destroyed and inaccessible
-           bool exception_raised = false;
-           try {
-             auto ctx = cppgres::memory_context::for_pointer(ptr);
-           } catch (std::exception &e) {
-             exception_raised = true;
-           }
-           result = result && _assert(exception_raised);
+           context.resets();
+           result = result && _assert(context.resets() > 0);
 
            return result;
          }));
