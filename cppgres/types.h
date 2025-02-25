@@ -28,44 +28,16 @@ template <> constexpr type type_for<int16>() { return type{.oid = INT2OID}; }
 template <> constexpr type type_for<bool>() { return type{.oid = BOOLOID}; }
 template <> constexpr type type_for<byte_array>() { return type{.oid = BYTEAOID}; }
 
-template <> nullable_datum into_nullable_datum(int64_t &t) {
-  return nullable_datum(static_cast<::Datum>(t));
-}
+template <> datum into_datum(int64_t &t) { return datum(static_cast<::Datum>(t)); }
+template <> datum into_datum(int32_t &t) { return datum(static_cast<::Datum>(t)); }
+template <> datum into_datum(int16_t &t) { return datum(static_cast<::Datum>(t)); }
+template <> datum into_datum(bool &t) { return datum(static_cast<::Datum>(t)); }
 
-template <> nullable_datum into_nullable_datum(int32_t &t) {
-  return nullable_datum(static_cast<::Datum>(t));
-}
-
-template <> nullable_datum into_nullable_datum(int16_t &t) {
-  return nullable_datum(static_cast<::Datum>(t));
-}
-
-template <> nullable_datum into_nullable_datum(bool &t) {
-  return nullable_datum(static_cast<::Datum>(t));
-}
-
-template <> std::optional<int64_t> from_nullable_datum(nullable_datum &d) {
-  return d._ndatum.isnull ? std::nullopt : std::optional(d._ndatum.value);
-}
-
-template <> std::optional<int32_t> from_nullable_datum(nullable_datum &d) {
-  return d._ndatum.isnull ? std::nullopt : std::optional(d._ndatum.value);
-}
-
-template <> std::optional<int16_t> from_nullable_datum(nullable_datum &d) {
-  return d._ndatum.isnull ? std::nullopt : std::optional(d._ndatum.value);
-}
-
-template <> std::optional<bool> from_nullable_datum(nullable_datum &d) {
-  return d._ndatum.isnull ? std::nullopt : std::optional(d._ndatum.value);
-}
-
-template <> std::optional<text> from_nullable_datum(nullable_datum &d) {
-  return d._ndatum.isnull ? std::nullopt : std::optional<text>(std::in_place, text(d._datum));
-}
-
-template <> std::optional<bytea> from_nullable_datum(nullable_datum &d) {
-  return d._ndatum.isnull ? std::nullopt : std::optional<bytea>(std::in_place, bytea(d._datum));
-}
+template <> int64_t from_datum(datum &d) { return static_cast<int64_t>(d.operator ::Datum &()); }
+template <> int32_t from_datum(datum &d) { return static_cast<int32_t>(d.operator ::Datum &()); }
+template <> int16_t from_datum(datum &d) { return static_cast<int16_t>(d.operator ::Datum &()); }
+template <> bool from_datum(datum &d) { return static_cast<bool>(d.operator ::Datum &()); }
+template <> text from_datum(datum &d) { return {d}; }
+template <> bytea from_datum(datum &d) { return {d}; }
 
 } // namespace cppgres
