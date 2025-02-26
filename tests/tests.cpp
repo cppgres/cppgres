@@ -20,6 +20,7 @@ PG_MODULE_MAGIC;
 
 #include "datum.h"
 #include "errors.h"
+#include "function.h"
 #include "memory_context.h"
 #include "spi.h"
 #include "tests.h"
