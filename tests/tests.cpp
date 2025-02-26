@@ -29,7 +29,7 @@ test_case::test_case(std::string_view name, bool (*function)(test_case &c)) : fu
 }
 bool test_case::operator()() { return function(*this); }
 
-postgres_function(cppgres_tests, []() -> std::optional<bool> {
+postgres_function(cppgres_tests, []() -> bool {
   bool result = true;
   for (auto t : test_case::test_cases) {
     auto name = t.first;

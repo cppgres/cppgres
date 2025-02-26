@@ -14,8 +14,8 @@ add_test(catch_error, ([](test_case &) {
            return false;
          }));
 
-postgres_function(raise_exception, ([]() -> std::optional<bool> {
-                    throw std::runtime_error("raised an exception");
+postgres_function(raise_exception,
+                  ([]() -> bool { throw std::runtime_error("raised an exception");
                   }));
 
 add_test(exception_to_error, ([](test_case &) {
