@@ -45,7 +45,7 @@ struct memory_context : public abstract_memory_context {
   }
 
   template <typename C> requires std::derived_from<C, abstract_memory_context>
-  friend class tracking_memory_context;
+  friend struct tracking_memory_context;
 
 protected:
   ::MemoryContext context;
@@ -91,7 +91,7 @@ struct tracking_memory_context : public abstract_memory_context {
   }
 
   tracking_memory_context(tracking_memory_context &&other) noexcept
-      : cb(std::move(other.cb)), ctx(std::move(other.ctx)), counter(std::move(other.counter)) {
+      : ctx(std::move(other.ctx)), counter(std::move(other.counter)), cb(std::move(other.cb)) {
     other.cb = nullptr;
     cb->arg = this;
   }
@@ -142,8 +142,8 @@ private:
     constexpr operator T() const noexcept { return value; }
   };
   C ctx;
-  ::MemoryContextCallback *cb;
   shared_counter<uint64_t> counter;
+  ::MemoryContextCallback *cb;
 
 protected:
   ::MemoryContext _memory_context() override { return ctx._memory_context(); }
@@ -182,8 +182,8 @@ template <class T, a_memory_context Context = memory_context> struct memory_cont
   Context &memory_context() { return context; }
 
 private:
-  bool explicit_deallocation;
   Context context;
+  bool explicit_deallocation;
 };
 
 struct pointer_gone_exception : public std::exception {

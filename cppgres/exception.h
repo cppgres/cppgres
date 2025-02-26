@@ -9,7 +9,7 @@ class pg_exception : public std::exception {
 
   const char *what() const noexcept override { return error->message; }
 
-  template <typename Func> friend class ffi_guard;
+  template <typename Func> friend struct ffi_guard;
 
 public:
   const char *message() const noexcept { return error->message; }

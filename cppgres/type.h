@@ -30,7 +30,7 @@ struct type {
 };
 
 struct non_by_value_type : public type {
-  friend class datum;
+  friend struct datum;
 
   non_by_value_type(struct datum &datum)
       : datum(datum), ctx(tracking_memory_context(memory_context::for_pointer(ptr(false)))) {}

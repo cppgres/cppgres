@@ -29,9 +29,9 @@ concept datumable_tuple = requires {
 } && all_convertible_from_nullable<T>(std::make_index_sequence<std::tuple_size_v<T>>{});
 
 template <convertible_from_nullable_datum... Args> struct spi_plan {
-  friend class spi_executor;
+  friend struct spi_executor;
 
-  spi_plan(spi_plan &&p) : ctx(std::move(p.ctx)), plan(p.plan), kept(p.kept) { p.kept = false; }
+  spi_plan(spi_plan &&p) : kept(p.kept), plan(p.plan), ctx(std::move(p.ctx)) { p.kept = false; }
 
   operator ::SPIPlanPtr() {
     if (ctx.resets() > 0) {
@@ -52,9 +52,10 @@ template <convertible_from_nullable_datum... Args> struct spi_plan {
   }
 
 private:
-  bool kept;
   spi_plan(::SPIPlanPtr plan)
-      : plan(plan), ctx(tracking_memory_context(memory_context::for_pointer(plan))), kept(false) {}
+      : kept(false), plan(plan), ctx(tracking_memory_context(memory_context::for_pointer(plan))) {}
+
+  bool kept;
   ::SPIPlanPtr plan;
   tracking_memory_context<memory_context> ctx;
 };

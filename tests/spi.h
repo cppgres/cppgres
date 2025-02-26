@@ -38,8 +38,7 @@ add_test(spi_non_opt, ([](test_case &) {
 
            bool exception_raised = false;
            try {
-             auto res1 =
-                 spi.query<std::tuple<int64_t>>("select null from generate_series(1,100) i", 1LL);
+             spi.query<std::tuple<int64_t>>("select null from generate_series(1,100) i", 1LL);
            } catch (std::exception &e) {
              exception_raised = true;
            }
@@ -74,7 +73,7 @@ add_test(spi_type_mismatch, ([](test_case &) {
 
            bool exception_raised = false;
            try {
-             auto res = spi.query<std::tuple<std::optional<bool>>>(
+             spi.query<std::tuple<std::optional<bool>>>(
                  "select $1 + i from generate_series(1,100) i", 1LL);
            } catch (std::invalid_argument &e) {
              exception_raised = true;
@@ -107,7 +106,7 @@ add_test(spi_plan_mismatch, ([](test_case &) {
 
            bool exception_raised = false;
            try {
-             auto res = spi.query<std::tuple<std::optional<bool>>>(plan, 1LL);
+             spi.query<std::tuple<std::optional<bool>>>(plan, 1LL);
            } catch (std::invalid_argument &e) {
              exception_raised = true;
            }
@@ -129,7 +128,7 @@ add_test(spi_plan_gone, ([](test_case &) {
 
            bool exception_raised = false;
            try {
-             auto res = spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
+             spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
            } catch (cppgres::pointer_gone_exception &e) {
              exception_raised = true;
            }
@@ -184,7 +183,7 @@ add_test(spi_interleave, ([](test_case &) {
 
              bool exception_raised = false;
              try {
-               auto res = spi.query<std::tuple<std::optional<int64_t>>>(
+               spi.query<std::tuple<std::optional<int64_t>>>(
                    "select $1 + i from generate_series(1,100) i", 1LL);
              } catch (std::runtime_error &e) {
                exception_raised = true;
@@ -194,7 +193,7 @@ add_test(spi_interleave, ([](test_case &) {
            }
 
            // fine here
-           auto res = spi.query<std::tuple<std::optional<int64_t>>>(
+           spi.query<std::tuple<std::optional<int64_t>>>(
                "select $1 + i from generate_series(1,100) i", 1LL);
 
            // Nesting: plan
@@ -220,7 +219,7 @@ add_test(spi_interleave, ([](test_case &) {
 
              bool exception_raised = false;
              try {
-               auto res = spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
+               spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
              } catch (std::runtime_error &e) {
                exception_raised = true;
              }
@@ -229,7 +228,7 @@ add_test(spi_interleave, ([](test_case &) {
            }
 
            // fine here
-           auto res1 = spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
+           spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
 
            return result;
          }));

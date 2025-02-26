@@ -4,6 +4,7 @@
 #include "utils/utils.h"
 
 #include <cstdint>
+#include <format>
 #include <optional>
 #include <string>
 
@@ -19,7 +20,7 @@ struct datum {
 private:
   ::Datum _datum;
   explicit datum(::Datum datum) : _datum(datum) {}
-  friend class nullable_datum;
+  friend struct nullable_datum;
 };
 
 class null_datum_exception : public std::exception {

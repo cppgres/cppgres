@@ -19,9 +19,13 @@ pg_config(PG_INCLUDE_DIR_SERVER --includedir-server)
 
 include(FindIntl)
 
+pg_config(_pg_cflags --cflags)
+
 add_library(cppgres INTERFACE)
 target_include_directories(cppgres INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         ${PG_PKG_INCLUDE_DIR} ${PG_INCLUDE_DIR_SERVER} ${Intl_INCLUDE_DIR})
+string(REPLACE " " ";" _pg_cflags_list "${_pg_cflags}")
+target_compile_options(cppgres INTERFACE ${_pg_cflags_list})
 
 pg_config(_pg_bindir --bindir)
 pg_config(_pg_includedir --includedir)

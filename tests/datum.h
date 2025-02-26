@@ -29,7 +29,7 @@ add_test(nullable_type_to_non_optional, ([](test_case &) {
 
            try {
              auto nd = cppgres::nullable_datum();
-             int64_t v = cppgres::from_nullable_datum<int64_t>(nd);
+             cppgres::from_nullable_datum<int64_t>(nd);
            } catch (std::runtime_error &e) {
              exception_raised = true;
            }
@@ -59,7 +59,7 @@ add_test(varlena_text, [](test_case &) {
 
     bool exception_raised = false;
     try {
-      std::string_view str1 = s1;
+      s1.operator std::string_view();
     } catch (cppgres::pointer_gone_exception &e) {
       exception_raised = true;
     }

@@ -9,6 +9,7 @@
 
 namespace cppgres {
 
+void error(pg_exception e);
 void error(pg_exception e) {
   ::errstart(ERROR, TEXTDOMAIN);
 #ifdef __GNUC__
