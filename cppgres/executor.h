@@ -7,6 +7,7 @@
 
 #include <iterator>
 #include <optional>
+#include <stack>
 #include <vector>
 
 extern "C" {
@@ -65,8 +66,12 @@ struct spi_executor : public executor {
     ffi_guarded(::SPI_connect)();
     spi = ::CurrentMemoryContext;
     ::CurrentMemoryContext = before_spi;
+    executors.push(this);
   }
-  ~spi_executor() { ffi_guarded(::SPI_finish)(); }
+  ~spi_executor() {
+    ffi_guarded(::SPI_finish)();
+    executors.pop();
+  }
 
   template <datumable_tuple T> struct result_iterator {
     using iterator_category = std::random_access_iterator_tag;
@@ -207,6 +212,9 @@ struct spi_executor : public executor {
 
   template <datumable_tuple Ret, convertible_into_nullable_datum... Args>
   results<Ret, Args...> query(std::string_view query, Args &&...args) {
+    if (executors.top() != this) {
+      throw std::runtime_error("not a current SPI executor");
+    }
     constexpr size_t nargs = sizeof...(Args);
     constexpr ::Oid types[nargs] = {type_for<Args...>().oid};
     ::Datum datums[nargs] = {into_nullable_datum(args...)};
@@ -223,6 +231,9 @@ struct spi_executor : public executor {
 
   template <convertible_into_nullable_datum... Args>
   spi_plan<Args...> plan(std::string_view query) {
+    if (executors.top() != this) {
+      throw std::runtime_error("not a current SPI executor");
+    }
     constexpr size_t nargs = sizeof...(Args);
     constexpr ::Oid types[nargs] = {type_for<Args...>().oid};
     return spi_plan<Args...>(
@@ -231,6 +242,9 @@ struct spi_executor : public executor {
 
   template <datumable_tuple Ret, convertible_into_nullable_datum... Args>
   results<Ret, Args...> query(spi_plan<Args...> &query, Args &&...args) {
+    if (executors.top() != this) {
+      throw std::runtime_error("not a current SPI executor");
+    }
     constexpr size_t nargs = sizeof...(Args);
     ::Datum datums[nargs] = {into_nullable_datum(args...)};
     const char nulls[nargs] = {into_nullable_datum(args...).is_null() ? 'n' : ' '};
@@ -247,6 +261,7 @@ private:
   ::MemoryContext before_spi;
   ::MemoryContext spi;
   alloc_set_memory_context ctx;
+  static inline std::stack<spi_executor *> executors;
 };
 
 } // namespace cppgres

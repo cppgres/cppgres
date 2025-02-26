@@ -128,4 +128,65 @@ add_test(spi_keep_plan, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_interleave, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+
+           // Nesting: query by string
+           {
+             cppgres::spi_executor spi1;
+
+             bool exception_raised = false;
+             try {
+               auto res = spi.query<std::tuple<std::optional<int64_t>>>(
+                   "select $1 + i from generate_series(1,100) i", 1LL);
+             } catch (std::runtime_error &e) {
+               exception_raised = true;
+             }
+
+             result = result && _assert(exception_raised);
+           }
+
+           // fine here
+           auto res = spi.query<std::tuple<std::optional<int64_t>>>(
+               "select $1 + i from generate_series(1,100) i", 1LL);
+
+           // Nesting: plan
+           {
+             cppgres::spi_executor spi1;
+
+             bool exception_raised = false;
+             try {
+               auto plan = spi.plan<int64_t>("select $1 + i from generate_series(1,100) i");
+             } catch (std::runtime_error &e) {
+               exception_raised = true;
+             }
+
+             result = result && _assert(exception_raised);
+           }
+
+           // fine here
+           auto plan = spi.plan<int64_t>("select $1 + i from generate_series(1,100) i");
+
+           // Nesting: query by plan
+           {
+             cppgres::spi_executor spi1;
+
+             bool exception_raised = false;
+             try {
+               auto res = spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
+             } catch (std::runtime_error &e) {
+               exception_raised = true;
+             }
+
+             result = result && _assert(exception_raised);
+           }
+
+           // fine here
+           auto res1 = spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
+
+           return result;
+         }));
+
 } // namespace tests
