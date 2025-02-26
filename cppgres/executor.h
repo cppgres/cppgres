@@ -260,7 +260,6 @@ struct spi_executor : public executor {
 private:
   ::MemoryContext before_spi;
   ::MemoryContext spi;
-  alloc_set_memory_context ctx;
   static inline std::stack<spi_executor *> executors;
 };
 
