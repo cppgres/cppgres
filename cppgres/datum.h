@@ -28,7 +28,7 @@ class null_datum_exception : public std::exception {
 
 struct nullable_datum {
 
-  template <typename T> friend std::optional<T> from_nullable_datum(nullable_datum &d);
+  template <typename T> friend T from_nullable_datum(nullable_datum &d);
   template <typename T> friend nullable_datum into_nullable_datum(T &d);
 
   bool is_null() const noexcept { return _ndatum.isnull; }
@@ -87,14 +87,25 @@ concept convertible_from_datum = requires(datum d) {
 
 template <typename T> struct unsupported_type {};
 
-template <typename T> std::optional<T> from_nullable_datum(nullable_datum &d) {
-  if (d.is_null()) {
-    return std::nullopt;
-  }
-  if constexpr (convertible_from_datum<T>) {
-    return std::optional(from_datum<T>(d));
+template <typename T>
+requires convertible_from_datum<T> ||
+         (utils::is_optional<T> && convertible_from_datum<utils::remove_optional_t<T>>)
+T from_nullable_datum(nullable_datum &d) {
+  if constexpr (utils::is_optional<T>) {
+    if (d.is_null()) {
+      return std::nullopt;
+    }
+    if constexpr (convertible_from_datum<utils::remove_optional_t<T>>) {
+      return std::optional(from_datum<utils::remove_optional_t<T>>(d));
+    } else {
+      static_assert("no viable conversion");
+    }
   } else {
-    static_assert("no viable conversion");
+    if (d.is_null()) {
+      throw std::runtime_error(
+          std::format("datum is null and can't be coerced into {}", utils::type_name<T>()));
+    }
+    return from_datum<utils::remove_optional_t<T>>(d);
   }
 }
 
@@ -114,7 +125,7 @@ template <typename T> nullable_datum into_nullable_datum(T &v) {
 
 template <typename T>
 concept convertible_from_nullable_datum = requires(nullable_datum d) {
-  { cppgres::template from_nullable_datum<T>(d) } -> std::same_as<std::optional<T>>;
+  { cppgres::template from_nullable_datum<T>(d) } -> std::same_as<T>;
 };
 
 template <typename T>

@@ -153,8 +153,7 @@ struct spi_executor : public executor {
                ffi_guarded(::SPI_getbinval)(tuptable->vals[n], tuptable->tupdesc, Is + 1, &isnull);
            ::NullableDatum datum = {.value = value, .isnull = isnull};
            auto nd = nullable_datum(datum);
-           std::get<Is>(ret) = std::optional(
-               from_nullable_datum<utils::remove_optional_t<std::tuple_element_t<Is, T>>>(nd));
+           std::get<Is>(ret) = from_nullable_datum<std::tuple_element_t<Is, T>>(nd);
          }()),
          ...);
       }(std::make_index_sequence<std::tuple_size_v<T>>{});
