@@ -215,11 +215,11 @@ struct spi_executor : public executor {
       throw std::runtime_error("not a current SPI executor");
     }
     constexpr size_t nargs = sizeof...(Args);
-    constexpr ::Oid types[nargs] = {type_for<Args...>().oid};
-    ::Datum datums[nargs] = {into_nullable_datum(args...)};
-    const char nulls[nargs] = {into_nullable_datum(args...).is_null() ? 'n' : ' '};
-    auto rc = ffi_guarded(::SPI_execute_with_args)(query.data(), nargs, const_cast<::Oid *>(types),
-                                                   datums, nulls, false, 0);
+    std::array<::Oid, nargs> types = {type_for<Args>().oid...};
+    std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
+    std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
+    auto rc = ffi_guarded(::SPI_execute_with_args)(query.data(), nargs, types.data(), datums.data(),
+                                                   nulls.data(), false, 0);
     if (rc == SPI_OK_SELECT) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
       return results<Ret, Args...>(SPI_tuptable);
@@ -234,9 +234,8 @@ struct spi_executor : public executor {
       throw std::runtime_error("not a current SPI executor");
     }
     constexpr size_t nargs = sizeof...(Args);
-    constexpr ::Oid types[nargs] = {type_for<Args...>().oid};
-    return spi_plan<Args...>(
-        ffi_guarded(::SPI_prepare)(query.data(), nargs, const_cast<::Oid *>(types)));
+    std::array<::Oid, nargs> types = {type_for<Args>().oid...};
+    return spi_plan<Args...>(ffi_guarded(::SPI_prepare)(query.data(), nargs, types.data()));
   }
 
   template <datumable_tuple Ret, convertible_into_nullable_datum... Args>
@@ -245,12 +244,30 @@ struct spi_executor : public executor {
       throw std::runtime_error("not a current SPI executor");
     }
     constexpr size_t nargs = sizeof...(Args);
-    ::Datum datums[nargs] = {into_nullable_datum(args...)};
-    const char nulls[nargs] = {into_nullable_datum(args...).is_null() ? 'n' : ' '};
-    auto rc = ffi_guarded(::SPI_execute_plan)(query, datums, nulls, false, 0);
+    std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
+    std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
+    auto rc = ffi_guarded(::SPI_execute_plan)(query, datums.data(), nulls.data(), false, 0);
     if (rc == SPI_OK_SELECT) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
       return results<Ret, Args...>(SPI_tuptable);
+    } else {
+      throw std::runtime_error("spi error");
+    }
+  }
+
+  template <convertible_into_nullable_datum... Args>
+  uint64_t execute(std::string_view query, Args &&...args) {
+    if (executors.top() != this) {
+      throw std::runtime_error("not a current SPI executor");
+    }
+    constexpr size_t nargs = sizeof...(Args);
+    std::array<::Oid, nargs> types = {type_for<Args>().oid...};
+    std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
+    std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
+    auto rc = ffi_guarded(::SPI_execute_with_args)(query.data(), nargs, types.data(), datums.data(),
+                                                   nulls.data(), false, 0);
+    if (rc >= 0) {
+      return SPI_processed;
     } else {
       throw std::runtime_error("spi error");
     }

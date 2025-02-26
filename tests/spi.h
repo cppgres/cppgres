@@ -23,6 +23,26 @@ add_test(spi, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_argless, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto res = spi.query<std::tuple<std::optional<int64_t>>>(
+               "select i from generate_series(1,100) i");
+
+           int i = 0;
+           for (auto &re : res) {
+             i++;
+             result = result && _assert(std::get<0>(re) == i);
+           }
+           result = result && _assert(std::get<0>(res.begin()[0]) == 1);
+
+           auto plan = spi.plan("select i from generate_series(1,100) i");
+           auto res1 = spi.query<std::tuple<std::optional<int64_t>>>(plan);
+           result = result && _assert(std::get<0>(res1.begin()[1]) == 2);
+
+           return result;
+         }));
+
 add_test(spi_type_mismatch, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
@@ -185,6 +205,19 @@ add_test(spi_interleave, ([](test_case &) {
 
            // fine here
            auto res1 = spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
+
+           return result;
+         }));
+
+add_test(spi_execute, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto res = spi.execute("create table spi_execute_test (v int)");
+           result = result && _assert(res == 0);
+
+           auto res1 = spi.execute(
+               "insert into spi_execute_test (v) select $1 from generate_series(1,100)", 1);
+           result = result && _assert(res1 == 100);
 
            return result;
          }));
