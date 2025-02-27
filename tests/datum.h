@@ -81,6 +81,39 @@ add_test(varlena_bytea, ([](test_case &) {
            return result;
          }));
 
+add_test(varlena_text_into_strings, ([](test_case &) {
+           bool result = true;
+           auto nd = cppgres::nullable_datum(::PointerGetDatum(::cstring_to_text("test")));
+           {
+             auto str = cppgres::from_nullable_datum<std::string_view>(nd);
+             result = result && _assert(str == "test");
+           }
+           {
+             auto str = cppgres::from_nullable_datum<std::string>(nd);
+             result = result && _assert(str == "test");
+           }
+
+           return result;
+         }));
+
+add_test(varlena_text_from_strings, ([](test_case &) {
+           bool result = true;
+
+           {
+             auto d = cppgres::into_datum(std::string_view("test"));
+             auto str = cppgres::from_datum<std::string_view>(d);
+             result = result && _assert(str == "test");
+           }
+
+           {
+             auto d = cppgres::into_datum(std::string("test"));
+             auto str = cppgres::from_datum<std::string_view>(d);
+             result = result && _assert(str == "test");
+           }
+
+           return result;
+         }));
+
 // Ensure arbitrary types are not automatically deducted
 // to be convertible from into datums.
 struct some_type {};
