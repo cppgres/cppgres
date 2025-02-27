@@ -81,4 +81,10 @@ add_test(varlena_bytea, ([](test_case &) {
            return result;
          }));
 
+// Ensure arbitrary types are not automatically deducted
+// to be convertible from into datums.
+struct some_type {};
+static_assert(!cppgres::convertible_from_datum<some_type>);
+static_assert(!cppgres::convertible_into_datum<some_type>);
+
 } // namespace tests
