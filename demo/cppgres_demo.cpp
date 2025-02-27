@@ -1,7 +1,5 @@
 #include <cppgres.h>
 
-#include <algorithm>
-
 extern "C" {
   PG_MODULE_MAGIC;
 }
