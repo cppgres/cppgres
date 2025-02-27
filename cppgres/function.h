@@ -41,7 +41,7 @@ template <datumable_function Func> struct postgres_function {
 
     argument_types t;
     if (arity != fc->nargs) {
-      std::cout << "expected " << arity << " args" << std::endl;
+      report(ERROR, "expected %d arguments, got %d instead", arity, fc->nargs);
     } else {
 
       try {
