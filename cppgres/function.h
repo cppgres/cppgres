@@ -49,17 +49,17 @@ template <datumable_function Func> struct postgres_function {
           (([&] {
              auto ptyp =
                  utils::remove_optional_t<std::remove_reference_t<decltype(std::get<Is>(t))>>();
-           auto typ = type{.oid = ffi_guarded(::get_fn_expr_argtype)(fc->flinfo, Is)};
-           if (!typ.template is<decltype(ptyp)>()) {
-             report(ERROR, "unexpected type in position %d, can't convert `%s` into `%.*s`", Is,
-                    typ.name().data(), utils::type_name<decltype(ptyp)>().length(),
-                    utils::type_name<decltype(ptyp)>().data());
-           }
-           nullable_datum nd(fc->args[Is]);
-           std::get<Is>(t) = from_nullable_datum<decltype(ptyp)>(nd);
-         }()),
-         ...);
-      }(std::make_index_sequence<std::tuple_size_v<decltype(t)>>{});
+             auto typ = type{.oid = ffi_guarded(::get_fn_expr_argtype)(fc->flinfo, Is)};
+             if (!typ.template is<decltype(ptyp)>()) {
+               report(ERROR, "unexpected type in position %d, can't convert `%s` into `%.*s`", Is,
+                      typ.name().data(), utils::type_name<decltype(ptyp)>().length(),
+                      utils::type_name<decltype(ptyp)>().data());
+             }
+             nullable_datum nd(fc->args[Is]);
+             std::get<Is>(t) = from_nullable_datum<decltype(ptyp)>(nd);
+           }()),
+           ...);
+        }(std::make_index_sequence<std::tuple_size_v<decltype(t)>>{});
         auto result = std::apply(func, t);
         nullable_datum nd = into_nullable_datum(result);
 
@@ -75,7 +75,7 @@ template <datumable_function Func> struct postgres_function {
         report(ERROR, "some exception occurred");
       }
     }
-      __builtin_unreachable();
+    __builtin_unreachable();
   }
 };
 
