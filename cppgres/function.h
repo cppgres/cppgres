@@ -55,8 +55,7 @@ template <datumable_function Func> struct postgres_function {
                       typ.name().data(), utils::type_name<decltype(ptyp)>().length(),
                       utils::type_name<decltype(ptyp)>().data());
              }
-             nullable_datum nd(fc->args[Is]);
-             std::get<Is>(t) = from_nullable_datum<decltype(ptyp)>(nd);
+             std::get<Is>(t) = from_nullable_datum<decltype(ptyp)>(nullable_datum(fc->args[Is]));
            }()),
            ...);
         }(std::make_index_sequence<std::tuple_size_v<decltype(t)>>{});

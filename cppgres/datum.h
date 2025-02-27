@@ -73,6 +73,7 @@ private:
 };
 
 template <typename T> datum into_datum(T &v);
+template <typename T> datum into_datum(T &&v) { return into_datum<T>(v); }
 
 template <typename T>
 concept convertible_into_datum = requires(T t) {
@@ -80,6 +81,7 @@ concept convertible_into_datum = requires(T t) {
 };
 
 template <typename T> T from_datum(datum &);
+template <typename T> T from_datum(datum &&v) { return from_datum<T>(v); }
 
 template <typename T>
 concept convertible_from_datum = requires(datum d) {
@@ -110,6 +112,13 @@ T from_nullable_datum(nullable_datum &d) {
   }
 }
 
+template <typename T>
+requires convertible_from_datum<T> ||
+         (utils::is_optional<T> && convertible_from_datum<utils::remove_optional_t<T>>)
+T from_nullable_datum(nullable_datum &&d) {
+  return from_nullable_datum<T>(d);
+}
+
 template <typename T> nullable_datum into_nullable_datum(T &v) {
   if constexpr (utils::is_optional<T> && convertible_into_datum<utils::remove_optional_t<T>>) {
     if (v.has_value()) {
@@ -122,6 +131,10 @@ template <typename T> nullable_datum into_nullable_datum(T &v) {
   } else {
     return into_nullable_datum<unsupported_type<T>>(v);
   }
+}
+
+template <typename T> nullable_datum into_nullable_datum(T &&v) {
+  return into_nullable_datum<T>(v);
 }
 
 template <typename T>
