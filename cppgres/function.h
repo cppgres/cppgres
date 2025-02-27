@@ -44,10 +44,11 @@ template <datumable_function Func> struct postgres_function {
       std::cout << "expected " << arity << " args" << std::endl;
     } else {
 
-      [&]<std::size_t... Is>(std::index_sequence<Is...>) {
-        (([&] {
-           auto ptyp =
-               utils::remove_optional_t<std::remove_reference_t<decltype(std::get<Is>(t))>>();
+      try {
+        [&]<std::size_t... Is>(std::index_sequence<Is...>) {
+          (([&] {
+             auto ptyp =
+                 utils::remove_optional_t<std::remove_reference_t<decltype(std::get<Is>(t))>>();
            auto typ = type{.oid = ffi_guarded(::get_fn_expr_argtype)(fc->flinfo, Is)};
            if (!typ.template is<decltype(ptyp)>()) {
              report(ERROR, "unexpected type in position %d, can't convert `%s` into `%.*s`", Is,
@@ -59,24 +60,22 @@ template <datumable_function Func> struct postgres_function {
          }()),
          ...);
       }(std::make_index_sequence<std::tuple_size_v<decltype(t)>>{});
-    }
+        auto result = std::apply(func, t);
+        nullable_datum nd = into_nullable_datum(result);
 
-    try {
-      auto result = std::apply(func, t);
-      nullable_datum nd = into_nullable_datum(result);
-
-      if (nd.is_null()) {
-        fc->isnull = true;
+        if (nd.is_null()) {
+          fc->isnull = true;
+        }
+        return nd;
+      } catch (const pg_exception &e) {
+        error(e);
+      } catch (const std::exception &e) {
+        report(ERROR, "exception: %s", e.what());
+      } catch (...) {
+        report(ERROR, "some exception occurred");
       }
-      return nd;
-    } catch (const pg_exception &e) {
-      error(e);
-    } catch (const std::exception &e) {
-      report(ERROR, "exception: %s", e.what());
-    } catch (...) {
-      report(ERROR, "some exception occurred");
     }
-    __builtin_unreachable();
+      __builtin_unreachable();
   }
 };
 
