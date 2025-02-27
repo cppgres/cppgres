@@ -10,6 +10,9 @@
 
 namespace cppgres {
 
+struct datum;
+template <typename T> datum into_datum(T &d) = delete;
+
 struct datum {
   template <typename T> friend datum into_datum(T &d);
 
@@ -72,7 +75,6 @@ private:
 
 };
 
-template <typename T> datum into_datum(T &v);
 template <typename T> datum into_datum(T &&v) { return into_datum<T>(v); }
 
 template <typename T>
