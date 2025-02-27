@@ -106,7 +106,7 @@ T from_nullable_datum(nullable_datum &d) {
       throw std::runtime_error(
           std::format("datum is null and can't be coerced into {}", utils::type_name<T>()));
     }
-    return from_datum<utils::remove_optional_t<T>>(d);
+    return from_datum<T>(d);
   }
 }
 
