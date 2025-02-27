@@ -80,7 +80,7 @@ concept convertible_into_datum = requires(T t) {
   { cppgres::into_datum(t) } -> std::same_as<datum>;
 };
 
-template <typename T> T from_datum(datum &);
+template <typename T> T from_datum(datum &) = delete;
 template <typename T> T from_datum(datum &&v) { return from_datum<T>(v); }
 
 template <typename T>
