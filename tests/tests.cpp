@@ -30,13 +30,24 @@ test_case::test_case(std::string_view name, bool (*function)(test_case &c)) : fu
 }
 bool test_case::operator()() { return function(*this); }
 
+postgres_function(cppgres_test, ([](std::string_view name) {
+                    auto test = test_case::test_cases.at(name);
+                    if (test) {
+                      return (*test)();
+                    } else {
+                      cppgres::report(ERROR, "test `%s` not found", (name).data());
+                    }
+                    return false;
+                  }));
+
 postgres_function(cppgres_tests, []() -> bool {
   bool result = true;
   for (auto t : test_case::test_cases) {
     auto name = t.first;
-    test_case *test = t.second;
     try {
-      auto _result = (*test)();
+      cppgres::spi_executor spi;
+      auto res = spi.query<std::tuple<bool>>("select cppgres_test($1)", name);
+      bool _result = std::get<0>(res.begin()[0]);
       result = result && _result;
       cppgres::report(NOTICE, "%s: %s", name.data(), _result ? "passed" : "failed");
     } catch (std::exception &e) {
@@ -126,11 +137,12 @@ extern "C" void _PG_init(void) {
                       "CPPGRES_DEBUG is set. Waiting to be connected to and resumed (pid %d)", pid);
       DEBUG_BREAK();
     }
-    cppgres::ffi_guarded(::SPI_connect)();
-    auto stmt =
+    cppgres::spi_executor spi;
+    spi.execute(
         std::format("create or replace function cppgres_tests() returns bool language 'c' as '{}'",
-                    get_library_name());
-    cppgres::ffi_guarded(::SPI_execute)(stmt.c_str(), false, 0);
-    cppgres::ffi_guarded(::SPI_finish)();
+                    get_library_name()));
+    spi.execute(std::format(
+        "create or replace function cppgres_test(text) returns bool language 'c' as '{}'",
+        get_library_name()));
   }
 }

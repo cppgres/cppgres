@@ -29,6 +29,8 @@ template <> constexpr type type_for<int32_t>() { return type{.oid = INT4OID}; }
 template <> constexpr type type_for<int16>() { return type{.oid = INT2OID}; }
 template <> constexpr type type_for<bool>() { return type{.oid = BOOLOID}; }
 template <> constexpr type type_for<byte_array>() { return type{.oid = BYTEAOID}; }
+template <> constexpr type type_for<std::string_view>() { return type{.oid = TEXTOID}; }
+template <> constexpr type type_for<std::string>() { return type{.oid = TEXTOID}; }
 
 template <> datum into_datum(size_t &t) { return datum(static_cast<::Datum>(t)); }
 template <> datum into_datum(int64_t &t) { return datum(static_cast<::Datum>(t)); }

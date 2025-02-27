@@ -28,6 +28,10 @@ concept datumable_tuple = requires {
   typename std::tuple_size<T>::type;
 } && all_convertible_from_nullable<T>(std::make_index_sequence<std::tuple_size_v<T>>{});
 
+template <typename T>
+concept convertible_into_nullable_datum_and_has_a_type =
+    convertible_into_nullable_datum<T> && has_a_type<T>;
+
 template <convertible_from_nullable_datum... Args> struct spi_plan {
   friend struct spi_executor;
 
@@ -210,7 +214,7 @@ struct spi_executor : public executor {
     size_t end() const { return table->numvals; }
   };
 
-  template <datumable_tuple Ret, convertible_into_nullable_datum... Args>
+  template <datumable_tuple Ret, convertible_into_nullable_datum_and_has_a_type... Args>
   results<Ret, Args...> query(std::string_view query, Args &&...args) {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
@@ -229,7 +233,7 @@ struct spi_executor : public executor {
     }
   }
 
-  template <convertible_into_nullable_datum... Args>
+  template <convertible_into_nullable_datum_and_has_a_type... Args>
   spi_plan<Args...> plan(std::string_view query) {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
@@ -256,7 +260,7 @@ struct spi_executor : public executor {
     }
   }
 
-  template <convertible_into_nullable_datum... Args>
+  template <convertible_into_nullable_datum_and_has_a_type... Args>
   uint64_t execute(std::string_view query, Args &&...args) {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");

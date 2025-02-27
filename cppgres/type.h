@@ -85,12 +85,12 @@ struct bytea : public varlena {
 };
 
 template <typename T> constexpr type type_for() {
-
-  if constexpr (utils::is_optional<T>) {
-    return type_for<utils::remove_optional_t<T>>();
-  } else {
-    return type{.oid = InvalidOid};
-  }
+  return type_for<std::remove_reference_t<utils::remove_optional_t<T>>>();
 }
+
+template <typename T>
+concept has_a_type = requires {
+  { type_for<T>() } -> std::same_as<type>;
+};
 
 } // namespace cppgres

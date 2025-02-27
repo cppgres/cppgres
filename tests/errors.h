@@ -19,19 +19,20 @@ postgres_function(raise_exception,
 
 add_test(exception_to_error, ([](test_case &) {
            bool result = false;
-           cppgres::ffi_guarded(::SPI_connect)();
+           cppgres::spi_executor spi;
            auto stmt = std::format(
                "create or replace function raise_exception() returns bool language 'c' as '{}'",
                get_library_name());
-           cppgres::ffi_guarded(::SPI_execute)(stmt.c_str(), false, 0);
+           spi.execute(stmt);
+           auto oldowner = ::CurrentResourceOwner;
            cppgres::ffi_guarded(::BeginInternalSubTransaction)(nullptr);
            try {
-             cppgres::ffi_guarded(::SPI_execute)("select raise_exception()", false, 0);
+             spi.execute("select raise_exception()");
            } catch (cppgres::pg_exception &e) {
              result = _assert(std::string_view(e.message()) == "exception: raised an exception");
            }
            cppgres::ffi_guarded(::RollbackAndReleaseCurrentSubTransaction)();
-           cppgres::ffi_guarded(::SPI_finish)();
+           ::CurrentResourceOwner = oldowner;
            return result;
          }));
 
