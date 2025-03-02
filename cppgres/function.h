@@ -113,8 +113,8 @@ template <datumable_function Func> struct postgres_function {
                   return {into_nullable_datum(elems)...};
                 },
                 utils::tie(it));
-            std::array<const bool, nargs> isnull = std::apply(
-                [](auto &&...elems) -> std::array<const bool, sizeof...(elems)> {
+            std::array<bool, nargs> isnull = std::apply(
+                [](auto &&...elems) -> std::array<bool, sizeof...(elems)> {
                   return {into_nullable_datum(elems).is_null()...};
                 },
                 utils::tie(it));
