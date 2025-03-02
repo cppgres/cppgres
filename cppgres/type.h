@@ -49,7 +49,7 @@ struct non_by_value_type : public type {
     return *this;
   }
 
-  memory_context memory_context() { return memory_context::for_pointer(ptr()); }
+  memory_context get_memory_context() { return memory_context::for_pointer(ptr()); }
 
 protected:
   datum datum;
