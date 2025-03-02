@@ -153,6 +153,23 @@ template <typename T>
 concept a_memory_context =
     std::derived_from<T, abstract_memory_context> && std::default_initializable<T>;
 
+template <a_memory_context Context> struct memory_context_scope {
+  explicit memory_context_scope(Context &ctx)
+      : previous(::CurrentMemoryContext), ctx(ctx.operator ::MemoryContext()) {
+    ::CurrentMemoryContext = ctx;
+  }
+  explicit memory_context_scope(Context &&ctx)
+      : previous(::CurrentMemoryContext), ctx(ctx.operator ::MemoryContext()) {
+    ::CurrentMemoryContext = ctx;
+  }
+
+  ~memory_context_scope() { ::CurrentMemoryContext = previous; }
+
+private:
+  ::MemoryContext previous;
+  ::MemoryContext ctx;
+};
+
 template <class T, a_memory_context Context = memory_context> struct memory_context_allocator {
   using value_type = T;
   memory_context_allocator() noexcept : context(Context()), explicit_deallocation(false) {}

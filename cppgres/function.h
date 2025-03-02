@@ -96,8 +96,7 @@ template <datumable_function Func> struct postgres_function {
 
           rsinfo->returnMode = SFRM_Materialize;
 
-          ::MemoryContext per_query_ctx = rsinfo->econtext->ecxt_per_query_memory;
-          ::MemoryContext oldcontext = ffi_guarded(::MemoryContextSwitchTo)(per_query_ctx);
+          memory_context_scope scope(memory_context(rsinfo->econtext->ecxt_per_query_memory));
 
           ::Tuplestorestate *tupstore = ffi_guarded(::tuplestore_begin_heap)(
               (rsinfo->allowedModes & SFRM_Materialize_Random) == SFRM_Materialize_Random, false,
@@ -121,7 +120,6 @@ template <datumable_function Func> struct postgres_function {
             ffi_guarded(::tuplestore_putvalues)(tupstore, rsinfo->expectedDesc, values.data(),
                                                 isnull.data());
           }
-          ::MemoryContextSwitchTo(oldcontext);
 
           fc->isnull = true;
           return 0;

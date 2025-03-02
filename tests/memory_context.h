@@ -49,4 +49,19 @@ add_test(memory_context_for_ptr, ([](test_case &) {
            return _assert(cppgres::memory_context::for_pointer(::palloc0(100)) ==
                           cppgres::memory_context());
          }));
+
+add_test(memory_context_scope, ([](test_case &) {
+           bool result = true;
+           cppgres::memory_context before;
+           {
+             [[maybe_unused]] auto scope =
+                 cppgres::memory_context_scope(cppgres::top_memory_context);
+             cppgres::memory_context now;
+             result = result && _assert(now == cppgres::top_memory_context);
+             result = result && _assert(now != before);
+           }
+           cppgres::memory_context now;
+           result = result && _assert(now == before);
+           return result;
+         }));
 } // namespace tests
