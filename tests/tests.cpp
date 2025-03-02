@@ -25,6 +25,7 @@ PG_MODULE_MAGIC;
 #include "spi.h"
 #include "srf.h"
 #include "tests.h"
+#include "xact.h"
 
 test_case::test_case(std::string_view name, bool (*function)(test_case &c)) : function(function) {
   test_cases[name] = this;
