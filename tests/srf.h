@@ -25,11 +25,12 @@ add_test(srf, ([](test_case &) {
            return result;
          }));
 
+struct srf_pfr_res {
+  int32_t a, b;
+};
+
 postgres_function(srf_pfr, ([]() {
-                    struct res {
-                      int32_t a, b;
-                    };
-                    std::array<res, 3> results{{{1, 10}, {2, 20}, {3, 30}}};
+                    std::array<srf_pfr_res, 3> results{{{1, 10}, {2, 20}, {3, 30}}};
                     return results;
                   }));
 
@@ -41,8 +42,8 @@ add_test(
           "create or replace function srf_pfr() returns table (a int, b int) language 'c' as '{}'",
           get_library_name());
       spi.execute(stmt);
-      auto res = spi.query<std::tuple<int32_t, int32_t>>("select * from srf_pfr()");
-      result = result && _assert(std::get<1>(res.begin()[1]) == 20);
+      auto res = spi.query<srf_pfr_res>("select * from srf_pfr()");
+      result = result && _assert(res.begin()[1].b == 20);
       return result;
     }));
 
