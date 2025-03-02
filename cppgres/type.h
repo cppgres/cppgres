@@ -38,13 +38,14 @@ struct non_by_value_type : public type {
   friend struct datum;
 
   non_by_value_type(struct datum &datum)
-      : datum(datum), ctx(tracking_memory_context(memory_context::for_pointer(ptr(false)))) {}
+      : value_datum(datum), ctx(tracking_memory_context(memory_context::for_pointer(ptr(false)))) {}
 
-  non_by_value_type(const non_by_value_type &other) : datum(other.datum), ctx(other.ctx) {}
+  non_by_value_type(const non_by_value_type &other)
+      : value_datum(other.value_datum), ctx(other.ctx) {}
   non_by_value_type(non_by_value_type &&other) noexcept
-      : datum(std::move(other.datum)), ctx(std::move(other.ctx)) {}
+      : value_datum(std::move(other.value_datum)), ctx(std::move(other.ctx)) {}
   non_by_value_type &operator=(non_by_value_type &&other) noexcept {
-    datum = std::move(other.datum);
+    value_datum = std::move(other.value_datum);
     ctx = std::move(other.ctx);
     return *this;
   }
@@ -52,14 +53,14 @@ struct non_by_value_type : public type {
   memory_context get_memory_context() { return memory_context::for_pointer(ptr()); }
 
 protected:
-  datum datum;
+  datum value_datum;
   tracking_memory_context<cppgres::memory_context> ctx;
   void *ptr(bool tracked = true) {
     if (tracked && ctx.resets() > 0) {
       throw pointer_gone_exception();
     }
     return ffi_guarded(::pg_detoast_datum)(
-        reinterpret_cast<struct ::varlena *>(datum.operator ::Datum &()));
+        reinterpret_cast<struct ::varlena *>(value_datum.operator ::Datum &()));
   }
 };
 
