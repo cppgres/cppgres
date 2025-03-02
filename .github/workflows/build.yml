@@ -21,6 +21,7 @@ jobs:
         pgver: [ 17, 16, 15, 14, 13, master ]
         os: [ ubuntu-24.04, macos-15 ]
         build_type: [ Debug, Release ]
+        compiler: [ clang++, g++ ]
         exclude:
           - os: macos-15
             pgver: 16
@@ -72,7 +73,7 @@ jobs:
           key: ${{ matrix.os }}-pg-${{ matrix.pgver }}-${{ matrix.build_type }}-${{ hashFiles('cmake/FindPostgreSQL.cmake') }}${{ env.PATH_SUFFIX }}
 
       - name: Configure
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPGVER=${{ matrix.pgver }}
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPGVER=${{ matrix.pgver }} -DCMAKE_CXX_COMPILER=${{matrix.compiler}}
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build --parallel --config ${{matrix.build_type}}
