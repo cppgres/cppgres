@@ -55,7 +55,19 @@ template <typename T> constexpr std::string_view type_name() {
 #endif
 }
 
-template <typename T, typename = void> struct tuple_traits_impl;
+template <typename T, typename = void> struct tuple_traits_impl {
+  using tuple_size_type = std::integral_constant<std::size_t, 1>;
+
+  template <std::size_t I, typename U = T> static constexpr T get(U &&t) noexcept {
+    return std::forward<U>(t);
+  }
+
+  struct tuple_element_t {
+    using type = T;
+  };
+
+  template <std::size_t I> using tuple_element = tuple_element_t;
+};
 
 // Primary implementation: for types that already have a tuple-like interface
 template <typename T>
@@ -96,11 +108,21 @@ template <std::size_t I, typename T> constexpr decltype(auto) get(T &&t) noexcep
   return tuple_traits_impl<std::remove_cv_t<std::remove_reference_t<T>>>::template get<I>(
       std::forward<T>(t));
 }
+
+template <typename T> struct is_std_tuple : std::false_type {};
+
+template <typename... Ts> struct is_std_tuple<std::tuple<Ts...>> : std::true_type {};
+
+template <typename T>
+concept std_tuple = is_std_tuple<T>::value;
+
 template <typename T> decltype(auto) tie(T &val) {
   if constexpr (std::is_aggregate_v<T>) {
     return boost::pfr::structure_tie(val);
-  } else {
+  } else if constexpr (std_tuple<T>) {
     return val;
+  } else {
+    return std::tuple(val);
   }
 }
 

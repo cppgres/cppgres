@@ -119,4 +119,39 @@ add_test(srf_non_record, ([](test_case &) {
            return result;
          }));
 
+postgres_function(non_record_srf_non_tup, ([]() {
+                    std::array<int32_t, 3> values{1, 2, 3};
+                    return values;
+                  }));
+
+add_test(srf_non_record_non_tup, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto stmt = std::format("create or replace function non_record_srf_non_tup() returns "
+                                   "setof int language 'c' as '{}'",
+                                   get_library_name());
+           spi.execute(stmt);
+           auto res = spi.query<std::tuple<int32_t>>("select * from non_record_srf_non_tup()");
+           result = result && _assert(std::get<0>(res.begin()[1]) == 2);
+           return result;
+         }));
+
+add_test(srf_non_record_non_tup_type_mismatch, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto stmt = std::format("create or replace function non_record_srf_non_tup_t() returns "
+                                   "setof text language 'c' as '{}', 'non_record_srf_non_tup'",
+                                   get_library_name());
+           spi.execute(stmt);
+           bool exception_raised = false;
+           cppgres::internal_subtransaction sub(false);
+           try {
+             spi.query<std::tuple<int32_t, int32_t>>("select * from srf_mismatch_types()");
+           } catch (cppgres::pg_exception &e) {
+             exception_raised = true;
+           }
+           result = result && exception_raised;
+           return result;
+         }));
+
 } // namespace tests
