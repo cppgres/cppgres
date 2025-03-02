@@ -12,7 +12,7 @@ add_test(spi, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
            auto res = spi.query<std::tuple<std::optional<int64_t>>>(
-               "select $1 + i from generate_series(1,100) i", 1LL);
+               "select $1 + i from generate_series(1,100) i", static_cast<int64_t>(1LL));
 
            int i = 0;
            for (auto &re : res) {
@@ -26,7 +26,8 @@ add_test(spi, ([](test_case &) {
 add_test(spi_single, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           auto res = spi.query<int64_t>("select $1 + i from generate_series(1,100) i", 1LL);
+           auto res = spi.query<int64_t>("select $1 + i from generate_series(1,100) i",
+                                         static_cast<int64_t>(1LL));
 
            int i = 0;
            for (auto &re : res) {
@@ -43,7 +44,8 @@ add_test(spi_pfr, ([](test_case &) {
            struct my_struct {
              int64_t val;
            };
-           auto res = spi.query<my_struct>("select $1 + i from generate_series(1,100) i", 1LL);
+           auto res = spi.query<my_struct>("select $1 + i from generate_series(1,100) i",
+                                           static_cast<int64_t>(1LL));
 
            int i = 0;
            for (auto &re : res) {
@@ -56,8 +58,8 @@ add_test(spi_pfr, ([](test_case &) {
 add_test(spi_non_opt, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           auto res =
-               spi.query<std::tuple<int64_t>>("select $1 + i from generate_series(1,100) i", 1LL);
+           auto res = spi.query<std::tuple<int64_t>>("select $1 + i from generate_series(1,100) i",
+                                                     static_cast<int64_t>(1LL));
 
            int i = 0;
            for (auto &re : res) {
@@ -68,7 +70,8 @@ add_test(spi_non_opt, ([](test_case &) {
 
            bool exception_raised = false;
            try {
-             spi.query<std::tuple<int64_t>>("select null from generate_series(1,100) i", 1LL);
+             spi.query<std::tuple<int64_t>>("select null from generate_series(1,100) i",
+                                            static_cast<int64_t>(1LL));
            } catch (std::exception &e) {
              exception_raised = true;
            }
@@ -104,7 +107,7 @@ add_test(spi_type_mismatch, ([](test_case &) {
            bool exception_raised = false;
            try {
              spi.query<std::tuple<std::optional<bool>>>(
-                 "select $1 + i from generate_series(1,100) i", 1LL);
+                 "select $1 + i from generate_series(1,100) i", static_cast<int64_t>(1LL));
            } catch (std::invalid_argument &e) {
              exception_raised = true;
            }
@@ -118,7 +121,8 @@ add_test(spi_plan, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
            auto plan = spi.plan<int64_t>("select $1 + i from generate_series(1,100) i");
-           auto res = spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
+           auto res =
+               spi.query<std::tuple<std::optional<int64_t>>>(plan, static_cast<int64_t>(1LL));
 
            int i = 0;
            for (auto &re : res) {
@@ -136,7 +140,7 @@ add_test(spi_plan_mismatch, ([](test_case &) {
 
            bool exception_raised = false;
            try {
-             spi.query<std::tuple<std::optional<bool>>>(plan, 1LL);
+             spi.query<std::tuple<std::optional<bool>>>(plan, static_cast<int64_t>(1LL));
            } catch (std::invalid_argument &e) {
              exception_raised = true;
            }
@@ -158,7 +162,7 @@ add_test(spi_plan_gone, ([](test_case &) {
 
            bool exception_raised = false;
            try {
-             spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
+             spi.query<std::tuple<std::optional<int64_t>>>(plan, static_cast<int64_t>(1LL));
            } catch (cppgres::pointer_gone_exception &e) {
              exception_raised = true;
            }
@@ -183,7 +187,8 @@ add_test(spi_keep_plan, ([](test_case &) {
              ptr = plan;
 
              cppgres::spi_executor spi;
-             auto res = spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
+             auto res =
+                 spi.query<std::tuple<std::optional<int64_t>>>(plan, static_cast<int64_t>(1LL));
 
              int i = 0;
              for (auto &re : res) {
@@ -214,7 +219,7 @@ add_test(spi_interleave, ([](test_case &) {
              bool exception_raised = false;
              try {
                spi.query<std::tuple<std::optional<int64_t>>>(
-                   "select $1 + i from generate_series(1,100) i", 1LL);
+                   "select $1 + i from generate_series(1,100) i", static_cast<int64_t>(1LL));
              } catch (std::runtime_error &e) {
                exception_raised = true;
              }
@@ -224,7 +229,7 @@ add_test(spi_interleave, ([](test_case &) {
 
            // fine here
            spi.query<std::tuple<std::optional<int64_t>>>(
-               "select $1 + i from generate_series(1,100) i", 1LL);
+               "select $1 + i from generate_series(1,100) i", static_cast<int64_t>(1LL));
 
            // Nesting: plan
            {
@@ -249,7 +254,7 @@ add_test(spi_interleave, ([](test_case &) {
 
              bool exception_raised = false;
              try {
-               spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
+               spi.query<std::tuple<std::optional<int64_t>>>(plan, static_cast<int64_t>(1LL));
              } catch (std::runtime_error &e) {
                exception_raised = true;
              }
@@ -258,7 +263,7 @@ add_test(spi_interleave, ([](test_case &) {
            }
 
            // fine here
-           spi.query<std::tuple<std::optional<int64_t>>>(plan, 1LL);
+           spi.query<std::tuple<std::optional<int64_t>>>(plan, static_cast<int64_t>(1LL));
 
            return result;
          }));
