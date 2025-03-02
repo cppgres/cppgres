@@ -24,15 +24,12 @@ add_test(exception_to_error, ([](test_case &) {
                "create or replace function raise_exception() returns bool language 'c' as '{}'",
                get_library_name());
            spi.execute(stmt);
-           auto oldowner = ::CurrentResourceOwner;
-           cppgres::ffi_guarded(::BeginInternalSubTransaction)(nullptr);
+           cppgres::internal_subtransaction sub(false);
            try {
              spi.execute("select raise_exception()");
            } catch (cppgres::pg_exception &e) {
              result = _assert(std::string_view(e.message()) == "exception: raised an exception");
            }
-           cppgres::ffi_guarded(::RollbackAndReleaseCurrentSubTransaction)();
-           ::CurrentResourceOwner = oldowner;
            return result;
          }));
 

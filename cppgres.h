@@ -29,6 +29,7 @@
 #include "cppgres/memory.h"
 #include "cppgres/set.h"
 #include "cppgres/types.h"
+#include "cppgres/xact.h"
 
 /**
  * Export a C++ function as a Postgres function.

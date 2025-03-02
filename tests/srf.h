@@ -54,16 +54,13 @@ add_test(srf_non_srf, ([](test_case &) {
                get_library_name());
            spi.execute(stmt);
            bool exception_raised = false;
-           auto oldowner = ::CurrentResourceOwner;
-           cppgres::ffi_guarded(::BeginInternalSubTransaction)(nullptr);
+           cppgres::internal_subtransaction sub(false);
            try {
              spi.query<std::tuple<int32_t, int32_t>>("select non_srf()");
            } catch (cppgres::pg_exception &e) {
              exception_raised =
                  _assert(std::string_view(e.message()) == "caller is not expecting a set");
            }
-           cppgres::ffi_guarded(::RollbackAndReleaseCurrentSubTransaction)();
-           ::CurrentResourceOwner = oldowner;
            result = result && exception_raised;
            return result;
          }));
@@ -76,15 +73,12 @@ add_test(srf_mismatch_size, ([](test_case &) {
                                    get_library_name());
            spi.execute(stmt);
            bool exception_raised = false;
-           auto oldowner = ::CurrentResourceOwner;
-           cppgres::ffi_guarded(::BeginInternalSubTransaction)(nullptr);
+           cppgres::internal_subtransaction sub(false);
            try {
              spi.query<std::tuple<int32_t, int32_t>>("select * from srf_mismatch_size()");
            } catch (cppgres::pg_exception &e) {
              exception_raised = true;
            }
-           cppgres::ffi_guarded(::RollbackAndReleaseCurrentSubTransaction)();
-           ::CurrentResourceOwner = oldowner;
            result = result && exception_raised;
            return result;
          }));
@@ -97,15 +91,12 @@ add_test(srf_mismatch_types, ([](test_case &) {
                                    get_library_name());
            spi.execute(stmt);
            bool exception_raised = false;
-           auto oldowner = ::CurrentResourceOwner;
-           cppgres::ffi_guarded(::BeginInternalSubTransaction)(nullptr);
+           cppgres::internal_subtransaction sub(false);
            try {
              spi.query<std::tuple<int32_t, int32_t>>("select * from srf_mismatch_types()");
            } catch (cppgres::pg_exception &e) {
              exception_raised = true;
            }
-           cppgres::ffi_guarded(::RollbackAndReleaseCurrentSubTransaction)();
-           ::CurrentResourceOwner = oldowner;
            result = result && exception_raised;
            return result;
          }));
