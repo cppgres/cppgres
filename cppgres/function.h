@@ -69,6 +69,9 @@ template <datumable_function Func> struct postgres_function {
         if constexpr (datumable_iterator<return_type>) {
           // TODO: For now, let's assume materialized model
           auto rsinfo = reinterpret_cast<::ReturnSetInfo *>(fc->resultinfo);
+          if (rsinfo == nullptr) {
+            report(ERROR, "caller is not expecting a set");
+          }
           rsinfo->returnMode = SFRM_Materialize;
 
           ::MemoryContext per_query_ctx = rsinfo->econtext->ecxt_per_query_memory;

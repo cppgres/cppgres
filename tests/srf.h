@@ -25,4 +25,22 @@ add_test(srf_smoke_test, ([](test_case &) {
            return result;
          }));
 
+add_test(srf_non_srf, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto stmt = std::format(
+               "create or replace function non_srf() returns int language 'c' as '{}', 'srf'",
+               get_library_name());
+           spi.execute(stmt);
+           bool exception_raised = false;
+           try {
+             spi.query<std::tuple<int32_t, int32_t>>("select non_srf()");
+           } catch (cppgres::pg_exception &e) {
+             exception_raised = _assert(std::string_view(e.message()) ==
+                                        "caller is not expecting a set");
+           }
+           result = result && exception_raised;
+           return result;
+         }));
+
 } // namespace tests
