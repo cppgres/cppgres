@@ -107,6 +107,7 @@ template <datumable_function Func> struct postgres_function {
           auto result = std::apply(func, t);
 
           for (auto it : result) {
+            CHECK_FOR_INTERRUPTS();
             std::array<::Datum, nargs> values = std::apply(
                 [](auto &&...elems) -> std::array<::Datum, sizeof...(elems)> {
                   return {into_nullable_datum(elems)...};
