@@ -15,16 +15,22 @@ extern "C" {
 }
 
 namespace cppgres {
-struct type {
-  ::Oid oid;
 
-  template <typename T> bool is() {
+struct type;
+
+template <typename T> struct type_traits {
+  static bool is(type &t) {
     if constexpr (utils::is_optional<T>) {
-      return is<utils::remove_optional_t<T>>();
+      return type_traits<utils::remove_optional_t<T>>::is(t);
     } else {
       return false;
     }
   }
+  static bool is(type &&t) { return is(std::move(t)); }
+};
+
+struct type {
+  ::Oid oid;
 
   std::string_view name() { return ::format_type_be(oid); }
 };

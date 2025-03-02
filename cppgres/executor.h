@@ -196,7 +196,8 @@ struct spi_executor : public executor {
       [&]<std::size_t... Is>(std::index_sequence<Is...>) {
         (([&] {
            auto oid = ffi_guarded(::SPI_gettypeid)(table->tupdesc, Is + 1);
-           if (!type{.oid = oid}.is<std::tuple_element_t<Is, Ret>>()) {
+           auto t = type{.oid = oid};
+           if (!type_traits<std::tuple_element_t<Is, Ret>>::is(t)) {
              throw std::invalid_argument(
                  std::format("invalid return type in position {} ({}), got OID {}", Is,
                              utils::type_name<std::tuple_element_t<Is, Ret>>(), oid));

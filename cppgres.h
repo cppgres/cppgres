@@ -27,6 +27,7 @@
 #include "cppgres/guard.h"
 #include "cppgres/imports.h"
 #include "cppgres/memory.h"
+#include "cppgres/set.h"
 #include "cppgres/types.h"
 
 /**

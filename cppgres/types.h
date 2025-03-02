@@ -9,20 +9,41 @@
 
 namespace cppgres {
 
-template <> bool type::is<bool>() { return oid == BOOLOID; }
+template <> struct type_traits<bool> {
+  static bool is(type &t) { return t.oid == BOOLOID; }
+};
 
-template <> bool type::is<int64_t>() { return oid == INT8OID || oid == INT4OID || oid == INT2OID; }
+template <> struct type_traits<int64_t> {
+  static bool is(type &t) { return t.oid == INT8OID || t.oid == INT4OID || t.oid == INT2OID; }
+};
 
-template <> bool type::is<int32_t>() { return oid == INT4OID || oid == INT2OID; }
+template <> struct type_traits<int32_t> {
+  static bool is(type &t) { return t.oid == INT4OID || t.oid == INT2OID; }
+};
 
-template <> bool type::is<int16_t>() { return oid == INT2OID; }
+template <> struct type_traits<int16_t> {
+  static bool is(type &t) { return t.oid == INT2OID; }
+};
 
-template <> bool type::is<int8_t>() { return oid == INT2OID; }
+template <> struct type_traits<int8_t> {
+  static bool is(type &t) { return t.oid == INT2OID; }
+};
 
-template <> bool type::is<text>() { return oid == TEXTOID; }
-template <> bool type::is<std::string_view>() { return oid == TEXTOID; }
-template <> bool type::is<std::string>() { return oid == TEXTOID; }
-template <> bool type::is<byte_array>() { return oid == BYTEAOID; }
+template <> struct type_traits<text> {
+  static bool is(type &t) { return t.oid == TEXTOID; }
+};
+
+template <> struct type_traits<std::string_view> {
+  static bool is(type &t) { return t.oid == TEXTOID; }
+};
+
+template <> struct type_traits<std::string> {
+  static bool is(type &t) { return t.oid == TEXTOID; }
+};
+
+template <> struct type_traits<byte_array> {
+  static bool is(type &t) { return t.oid == BYTEAOID; }
+};
 
 template <> constexpr type type_for<int64_t>() { return type{.oid = INT8OID}; }
 template <> constexpr type type_for<int32_t>() { return type{.oid = INT4OID}; }

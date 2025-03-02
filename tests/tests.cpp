@@ -23,6 +23,7 @@ PG_MODULE_MAGIC;
 #include "function.h"
 #include "memory_context.h"
 #include "spi.h"
+#include "srf.h"
 #include "tests.h"
 
 test_case::test_case(std::string_view name, bool (*function)(test_case &c)) : function(function) {
