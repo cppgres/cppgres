@@ -117,9 +117,12 @@ template <typename T>
 concept std_tuple = is_std_tuple<T>::value;
 
 template <typename T> decltype(auto) tie(T &val) {
+#if CPPGRES_USE_BOOST_PFR == 1
   if constexpr (std::is_aggregate_v<T>) {
     return boost::pfr::structure_tie(val);
-  } else if constexpr (std_tuple<T>) {
+  } else
+#endif
+      if constexpr (std_tuple<T>) {
     return val;
   } else {
     return std::tuple(val);
