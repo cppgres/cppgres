@@ -69,6 +69,7 @@ if(NOT DEFINED PG_CONFIG)
     set(PGVER_ALIAS_16 16.8)
     set(PGVER_ALIAS_15 15.12)
     set(PGVER_ALIAS_14 14.17)
+    set(PGVER_ALIAS_13 13.20)
 
     # commit
     if ("${PGVER}" MATCHES "^${sha1re}$")
