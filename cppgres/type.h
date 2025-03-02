@@ -11,7 +11,6 @@
 
 extern "C" {
 #include "utils/varlena.h"
-#include "varatt.h"
 }
 
 namespace cppgres {

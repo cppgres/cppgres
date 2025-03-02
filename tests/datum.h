@@ -8,14 +8,7 @@ add_test(nullable_datum_enforcement, [](test_case &) {
   cppgres::nullable_datum d;
   assert(d.is_null());
   try {
-    cppgres::ffi_guarded(::DatumGetDateADT)(d);
-    _assert(false);
-  } catch (cppgres::null_datum_exception &e) {
-    return true;
-  }
-  // try the same unguarded, it won't (shouldn't) call it anyway
-  try {
-    ::DatumGetDateADT(d);
+    [[maybe_unused]] auto val = DatumGetDateADT(d);
     _assert(false);
   } catch (cppgres::null_datum_exception &e) {
     return true;
@@ -40,7 +33,7 @@ add_test(nullable_type_to_non_optional, ([](test_case &) {
 
 add_test(varlena_text, [](test_case &) {
   bool result = true;
-  auto nd = cppgres::nullable_datum(::PointerGetDatum(::cstring_to_text("test")));
+  auto nd = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test")));
   auto s = cppgres::from_nullable_datum<cppgres::text>(nd);
   std::string_view str = s;
   result = result && _assert(str == "test");
@@ -51,7 +44,7 @@ add_test(varlena_text, [](test_case &) {
     auto p = ::CurrentMemoryContext;
     _assert(p != ctx);
     ::CurrentMemoryContext = ctx;
-    auto nd1 = cppgres::nullable_datum(::PointerGetDatum(::cstring_to_text("test1")));
+    auto nd1 = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test1")));
     auto s1 = cppgres::from_nullable_datum<cppgres::text>(nd1);
     _assert(s1.memory_context() == ctx);
     ::CurrentMemoryContext = p;
@@ -71,7 +64,7 @@ add_test(varlena_text, [](test_case &) {
 
 add_test(varlena_bytea, ([](test_case &) {
            bool result = true;
-           auto nd = cppgres::nullable_datum(::PointerGetDatum(::cstring_to_text("test")));
+           auto nd = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test")));
            auto s = cppgres::from_nullable_datum<cppgres::bytea>(nd);
            cppgres::byte_array ba = s;
            result = result && _assert(ba[0] == std::byte('t'));
@@ -83,7 +76,7 @@ add_test(varlena_bytea, ([](test_case &) {
 
 add_test(varlena_text_into_strings, ([](test_case &) {
            bool result = true;
-           auto nd = cppgres::nullable_datum(::PointerGetDatum(::cstring_to_text("test")));
+           auto nd = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test")));
            {
              auto str = cppgres::from_nullable_datum<std::string_view>(nd);
              result = result && _assert(str == "test");

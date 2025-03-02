@@ -2,6 +2,10 @@
 
 #include <stack>
 
+extern "C" {
+#include <access/xact.h>
+}
+
 namespace cppgres {
 
 struct internal_subtransaction {

@@ -124,6 +124,8 @@ static const char *get_library_name() {
 #include <unistd.h>
 #endif
 
+extern "C" void _PG_init(void);
+
 extern "C" void _PG_init(void) {
   static bool initialized = false;
   if (!initialized) {

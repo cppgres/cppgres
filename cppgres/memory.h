@@ -8,7 +8,6 @@
 
 extern "C" {
 #include <utils/memutils.h>
-#include <utils/memutils_memorychunk.h>
 }
 
 namespace cppgres {
