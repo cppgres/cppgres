@@ -72,6 +72,28 @@ template <datumable_function Func> struct postgres_function {
           if (rsinfo == nullptr) {
             report(ERROR, "caller is not expecting a set");
           }
+          using set_value_type = set_iterator_traits<return_type>::value_type;
+          constexpr auto nargs = std::tuple_size_v<set_value_type>;
+
+          auto natts = rsinfo->expectedDesc->natts;
+          if (nargs != natts) {
+            report(ERROR, "expected set with %d values, got %d instead", nargs, natts);
+          }
+
+          [&]<std::size_t... Is>(std::index_sequence<Is...>) {
+            (([&] {
+               auto oid = ffi_guarded(::SPI_gettypeid)(rsinfo->expectedDesc, Is + 1);
+               auto t = type{.oid = oid};
+               using typ = utils::tuple_element_t<Is, set_value_type>;
+               if (!type_traits<typ>::is(t)) {
+                 throw std::invalid_argument(
+                     std::format("invalid type in record's position {} ({}), got OID {}", Is,
+                                 utils::type_name<typ>(), oid));
+               }
+             }()),
+             ...);
+          }(std::make_index_sequence<nargs>{});
+
           rsinfo->returnMode = SFRM_Materialize;
 
           ::MemoryContext per_query_ctx = rsinfo->econtext->ecxt_per_query_memory;
@@ -85,8 +107,6 @@ template <datumable_function Func> struct postgres_function {
           auto result = std::apply(func, t);
 
           for (auto it : result) {
-            using t = set_iterator_traits<return_type>::value_type;
-            constexpr auto nargs = std::tuple_size_v<t>;
             std::array<::Datum, nargs> values = std::apply(
                 [](auto &&...elems) -> std::array<::Datum, sizeof...(elems)> {
                   return {into_nullable_datum(elems)...};

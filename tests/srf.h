@@ -36,8 +36,42 @@ add_test(srf_non_srf, ([](test_case &) {
            try {
              spi.query<std::tuple<int32_t, int32_t>>("select non_srf()");
            } catch (cppgres::pg_exception &e) {
-             exception_raised = _assert(std::string_view(e.message()) ==
-                                        "caller is not expecting a set");
+             exception_raised =
+                 _assert(std::string_view(e.message()) == "caller is not expecting a set");
+           }
+           result = result && exception_raised;
+           return result;
+         }));
+
+add_test(srf_mismatch_size, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto stmt = std::format("create or replace function srf_mismatch_size() returns table "
+                                   "(a int) language 'c' as '{}', 'srf'",
+                                   get_library_name());
+           spi.execute(stmt);
+           bool exception_raised = false;
+           try {
+             spi.query<std::tuple<int32_t, int32_t>>("select * from srf_mismatch_size()");
+           } catch (cppgres::pg_exception &e) {
+             exception_raised = true;
+           }
+           result = result && exception_raised;
+           return result;
+         }));
+
+add_test(srf_mismatch_types, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto stmt = std::format("create or replace function srf_mismatch_types() returns table "
+                                   "(a int, b text) language 'c' as '{}', 'srf'",
+                                   get_library_name());
+           spi.execute(stmt);
+           bool exception_raised = false;
+           try {
+             spi.query<std::tuple<int32_t, int32_t>>("select * from srf_mismatch_types()");
+           } catch (cppgres::pg_exception &e) {
+             exception_raised = true;
            }
            result = result && exception_raised;
            return result;
