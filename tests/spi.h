@@ -23,6 +23,20 @@ add_test(spi, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_single, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto res = spi.query<int64_t>("select $1 + i from generate_series(1,100) i", 1LL);
+
+           int i = 0;
+           for (auto &re : res) {
+             i++;
+             result = result && _assert(re == i + 1);
+           }
+           result = result && _assert(res.begin()[0] == 2);
+           return result;
+         }));
+
 add_test(spi_pfr, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;

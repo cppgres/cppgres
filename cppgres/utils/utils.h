@@ -58,7 +58,7 @@ template <typename T> constexpr std::string_view type_name() {
 template <typename T, typename = void> struct tuple_traits_impl {
   using tuple_size_type = std::integral_constant<std::size_t, 1>;
 
-  template <std::size_t I, typename U = T> static constexpr T get(U &&t) noexcept {
+  template <std::size_t I, typename U = T> static constexpr decltype(auto) get(U &&t) noexcept {
     return std::forward<U>(t);
   }
 
