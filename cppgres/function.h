@@ -65,7 +65,7 @@ template <datumable_function Func> struct postgres_function {
              std::get<Is>(t) = from_nullable_datum<decltype(ptyp)>(nullable_datum(fc->args[Is]));
            }()),
            ...);
-        }(std::make_index_sequence<std::tuple_size_v<decltype(t)>>{});
+        }(std::make_index_sequence<utils::tuple_size_v<decltype(t)>>{});
         if constexpr (datumable_iterator<return_type>) {
           // TODO: For now, let's assume materialized model
           auto rsinfo = reinterpret_cast<::ReturnSetInfo *>(fc->resultinfo);
@@ -73,7 +73,7 @@ template <datumable_function Func> struct postgres_function {
             report(ERROR, "caller is not expecting a set");
           }
           using set_value_type = set_iterator_traits<return_type>::value_type;
-          constexpr auto nargs = std::tuple_size_v<set_value_type>;
+          constexpr auto nargs = utils::tuple_size_v<set_value_type>;
 
           auto natts = rsinfo->expectedDesc->natts;
           if (nargs != natts) {
@@ -111,12 +111,12 @@ template <datumable_function Func> struct postgres_function {
                 [](auto &&...elems) -> std::array<::Datum, sizeof...(elems)> {
                   return {into_nullable_datum(elems)...};
                 },
-                it);
+                utils::tie(it));
             std::array<const bool, nargs> isnull = std::apply(
                 [](auto &&...elems) -> std::array<const bool, sizeof...(elems)> {
                   return {into_nullable_datum(elems).is_null()...};
                 },
-                it);
+                utils::tie(it));
             ffi_guarded(::tuplestore_putvalues)(tupstore, rsinfo->expectedDesc, values.data(),
                                                 isnull.data());
           }

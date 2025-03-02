@@ -96,5 +96,12 @@ template <std::size_t I, typename T> constexpr decltype(auto) get(T &&t) noexcep
   return tuple_traits_impl<std::remove_cv_t<std::remove_reference_t<T>>>::template get<I>(
       std::forward<T>(t));
 }
+template <typename T> decltype(auto) tie(T &val) {
+  if constexpr (std::is_aggregate_v<T>) {
+    return boost::pfr::structure_tie(val);
+  } else {
+    return val;
+  }
+}
 
 } // namespace cppgres::utils

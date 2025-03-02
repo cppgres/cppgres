@@ -149,11 +149,18 @@ concept convertible_into_nullable_datum = requires(T t) {
   { cppgres::into_nullable_datum(t) } -> std::same_as<nullable_datum>;
 };
 
-template <typename Tuple> struct all_from_nullable_datum;
+template <typename T> struct all_from_nullable_datum {
+private:
+  static constexpr std::size_t N = utils::tuple_size_v<T>;
 
-template <typename... Ts> struct all_from_nullable_datum<std::tuple<Ts...>> {
-  static constexpr bool value =
-      (... && (convertible_from_nullable_datum<utils::remove_optional_t<Ts>>));
+  template <std::size_t... I> static constexpr bool impl(std::index_sequence<I...>) {
+    return (
+        ... &&
+        convertible_from_nullable_datum<utils::remove_optional_t<utils::tuple_element_t<I, T>>>);
+  }
+
+public:
+  static constexpr bool value = impl(std::make_index_sequence<N>{});
 };
 
 } // namespace cppgres
