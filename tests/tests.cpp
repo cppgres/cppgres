@@ -74,10 +74,10 @@ static const char *find_absolute_library_path(const char *filename) {
 
   // Get the base address of omni_ext shared library
   Dl_info info;
-  dladdr(get_library_name, &info);
+  dladdr((void *)get_library_name, &info);
 
   // We can keep this name around forever as it'll be used to create handles
-  char *path = MemoryContextAllocZero(TopMemoryContext, NAME_MAX + 1);
+  char *path = (char *)MemoryContextAllocZero(TopMemoryContext, NAME_MAX + 1);
   char *format = psprintf("%%lx-%%*x %%*s %%*s %%*s %%*s %%%d[^\n]", NAME_MAX);
 
   uintptr_t base;
@@ -131,7 +131,7 @@ extern "C" void _PG_init(void) {
   if (!initialized) {
     initialized = true;
     const char *env = std::getenv("CPPGRES_DEBUG");
-    if (env && std::strcmp(env, "1") == 0) {
+    if (env && strcmp(env, "1") == 0) {
 #ifdef _WIN32
       DWORD pid = GetCurrentProcessId();
 #else
