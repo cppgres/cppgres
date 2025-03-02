@@ -2,6 +2,15 @@
 
 #include <optional>
 #include <string_view>
+#include <tuple>
+#include <utility>
+
+#if __has_include(<boost/pfr.hpp>)
+#include <boost/pfr.hpp>
+#define CPPGRES_USE_BOOST_PFR 1
+#else
+#define CPPGRES_USE_BOOST_PFR 0
+#endif
 
 namespace cppgres::utils {
 
@@ -45,4 +54,47 @@ template <typename T> constexpr std::string_view type_name() {
   return "Unsupported compiler";
 #endif
 }
+
+template <typename T, typename = void> struct tuple_traits_impl;
+
+// Primary implementation: for types that already have a tuple-like interface
+template <typename T>
+struct tuple_traits_impl<T, std::void_t<decltype(std::tuple_size<T>::value)>> {
+  using tuple_size_type = std::tuple_size<T>;
+
+  template <std::size_t I, typename U = T> static constexpr decltype(auto) get(U &&t) noexcept {
+    return std::get<I>(std::forward<U>(t));
+  }
+
+  template <std::size_t I> using tuple_element = std::tuple_element<I, T>;
+};
+
+// Specialization: for aggregates that Boost.PFR can handle.
+// This specialization is enabled if the type is an aggregate
+#if CPPGRES_USE_BOOST_PFR
+template <typename T> struct tuple_traits_impl<T, std::enable_if_t<std::is_aggregate_v<T>>> {
+  using tuple_size_type = boost::pfr::tuple_size<T>;
+
+  template <std::size_t I, typename U = T> static constexpr decltype(auto) get(U &&t) noexcept {
+    return boost::pfr::get<I>(std::forward<U>(t));
+  }
+
+  template <std::size_t I> using tuple_element = boost::pfr::tuple_element<I, T>;
+};
+#endif
+
+template <typename T> using tuple_size = typename tuple_traits_impl<T>::tuple_size_type;
+
+template <typename T> constexpr std::size_t tuple_size_v = tuple_size<T>::value;
+
+template <std::size_t I, typename T>
+using tuple_element = typename tuple_traits_impl<T>::template tuple_element<I>;
+
+template <std::size_t I, typename T> using tuple_element_t = typename tuple_element<I, T>::type;
+
+template <std::size_t I, typename T> constexpr decltype(auto) get(T &&t) noexcept {
+  return tuple_traits_impl<std::remove_cv_t<std::remove_reference_t<T>>>::template get<I>(
+      std::forward<T>(t));
+}
+
 } // namespace cppgres::utils

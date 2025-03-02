@@ -23,6 +23,22 @@ add_test(spi, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_pfr, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           struct my_struct {
+             int64_t val;
+           };
+           auto res = spi.query<my_struct>("select $1 + i from generate_series(1,100) i", 1LL);
+
+           int i = 0;
+           for (auto &re : res) {
+             i++;
+             result = result && _assert(re.val == i + 1);
+           }
+           return result;
+         }));
+
 add_test(spi_non_opt, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;

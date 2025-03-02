@@ -19,14 +19,14 @@ namespace cppgres {
 template <typename Tuple, std::size_t... Is>
 constexpr bool all_convertible_from_nullable(std::index_sequence<Is...>) {
   return ((convertible_from_nullable_datum<
-              utils::remove_optional_t<std::tuple_element_t<Is, Tuple>>>) &&
+              utils::remove_optional_t<utils::tuple_element_t<Is, Tuple>>>) &&
           ...);
 }
 
 template <typename T>
 concept datumable_tuple = requires {
-  typename std::tuple_size<T>::type;
-} && all_convertible_from_nullable<T>(std::make_index_sequence<std::tuple_size_v<T>>{});
+  typename utils::tuple_size<T>::type;
+} && all_convertible_from_nullable<T>(std::make_index_sequence<utils::tuple_size_v<T>>{});
 
 template <typename T>
 concept convertible_into_nullable_datum_and_has_a_type =
@@ -158,10 +158,10 @@ struct spi_executor : public executor {
                ffi_guarded(::SPI_getbinval)(tuptable->vals[n], tuptable->tupdesc, Is + 1, &isnull);
            ::NullableDatum datum = {.value = value, .isnull = isnull};
            auto nd = nullable_datum(datum);
-           std::get<Is>(ret) = from_nullable_datum<std::tuple_element_t<Is, T>>(nd);
+           utils::get<Is>(ret) = from_nullable_datum<utils::tuple_element_t<Is, T>>(nd);
          }()),
          ...);
-      }(std::make_index_sequence<std::tuple_size_v<T>>{});
+      }(std::make_index_sequence<utils::tuple_size_v<T>>{});
       tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);
       return tuples.at(n).value();
     }
@@ -197,17 +197,17 @@ struct spi_executor : public executor {
         (([&] {
            auto oid = ffi_guarded(::SPI_gettypeid)(table->tupdesc, Is + 1);
            auto t = type{.oid = oid};
-           if (!type_traits<std::tuple_element_t<Is, Ret>>::is(t)) {
+           if (!type_traits<utils::tuple_element_t<Is, Ret>>::is(t)) {
              throw std::invalid_argument(
                  std::format("invalid return type in position {} ({}), got OID {}", Is,
-                             utils::type_name<std::tuple_element_t<Is, Ret>>(), oid));
+                             utils::type_name<utils::tuple_element_t<Is, Ret>>(), oid));
            }
          }()),
          ...);
       }(std::make_index_sequence<sizeof...(Args)>{});
-      if (natts != std::tuple_size_v<Ret>) {
+      if (natts != utils::tuple_size_v<Ret>) {
         throw std::runtime_error(
-            std::format("expected %d return values, got %d", std::tuple_size_v<Ret>, natts));
+            std::format("expected %d return values, got %d", utils::tuple_size_v<Ret>, natts));
       }
     }
 
