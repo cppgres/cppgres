@@ -74,8 +74,9 @@ template <datumable_function Func> struct postgres_function {
           ::MemoryContext per_query_ctx = rsinfo->econtext->ecxt_per_query_memory;
           ::MemoryContext oldcontext = ffi_guarded(::MemoryContextSwitchTo)(per_query_ctx);
 
-          ::Tuplestorestate *tupstore =
-              ffi_guarded(::tuplestore_begin_heap)(false, false, work_mem);
+          ::Tuplestorestate *tupstore = ffi_guarded(::tuplestore_begin_heap)(
+              (rsinfo->allowedModes & SFRM_Materialize_Random) == SFRM_Materialize_Random, false,
+              work_mem);
           rsinfo->setResult = tupstore;
 
           auto result = std::apply(func, t);
