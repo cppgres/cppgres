@@ -52,6 +52,8 @@ struct non_by_value_type : public type {
 
   memory_context get_memory_context() { return memory_context::for_pointer(ptr()); }
 
+  datum get_datum() const { return value_datum; }
+
 protected:
   datum value_datum;
   tracking_memory_context<cppgres::memory_context> ctx;

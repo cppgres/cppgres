@@ -145,18 +145,15 @@ struct spi_executor : public executor {
       if (tuples.at(n).has_value()) {
         return tuples.at(n).value();
       }
-      T ret;
-
-      [&]<std::size_t... Is>(std::index_sequence<Is...>) {
-        (([&] {
-           bool isnull;
-           ::Datum value =
-               ffi_guarded(::SPI_getbinval)(tuptable->vals[n], tuptable->tupdesc, Is + 1, &isnull);
-           ::NullableDatum datum = {.value = value, .isnull = isnull};
-           auto nd = nullable_datum(datum);
-           utils::get<Is>(ret) = from_nullable_datum<utils::tuple_element_t<Is, T>>(nd);
-         }()),
-         ...);
+      auto ret = [&]<std::size_t... Is>(std::index_sequence<Is...>) {
+        return T{([&] {
+          bool isnull;
+          ::Datum value =
+              ffi_guarded(::SPI_getbinval)(tuptable->vals[n], tuptable->tupdesc, Is + 1, &isnull);
+          ::NullableDatum datum = {.value = value, .isnull = isnull};
+          auto nd = nullable_datum(datum);
+          return from_nullable_datum<utils::tuple_element_t<Is, T>>(nd);
+        }())...};
       }(std::make_index_sequence<utils::tuple_size_v<T>>{});
       tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);
       return tuples.at(n).value();

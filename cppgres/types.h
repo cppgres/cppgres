@@ -49,6 +49,7 @@ template <> constexpr type type_for<int64_t>() { return type{.oid = INT8OID}; }
 template <> constexpr type type_for<int32_t>() { return type{.oid = INT4OID}; }
 template <> constexpr type type_for<int16>() { return type{.oid = INT2OID}; }
 template <> constexpr type type_for<bool>() { return type{.oid = BOOLOID}; }
+template <> constexpr type type_for<text>() { return type{.oid = TEXTOID}; }
 template <> constexpr type type_for<byte_array>() { return type{.oid = BYTEAOID}; }
 template <> constexpr type type_for<std::string_view>() { return type{.oid = TEXTOID}; }
 template <> constexpr type type_for<std::string>() { return type{.oid = TEXTOID}; }
@@ -58,6 +59,7 @@ template <> datum into_datum(const int64_t &t) { return datum(static_cast<::Datu
 template <> datum into_datum(const int32_t &t) { return datum(static_cast<::Datum>(t)); }
 template <> datum into_datum(const int16_t &t) { return datum(static_cast<::Datum>(t)); }
 template <> datum into_datum(const bool &t) { return datum(static_cast<::Datum>(t)); }
+template <> datum into_datum(const text &t) { return t.get_datum(); }
 template <> datum into_datum(const std::string_view &t) {
   size_t sz = t.size();
   void *result = ffi_guarded(::palloc)(sz + VARHDRSZ);

@@ -113,4 +113,20 @@ struct some_type {};
 static_assert(!cppgres::convertible_from_datum<some_type>);
 static_assert(!cppgres::convertible_into_datum<some_type>);
 
+add_test(lazy_detoast, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           spi.execute("create table a (a text)");
+           spi.execute("insert into a values ('hello world')");
+           auto res = spi.query<cppgres::text>("select a from a");
+           // here we never actually detoast it
+           for (auto r : res) {
+             spi.execute("insert into a values ($1)", r);
+           }
+           for (auto re : spi.query<std::string_view>("select a from a")) {
+             result = result && _assert(re == "hello world");
+           }
+           return result;
+         }));
+
 } // namespace tests
