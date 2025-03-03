@@ -62,8 +62,6 @@ struct nullable_datum {
 
   explicit nullable_datum() : _ndatum({.isnull = true}) {}
 
-  template <typename T> static nullable_datum from(T t) = delete;
-
   explicit nullable_datum(::Datum d) : _ndatum({.value = d, .isnull = false}) {}
   explicit nullable_datum(datum d) : _ndatum({.value = d._datum, .isnull = false}) {}
 
