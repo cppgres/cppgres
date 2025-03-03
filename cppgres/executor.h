@@ -10,10 +10,6 @@
 #include <stack>
 #include <vector>
 
-extern "C" {
-#include <executor/spi.h>
-}
-
 namespace cppgres {
 
 template <typename Tuple, std::size_t... Is>
