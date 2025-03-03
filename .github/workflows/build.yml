@@ -70,7 +70,7 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: .pg
-          key: ${{ matrix.os }}-pg-${{ matrix.pgver }}-${{ matrix.build_type }}-${{ hashFiles('cmake/FindPostgreSQL.cmake') }}${{ env.PATH_SUFFIX }}
+          key: ${{ matrix.os }}-pg-${{ matrix.pgver }}-${{ matrix.build_type }}-${{ hashFiles('cmake/FindPostgres.cmake') }}${{ env.PATH_SUFFIX }}
 
       - name: Configure
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPGVER=${{ matrix.pgver }} -DCMAKE_CXX_COMPILER=${{matrix.compiler}}
