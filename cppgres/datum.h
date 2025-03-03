@@ -11,14 +11,12 @@
 namespace cppgres {
 
 struct datum;
-template <typename T> datum into_datum(T &d) = delete;
+template <typename T> datum into_datum(const T &d) = delete;
 
 struct datum {
-  template <typename T> friend datum into_datum(T &d);
+  template <typename T> friend datum into_datum(const T &d);
 
-  operator ::Datum &() { return _datum; }
-
-  operator const ::Datum &() { return _datum; }
+  operator const ::Datum &() const { return _datum; }
 
 private:
   ::Datum _datum;
@@ -32,8 +30,8 @@ class null_datum_exception : public std::exception {
 
 struct nullable_datum {
 
-  template <typename T> friend T from_nullable_datum(nullable_datum &d);
-  template <typename T> friend nullable_datum into_nullable_datum(T &d);
+  template <typename T> friend T from_nullable_datum(const nullable_datum &d);
+  template <typename T> friend nullable_datum into_nullable_datum(const T &d);
 
   bool is_null() const noexcept { return _ndatum.isnull; }
 
@@ -44,11 +42,11 @@ struct nullable_datum {
     return _datum;
   }
 
-  operator ::Datum &() {
+  operator const ::Datum &() {
     if (_ndatum.isnull) {
       throw null_datum_exception();
     }
-    return _datum;
+    return _datum.operator const ::Datum &();
   }
 
   operator const struct datum &() const {
@@ -73,15 +71,12 @@ private:
 
 };
 
-template <typename T> datum into_datum(T &&v) { return into_datum<T>(v); }
-
 template <typename T>
 concept convertible_into_datum = requires(T t) {
   { cppgres::into_datum(t) } -> std::same_as<datum>;
 };
 
-template <typename T> T from_datum(datum &) = delete;
-template <typename T> T from_datum(datum &&v) { return from_datum<T>(v); }
+template <typename T> T from_datum(const datum &) = delete;
 
 template <typename T>
 concept convertible_from_datum = requires(datum d) {
@@ -93,7 +88,7 @@ template <typename T> struct unsupported_type {};
 template <typename T>
 requires convertible_from_datum<T> ||
          (utils::is_optional<T> && convertible_from_datum<utils::remove_optional_t<T>>)
-T from_nullable_datum(nullable_datum &d) {
+T from_nullable_datum(const nullable_datum &d) {
   if constexpr (utils::is_optional<T>) {
     if (d.is_null()) {
       return std::nullopt;
@@ -119,7 +114,7 @@ T from_nullable_datum(nullable_datum &&d) {
   return from_nullable_datum<T>(d);
 }
 
-template <typename T> nullable_datum into_nullable_datum(T &v) {
+template <typename T> nullable_datum into_nullable_datum(const T &v) {
   if constexpr (utils::is_optional<T> && convertible_into_datum<utils::remove_optional_t<T>>) {
     if (v.has_value()) {
       return nullable_datum(into_datum(v.value()));
@@ -131,10 +126,6 @@ template <typename T> nullable_datum into_nullable_datum(T &v) {
   } else {
     return into_nullable_datum<unsupported_type<T>>(v);
   }
-}
-
-template <typename T> nullable_datum into_nullable_datum(T &&v) {
-  return into_nullable_datum<T>(v);
 }
 
 template <typename T>

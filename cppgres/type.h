@@ -37,7 +37,7 @@ struct type {
 struct non_by_value_type : public type {
   friend struct datum;
 
-  non_by_value_type(struct datum &datum)
+  non_by_value_type(const struct datum &datum)
       : value_datum(datum), ctx(tracking_memory_context(memory_context::for_pointer(ptr(false)))) {}
 
   non_by_value_type(const non_by_value_type &other)
@@ -60,7 +60,7 @@ protected:
       throw pointer_gone_exception();
     }
     return ffi_guarded(::pg_detoast_datum)(
-        reinterpret_cast<struct ::varlena *>(value_datum.operator ::Datum &()));
+        reinterpret_cast<struct ::varlena *>(value_datum.operator const ::Datum &()));
   }
 };
 
