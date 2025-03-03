@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wignored-attributes"
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wregister"
 extern "C" {
@@ -14,6 +16,7 @@ extern "C" {
 #include <utils/tuplestore.h>
 }
 #pragma clang diagnostic pop
+#pragma GCC diagnostic pop
 
 namespace cppgres::sys {
 using Datum = ::Datum;
