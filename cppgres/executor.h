@@ -215,12 +215,12 @@ struct spi_executor : public executor {
       throw std::runtime_error("not a current SPI executor");
     }
     constexpr size_t nargs = sizeof...(Args);
-    std::array<::Oid, nargs> types = {type_for<Args>().oid...};
+    std::array<::Oid, nargs> types = {type_traits<Args>::type_for().oid...};
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
     auto rc = ffi_guarded(::SPI_execute_with_args)(query.data(), nargs, types.data(), datums.data(),
                                                    nulls.data(), false, 0);
-    if (rc == SPI_OK_SELECT) {
+    if (rc > 0) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
       return results<Ret, Args...>(SPI_tuptable);
     } else {
@@ -234,7 +234,7 @@ struct spi_executor : public executor {
       throw std::runtime_error("not a current SPI executor");
     }
     constexpr size_t nargs = sizeof...(Args);
-    std::array<::Oid, nargs> types = {type_for<Args>().oid...};
+    std::array<::Oid, nargs> types = {type_traits<Args>::type_for().oid...};
     return spi_plan<Args...>(ffi_guarded(::SPI_prepare)(query.data(), nargs, types.data()));
   }
 
@@ -247,7 +247,7 @@ struct spi_executor : public executor {
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
     auto rc = ffi_guarded(::SPI_execute_plan)(query, datums.data(), nulls.data(), false, 0);
-    if (rc == SPI_OK_SELECT) {
+    if (rc > 0) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
       return results<Ret, Args...>(SPI_tuptable);
     } else {
@@ -261,7 +261,7 @@ struct spi_executor : public executor {
       throw std::runtime_error("not a current SPI executor");
     }
     constexpr size_t nargs = sizeof...(Args);
-    std::array<::Oid, nargs> types = {type_for<Args>().oid...};
+    std::array<::Oid, nargs> types = {type_traits<Args>::type_for().oid...};
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
     auto rc = ffi_guarded(::SPI_execute_with_args)(query.data(), nargs, types.data(), datums.data(),
@@ -269,7 +269,7 @@ struct spi_executor : public executor {
     if (rc >= 0) {
       return SPI_processed;
     } else {
-      throw std::runtime_error("spi error");
+      throw std::runtime_error(std::format("spi error"));
     }
   }
 
