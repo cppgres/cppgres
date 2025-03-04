@@ -14,8 +14,8 @@ namespace cppgres {
 
 struct abstract_memory_context {
 
-  template <typename T = void> T *alloc(size_t size) {
-    return static_cast<T *>(ffi_guarded(::MemoryContextAlloc)(_memory_context(), size));
+  template <typename T = std::byte> T *alloc(size_t n = 1) {
+    return static_cast<T *>(ffi_guarded(::MemoryContextAlloc)(_memory_context(), sizeof(T) * n));
   }
   template <typename T = void> void free(T *ptr) { ffi_guarded(::pfree)(ptr); }
 
@@ -202,7 +202,7 @@ template <class T, a_memory_context Context = memory_context> struct memory_cont
 
   [[nodiscard]] T *allocate(std::size_t n) {
     try {
-      return static_cast<T *>(context.alloc(n * sizeof(T)));
+      return context.template alloc<T>(n);
     } catch (pg_exception &e) {
       throw std::bad_alloc();
     }
