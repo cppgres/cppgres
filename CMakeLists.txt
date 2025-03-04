@@ -87,7 +87,7 @@ find_program(_clangxx clang++)
 
 find_package(Python COMPONENTS Interpreter)
 
-if (NOT DEFINED _clang-NOTFOUND AND NOT DEFINED _clangxx-NOTFOUND AND Python_FOUND)
+if (NOT "${_clang}" STREQUAL _clang-NOTFOUND AND NOT "${_clangxx}" STREQUAL _clangxx-NOTFOUND AND Python_FOUND)
     add_custom_target(cppgres_abi
             COMMAND ${_clang} -Xclang -fdump-record-layouts-complete
             ${CMAKE_SOURCE_DIR}/cppgres/imports.h
