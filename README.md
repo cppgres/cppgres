@@ -24,7 +24,7 @@ however, use `cppgres` target from the included CMake file.
 # prepare
 cmake -S . -B build 
 # run tests
-cmake --build build --target all test
+CTEST_OUTPUT_ON_FAILURE=1 cmake --build build --target all test
 ```
 
 If you want to run tests on a specific version (or major version) of Postgres, specify the `PGVER` variable:
