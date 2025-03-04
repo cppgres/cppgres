@@ -64,4 +64,36 @@ add_test(memory_context_scope, ([](test_case &) {
            result = result && _assert(now == before);
            return result;
          }));
+
+add_test(owned_memory_context, ([](test_case &) {
+           bool result = true;
+
+           // owned context deletion/reset
+           bool context_reset = false;
+           {
+             cppgres::alloc_set_memory_context ctx;
+             ctx.register_reset_callback(
+                 [](void *v) {
+                   bool *val = reinterpret_cast<bool *>(v);
+                   *val = true;
+                 },
+                 &context_reset);
+           }
+           result = result && _assert(context_reset);
+
+           context_reset = false;
+           {
+             cppgres::alloc_set_memory_context ctx;
+             ctx.register_reset_callback(
+                 [](void *v) {
+                   bool *val = reinterpret_cast<bool *>(v);
+                   *val = true;
+                 },
+                 &context_reset);
+             cppgres::memory_context mctx(std::move(ctx));
+           }
+           result = result && _assert(!context_reset);
+
+           return result;
+         }));
 } // namespace tests

@@ -26,15 +26,46 @@ struct abstract_memory_context {
 
   operator ::MemoryContext() { return _memory_context(); }
 
+  ::MemoryContextCallback *register_reset_callback(::MemoryContextCallbackFunction func,
+                                                   void *arg) {
+    auto cb = alloc<::MemoryContextCallback>(sizeof(::MemoryContextCallback));
+    cb->func = func;
+    cb->arg = arg;
+    ffi_guarded(::MemoryContextRegisterResetCallback)(_memory_context(), cb);
+    return cb;
+  }
+
 protected:
   virtual ::MemoryContext _memory_context() = 0;
 };
 
+struct owned_memory_context : public abstract_memory_context {
+  friend struct memory_context;
+
+protected:
+  owned_memory_context(::MemoryContext context) : context(context), moved(false) {}
+
+  ~owned_memory_context() {
+    if (!moved) {
+      ffi_guarded(::MemoryContextDelete)(context);
+    }
+  }
+
+  ::MemoryContext context;
+  bool moved;
+
+  ::MemoryContext _memory_context() override { return context; }
+};
+
 struct memory_context : public abstract_memory_context {
+
+  friend struct owned_memory_context;
 
   explicit memory_context() : context(::CurrentMemoryContext) {}
   explicit memory_context(::MemoryContext context) : context(context) {}
   explicit memory_context(abstract_memory_context &&context) : context(context) {}
+
+  explicit memory_context(owned_memory_context &&ctx) : context(ctx) { ctx.moved = true; }
 
   static memory_context for_pointer(void *ptr) {
     if (ptr == nullptr || ptr != (void *)MAXALIGN(ptr)) {
@@ -59,13 +90,6 @@ protected:
   ::MemoryContext _memory_context() override { return ::CurrentMemoryContext; }
 };
 
-struct owned_memory_context : public memory_context {
-protected:
-  owned_memory_context(::MemoryContext context) : memory_context(context) {}
-
-  ~owned_memory_context() { ffi_guarded(::MemoryContextDelete)(context); }
-};
-
 struct alloc_set_memory_context : public owned_memory_context {
   using owned_memory_context::owned_memory_context;
   alloc_set_memory_context()
@@ -83,10 +107,8 @@ struct tracking_memory_context : public abstract_memory_context {
   }
 
   explicit tracking_memory_context(C ctx) : ctx(ctx), counter(0) {
-    cb = alloc<::MemoryContextCallback>(sizeof(*cb));
-    cb->func = [](void *i) { static_cast<struct tracking_memory_context<C> *>(i)->counter++; };
-    cb->arg = this;
-    ffi_guarded(::MemoryContextRegisterResetCallback)(ctx, cb);
+    cb = this->register_reset_callback(
+        [](void *i) { static_cast<struct tracking_memory_context<C> *>(i)->counter++; }, this);
   }
 
   tracking_memory_context(tracking_memory_context &&other) noexcept
