@@ -79,3 +79,26 @@ target_compile_features(cppgres_tests PUBLIC cxx_std_23)
 enable_testing()
 
 add_test(NAME cppgres_tests COMMAND env PG_CONFIG=${PG_CONFIG} BUILD_DIR=${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_LIST_DIR}/test.sh WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+
+##### ABI check
+
+find_program(_clang clang)
+find_program(_clangxx clang++)
+
+find_package(Python COMPONENTS Interpreter)
+
+if (NOT DEFINED _clang-NOTFOUND AND NOT DEFINED _clangxx-NOTFOUND AND Python_FOUND)
+    add_custom_target(cppgres_abi
+            COMMAND ${_clang} -Xclang -fdump-record-layouts-complete
+            ${CMAKE_SOURCE_DIR}/cppgres/imports.h
+            -I${PG_PKG_INCLUDE_DIR} -I${PG_INCLUDE_DIR_SERVER} $<IF:$<BOOL:${Intl_INCLUDE_DIR}>,-I${Intl_INCLUDE_DIR},> > ${CMAKE_BINARY_DIR}/c_abi.txt
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/abi_layout.py ${CMAKE_BINARY_DIR}/c_abi.txt ${CMAKE_BINARY_DIR}/c_abi.json
+            COMMAND ${_clangxx} -Xclang -fdump-record-layouts-complete -x c++-header
+            ${CMAKE_SOURCE_DIR}/cppgres/imports.h
+            -I${PG_PKG_INCLUDE_DIR} -I${PG_INCLUDE_DIR_SERVER} $<IF:$<BOOL:${Intl_INCLUDE_DIR}>,-I${Intl_INCLUDE_DIR},> > ${CMAKE_BINARY_DIR}/cxx_abi.txt
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/abi_layout.py ${CMAKE_BINARY_DIR}/cxx_abi.txt ${CMAKE_BINARY_DIR}/cxx_abi.json
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/check_abi.py ${CMAKE_BINARY_DIR}/c_abi.json ${CMAKE_BINARY_DIR}/cxx_abi.json
+    )
+
+    add_dependencies(cppgres cppgres_abi)
+endif ()
