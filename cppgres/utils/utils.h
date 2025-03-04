@@ -93,6 +93,7 @@ template <typename T> struct tuple_traits_impl<T, std::enable_if_t<std::is_aggre
 
   template <std::size_t I> using tuple_element = boost::pfr::tuple_element<I, T>;
 };
+
 #endif
 
 template <typename T> using tuple_size = typename tuple_traits_impl<T>::tuple_size_type;

@@ -36,6 +36,7 @@ add_test(varlena_text, [](test_case &) {
   auto nd = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test")));
   auto s = cppgres::from_nullable_datum<cppgres::text>(nd);
   std::string_view str = s;
+  result = result && _assert(s.is_detoasted());
   result = result && _assert(str == "test");
 
   // Try memory context being gone
@@ -94,13 +95,13 @@ add_test(varlena_text_from_strings, ([](test_case &) {
 
            {
              auto d = cppgres::into_datum(std::string_view("test"));
-             auto str = cppgres::from_datum<std::string_view>(d);
+             auto str = cppgres::datum_conversion<std::string_view>::from_datum(d, std::nullopt);
              result = result && _assert(str == "test");
            }
 
            {
              auto d = cppgres::into_datum(std::string("test"));
-             auto str = cppgres::from_datum<std::string_view>(d);
+             auto str = cppgres::datum_conversion<std::string_view>::from_datum(d, std::nullopt);
              result = result && _assert(str == "test");
            }
 
@@ -121,11 +122,57 @@ add_test(lazy_detoast, ([](test_case &) {
            auto res = spi.query<cppgres::text>("select a from a");
            // here we never actually detoast it
            for (auto r : res) {
+             result = result && _assert(!r.is_detoasted());
              spi.execute("insert into a values ($1)", r);
            }
            for (auto re : spi.query<std::string_view>("select a from a")) {
              result = result && _assert(re == "hello world");
            }
+           return result;
+         }));
+
+add_test(eoh_smoke, ([](test_case &e) {
+           bool result = true;
+
+           struct my_eoh {
+             int a = 0;
+             std::size_t flat_size() { return sizeof(a); }
+
+             void flatten_into(std::span<std::byte> buffer) {
+               cppgres::report(NOTICE, "flatten_into");
+               if (buffer.size_bytes() == flat_size()) {
+                 int *to_ptr = reinterpret_cast<int *>(buffer.data());
+                 std::span tbuffer(to_ptr, 1);
+                 tbuffer[0] = a;
+               } else {
+                 cppgres::report(ERROR, "wrong buffer size");
+               }
+             }
+
+             static cppgres::type type() { return {.oid = BYTEAOID}; }
+
+             static my_eoh restore_from(std::span<std::byte> buffer) {
+               int *to_ptr = reinterpret_cast<int *>(buffer.data());
+               std::span tbuffer(to_ptr, 1);
+               return my_eoh{.a = tbuffer[0]};
+             }
+           };
+
+           static_assert(cppgres::flattenable<my_eoh>);
+
+           // Create a new one
+           auto d = cppgres::expanded_varlena<my_eoh>();
+           my_eoh &dv = d;
+           dv.a = 650;
+
+           // Flatten it. We are hijacking `bytea` varlena type to pass it through
+           // to avoid having to define a new type (FIXME)
+           cppgres::spi_executor spi;
+           spi.execute("create table eoh_smoke_test (v bytea)");
+           auto d2 = spi.query<cppgres::expanded_varlena<my_eoh>>(
+               "insert into eoh_smoke_test values ($1) returning v", d);
+           result = result && _assert(d2.begin()[0].operator my_eoh &().a == dv.a);
+
            return result;
          }));
 
