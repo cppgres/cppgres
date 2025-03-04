@@ -18,9 +18,10 @@ struct datum {
 
   operator const ::Datum &() const { return _datum; }
 
+  explicit datum(::Datum datum) : _datum(datum) {}
+
 private:
   ::Datum _datum;
-  explicit datum(::Datum datum) : _datum(datum) {}
   friend struct nullable_datum;
 };
 

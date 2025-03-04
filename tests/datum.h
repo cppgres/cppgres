@@ -129,4 +129,32 @@ add_test(lazy_detoast, ([](test_case &) {
            return result;
          }));
 
+add_test(eoh_smoke, ([](test_case &e) {
+           bool result = true;
+           //
+           //           struct my_eoh {
+           //             int a;
+           //             std::size_t flat_size() { return 3; }
+           //
+           //             void flatten_into(std::span<std::byte> buffer) {
+           //               buffer[0] = std::byte(1);
+           //               buffer[1] = std::byte(2);
+           //               buffer[2] = std::byte(3);
+           //             }
+           //
+           //             my_eoh() {}
+           //           };
+           //
+           //           auto d = cppgres::expanded_varlena<my_eoh>();
+           //           d.operator my_eoh *()->a = 123;
+           //           cppgres::datum dat = d.get_datum();
+           //           cppgres::report(NOTICE, "--");
+           //
+           //           auto d1 = cppgres::expanded_varlena<my_eoh>(dat);
+           //           cppgres::report(NOTICE, "--- %d", (d1.operator my_eoh *()->a));
+           //           result = result && _assert(d1.operator my_eoh *()->a == 123);
+
+           return result;
+         }));
+
 } // namespace tests
