@@ -37,8 +37,9 @@ struct type {
 struct non_by_value_type : public type {
   friend struct datum;
 
-  non_by_value_type(const struct datum &datum)
-      : value_datum(datum), ctx(tracking_memory_context(memory_context::for_pointer(ptr(false)))) {}
+  non_by_value_type(const struct datum &datum, std::optional<memory_context> ctx)
+      : value_datum(datum),
+        ctx(tracking_memory_context(ctx.has_value() ? *ctx : top_memory_context)) {}
 
   non_by_value_type(const non_by_value_type &other)
       : value_datum(other.value_datum), ctx(other.ctx) {}
@@ -50,13 +51,13 @@ struct non_by_value_type : public type {
     return *this;
   }
 
-  memory_context get_memory_context() { return memory_context::for_pointer(ptr()); }
+  memory_context &get_memory_context() { return ctx.get_memory_context(); }
 
   datum get_datum() const { return value_datum; }
 
 protected:
   datum value_datum;
-  tracking_memory_context<cppgres::memory_context> ctx;
+  tracking_memory_context<memory_context> ctx;
   void *ptr(bool tracked = true) {
     if (tracked && ctx.resets() > 0) {
       throw pointer_gone_exception();
@@ -65,6 +66,8 @@ protected:
         reinterpret_cast<struct ::varlena *>(value_datum.operator const ::Datum &()));
   }
 };
+
+static_assert(std::copy_constructible<non_by_value_type>);
 
 struct varlena : public non_by_value_type {
   using non_by_value_type::non_by_value_type;

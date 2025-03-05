@@ -6,10 +6,6 @@
 #include "guard.h"
 #include "imports.h"
 
-extern "C" {
-#include <utils/memutils.h>
-}
-
 namespace cppgres {
 
 struct abstract_memory_context {
@@ -101,15 +97,19 @@ memory_context top_memory_context = memory_context(TopMemoryContext);
 
 template <typename C> requires std::derived_from<C, abstract_memory_context>
 struct tracking_memory_context : public abstract_memory_context {
-  explicit tracking_memory_context(tracking_memory_context<C> const &ctx)
-      : ctx(ctx.ctx), counter(ctx.counter), cb(ctx.cb) {
+  explicit tracking_memory_context(tracking_memory_context<C> const &context)
+      : ctx(context.ctx), counter(context.counter), cb(context.cb) {
     cb->arg = this;
   }
 
-  explicit tracking_memory_context(C ctx) : ctx(ctx), counter(0) {
-    cb = this->register_reset_callback(
-        [](void *i) { static_cast<struct tracking_memory_context<C> *>(i)->counter++; }, this);
-  }
+  explicit tracking_memory_context(C ctx)
+      : ctx(ctx), counter(0),
+        cb(std::shared_ptr<::MemoryContextCallback>(
+            this->register_reset_callback(
+                [](void *i) { static_cast<struct tracking_memory_context<C> *>(i)->counter++; },
+                this),
+            /* custom deleter */
+            [](auto) {})) {}
 
   tracking_memory_context(tracking_memory_context &&other) noexcept
       : ctx(std::move(other.ctx)), counter(std::move(other.counter)), cb(std::move(other.cb)) {
@@ -118,8 +118,9 @@ struct tracking_memory_context : public abstract_memory_context {
   }
 
   tracking_memory_context(tracking_memory_context &other) noexcept
-      : cb(std::move(other.cb)), ctx(std::move(other.ctx)), counter(std::move(other.counter)) {
+      : ctx(std::move(other.ctx)), counter(std::move(other.counter)), cb(std::move(other.cb)) {
     cb->arg = this;
+    other.cb = nullptr;
   }
 
   tracking_memory_context &operator=(tracking_memory_context &&other) noexcept {
@@ -132,11 +133,14 @@ struct tracking_memory_context : public abstract_memory_context {
 
   ~tracking_memory_context() {
     if (cb != nullptr) {
-      cb->func = [](void *) {};
+      if (cb.use_count() == 1) {
+        cb->func = [](void *) {};
+      }
     }
   }
 
   uint64_t resets() const { return counter; }
+  C &get_memory_context() { return ctx; }
 
 private:
   template <typename T> requires std::integral<T>
@@ -164,7 +168,7 @@ private:
   };
   C ctx;
   shared_counter<uint64_t> counter;
-  ::MemoryContextCallback *cb;
+  std::shared_ptr<::MemoryContextCallback> cb;
 
 protected:
   ::MemoryContext _memory_context() override { return ctx._memory_context(); }

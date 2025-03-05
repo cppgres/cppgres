@@ -69,27 +69,29 @@ template <> datum into_datum(const std::string_view &t) {
 }
 template <> datum into_datum(const std::string &t) { return into_datum(std::string_view(t)); }
 
-template <> size_t from_datum(const datum &d) {
+template <> size_t from_datum(const datum &d, std::optional<memory_context>) {
   return static_cast<size_t>(d.operator const ::Datum &());
 }
-template <> int64_t from_datum(const datum &d) {
+template <> int64_t from_datum(const datum &d, std::optional<memory_context>) {
   return static_cast<int64_t>(d.operator const ::Datum &());
 }
-template <> int32_t from_datum(const datum &d) {
+template <> int32_t from_datum(const datum &d, std::optional<memory_context>) {
   return static_cast<int32_t>(d.operator const ::Datum &());
 }
-template <> int16_t from_datum(const datum &d) {
+template <> int16_t from_datum(const datum &d, std::optional<memory_context>) {
   return static_cast<int16_t>(d.operator const ::Datum &());
 }
-template <> bool from_datum(const datum &d) {
+template <> bool from_datum(const datum &d, std::optional<memory_context>) {
   return static_cast<bool>(d.operator const ::Datum &());
 }
 
-template <> text from_datum(const datum &d) { return {d}; }
-template <> bytea from_datum(const datum &d) { return {d}; }
-template <> std::string_view from_datum(const datum &d) { return from_datum<text>(d); }
-template <> std::string from_datum(const datum &d) {
-  return std::string(from_datum<text>(d).operator std::string_view());
+template <> text from_datum(const datum &d, std::optional<memory_context> ctx) { return {d, ctx}; }
+template <> bytea from_datum(const datum &d, std::optional<memory_context> ctx) { return {d, ctx}; }
+template <> std::string_view from_datum(const datum &d, std::optional<memory_context> ctx) {
+  return from_datum<text>(d, ctx);
+}
+template <> std::string from_datum(const datum &d, std::optional<memory_context> ctx) {
+  return std::string(from_datum<text>(d, ctx).operator std::string_view());
 }
 
 } // namespace cppgres

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "imports.h"
+#include "memory.h"
 #include "utils/utils.h"
 
 #include <cstdint>
@@ -30,7 +31,8 @@ class null_datum_exception : public std::exception {
 
 struct nullable_datum {
 
-  template <typename T> friend T from_nullable_datum(const nullable_datum &d);
+  template <typename T>
+  friend T from_nullable_datum(const nullable_datum &d, std::optional<memory_context> ctx);
   template <typename T> friend nullable_datum into_nullable_datum(const T &d);
 
   bool is_null() const noexcept { return _ndatum.isnull; }
@@ -76,11 +78,12 @@ concept convertible_into_datum = requires(T t) {
   { cppgres::into_datum(t) } -> std::same_as<datum>;
 };
 
-template <typename T> T from_datum(const datum &) = delete;
+template <typename T>
+T from_datum(const datum &, std::optional<memory_context> context = std::nullopt) = delete;
 
 template <typename T>
-concept convertible_from_datum = requires(datum d) {
-  { cppgres::template from_datum<T>(d) } -> std::same_as<T>;
+concept convertible_from_datum = requires(datum d, std::optional<memory_context> context) {
+  { cppgres::from_datum<T>(d, context) } -> std::same_as<T>;
 };
 
 template <typename T> struct unsupported_type {};
@@ -88,13 +91,14 @@ template <typename T> struct unsupported_type {};
 template <typename T>
 requires convertible_from_datum<T> ||
          (utils::is_optional<T> && convertible_from_datum<utils::remove_optional_t<T>>)
-T from_nullable_datum(const nullable_datum &d) {
+T from_nullable_datum(const nullable_datum &d,
+                      std::optional<memory_context> context = std::nullopt) {
   if constexpr (utils::is_optional<T>) {
     if (d.is_null()) {
       return std::nullopt;
     }
     if constexpr (convertible_from_datum<utils::remove_optional_t<T>>) {
-      return std::optional(from_datum<utils::remove_optional_t<T>>(d));
+      return std::optional(from_datum<utils::remove_optional_t<T>>(d, context));
     } else {
       static_assert("no viable conversion");
     }
@@ -103,15 +107,8 @@ T from_nullable_datum(const nullable_datum &d) {
       throw std::runtime_error(
           std::format("datum is null and can't be coerced into {}", utils::type_name<T>()));
     }
-    return from_datum<T>(d);
+    return from_datum<T>(d, context);
   }
-}
-
-template <typename T>
-requires convertible_from_datum<T> ||
-         (utils::is_optional<T> && convertible_from_datum<utils::remove_optional_t<T>>)
-T from_nullable_datum(nullable_datum &&d) {
-  return from_nullable_datum<T>(d);
 }
 
 template <typename T> nullable_datum into_nullable_datum(const T &v) {
@@ -129,9 +126,10 @@ template <typename T> nullable_datum into_nullable_datum(const T &v) {
 }
 
 template <typename T>
-concept convertible_from_nullable_datum = requires(nullable_datum d) {
-  { cppgres::template from_nullable_datum<T>(d) } -> std::same_as<T>;
-};
+concept convertible_from_nullable_datum =
+    requires(nullable_datum d, std::optional<memory_context> context) {
+      { cppgres::from_nullable_datum<T>(d, context) } -> std::same_as<T>;
+    };
 
 template <typename T>
 concept convertible_into_nullable_datum = requires(T t) {
