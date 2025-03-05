@@ -281,4 +281,21 @@ add_test(spi_execute, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_ptr_gone, ([](test_case &) {
+           bool result = true;
+           cppgres::text res = []() {
+             cppgres::spi_executor spi;
+             return spi.query<cppgres::text>("select 'hello'").begin()[0];
+           }();
+           bool exception_raised = false;
+           try {
+             res.operator std::string_view();
+           } catch (cppgres::pointer_gone_exception &e) {
+             exception_raised = true;
+           }
+           result = result && _assert(exception_raised);
+
+           return result;
+         }));
+
 } // namespace tests

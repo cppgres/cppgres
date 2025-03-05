@@ -18,13 +18,14 @@ PG_MODULE_MAGIC;
 #include <utils/date.h>
 }
 
+#include "tests.h"
+
 #include "datum.h"
 #include "errors.h"
 #include "function.h"
 #include "memory_context.h"
 #include "spi.h"
 #include "srf.h"
-#include "tests.h"
 #include "xact.h"
 
 test_case::test_case(std::string_view name, bool (*function)(test_case &c)) : function(function) {

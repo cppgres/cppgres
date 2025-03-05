@@ -24,6 +24,7 @@ extern "C" {
 #include <nodes/execnodes.h>
 #include <utils/builtins.h>
 #include <utils/expandeddatum.h>
+#include <utils/memutils.h>
 #include <utils/tuplestore.h>
 #ifdef __cplusplus
 }

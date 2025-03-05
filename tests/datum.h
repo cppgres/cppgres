@@ -40,12 +40,12 @@ add_test(varlena_text, [](test_case &) {
 
   // Try memory context being gone
   {
-    auto ctx = cppgres::alloc_set_memory_context();
+    auto ctx = cppgres::memory_context(std::move(cppgres::alloc_set_memory_context()));
     auto p = ::CurrentMemoryContext;
     _assert(p != ctx);
     ::CurrentMemoryContext = ctx;
     auto nd1 = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test1")));
-    auto s1 = cppgres::from_nullable_datum<cppgres::text>(nd1);
+    auto s1 = cppgres::from_nullable_datum<cppgres::text>(nd1, ctx);
     _assert(s1.get_memory_context() == ctx);
     ::CurrentMemoryContext = p;
     ctx.reset();
