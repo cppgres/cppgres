@@ -20,8 +20,6 @@ template <typename Func> struct ffi_guard {
 
   template <typename... Args>
   auto operator()(Args &&...args) -> decltype(func(std::forward<Args>(args)...)) {
-    using return_type = decltype(func(std::forward<Args>(args)...));
-
     int state;
     sigjmp_buf *pbuf;
     ::ErrorContextCallback *cb;
@@ -32,22 +30,17 @@ template <typename Func> struct ffi_guard {
     cb = ::error_context_stack;
     ::PG_exception_stack = &buf;
 
-    state = sigsetjmp(buf, 1);
-    if (state == 0) {
-      if constexpr (std::is_void_v<return_type>) {
-        func(std::forward<Args>(args)...);
-        ::error_context_stack = cb;
-        ::PG_exception_stack = pbuf;
-        return;
-      } else {
-        auto result = func(std::forward<Args>(args)...);
-        ::error_context_stack = cb;
-        ::PG_exception_stack = pbuf;
-        return result;
-      }
-    } else if (state == 1) {
+    // restore state upon exit
+    std::shared_ptr<void> defer(nullptr, [&](...) {
       ::error_context_stack = cb;
       ::PG_exception_stack = pbuf;
+    });
+
+    state = sigsetjmp(buf, 1);
+
+    if (state == 0) {
+      return func(std::forward<Args>(args)...);
+    } else if (state == 1) {
       throw pg_exception(mcxt);
     }
     __builtin_unreachable();

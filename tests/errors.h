@@ -33,4 +33,26 @@ add_test(exception_to_error, ([](test_case &) {
            return result;
          }));
 
+postgres_function(produce_error, ([]() {
+                    cppgres::ffi_guarded(::get_role_oid)("this_role_does_not_exist", false);
+                    _assert(false);
+                    return false;
+                  }));
+
+add_test(handle_produced_error, ([](test_case &) {
+           bool result = false;
+           cppgres::spi_executor spi;
+           auto stmt = std::format(
+               "create or replace function produce_error() returns bool language 'c' as '{}'",
+               get_library_name());
+           spi.execute(stmt);
+           cppgres::internal_subtransaction sub(false);
+           try {
+             spi.execute("select produce_error()");
+           } catch (cppgres::pg_exception &e) {
+             result = _assert(std::string_view(e.message()) ==
+                              R"(role "this_role_does_not_exist" does not exist)");
+           }
+           return result;
+         }));
 } // namespace tests
