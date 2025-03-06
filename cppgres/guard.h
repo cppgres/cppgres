@@ -15,18 +15,12 @@ namespace cppgres {
 
 template <typename Func> struct ffi_guard {
   Func func;
-  using types = utils::function_traits::function_traits<decltype(func)>::argument_types;
 
   ffi_guard(Func f) : func(std::move(f)) {}
 
   template <typename... Args>
   auto operator()(Args &&...args) -> decltype(func(std::forward<Args>(args)...)) {
     using return_type = decltype(func(std::forward<Args>(args)...));
-    types t;
-
-    [&]<std::size_t... Is>(std::index_sequence<Is...>) {
-      (([&] { std::get<Is>(t) = args; }()), ...);
-    }(std::make_index_sequence<std::tuple_size_v<decltype(t)>>{});
 
     int state;
     sigjmp_buf *pbuf;
@@ -41,12 +35,12 @@ template <typename Func> struct ffi_guard {
     state = sigsetjmp(buf, 1);
     if (state == 0) {
       if constexpr (std::is_void_v<return_type>) {
-        std::apply(func, t);
+        func(std::forward<Args>(args)...);
         ::error_context_stack = cb;
         ::PG_exception_stack = pbuf;
         return;
       } else {
-        auto result = std::apply(func, t);
+        auto result = func(std::forward<Args>(args)...);
         ::error_context_stack = cb;
         ::PG_exception_stack = pbuf;
         return result;
