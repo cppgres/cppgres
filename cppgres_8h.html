@@ -126,6 +126,7 @@ $(document).ready(function(){initNavTree('cppgres_8h.html',''); initResizable();
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a37c77119ae05c0662ba21ee00d28c843"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cppgres_8h.html#a37c77119ae05c0662ba21ee00d28c843">postgres_function</a>(name,  function)</td></tr>
+<tr class="memdesc:a37c77119ae05c0662ba21ee00d28c843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export a C++ function as a Postgres function.  <br /></td></tr>
 <tr class="separator:a37c77119ae05c0662ba21ee00d28c843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -158,8 +159,10 @@ Macros</h2></td></tr>
 <div class="line">  PG_FUNCTION_INFO_V1(name);                                                                       \</div>
 <div class="line">  Datum name(PG_FUNCTION_ARGS) { <span class="keywordflow">return</span> <a class="code hl_struct" href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a>(function)(fcinfo); }            \</div>
 <div class="line">  }</div>
-<div class="ttc" id="astructcppgres_1_1postgres__function_html"><div class="ttname"><a href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a></div><div class="ttdef"><b>Definition:</b> function.h:39</div></div>
-</div><!-- fragment --><p>Export a C++ function as a Postgres function.</p>
+<div class="ttc" id="astructcppgres_1_1postgres__function_html"><div class="ttname"><a href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a></div><div class="ttdoc">Postgres function implemented in C++.</div><div class="ttdef"><b>Definition:</b> function.h:55</div></div>
+</div><!-- fragment -->
+<p>Export a C++ function as a Postgres function. </p>
+<p>Its argument types must conform to the <a class="el" href="conceptcppgres_1_1convertible__from__nullable__datum.html">cppgres::convertible_from_nullable_datum</a> concept and its return type must conform to the <a class="el" href="conceptcppgres_1_1convertible__into__nullable__datum.html">cppgres::convertible_into_nullable_datum</a> concept. This requirement is inherited from <a class="el" href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a>.</p>
 <ul>
 <li>name Name to export it under </li>
 <li>function C++ function or lambda</li>

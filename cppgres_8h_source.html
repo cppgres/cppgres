@@ -122,11 +122,11 @@ $(document).ready(function(){initNavTree('cppgres_8h_source.html',''); initResiz
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &quot;<a class="code" href="types_8h.html">cppgres/types.h</a>&quot;</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;<a class="code" href="xact_8h.html">cppgres/xact.h</a>&quot;</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="cppgres_8h.html#a37c77119ae05c0662ba21ee00d28c843">   55</a></span><span class="preprocessor">#define postgres_function(name, function)                                                          \</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">  extern &quot;C&quot;</span> {                                                                                     \</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  PG_FUNCTION_INFO_V1(name);                                                                       \</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  Datum name(PG_FUNCTION_ARGS) { return cppgres::postgres_function(function)(fcinfo); }            \</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  }</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="cppgres_8h.html#a37c77119ae05c0662ba21ee00d28c843">   59</a></span><span class="preprocessor">#define postgres_function(name, function)                                                          \</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">  extern &quot;C&quot;</span> {                                                                                     \</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  PG_FUNCTION_INFO_V1(name);                                                                       \</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  Datum name(PG_FUNCTION_ARGS) { return cppgres::postgres_function(function)(fcinfo); }            \</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
 <div class="ttc" id="adatum_8h_html"><div class="ttname"><a href="datum_8h.html">datum.h</a></div></div>
 <div class="ttc" id="aerror_8h_html"><div class="ttname"><a href="error_8h.html">error.h</a></div></div>
 <div class="ttc" id="aexception__impl_8h_html"><div class="ttname"><a href="exception__impl_8h.html">exception_impl.h</a></div></div>

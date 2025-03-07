@@ -113,6 +113,11 @@ $(document).ready(function(){initNavTree('structcppgres_1_1postgres__function.ht
   <div class="headertitle"><div class="title">cppgres::postgres_function&lt; Func &gt; Struct Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Postgres function implemented in C++.  
+ <a href="structcppgres_1_1postgres__function.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="function_8h_source.html">function.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -131,8 +136,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa13ca965c7d3b1986e320c796d560f8a"><td class="memItemLeft" align="right" valign="top"><a id="aa13ca965c7d3b1986e320c796d560f8a" name="aa13ca965c7d3b1986e320c796d560f8a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>postgres_function</b> (Func f)</td></tr>
 <tr class="separator:aa13ca965c7d3b1986e320c796d560f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f1e16b082548865d63063fd27a8c759"><td class="memItemLeft" align="right" valign="top"><a id="a3f1e16b082548865d63063fd27a8c759" name="a3f1e16b082548865d63063fd27a8c759"></a>
-auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (FunctionCallInfo fc) -&gt; ::Datum</td></tr>
+<tr class="memitem:a3f1e16b082548865d63063fd27a8c759"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1postgres__function.html#a3f1e16b082548865d63063fd27a8c759">operator()</a> (FunctionCallInfo fc) -&gt; ::Datum</td></tr>
 <tr class="separator:a3f1e16b082548865d63063fd27a8c759"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -147,6 +151,46 @@ Static Public Attributes</h2></td></tr>
 static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>arity</b> = traits::arity</td></tr>
 <tr class="separator:a01ef510843247301e282aaab8d1cf1c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;datumable_function Func&gt;<br />
+struct cppgres::postgres_function&lt; Func &gt;</div><p>Postgres function implemented in C++. </p>
+<p>It wraps a function to handle conversion of arguments and return, enforce arity, convert C++ exceptions to errors. Additionally, it handles <a href="https://www.postgresql.org/docs/current/xfunc-c.html#XFUNC-C-RETURN-SET">Set-Returning Functions</a> (SRFs), implemented by functions returning datumable_iterator.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Func</td><td>function (or lambda) that conforms to the datumable_function concept. </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3f1e16b082548865d63063fd27a8c759" name="a3f1e16b082548865d63063fd27a8c759"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f1e16b082548865d63063fd27a8c759">&#9670;&#160;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;datumable_function Func&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a>&lt; Func &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">FunctionCallInfo&#160;</td>
+          <td class="paramname"><em>fc</em></td><td>)</td>
+          <td> -&gt; ::Datum </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Invoke the function as per Postgres convention </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cppgres/<a class="el" href="function_8h_source.html">function.h</a></li>
 </ul>

@@ -48,7 +48,7 @@ var annotated_dup =
       [ "owned_memory_context", "structcppgres_1_1owned__memory__context.html", null ],
       [ "pg_exception", "classcppgres_1_1pg__exception.html", null ],
       [ "pointer_gone_exception", "structcppgres_1_1pointer__gone__exception.html", null ],
-      [ "postgres_function", "structcppgres_1_1postgres__function.html", null ],
+      [ "postgres_function", "structcppgres_1_1postgres__function.html", "structcppgres_1_1postgres__function" ],
       [ "set_iterator_traits", "structcppgres_1_1set__iterator__traits.html", null ],
       [ "spi_executor", "structcppgres_1_1spi__executor.html", "structcppgres_1_1spi__executor" ],
       [ "spi_plan", "structcppgres_1_1spi__plan.html", null ],
