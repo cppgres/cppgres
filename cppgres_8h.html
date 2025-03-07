@@ -162,7 +162,7 @@ Macros</h2></td></tr>
 <div class="ttc" id="astructcppgres_1_1postgres__function_html"><div class="ttname"><a href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a></div><div class="ttdoc">Postgres function implemented in C++.</div><div class="ttdef"><b>Definition:</b> function.h:55</div></div>
 </div><!-- fragment -->
 <p>Export a C++ function as a Postgres function. </p>
-<p>Its argument types must conform to the <a class="el" href="conceptcppgres_1_1convertible__from__nullable__datum.html">cppgres::convertible_from_nullable_datum</a> concept and its return type must conform to the <a class="el" href="conceptcppgres_1_1convertible__into__nullable__datum.html">cppgres::convertible_into_nullable_datum</a> concept. This requirement is inherited from <a class="el" href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a>.</p>
+<p>Its argument types must conform to the <a class="el" href="conceptcppgres_1_1convertible__from__nullable__datum.html">cppgres::convertible_from_nullable_datum</a> concept and its return type must conform to the <a class="el" href="conceptcppgres_1_1convertible__into__nullable__datum.html">cppgres::convertible_into_nullable_datum</a> or <a class="el" href="conceptcppgres_1_1datumable__iterator.html">cppgres::datumable_iterator</a> concepts. This requirement is inherited from <a class="el" href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a>.</p>
 <ul>
 <li>name Name to export it under </li>
 <li>function C++ function or lambda</li>
