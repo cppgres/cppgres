@@ -22,7 +22,7 @@ include(FindIntl)
 pg_config(_pg_cflags --cflags)
 
 add_library(cppgres INTERFACE)
-target_include_directories(cppgres INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+target_include_directories(cppgres INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${PG_PKG_INCLUDE_DIR} ${PG_INCLUDE_DIR_SERVER} ${Intl_INCLUDE_DIR})
 string(REPLACE " " ";" _pg_cflags_list "${_pg_cflags}")
 target_compile_options(cppgres INTERFACE ${_pg_cflags_list})
@@ -90,11 +90,11 @@ find_package(Python COMPONENTS Interpreter)
 if (NOT "${_clang}" STREQUAL _clang-NOTFOUND AND NOT "${_clangxx}" STREQUAL _clangxx-NOTFOUND AND Python_FOUND)
     add_custom_target(cppgres_abi
             COMMAND ${_clang} -Xclang -fdump-record-layouts-complete
-            ${CMAKE_SOURCE_DIR}/cppgres/imports.h
+            ${CMAKE_SOURCE_DIR}/src/cppgres/imports.h
             -I${PG_PKG_INCLUDE_DIR} -I${PG_INCLUDE_DIR_SERVER} $<IF:$<BOOL:${Intl_INCLUDE_DIR}>,-I${Intl_INCLUDE_DIR},> > ${CMAKE_BINARY_DIR}/c_abi.txt
             COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/abi_layout.py ${CMAKE_BINARY_DIR}/c_abi.txt ${CMAKE_BINARY_DIR}/c_abi.json
             COMMAND ${_clangxx} -Xclang -fdump-record-layouts-complete -x c++-header
-            ${CMAKE_SOURCE_DIR}/cppgres/imports.h
+            ${CMAKE_SOURCE_DIR}/src/cppgres/imports.h
             -I${PG_PKG_INCLUDE_DIR} -I${PG_INCLUDE_DIR_SERVER} $<IF:$<BOOL:${Intl_INCLUDE_DIR}>,-I${Intl_INCLUDE_DIR},> > ${CMAKE_BINARY_DIR}/cxx_abi.txt
             COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/abi_layout.py ${CMAKE_BINARY_DIR}/cxx_abi.txt ${CMAKE_BINARY_DIR}/cxx_abi.json
             COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/check_abi.py ${CMAKE_BINARY_DIR}/c_abi.json ${CMAKE_BINARY_DIR}/cxx_abi.json

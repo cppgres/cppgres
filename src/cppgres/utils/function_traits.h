@@ -1,3 +1,6 @@
+/**
+* \file
+ */
 #pragma once
 
 namespace cppgres::utils::function_traits {
