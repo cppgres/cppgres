@@ -18,7 +18,7 @@
  *
  * \subsection qstart Quick start example
  *
- * ```c++
+ * ```
  * #include <cppgres.h>
  *
  * extern "C" {
@@ -44,7 +44,11 @@
 #include "cppgres/xact.h"
 
 /**
- * Export a C++ function as a Postgres function.
+ * @brief Export a C++ function as a Postgres function.
+ *
+ * Its argument types must conform to the @ref cppgres::convertible_from_nullable_datum concept and
+ * its return type must conform to the @ref cppgres::convertible_into_nullable_datum or
+ * @ref cppgres::datumable_iterator concepts. This requirement is inherited from @ref cppgres::postgres_function.
  *
  * \arg name Name to export it under
  * \arg function C++ function or lambda
