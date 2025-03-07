@@ -16,6 +16,18 @@
  * - Modern C+++20 interface & implementation
  * - Direct integration with C
  *
+ * \subsection qstart Quick start example
+ *
+ * ```c++
+ * #include <cppgres.h>
+ *
+ * extern "C" {
+ *  PG_MODULE_MAGIC;
+ * }
+ *
+ * postgres_function(demo_len, ([](std::string_view t) { return t.length(); }));
+ * ```
+ *
  */
 #pragma once
 
