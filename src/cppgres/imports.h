@@ -21,13 +21,16 @@ extern "C" {
 #include <postgres.h>
 #include <fmgr.h>
 // clang-format on
+#include <catalog/namespace.h>
 #include <catalog/pg_class.h>
+#include <catalog/pg_type.h>
 #include <executor/spi.h>
 #include <miscadmin.h>
 #include <nodes/execnodes.h>
 #include <utils/builtins.h>
 #include <utils/expandeddatum.h>
 #include <utils/memutils.h>
+#include <utils/syscache.h>
 #include <utils/tuplestore.h>
 #ifdef __cplusplus
 }

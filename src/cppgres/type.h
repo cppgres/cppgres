@@ -14,10 +14,28 @@
 
 namespace cppgres {
 
+/**
+ * @brief Postgres type
+ */
 struct type {
   ::Oid oid;
 
-  std::string_view name() { return ::format_type_be(oid); }
+  /**
+   * @brief Type name as defined in Postgres
+   *
+   * @param qualified if set to true (false by default), it will always include the schema name.
+   *                  Otherwise, if the schema is in the `search_path`, the schema will not be
+   *                  included.
+   */
+  std::string_view name(bool qualified = false) {
+    if (!OidIsValid(oid)) {
+      throw std::runtime_error("invalid type");
+    }
+    return (qualified ? ffi_guarded(::format_type_be_qualified)
+                      : ffi_guarded(::format_type_be))(oid);
+  }
+
+  bool operator==(const type &other) const { return oid == other.oid; }
 };
 
 template <typename T> struct type_traits {
@@ -30,7 +48,7 @@ template <typename T> struct type_traits {
   }
   static bool is(type &&t) { return is(std::move(t)); }
 
-  static constexpr type type_for() = delete;
+  static type type_for() = delete;
 };
 
 template <typename T> requires std::is_reference_v<T>

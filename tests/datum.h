@@ -94,13 +94,14 @@ add_test(varlena_text_from_strings, ([](test_case &) {
            bool result = true;
 
            {
-             auto d = cppgres::into_datum(std::string_view("test"));
+             auto d =
+                 cppgres::datum_conversion<std::string_view>::into_datum(std::string_view("test"));
              auto str = cppgres::datum_conversion<std::string_view>::from_datum(d, std::nullopt);
              result = result && _assert(str == "test");
            }
 
            {
-             auto d = cppgres::into_datum(std::string("test"));
+             auto d = cppgres::datum_conversion<std::string>::into_datum(std::string("test"));
              auto str = cppgres::datum_conversion<std::string_view>::from_datum(d, std::nullopt);
              result = result && _assert(str == "test");
            }

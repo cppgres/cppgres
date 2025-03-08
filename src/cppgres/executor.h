@@ -65,7 +65,13 @@ private:
 
 struct executor {};
 
+/**
+ * @brief [SPI](https://www.postgresql.org/docs/current/spi.html) executor API
+ */
 struct spi_executor : public executor {
+  /**
+   * @brief Creates an SPI executor
+   */
   spi_executor() : before_spi(::CurrentMemoryContext) {
     ffi_guarded(::SPI_connect)();
     spi = ::CurrentMemoryContext;
@@ -148,6 +154,19 @@ struct spi_executor : public executor {
       if (tuples.at(n).has_value()) {
         return tuples.at(n).value();
       }
+      if constexpr (convertible_from_datum<T>) {
+        if (tuptable->tupdesc->natts == 1) {
+          // if a special case of a directly convertible type
+          bool isnull;
+          ::Datum value =
+              ffi_guarded(::SPI_getbinval)(tuptable->vals[n], tuptable->tupdesc, 1, &isnull);
+          ::NullableDatum datum = {.value = value, .isnull = isnull};
+          auto ret =
+              from_nullable_datum<T>(nullable_datum(datum), memory_context(tuptable->tuptabcxt));
+          tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);
+          return tuples.at(n).value();
+        }
+      }
       auto ret = [&]<std::size_t... Is>(std::index_sequence<Is...>) {
         return T{([&] {
           bool isnull;
@@ -203,8 +222,12 @@ struct spi_executor : public executor {
          ...);
       }(std::make_index_sequence<sizeof...(Args)>{});
       if (natts != utils::tuple_size_v<Ret>) {
-        throw std::runtime_error(
-            std::format("expected %d return values, got %d", utils::tuple_size_v<Ret>, natts));
+        if (natts == 1 && convertible_from_datum<Ret>) {
+          // okay, this is just a type we can convert
+        } else {
+          throw std::runtime_error(
+              std::format("expected {} return values, got {}", utils::tuple_size_v<Ret>, natts));
+        }
       }
     }
 
@@ -212,6 +235,14 @@ struct spi_executor : public executor {
     size_t end() const { return table->numvals; }
   };
 
+  /**
+   * @brief Queries using a string view
+   *
+   * @return Iterable @ref cppgres::spi_executor::results, can be a single value
+   *
+   * @throws std::runtime_error if there's another SPI executor in scope
+   * @throws std::runtime_error if there's an SPI error
+   */
   template <datumable_tuple Ret, convertible_into_nullable_datum_and_has_a_type... Args>
   results<Ret, Args...> query(std::string_view query, Args &&...args) {
     if (executors.top() != this) {
