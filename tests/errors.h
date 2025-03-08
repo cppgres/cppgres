@@ -55,4 +55,11 @@ add_test(handle_produced_error, ([](test_case &) {
            }
            return result;
          }));
-} // namespace tests
+
+static_assert(cppgres::error_formattable<decltype("test")>);
+static_assert(cppgres::error_formattable<decltype(1)>);
+static_assert(cppgres::error_formattable<void *>);
+struct not_error_reportable {};
+static_assert(!cppgres::error_formattable<not_error_reportable>);
+
+}; // namespace tests

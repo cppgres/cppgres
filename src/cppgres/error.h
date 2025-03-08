@@ -31,7 +31,8 @@ template <typename T>
 concept error_formattable =
     std::integral<std::decay_t<T>> ||
     (std::is_pointer_v<std::decay_t<T>> &&
-     std::same_as<std::remove_cv_t<std::remove_pointer_t<std::decay_t<T>>>, char>);
+     std::same_as<std::remove_cv_t<std::remove_pointer_t<std::decay_t<T>>>, char>) ||
+    std::is_pointer_v<std::decay_t<T>>;
 
 template <std::size_t N, error_formattable... Args>
 void report(int elevel, const char (&fmt)[N], Args... args) {
