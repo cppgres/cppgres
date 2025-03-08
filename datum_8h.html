@@ -107,6 +107,7 @@ $(document).ready(function(){initNavTree('datum_8h.html',''); initResizable(); }
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#concepts">Concepts</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">datum.h File Reference</div></div>
 </div><!--header-->
@@ -130,6 +131,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1nullable__datum.html">cppgres::nullable_datum</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion.html">cppgres::datum_conversion&lt; T, typename &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A trait to convert from and into a <a class="el" href="structcppgres_1_1datum.html">cppgres::datum</a>.  <a href="structcppgres_1_1datum__conversion.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1unsupported__type.html">cppgres::unsupported_type&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,12 +149,14 @@ Concepts</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptcppgres_1_1convertible__into__nullable__datum.html">cppgres::convertible_into_nullable_datum</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a84e9d251d636e31996b860426e4f8298"><td class="memItemLeft" align="right" valign="top"><a id="a84e9d251d636e31996b860426e4f8298" name="a84e9d251d636e31996b860426e4f8298"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>cppgres::oid</b> = ::Oid</td></tr>
+<tr class="separator:a84e9d251d636e31996b860426e4f8298"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adc587b5ec578534c25398f2b93bb9edd"><td class="memTemplParams" colspan="2"><a id="adc587b5ec578534c25398f2b93bb9edd" name="adc587b5ec578534c25398f2b93bb9edd"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:adc587b5ec578534c25398f2b93bb9edd"><td class="memTemplItemLeft" align="right" valign="top">datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_datum</b> (const T &amp;d)=delete</td></tr>
-<tr class="separator:adc587b5ec578534c25398f2b93bb9edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0562abf8a8978c0a8b0d24ca6ed122a"><td class="memTemplParams" colspan="2"><a id="ac0562abf8a8978c0a8b0d24ca6ed122a" name="ac0562abf8a8978c0a8b0d24ca6ed122a"></a>
 template&lt;typename T &gt; <br />
 requires convertible_from_datum&lt;T&gt; || (utils::is_optional&lt;T&gt; &amp;&amp; convertible_from_datum&lt;utils::remove_optional_t&lt;T&gt;&gt;)</td></tr>

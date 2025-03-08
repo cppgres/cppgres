@@ -110,13 +110,103 @@ $(document).ready(function(){initNavTree('structcppgres_1_1datum__conversion.htm
   <div class="headertitle"><div class="title">cppgres::datum_conversion&lt; T, typename &gt; Struct Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>A trait to convert from and into a <a class="el" href="structcppgres_1_1datum.html">cppgres::datum</a>.  
+ <a href="structcppgres_1_1datum__conversion.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="datum_8h_source.html">datum.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a5054e9acfaf9e6cb503f50cbab12ddf1"><td class="memItemLeft" align="right" valign="top"><a id="a5054e9acfaf9e6cb503f50cbab12ddf1" name="a5054e9acfaf9e6cb503f50cbab12ddf1"></a>
-static T&#160;</td><td class="memItemRight" valign="bottom"><b>from_datum</b> (const <a class="el" href="structcppgres_1_1datum.html">datum</a> &amp;, std::optional&lt; <a class="el" href="structcppgres_1_1memory__context.html">memory_context</a> &gt; context=std::nullopt)=delete</td></tr>
+<tr class="memitem:a5054e9acfaf9e6cb503f50cbab12ddf1"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion.html#a5054e9acfaf9e6cb503f50cbab12ddf1">from_datum</a> (const <a class="el" href="structcppgres_1_1datum.html">datum</a> &amp;, std::optional&lt; <a class="el" href="structcppgres_1_1memory__context.html">memory_context</a> &gt; context=std::nullopt)=delete</td></tr>
+<tr class="memdesc:a5054e9acfaf9e6cb503f50cbab12ddf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from a datum.  <br /></td></tr>
 <tr class="separator:a5054e9acfaf9e6cb503f50cbab12ddf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4b972f2d5fc81c1eef91f479a2a8264"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structcppgres_1_1datum.html">datum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion.html#aa4b972f2d5fc81c1eef91f479a2a8264">into_datum</a> (const T &amp;d)=delete</td></tr>
+<tr class="memdesc:aa4b972f2d5fc81c1eef91f479a2a8264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert datum into a type.  <br /></td></tr>
+<tr class="separator:aa4b972f2d5fc81c1eef91f479a2a8264"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename T, typename = void&gt;<br />
+struct cppgres::datum_conversion&lt; T, typename &gt;</div><p>A trait to convert from and into a <a class="el" href="structcppgres_1_1datum.html">cppgres::datum</a>. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>C++ type to convert into and from </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5054e9acfaf9e6cb503f50cbab12ddf1" name="a5054e9acfaf9e6cb503f50cbab12ddf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5054e9acfaf9e6cb503f50cbab12ddf1">&#9670;&#160;</a></span>from_datum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename  = void&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static T <a class="el" href="structcppgres_1_1datum__conversion.html">cppgres::datum_conversion</a>&lt; T, typename &gt;::from_datum </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structcppgres_1_1datum.html">datum</a> &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::optional&lt; <a class="el" href="structcppgres_1_1memory__context.html">memory_context</a> &gt;&#160;</td>
+          <td class="paramname"><em>context</em> = <code>std::nullopt</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert from a datum. </p>
+<p>Gets an optional <a class="el" href="structcppgres_1_1memory__context.html">cppgres::memory_context</a> when available to be able to determine the source of the (pointer) datum. </p>
+
+</div>
+</div>
+<a id="aa4b972f2d5fc81c1eef91f479a2a8264" name="aa4b972f2d5fc81c1eef91f479a2a8264"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4b972f2d5fc81c1eef91f479a2a8264">&#9670;&#160;</a></span>into_datum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename  = void&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structcppgres_1_1datum.html">datum</a> <a class="el" href="structcppgres_1_1datum__conversion.html">cppgres::datum_conversion</a>&lt; T, typename &gt;::into_datum </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert datum into a type. </p>
+<p>Unlike <a class="el" href="structcppgres_1_1datum__conversion.html#a5054e9acfaf9e6cb503f50cbab12ddf1">from_datum</a>, gets no memory context. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cppgres/<a class="el" href="datum_8h_source.html">datum.h</a></li>
 </ul>

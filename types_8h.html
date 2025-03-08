@@ -105,8 +105,7 @@ $(document).ready(function(){initNavTree('types_8h.html',''); initResizable(); }
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle"><div class="title">types.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -114,6 +113,7 @@ $(document).ready(function(){initNavTree('types_8h.html',''); initResizable(); }
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 <code>#include &quot;<a class="el" href="datum_8h_source.html">datum.h</a>&quot;</code><br />
+<code>#include &quot;syscache.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="type_8h_source.html">type.h</a>&quot;</code><br />
 </div>
 <p><a href="types_8h_source.html">Go to the source code of this file.</a></p>
@@ -142,6 +142,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1type__traits_3_01expanded__varlena_3_01F_01_4_01_4.html">cppgres::type_traits&lt; expanded_varlena&lt; F &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion_3_01oid_01_4.html">cppgres::datum_conversion&lt; oid &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion_3_01size__t_01_4.html">cppgres::datum_conversion&lt; size_t &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion_3_01int64__t_01_4.html">cppgres::datum_conversion&lt; int64_t &gt;</a></td></tr>
@@ -160,47 +162,13 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion_3_01std_1_1string_01_4.html">cppgres::datum_conversion&lt; std::string &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion_3_01const_01char_01_5_01_4.html">cppgres::datum_conversion&lt; const char * &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01expanded__varlena__type_3_01T_01_4_01_4_01_4.html">cppgres::datum_conversion&lt; T, std::enable_if_t&lt; expanded_varlena_type&lt; T &gt; &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a05ef2154d3ff15bb6f92da03ac837911"><td class="memItemLeft" align="right" valign="top"><a id="a05ef2154d3ff15bb6f92da03ac837911" name="a05ef2154d3ff15bb6f92da03ac837911"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a05ef2154d3ff15bb6f92da03ac837911"><td class="memTemplItemLeft" align="right" valign="top">datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_datum</b> (const size_t &amp;t)</td></tr>
-<tr class="separator:a05ef2154d3ff15bb6f92da03ac837911"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90cca01a64f960611cf60a528fe42e22"><td class="memItemLeft" align="right" valign="top"><a id="a90cca01a64f960611cf60a528fe42e22" name="a90cca01a64f960611cf60a528fe42e22"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a90cca01a64f960611cf60a528fe42e22"><td class="memTemplItemLeft" align="right" valign="top">datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_datum</b> (const int64_t &amp;t)</td></tr>
-<tr class="separator:a90cca01a64f960611cf60a528fe42e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16d8348b8cb9fa3df2e8ca28f84f8711"><td class="memItemLeft" align="right" valign="top"><a id="a16d8348b8cb9fa3df2e8ca28f84f8711" name="a16d8348b8cb9fa3df2e8ca28f84f8711"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a16d8348b8cb9fa3df2e8ca28f84f8711"><td class="memTemplItemLeft" align="right" valign="top">datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_datum</b> (const int32_t &amp;t)</td></tr>
-<tr class="separator:a16d8348b8cb9fa3df2e8ca28f84f8711"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf493082f8ebd000779533cd6905828d"><td class="memItemLeft" align="right" valign="top"><a id="acf493082f8ebd000779533cd6905828d" name="acf493082f8ebd000779533cd6905828d"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:acf493082f8ebd000779533cd6905828d"><td class="memTemplItemLeft" align="right" valign="top">datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_datum</b> (const int16_t &amp;t)</td></tr>
-<tr class="separator:acf493082f8ebd000779533cd6905828d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a502379681d0454ab56b571ecd31b30a7"><td class="memItemLeft" align="right" valign="top"><a id="a502379681d0454ab56b571ecd31b30a7" name="a502379681d0454ab56b571ecd31b30a7"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a502379681d0454ab56b571ecd31b30a7"><td class="memTemplItemLeft" align="right" valign="top">datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_datum</b> (const bool &amp;t)</td></tr>
-<tr class="separator:a502379681d0454ab56b571ecd31b30a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a056d1ae0475483395ebb2600161bcf72"><td class="memItemLeft" align="right" valign="top"><a id="a056d1ae0475483395ebb2600161bcf72" name="a056d1ae0475483395ebb2600161bcf72"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a056d1ae0475483395ebb2600161bcf72"><td class="memTemplItemLeft" align="right" valign="top">datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_datum</b> (const text &amp;t)</td></tr>
-<tr class="separator:a056d1ae0475483395ebb2600161bcf72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4fa9f546e7b63747b62fb078d6d329b"><td class="memItemLeft" align="right" valign="top"><a id="ac4fa9f546e7b63747b62fb078d6d329b" name="ac4fa9f546e7b63747b62fb078d6d329b"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:ac4fa9f546e7b63747b62fb078d6d329b"><td class="memTemplItemLeft" align="right" valign="top">datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_datum</b> (const std::string_view &amp;t)</td></tr>
-<tr class="separator:ac4fa9f546e7b63747b62fb078d6d329b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e55515e228be87e7a7a3f2911d542be"><td class="memItemLeft" align="right" valign="top"><a id="a7e55515e228be87e7a7a3f2911d542be" name="a7e55515e228be87e7a7a3f2911d542be"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a7e55515e228be87e7a7a3f2911d542be"><td class="memTemplItemLeft" align="right" valign="top">datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_datum</b> (const std::string &amp;t)</td></tr>
-<tr class="separator:a7e55515e228be87e7a7a3f2911d542be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05ae295be15aeddea1a3aea7b139dd8d"><td class="memTemplParams" colspan="2"><a id="a05ae295be15aeddea1a3aea7b139dd8d" name="a05ae295be15aeddea1a3aea7b139dd8d"></a>
-template&lt;flattenable F&gt; </td></tr>
-<tr class="memitem:a05ae295be15aeddea1a3aea7b139dd8d"><td class="memTemplItemLeft" align="right" valign="top">datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_datum</b> (const expanded_varlena&lt; F &gt; &amp;t)</td></tr>
-<tr class="separator:a05ae295be15aeddea1a3aea7b139dd8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1named__type.html">cppgres::named_type</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type identified by its name.  <a href="structcppgres_1_1named__type.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

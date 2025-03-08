@@ -11,6 +11,7 @@ var dir_af1bb9dae411b5b1b5161db3c243cdc2 =
     [ "imports.h", "imports_8h.html", null ],
     [ "memory.h", "memory_8h.html", "memory_8h" ],
     [ "set.h", "set_8h.html", "set_8h" ],
+    [ "syscache.h", "syscache_8h_source.html", null ],
     [ "type.h", "type_8h.html", "type_8h" ],
     [ "types.h", "types_8h.html", "types_8h" ],
     [ "xact.h", "xact_8h.html", "xact_8h" ]

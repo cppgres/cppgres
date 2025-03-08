@@ -111,12 +111,18 @@ $(document).ready(function(){initNavTree('structcppgres_1_1type.html',''); initR
   <div class="headertitle"><div class="title">cppgres::type Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Postgres type.  
+ <a href="structcppgres_1_1type.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="type_8h_source.html">type.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for cppgres::type:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="structcppgres_1_1type.png" usemap="#cppgres::type_map" alt=""/>
   <map id="cppgres::type_map" name="cppgres::type_map">
+<area href="structcppgres_1_1named__type.html" title="Type identified by its name." alt="cppgres::named_type" shape="rect" coords="0,56,200,80"/>
 <area href="structcppgres_1_1non__by__value__type.html" alt="cppgres::non_by_value_type" shape="rect" coords="210,56,410,80"/>
 <area href="structcppgres_1_1varlena.html" alt="cppgres::varlena" shape="rect" coords="210,112,410,136"/>
 <area href="structcppgres_1_1bytea.html" alt="cppgres::bytea" shape="rect" coords="0,168,200,192"/>
@@ -127,9 +133,12 @@ Inheritance diagram for cppgres::type:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae2f5aef8d0d0c4256bead85205ff6ac5"><td class="memItemLeft" align="right" valign="top"><a id="ae2f5aef8d0d0c4256bead85205ff6ac5" name="ae2f5aef8d0d0c4256bead85205ff6ac5"></a>
-std::string_view&#160;</td><td class="memItemRight" valign="bottom"><b>name</b> ()</td></tr>
-<tr class="separator:ae2f5aef8d0d0c4256bead85205ff6ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8e44205d8ca27137acb86a74830f2ad"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1type.html#aa8e44205d8ca27137acb86a74830f2ad">name</a> (bool qualified=false)</td></tr>
+<tr class="memdesc:aa8e44205d8ca27137acb86a74830f2ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type name as defined in Postgres.  <br /></td></tr>
+<tr class="separator:aa8e44205d8ca27137acb86a74830f2ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a700f715de1ddfe96b2ae3b08b8b11c1c"><td class="memItemLeft" align="right" valign="top"><a id="a700f715de1ddfe96b2ae3b08b8b11c1c" name="a700f715de1ddfe96b2ae3b08b8b11c1c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="structcppgres_1_1type.html">type</a> &amp;other) const</td></tr>
+<tr class="separator:a700f715de1ddfe96b2ae3b08b8b11c1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -137,6 +146,43 @@ Public Attributes</h2></td></tr>
 ::Oid&#160;</td><td class="memItemRight" valign="bottom"><b>oid</b></td></tr>
 <tr class="separator:a3295095a7caa5c224c2a8b5b9b2c9d52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Postgres type. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa8e44205d8ca27137acb86a74830f2ad" name="aa8e44205d8ca27137acb86a74830f2ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8e44205d8ca27137acb86a74830f2ad">&#9670;&#160;</a></span>name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string_view cppgres::type::name </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>qualified</em> = <code>false</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Type name as defined in Postgres. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">qualified</td><td>if set to true (false by default), it will always include the schema name. Otherwise, if the schema is in the <code>search_path</code>, the schema will not be included. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cppgres/<a class="el" href="type_8h_source.html">type.h</a></li>
 </ul>

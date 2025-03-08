@@ -14,9 +14,11 @@ var hierarchy =
     [ "cppgres::datum_conversion< T, typename >", "structcppgres_1_1datum__conversion.html", null ],
     [ "cppgres::datum_conversion< bool >", "structcppgres_1_1datum__conversion_3_01bool_01_4.html", null ],
     [ "cppgres::datum_conversion< bytea >", "structcppgres_1_1datum__conversion_3_01bytea_01_4.html", null ],
+    [ "cppgres::datum_conversion< const char * >", "structcppgres_1_1datum__conversion_3_01const_01char_01_5_01_4.html", null ],
     [ "cppgres::datum_conversion< int16_t >", "structcppgres_1_1datum__conversion_3_01int16__t_01_4.html", null ],
     [ "cppgres::datum_conversion< int32_t >", "structcppgres_1_1datum__conversion_3_01int32__t_01_4.html", null ],
     [ "cppgres::datum_conversion< int64_t >", "structcppgres_1_1datum__conversion_3_01int64__t_01_4.html", null ],
+    [ "cppgres::datum_conversion< oid >", "structcppgres_1_1datum__conversion_3_01oid_01_4.html", null ],
     [ "cppgres::datum_conversion< size_t >", "structcppgres_1_1datum__conversion_3_01size__t_01_4.html", null ],
     [ "cppgres::datum_conversion< std::string >", "structcppgres_1_1datum__conversion_3_01std_1_1string_01_4.html", null ],
     [ "cppgres::datum_conversion< std::string_view >", "structcppgres_1_1datum__conversion_3_01std_1_1string__view_01_4.html", null ],
@@ -52,6 +54,9 @@ var hierarchy =
     [ "cppgres::spi_executor::results< Ret, Args >", "structcppgres_1_1spi__executor_1_1results.html", null ],
     [ "cppgres::set_iterator_traits< I >", "structcppgres_1_1set__iterator__traits.html", null ],
     [ "cppgres::spi_plan< Args >", "structcppgres_1_1spi__plan.html", null ],
+    [ "cppgres::syscache< T, D >", "structcppgres_1_1syscache.html", null ],
+    [ "cppgres::syscache_traits< T >", "structcppgres_1_1syscache__traits.html", null ],
+    [ "cppgres::syscache_traits< Form_pg_type >", "structcppgres_1_1syscache__traits_3_01Form__pg__type_01_4.html", null ],
     [ "std::true_type", null, [
       [ "cppgres::utils::is_std_tuple< std::tuple< Ts... > >", "structcppgres_1_1utils_1_1is__std__tuple_3_01std_1_1tuple_3_01Ts_8_8_8_01_4_01_4.html", null ]
     ] ],
@@ -59,6 +64,7 @@ var hierarchy =
     [ "cppgres::utils::tuple_traits_impl< T, typename >", "structcppgres_1_1utils_1_1tuple__traits__impl.html", null ],
     [ "cppgres::utils::tuple_traits_impl< T, std::void_t< decltype(std::tuple_size< T >::value)> >", "structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1void__t_3_01decltype_07std_1_1tuc17d0c8e371e8a53d2c38db131d82a30.html", null ],
     [ "cppgres::type", "structcppgres_1_1type.html", [
+      [ "cppgres::named_type", "structcppgres_1_1named__type.html", null ],
       [ "cppgres::non_by_value_type", "structcppgres_1_1non__by__value__type.html", [
         [ "cppgres::varlena", "structcppgres_1_1varlena.html", [
           [ "cppgres::bytea", "structcppgres_1_1bytea.html", null ],

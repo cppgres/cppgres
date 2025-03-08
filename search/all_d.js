@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['set_2eh_0',['set.h',['../set_8h.html',1,'']]],
-  ['set_5fiterator_5ftraits_1',['set_iterator_traits',['../structcppgres_1_1set__iterator__traits.html',1,'cppgres']]],
-  ['spi_5fexecutor_2',['spi_executor',['../structcppgres_1_1spi__executor.html',1,'cppgres']]],
-  ['spi_5fplan_3',['spi_plan',['../structcppgres_1_1spi__plan.html',1,'cppgres']]]
+  ['remove_5foptional_0',['remove_optional',['../structcppgres_1_1utils_1_1remove__optional.html',1,'cppgres::utils']]],
+  ['remove_5foptional_3c_20std_3a_3aoptional_3c_20t_20_3e_20_3e_1',['remove_optional&lt; std::optional&lt; T &gt; &gt;',['../structcppgres_1_1utils_1_1remove__optional_3_01std_1_1optional_3_01T_01_4_01_4.html',1,'cppgres::utils']]],
+  ['result_5fiterator_2',['result_iterator',['../structcppgres_1_1spi__executor_1_1result__iterator.html',1,'cppgres::spi_executor']]],
+  ['results_3',['results',['../structcppgres_1_1spi__executor_1_1results.html',1,'cppgres::spi_executor']]]
 ];

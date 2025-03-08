@@ -1,6 +1,6 @@
 var type_8h =
 [
-    [ "cppgres::type", "structcppgres_1_1type.html", null ],
+    [ "cppgres::type", "structcppgres_1_1type.html", "structcppgres_1_1type" ],
     [ "cppgres::type_traits< T >", "structcppgres_1_1type__traits.html", null ],
     [ "cppgres::type_traits< T >", "structcppgres_1_1type__traits_3_01T_01_4.html", null ],
     [ "cppgres::non_by_value_type", "structcppgres_1_1non__by__value__type.html", null ],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xact_2eh_0',['xact.h',['../xact_8h.html',1,'']]]
+  ['varlena_0',['varlena',['../structcppgres_1_1varlena.html',1,'cppgres']]]
 ];
