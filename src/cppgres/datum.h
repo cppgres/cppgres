@@ -14,16 +14,16 @@
 
 namespace cppgres {
 
-struct datum;
-template <typename T> datum into_datum(const T &d) = delete;
+using oid = ::Oid;
 
 struct datum {
-  template <typename T> friend datum into_datum(const T &d);
+  template <typename T, typename> friend struct datum_conversion;
 
   operator const ::Datum &() const { return _datum; }
 
   operator Pointer() const { return reinterpret_cast<Pointer>(_datum); }
 
+  datum() : _datum(0) {}
   explicit datum(::Datum datum) : _datum(datum) {}
 
 private:
@@ -79,18 +79,35 @@ private:
 
 };
 
-template <typename T>
-concept convertible_into_datum = requires(T t) {
-  { cppgres::into_datum(std::declval<T>()) } -> std::same_as<datum>;
+/**
+ * @brief A trait to convert from and into a @ref cppgres::datum
+ *
+ * @tparam T C++ type to convert into and from
+ */
+template <typename T, typename = void> struct datum_conversion {
+  /**
+   * @brief Convert from a datum
+   *
+   * Gets an optional @ref cppgres::memory_context when available to be able to determine the source
+   * of the (pointer) datum.
+   */
+  static T from_datum(const datum &, std::optional<memory_context> context = std::nullopt) = delete;
+  /**
+   * @brief Convert datum into a type
+   *
+   * Unlike @ref from_datum, gets no memory context.
+   */
+  static datum into_datum(const T &d) = delete;
 };
 
-template <typename T, typename = void> struct datum_conversion {
-  static T from_datum(const datum &, std::optional<memory_context> context = std::nullopt) = delete;
+template <typename T>
+concept convertible_into_datum = requires(T t) {
+  { datum_conversion<T, void>::into_datum(std::declval<T>()) } -> std::same_as<datum>;
 };
 
 template <typename T>
 concept convertible_from_datum = requires(datum d, std::optional<memory_context> context) {
-  { cppgres::datum_conversion<T, void>::from_datum(d, context) } -> std::same_as<T>;
+  { datum_conversion<T, void>::from_datum(d, context) } -> std::same_as<T>;
 };
 
 template <typename T> struct unsupported_type {};
@@ -120,14 +137,14 @@ T from_nullable_datum(const nullable_datum &d,
 
 template <typename T> nullable_datum into_nullable_datum(const std::optional<T> &v) {
   if (v.has_value()) {
-    return nullable_datum(into_datum(v.value()));
+    return nullable_datum(datum_conversion<T>::into_datum(v.value()));
   } else {
     return nullable_datum();
   }
 }
 
 template <typename T> nullable_datum into_nullable_datum(const T &v) {
-    return nullable_datum(into_datum(v));
+  return nullable_datum(datum_conversion<T>::into_datum(v));
 }
 
 template <typename T>
