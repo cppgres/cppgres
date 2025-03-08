@@ -3,6 +3,8 @@
  *
  * \mainpage Cppgres: Postgres extensions in C++
  *
+ * \note __GitHub__ repository: [cppgres/cppgres](https://github.com/cppgres/cppgres)
+ *
  * Cppgres allows you to build Postgres extensions using C++: a high-performance, feature-rich
  * language already supported by the same compiler toolchains used to develop for Postgres,
  * like GCC and Clang.
