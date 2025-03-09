@@ -59,8 +59,9 @@ add_test(srf_non_srf, ([](test_case &) {
            try {
              spi.query<std::tuple<int32_t, int32_t>>("select non_srf()");
            } catch (cppgres::pg_exception &e) {
-             exception_raised =
-                 _assert(std::string_view(e.message()) == "caller is not expecting a set");
+             cppgres::report(NOTICE, "%s", e.message());
+             exception_raised = _assert(std::string_view(e.message()) ==
+                                        "exception: caller is not expecting a set");
            }
            result = result && exception_raised;
            return result;
@@ -139,8 +140,8 @@ add_test(srf_non_record_non_tup, ([](test_case &) {
 add_test(srf_non_record_non_tup_type_mismatch, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           auto stmt = std::format("create or replace function non_record_srf_non_tup_t() returns "
-                                   "setof text language 'c' as '{}', 'non_record_srf_non_tup'",
+           auto stmt = std::format("create or replace function non_record_srf_non_tup() returns "
+                                   "setof text language 'c' as '{}'",
                                    get_library_name());
            spi.execute(stmt);
            bool exception_raised = false;

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "datum.hpp"
+#include "function.hpp"
 #include "guard.hpp"
 #include "memory.hpp"
 #include "types.hpp"
@@ -72,12 +73,7 @@ struct spi_executor : public executor {
   /**
    * @brief Creates an SPI executor
    */
-  spi_executor() : before_spi(::CurrentMemoryContext) {
-    ffi_guarded(::SPI_connect)();
-    spi = ::CurrentMemoryContext;
-    ::CurrentMemoryContext = before_spi;
-    executors.push(this);
-  }
+  spi_executor() : spi_executor(0) {}
   ~spi_executor() {
     ffi_guarded(::SPI_finish)();
     executors.pop();
@@ -310,7 +306,40 @@ struct spi_executor : public executor {
 private:
   ::MemoryContext before_spi;
   ::MemoryContext spi;
+
+protected:
   static inline std::stack<spi_executor *> executors;
+  spi_executor(int flags) : before_spi(::CurrentMemoryContext) {
+    ffi_guarded(::SPI_connect_ext)(flags);
+    spi = ::CurrentMemoryContext;
+    ::CurrentMemoryContext = before_spi;
+    executors.push(this);
+  }
+};
+
+struct spi_nonatomic_executor : public spi_executor {
+  using spi_executor::spi_executor;
+
+  spi_nonatomic_executor() : spi_executor(SPI_OPT_NONATOMIC) {
+    auto atomic = cppgres::current_postgres_function::atomic();
+    if (atomic.has_value() && atomic.value()) {
+      throw std::runtime_error("must be called in a non-atomic context");
+    }
+  }
+
+  void commit(bool chain = false) {
+    if (executors.top() != this) {
+      throw std::runtime_error("not a current SPI executor");
+    }
+    ffi_guarded(chain ? ::SPI_commit_and_chain : ::SPI_commit)();
+  }
+
+  void rollback(bool chain = false) {
+    if (executors.top() != this) {
+      throw std::runtime_error("not a current SPI executor");
+    }
+    ffi_guarded(chain ? ::SPI_rollback_and_chain : ::SPI_rollback)();
+  }
 };
 
 } // namespace cppgres
