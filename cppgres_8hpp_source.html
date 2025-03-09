@@ -142,24 +142,34 @@ $(document).ready(function(){initNavTree('cppgres_8hpp_source.html',''); initRes
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &quot;cppgres/datum.h&quot;</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &quot;cppgres/error.h&quot;</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &quot;cppgres/exception_impl.h&quot;</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#include &quot;cppgres/executor.h&quot;</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#include &quot;cppgres/function.h&quot;</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &quot;cppgres/guard.h&quot;</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &quot;<a class="code" href="datum_8hpp.html">cppgres/datum.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &quot;<a class="code" href="error_8hpp.html">cppgres/error.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &quot;<a class="code" href="exception__impl_8hpp.html">cppgres/exception_impl.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#include &quot;<a class="code" href="executor_8hpp.html">cppgres/executor.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#include &quot;<a class="code" href="function_8hpp.html">cppgres/function.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &quot;<a class="code" href="guard_8hpp.html">cppgres/guard.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &quot;<a class="code" href="imports_8h.html">cppgres/imports.h</a>&quot;</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &quot;cppgres/memory.h&quot;</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;cppgres/set.h&quot;</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;cppgres/types.h&quot;</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#include &quot;cppgres/xact.h&quot;</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &quot;<a class="code" href="memory_8hpp.html">cppgres/memory.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;<a class="code" href="set_8hpp.html">cppgres/set.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;<a class="code" href="types_8hpp.html">cppgres/types.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#include &quot;<a class="code" href="xact_8hpp.html">cppgres/xact.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#define postgres_function(name, function)                                                          \</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">  extern &quot;C&quot;</span> {                                                                                     \</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  PG_FUNCTION_INFO_V1(name);                                                                       \</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  Datum name(PG_FUNCTION_ARGS) { return cppgres::postgres_function(function)(fcinfo); }            \</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  }</div>
+<div class="ttc" id="adatum_8hpp_html"><div class="ttname"><a href="datum_8hpp.html">datum.hpp</a></div></div>
+<div class="ttc" id="aerror_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
+<div class="ttc" id="aexception__impl_8hpp_html"><div class="ttname"><a href="exception__impl_8hpp.html">exception_impl.hpp</a></div></div>
+<div class="ttc" id="aexecutor_8hpp_html"><div class="ttname"><a href="executor_8hpp.html">executor.hpp</a></div></div>
+<div class="ttc" id="afunction_8hpp_html"><div class="ttname"><a href="function_8hpp.html">function.hpp</a></div></div>
+<div class="ttc" id="aguard_8hpp_html"><div class="ttname"><a href="guard_8hpp.html">guard.hpp</a></div></div>
 <div class="ttc" id="aimports_8h_html"><div class="ttname"><a href="imports_8h.html">imports.h</a></div></div>
+<div class="ttc" id="amemory_8hpp_html"><div class="ttname"><a href="memory_8hpp.html">memory.hpp</a></div></div>
+<div class="ttc" id="aset_8hpp_html"><div class="ttname"><a href="set_8hpp.html">set.hpp</a></div></div>
+<div class="ttc" id="atypes_8hpp_html"><div class="ttname"><a href="types_8hpp.html">types.hpp</a></div></div>
+<div class="ttc" id="axact_8hpp_html"><div class="ttname"><a href="xact_8hpp.html">xact.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
