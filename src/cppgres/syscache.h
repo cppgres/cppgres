@@ -7,7 +7,6 @@
 namespace cppgres {
 
 template <typename T> struct syscache_traits {
-  static constexpr ::SysCacheIdentifier cache_id = USERMAPPINGUSERSERVER;
 };
 
 template <> struct syscache_traits<Form_pg_type> {
