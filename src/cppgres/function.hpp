@@ -1,5 +1,5 @@
 /**
-* \file
+ * \file
  */
 #pragma once
 
@@ -24,12 +24,13 @@ concept convertible_into_nullable_datum_or_set_iterator =
     convertible_into_nullable_datum<T> || datumable_iterator<T>;
 
 /**
-* @brief Function that operates on values of Postgres types
-*
-* These functions take @ref cppgres::convertible_from_nullable_datum arguments and returns
-* @ref cppgres::convertible_into_nullable_datum, or @ref cppgres::set_iterator
-* (for [Set-Returning Functions](https://www.postgresql.org/docs/current/xfunc-c.html#XFUNC-C-RETURN-SET)).
-*/
+ * @brief Function that operates on values of Postgres types
+ *
+ * These functions take @ref cppgres::convertible_from_nullable_datum arguments and returns
+ * @ref cppgres::convertible_into_nullable_datum, or @ref cppgres::datumable_iterator
+ * (for [Set-Returning
+ * Functions](https://www.postgresql.org/docs/current/xfunc-c.html#XFUNC-C-RETURN-SET)).
+ */
 template <typename Func>
 concept datumable_function =
     requires { typename utils::function_traits::function_traits<Func>::argument_types; } &&
@@ -44,14 +45,15 @@ concept datumable_function =
     };
 
 /**
-* @brief Postgres function implemented in C++
-*
-* It wraps a function to handle conversion of arguments and return, enforce arity, convert C++ exceptions to errors.
-* Additionally, it handles [Set-Returning Functions](https://www.postgresql.org/docs/current/xfunc-c.html#XFUNC-C-RETURN-SET) (SRFs),
-* implemented by functions returning @ref cppgres::datumable_iterator.
-*
-* @tparam Func function (or lambda) that conforms to the @ref cppgres::datumable_function concept.
-*/
+ * @brief Postgres function implemented in C++
+ *
+ * It wraps a function to handle conversion of arguments and return, enforce arity, convert C++
+ * exceptions to errors. Additionally, it handles [Set-Returning
+ * Functions](https://www.postgresql.org/docs/current/xfunc-c.html#XFUNC-C-RETURN-SET) (SRFs),
+ * implemented by functions returning @ref cppgres::datumable_iterator.
+ *
+ * @tparam Func function (or lambda) that conforms to the @ref cppgres::datumable_function concept.
+ */
 template <datumable_function Func> struct postgres_function {
   Func func;
 
@@ -64,8 +66,8 @@ template <datumable_function Func> struct postgres_function {
   static constexpr std::size_t arity = traits::arity;
 
   /**
-  * Invoke the function as per Postgres convention
-  */
+   * Invoke the function as per Postgres convention
+   */
   auto operator()(FunctionCallInfo fc) -> ::Datum {
 
     argument_types t;
