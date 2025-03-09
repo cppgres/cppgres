@@ -191,7 +191,7 @@ Macros</h2></td></tr>
 <div class="line">  PG_FUNCTION_INFO_V1(name);                                                                       \</div>
 <div class="line">  Datum name(PG_FUNCTION_ARGS) { <span class="keywordflow">return</span> <a class="code hl_struct" href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a>(function)(fcinfo); }            \</div>
 <div class="line">  }</div>
-<div class="ttc" id="astructcppgres_1_1postgres__function_html"><div class="ttname"><a href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a></div><div class="ttdoc">Postgres function implemented in C++.</div><div class="ttdef"><b>Definition:</b> function.hpp:55</div></div>
+<div class="ttc" id="astructcppgres_1_1postgres__function_html"><div class="ttname"><a href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a></div><div class="ttdoc">Postgres function implemented in C++.</div><div class="ttdef"><b>Definition:</b> function.hpp:57</div></div>
 </div><!-- fragment -->
 <p>Export a C++ function as a Postgres function. </p>
 <p>Its argument types must conform to the <a class="el" href="conceptcppgres_1_1convertible__from__nullable__datum.html">cppgres::convertible_from_nullable_datum</a> concept and its return type must conform to the <a class="el" href="conceptcppgres_1_1convertible__into__nullable__datum.html">cppgres::convertible_into_nullable_datum</a> or <a class="el" href="conceptcppgres_1_1datumable__iterator.html">cppgres::datumable_iterator</a> concepts. This requirement is inherited from <a class="el" href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a>.</p>
