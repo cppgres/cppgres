@@ -153,15 +153,13 @@ Features</h2>
 </ul>
 <h2><a class="anchor" id="qstart"></a>
 Quick start example</h2>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="cppgres_8h.html">cppgres.h</a>&gt;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cppgres.h&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="line"> PG_MODULE_MAGIC;</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_define" href="cppgres_8h.html#a37c77119ae05c0662ba21ee00d28c843">postgres_function</a>(demo_len, ([](std::string_view t) { <span class="keywordflow">return</span> t.length(); }));</div>
-<div class="ttc" id="acppgres_8h_html"><div class="ttname"><a href="cppgres_8h.html">cppgres.h</a></div></div>
-<div class="ttc" id="acppgres_8h_html_a37c77119ae05c0662ba21ee00d28c843"><div class="ttname"><a href="cppgres_8h.html#a37c77119ae05c0662ba21ee00d28c843">postgres_function</a></div><div class="ttdeci">#define postgres_function(name, function)</div><div class="ttdoc">Export a C++ function as a Postgres function.</div><div class="ttdef"><b>Definition:</b> cppgres.h:61</div></div>
+<div class="line">postgres_function(demo_len, ([](std::string_view t) { <span class="keywordflow">return</span> t.length(); }));</div>
 </div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

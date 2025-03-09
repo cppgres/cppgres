@@ -2,11 +2,10 @@ var indexSectionsWithContent =
 {
   0: "abcdefgimnopqrstuvx",
   1: "abdefimnoprstuv",
-  2: "cdefgimstux",
+  2: "defgimstux",
   3: "finoqs",
-  4: "p",
-  5: "c",
-  6: "c"
+  4: "c",
+  5: "c"
 };
 
 var indexSectionNames =
@@ -15,9 +14,8 @@ var indexSectionNames =
   1: "classes",
   2: "files",
   3: "functions",
-  4: "defines",
-  5: "pages",
-  6: "concepts"
+  4: "pages",
+  5: "concepts"
 };
 
 var indexSectionLabels =
@@ -26,8 +24,7 @@ var indexSectionLabels =
   1: "Classes",
   2: "Files",
   3: "Functions",
-  4: "Macros",
-  5: "Pages",
-  6: "Concepts"
+  4: "Pages",
+  5: "Concepts"
 };
 
