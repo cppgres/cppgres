@@ -24,6 +24,7 @@ cleanup() {
 
 trap cleanup ERR
 
-${_pg_bindir}/psql -v ON_ERROR_STOP=1 -h $(realpath .testdb) -d postgres -c "load '${BUILD_DIR}/libcppgres_tests.so'; do \$\$ begin if not cppgres_tests() then raise exception 'tests failed'; end if; end; \$\$;"
+${_pg_bindir}/psql -v ON_ERROR_STOP=1 -h $(realpath .testdb) -d postgres -c "load '${BUILD_DIR}/libcppgres_tests.so';"
+${_pg_bindir}/psql -v ON_ERROR_STOP=1 -h $(realpath .testdb) -d postgres -c "call cppgres_tests();"
 ${_pg_bindir}/pg_ctl -D .testdb stop
 rm -rf .testdb

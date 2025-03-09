@@ -44,24 +44,6 @@ postgres_function(cppgres_test, ([](std::string_view name) {
                     return false;
                   }));
 
-postgres_function(cppgres_tests, []() -> bool {
-  bool result = true;
-  for (auto t : test_case::test_cases) {
-    auto name = t.first;
-    try {
-      cppgres::spi_executor spi;
-      auto res = spi.query<std::tuple<bool>>("select cppgres_test($1)", name);
-      bool _result = std::get<0>(res.begin()[0]);
-      result = result && _result;
-      cppgres::report(NOTICE, "%s: %s", name.data(), _result ? "passed" : "failed");
-    } catch (std::exception &e) {
-      cppgres::report(NOTICE, "%s: exception: %s", name.data(), e.what());
-      result = result && false;
-    }
-  }
-  return result;
-});
-
 static const char *find_absolute_library_path(const char *filename) {
   const char *result = filename;
 #ifdef __linux__
@@ -103,7 +85,7 @@ static const char *get_library_name() {
     return library_name;
   }
   Dl_info info;
-  ::dladdr((void *)cppgres_tests, &info);
+  ::dladdr((void *)cppgres_test, &info);
   library_name = info.dli_fname;
   if (index(library_name, '/') == NULL) {
     // Not a full path, try to determine it. On some systems it will be a full path, on some it
@@ -126,27 +108,51 @@ static const char *get_library_name() {
 #include <unistd.h>
 #endif
 
+postgres_function(cppgres_tests, []() {
+  // <Debugging>
+  const char *env = std::getenv("CPPGRES_DEBUG");
+  if (env && strcmp(env, "1") == 0) {
+#ifdef _WIN32
+    DWORD pid = GetCurrentProcessId();
+#else
+    pid_t pid = getpid();
+#endif
+    cppgres::report(NOTICE, "CPPGRES_DEBUG is set. Waiting to be connected to and resumed (pid %d)",
+                    pid);
+    DEBUG_BREAK();
+  }
+  // </Debugging>
+
+  bool result = true;
+  for (auto t : test_case::test_cases) {
+    auto name = t.first;
+    cppgres::report(NOTICE, "%s", name.data());
+    cppgres::spi_nonatomic_executor spi;
+    try {
+      auto res = spi.query<std::tuple<bool>>("select cppgres_test($1)", name);
+      bool _result = std::get<0>(res.begin()[0]);
+      result = result && _result;
+      cppgres::report(NOTICE, "%s: %s", name.data(), _result ? "passed" : "failed");
+    } catch (std::exception &e) {
+      cppgres::report(NOTICE, "%s: exception: %s", name.data(), e.what());
+      result = result && false;
+    }
+    spi.rollback();
+  }
+  if (!result) {
+    cppgres::report(ERROR, "test(s) failed");
+  }
+});
 extern "C" void _PG_init(void);
 
 extern "C" void _PG_init(void) {
   static bool initialized = false;
+  // avoid recursion when creating procedures and functions
   if (!initialized) {
     initialized = true;
-    const char *env = std::getenv("CPPGRES_DEBUG");
-    if (env && strcmp(env, "1") == 0) {
-#ifdef _WIN32
-      DWORD pid = GetCurrentProcessId();
-#else
-      pid_t pid = getpid();
-#endif
-      cppgres::report(NOTICE,
-                      "CPPGRES_DEBUG is set. Waiting to be connected to and resumed (pid %d)", pid);
-      DEBUG_BREAK();
-    }
     cppgres::spi_executor spi;
-    spi.execute(
-        std::format("create or replace function cppgres_tests() returns bool language 'c' as '{}'",
-                    get_library_name()));
+    spi.execute(std::format("create or replace procedure cppgres_tests() language 'c' as '{}'",
+                            get_library_name()));
     spi.execute(std::format(
         "create or replace function cppgres_test(text) returns bool language 'c' as '{}'",
         get_library_name()));

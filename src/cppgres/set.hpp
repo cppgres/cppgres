@@ -7,6 +7,7 @@
 
 #include "datum.hpp"
 #include "imports.h"
+#include "types.hpp"
 
 namespace cppgres {
 
