@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cppgres: src Directory Reference</title>
+<title>Cppgres: src/cppgres.hpp File Reference</title>
 <!--BEGIN PROJECT_ICON-->
 <link rel="icon" href="$projecticon" type="image/x-icon" />
 <!--END PROJECT_ICON-->
@@ -110,7 +110,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('dir_68267d1309a1af8e8297ef4c3efbcdba.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('cppgres_8hpp.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -136,26 +136,79 @@ $(document).ready(function(){initNavTree('dir_68267d1309a1af8e8297ef4c3efbcdba.h
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">src Directory Reference</div></div>
+  <div class="summary">
+<a href="#define-members">Macros</a>  </div>
+  <div class="headertitle"><div class="title">cppgres.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><code>#include &quot;<a class="el" href="datum_8hpp_source.html">cppgres/datum.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="error_8hpp_source.html">cppgres/error.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="exception__impl_8hpp_source.html">cppgres/exception_impl.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="executor_8hpp_source.html">cppgres/executor.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="function_8hpp_source.html">cppgres/function.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="guard_8hpp_source.html">cppgres/guard.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="imports_8h_source.html">cppgres/imports.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="memory_8hpp_source.html">cppgres/memory.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="set_8hpp_source.html">cppgres/set.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="types_8hpp_source.html">cppgres/types.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="xact_8hpp_source.html">cppgres/xact.hpp</a>&quot;</code><br />
+</div>
+<p><a href="cppgres_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="subdirs" name="subdirs"></a>
-Directories</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">directory &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_af1bb9dae411b5b1b5161db3c243cdc2.html">cppgres</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
-Files</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cppgres_8hpp.html">cppgres.hpp</a> <a href="cppgres_8hpp_source.html">[code]</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a37c77119ae05c0662ba21ee00d28c843"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cppgres_8hpp.html#a37c77119ae05c0662ba21ee00d28c843">postgres_function</a>(name,  function)</td></tr>
+<tr class="memdesc:a37c77119ae05c0662ba21ee00d28c843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export a C++ function as a Postgres function.  <br /></td></tr>
+<tr class="separator:a37c77119ae05c0662ba21ee00d28c843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a37c77119ae05c0662ba21ee00d28c843" name="a37c77119ae05c0662ba21ee00d28c843"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37c77119ae05c0662ba21ee00d28c843">&#9670;&#160;</a></span>postgres_function</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define postgres_function</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">function&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {                                                                                     \</div>
+<div class="line">  PG_FUNCTION_INFO_V1(name);                                                                       \</div>
+<div class="line">  Datum name(PG_FUNCTION_ARGS) { <span class="keywordflow">return</span> <a class="code hl_struct" href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a>(function)(fcinfo); }            \</div>
+<div class="line">  }</div>
+<div class="ttc" id="astructcppgres_1_1postgres__function_html"><div class="ttname"><a href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a></div><div class="ttdoc">Postgres function implemented in C++.</div><div class="ttdef"><b>Definition:</b> function.hpp:55</div></div>
+</div><!-- fragment -->
+<p>Export a C++ function as a Postgres function. </p>
+<p>Its argument types must conform to the <a class="el" href="conceptcppgres_1_1convertible__from__nullable__datum.html">cppgres::convertible_from_nullable_datum</a> concept and its return type must conform to the <a class="el" href="conceptcppgres_1_1convertible__into__nullable__datum.html">cppgres::convertible_into_nullable_datum</a> or <a class="el" href="conceptcppgres_1_1datumable__iterator.html">cppgres::datumable_iterator</a> concepts. This requirement is inherited from <a class="el" href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a>.</p>
+<ul>
+<li>name Name to export it under </li>
+<li>function C++ function or lambda</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>You no longer need to use PG_FUNCTION_INFO_V1 macro. </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="cppgres_8hpp.html">cppgres.hpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>
