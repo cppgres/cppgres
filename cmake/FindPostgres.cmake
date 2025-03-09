@@ -173,6 +173,18 @@ if(NOT DEFINED PG_CONFIG)
             set(ENV{CFLAGS} "$ENV{CFLAGS} ${CMAKE_C_FLAGS_RELEASE}")
         endif()
 
+        # Ensure CC env var is not set
+        if ("${CMAKE_VERSION}" VERSION_LESS "3.24")
+            unset(ENV{CC})
+            unset(ENV{CXX})
+        else ()
+            # FIXME: this shouldn't be required. Setting CMP0132 worked without the if block,
+            # but doesn't seem to come into effect now
+            unset(ENV{CC})
+            unset(ENV{CXX})
+            cmake_policy(SET CMP0132 NEW)
+        endif ()
+
         execute_process(
                 COMMAND bash -c "./configure ${extra_configure_args} --prefix \"${PGDIR_VERSION}/build\" --without-icu --with-ssl=openssl"
                 WORKING_DIRECTORY "${PGDIR_VERSION}/postgresql-${PGVER_ALIAS}"
