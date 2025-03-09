@@ -139,6 +139,8 @@ $(document).ready(function(){initNavTree('structcppgres_1_1spi__executor.html','
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="structcppgres_1_1spi__executor-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">cppgres::spi_executor Struct Reference</div></div>
 </div><!--header-->
@@ -154,7 +156,8 @@ Inheritance diagram for cppgres::spi_executor:</div>
  <div class="center">
   <img src="structcppgres_1_1spi__executor.png" usemap="#cppgres::spi_5Fexecutor_map" alt=""/>
   <map id="cppgres::spi_5Fexecutor_map" name="cppgres::spi_5Fexecutor_map">
-<area href="structcppgres_1_1executor.html" alt="cppgres::executor" shape="rect" coords="0,0,136,24"/>
+<area href="structcppgres_1_1executor.html" alt="cppgres::executor" shape="rect" coords="0,0,200,24"/>
+<area href="structcppgres_1_1spi__nonatomic__executor.html" alt="cppgres::spi_nonatomic_executor" shape="rect" coords="0,112,200,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -187,6 +190,18 @@ template&lt;datumable_tuple Ret, convertible_into_nullable_datum... Args&gt; </t
 template&lt;convertible_into_nullable_datum_and_has_a_type... Args&gt; </td></tr>
 <tr class="memitem:ae94871906b4bc9823dbbdfa63851a9e3"><td class="memTemplItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>execute</b> (std::string_view <a class="el" href="structcppgres_1_1spi__executor.html#ad9fb1f571b8190b420dd43db23c54087">query</a>, Args &amp;&amp;...args)</td></tr>
 <tr class="separator:ae94871906b4bc9823dbbdfa63851a9e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a89cd080750b7aebc0ecc0c9dd2494fa8"><td class="memItemLeft" align="right" valign="top"><a id="a89cd080750b7aebc0ecc0c9dd2494fa8" name="a89cd080750b7aebc0ecc0c9dd2494fa8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>spi_executor</b> (int flags)</td></tr>
+<tr class="separator:a89cd080750b7aebc0ecc0c9dd2494fa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:a562e7b16d2a0d3c49ac1f5cb145a6e4b"><td class="memItemLeft" align="right" valign="top"><a id="a562e7b16d2a0d3c49ac1f5cb145a6e4b" name="a562e7b16d2a0d3c49ac1f5cb145a6e4b"></a>
+static std::stack&lt; <a class="el" href="structcppgres_1_1spi__executor.html">spi_executor</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>executors</b></td></tr>
+<tr class="separator:a562e7b16d2a0d3c49ac1f5cb145a6e4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a href="https://www.postgresql.org/docs/current/spi.html">SPI</a> executor API </p>

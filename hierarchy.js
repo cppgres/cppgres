@@ -10,6 +10,7 @@ var hierarchy =
       [ "cppgres::tracking_memory_context< C >", "structcppgres_1_1tracking__memory__context.html", null ]
     ] ],
     [ "cppgres::all_from_nullable_datum< T >", "structcppgres_1_1all__from__nullable__datum.html", null ],
+    [ "cppgres::current_postgres_function", "structcppgres_1_1current__postgres__function.html", null ],
     [ "cppgres::datum", "structcppgres_1_1datum.html", null ],
     [ "cppgres::datum_conversion< T, typename >", "structcppgres_1_1datum__conversion.html", null ],
     [ "cppgres::datum_conversion< bool >", "structcppgres_1_1datum__conversion_3_01bool_01_4.html", null ],
@@ -30,7 +31,9 @@ var hierarchy =
       [ "cppgres::pointer_gone_exception", "structcppgres_1_1pointer__gone__exception.html", null ]
     ] ],
     [ "cppgres::executor", "structcppgres_1_1executor.html", [
-      [ "cppgres::spi_executor", "structcppgres_1_1spi__executor.html", null ]
+      [ "cppgres::spi_executor", "structcppgres_1_1spi__executor.html", [
+        [ "cppgres::spi_nonatomic_executor", "structcppgres_1_1spi__nonatomic__executor.html", null ]
+      ] ]
     ] ],
     [ "std::false_type", null, [
       [ "cppgres::utils::is_std_tuple< T >", "structcppgres_1_1utils_1_1is__std__tuple.html", null ]

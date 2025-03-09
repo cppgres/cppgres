@@ -12,7 +12,7 @@ var concepts =
       [ "error_formattable", "conceptcppgres_1_1error__formattable.html", null ],
       [ "datumable_tuple", "conceptcppgres_1_1datumable__tuple.html", null ],
       [ "convertible_into_nullable_datum_and_has_a_type", "conceptcppgres_1_1convertible__into__nullable__datum__and__has__a__type.html", null ],
-      [ "convertible_into_nullable_datum_or_set_iterator", "conceptcppgres_1_1convertible__into__nullable__datum__or__set__iterator.html", null ],
+      [ "convertible_into_nullable_datum_or_set_iterator_or_void", "conceptcppgres_1_1convertible__into__nullable__datum__or__set__iterator__or__void.html", null ],
       [ "datumable_function", "conceptcppgres_1_1datumable__function.html", null ],
       [ "a_memory_context", "conceptcppgres_1_1a__memory__context.html", null ],
       [ "datumable_iterator", "conceptcppgres_1_1datumable__iterator.html", null ],

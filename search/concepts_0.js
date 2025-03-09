@@ -6,7 +6,7 @@ var searchData=
   ['convertible_5finto_5fdatum_3',['convertible_into_datum',['../conceptcppgres_1_1convertible__into__datum.html',1,'cppgres']]],
   ['convertible_5finto_5fnullable_5fdatum_4',['convertible_into_nullable_datum',['../conceptcppgres_1_1convertible__into__nullable__datum.html',1,'cppgres']]],
   ['convertible_5finto_5fnullable_5fdatum_5fand_5fhas_5fa_5ftype_5',['convertible_into_nullable_datum_and_has_a_type',['../conceptcppgres_1_1convertible__into__nullable__datum__and__has__a__type.html',1,'cppgres']]],
-  ['convertible_5finto_5fnullable_5fdatum_5for_5fset_5fiterator_6',['convertible_into_nullable_datum_or_set_iterator',['../conceptcppgres_1_1convertible__into__nullable__datum__or__set__iterator.html',1,'cppgres']]],
+  ['convertible_5finto_5fnullable_5fdatum_5for_5fset_5fiterator_5for_5fvoid_6',['convertible_into_nullable_datum_or_set_iterator_or_void',['../conceptcppgres_1_1convertible__into__nullable__datum__or__set__iterator__or__void.html',1,'cppgres']]],
   ['datumable_5ffunction_7',['datumable_function',['../conceptcppgres_1_1datumable__function.html',1,'cppgres']]],
   ['datumable_5fiterator_8',['datumable_iterator',['../conceptcppgres_1_1datumable__iterator.html',1,'cppgres']]],
   ['datumable_5ftuple_9',['datumable_tuple',['../conceptcppgres_1_1datumable__tuple.html',1,'cppgres']]],
