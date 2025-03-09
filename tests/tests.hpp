@@ -1,11 +1,11 @@
 #pragma once
 
 #include <cppgres.hpp>
-#include <unordered_map>
+#include <map>
 
 struct test_case {
-  inline static std::unordered_map<std::string_view, test_case *> test_cases =
-      std::unordered_map<std::string_view, test_case *>{};
+  inline static std::map<std::string_view, test_case *> test_cases =
+      std::map<std::string_view, test_case *>{};
   test_case(std::string_view name, bool (*function)(test_case &c));
   bool operator()();
   bool (*function)(test_case &c);
