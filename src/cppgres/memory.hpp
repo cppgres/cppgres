@@ -6,7 +6,7 @@
 #include <concepts>
 #include <memory>
 
-#include "guard.h"
+#include "guard.hpp"
 #include "imports.h"
 
 namespace cppgres {

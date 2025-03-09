@@ -1,7 +1,7 @@
 #pragma once
 
-#include "datum.h"
-#include "guard.h"
+#include "datum.hpp"
+#include "guard.hpp"
 #include "imports.h"
 
 namespace cppgres {

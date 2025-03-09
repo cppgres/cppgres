@@ -5,7 +5,7 @@
 
 #include <iterator>
 
-#include "datum.h"
+#include "datum.hpp"
 #include "imports.h"
 
 namespace cppgres {

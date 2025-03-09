@@ -5,7 +5,7 @@
 #include <chrono>
 #include <thread>
 
-#include <cppgres.h>
+#include <cppgres.hpp>
 
 extern "C" {
 PG_MODULE_MAGIC;
@@ -18,16 +18,16 @@ PG_MODULE_MAGIC;
 #include <utils/date.h>
 }
 
-#include "tests.h"
+#include "tests.hpp"
 
-#include "datum.h"
-#include "errors.h"
-#include "function.h"
-#include "memory_context.h"
-#include "spi.h"
-#include "srf.h"
-#include "type.h"
-#include "xact.h"
+#include "datum.hpp"
+#include "errors.hpp"
+#include "function.hpp"
+#include "memory_context.hpp"
+#include "spi.hpp"
+#include "srf.hpp"
+#include "type.hpp"
+#include "xact.hpp"
 
 test_case::test_case(std::string_view name, bool (*function)(test_case &c)) : function(function) {
   test_cases[name] = this;

@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-#include "exception.h"
+#include "exception.hpp"
 
 namespace cppgres {
 

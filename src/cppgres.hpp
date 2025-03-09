@@ -1,5 +1,5 @@
 /**
- * \file cppgres.h
+ * \file cppgres.hpp
  *
  * \mainpage Cppgres: Postgres extensions in C++
  *
@@ -21,7 +21,7 @@
  * \subsection qstart Quick start example
  *
  * ```
- * #include <cppgres.h>
+ * #include <cppgres.hpp>
  *
  * extern "C" {
  *  PG_MODULE_MAGIC;
@@ -33,17 +33,17 @@
  */
 #pragma once
 
-#include "cppgres/datum.h"
-#include "cppgres/error.h"
-#include "cppgres/exception_impl.h"
-#include "cppgres/executor.h"
-#include "cppgres/function.h"
-#include "cppgres/guard.h"
+#include "cppgres/datum.hpp"
+#include "cppgres/error.hpp"
+#include "cppgres/exception_impl.hpp"
+#include "cppgres/executor.hpp"
+#include "cppgres/function.hpp"
+#include "cppgres/guard.hpp"
 #include "cppgres/imports.h"
-#include "cppgres/memory.h"
-#include "cppgres/set.h"
-#include "cppgres/types.h"
-#include "cppgres/xact.h"
+#include "cppgres/memory.hpp"
+#include "cppgres/set.hpp"
+#include "cppgres/types.hpp"
+#include "cppgres/xact.hpp"
 
 /**
  * @brief Export a C++ function as a Postgres function.

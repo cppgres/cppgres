@@ -3,13 +3,13 @@
  */
 #pragma once
 
-#include "datum.h"
-#include "guard.h"
+#include "datum.hpp"
+#include "guard.hpp"
 #include "imports.h"
-#include "set.h"
-#include "types.h"
-#include "utils/function_traits.h"
-#include "utils/utils.h"
+#include "set.hpp"
+#include "types.hpp"
+#include "utils/function_traits.hpp"
+#include "utils/utils.hpp"
 
 #include <array>
 #include <complex>

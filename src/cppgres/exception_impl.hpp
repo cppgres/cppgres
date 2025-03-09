@@ -3,9 +3,9 @@
  */
 #pragma once
 
-#include "exception.h"
-#include "guard.h"
-#include "memory.h"
+#include "exception.hpp"
+#include "guard.hpp"
+#include "memory.hpp"
 
 namespace cppgres {
 

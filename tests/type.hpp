@@ -1,6 +1,6 @@
 #pragma once
 
-#include "tests.h"
+#include "tests.hpp"
 
 struct my_custom_type {
   std::string s;

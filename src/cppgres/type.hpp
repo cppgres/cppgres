@@ -7,10 +7,10 @@
 #include <span>
 #include <string>
 
-#include "datum.h"
-#include "guard.h"
+#include "datum.hpp"
+#include "guard.hpp"
 #include "imports.h"
-#include "utils/utils.h"
+#include "utils/utils.hpp"
 
 namespace cppgres {
 

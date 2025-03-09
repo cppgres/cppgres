@@ -10,9 +10,9 @@ extern "C" {
 #include <iostream>
 #include <utility>
 
-#include "error.h"
-#include "exception.h"
-#include "utils/function_traits.h"
+#include "error.hpp"
+#include "exception.hpp"
+#include "utils/function_traits.hpp"
 
 namespace cppgres {
 

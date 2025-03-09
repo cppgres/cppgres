@@ -7,9 +7,9 @@
 #include <string>
 #include <utility>
 
-#include "datum.h"
-#include "syscache.h"
-#include "type.h"
+#include "datum.hpp"
+#include "syscache.hpp"
+#include "type.hpp"
 
 namespace cppgres {
 

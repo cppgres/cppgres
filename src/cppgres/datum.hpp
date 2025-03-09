@@ -4,8 +4,8 @@
 #pragma once
 
 #include "imports.h"
-#include "memory.h"
-#include "utils/utils.h"
+#include "memory.hpp"
+#include "utils/utils.hpp"
 
 #include <cstdint>
 #include <format>

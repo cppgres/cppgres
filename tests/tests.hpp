@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cppgres.h>
+#include <cppgres.hpp>
 #include <unordered_map>
 
 struct test_case {

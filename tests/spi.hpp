@@ -1,6 +1,6 @@
 #pragma once
 
-#include "tests.h"
+#include "tests.hpp"
 
 extern "C" {
 #include <executor/spi_priv.h>

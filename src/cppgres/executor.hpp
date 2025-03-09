@@ -3,10 +3,10 @@
  */
 #pragma once
 
-#include "datum.h"
-#include "guard.h"
-#include "memory.h"
-#include "types.h"
+#include "datum.hpp"
+#include "guard.hpp"
+#include "memory.hpp"
+#include "types.hpp"
 
 #include <iterator>
 #include <optional>
