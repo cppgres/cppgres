@@ -15,6 +15,11 @@ var searchData=
   ['flattenable_12',['flattenable',['../conceptcppgres_1_1flattenable.html',1,'cppgres']]],
   ['has_5fa_5ftype_13',['has_a_type',['../conceptcppgres_1_1has__a__type.html',1,'cppgres']]],
   ['is_5foptional_14',['is_optional',['../conceptcppgres_1_1utils_1_1is__optional.html',1,'cppgres::utils']]],
-  ['std_5ftuple_15',['std_tuple',['../conceptcppgres_1_1utils_1_1std__tuple.html',1,'cppgres::utils']]],
-  ['syscached_16',['syscached',['../conceptcppgres_1_1syscached.html',1,'cppgres']]]
+  ['node_15',['node',['../conceptcppgres_1_1node.html',1,'cppgres']]],
+  ['node_5finherited_16',['node_inherited',['../conceptcppgres_1_1node__inherited.html',1,'cppgres']]],
+  ['node_5finherited_5fbase_17',['node_inherited_base',['../conceptcppgres_1_1node__inherited__base.html',1,'cppgres']]],
+  ['node_5ftagged_18',['node_tagged',['../conceptcppgres_1_1node__tagged.html',1,'cppgres']]],
+  ['node_5fxpr_5ftagged_19',['node_xpr_tagged',['../conceptcppgres_1_1node__xpr__tagged.html',1,'cppgres']]],
+  ['std_5ftuple_20',['std_tuple',['../conceptcppgres_1_1utils_1_1std__tuple.html',1,'cppgres::utils']]],
+  ['syscached_21',['syscached',['../conceptcppgres_1_1syscached.html',1,'cppgres']]]
 ];

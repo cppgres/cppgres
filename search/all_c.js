@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['query_0',['query',['../structcppgres_1_1spi__executor.html#ad9fb1f571b8190b420dd43db23c54087',1,'cppgres::spi_executor']]]
+  ['offset_5fbased_5fgetter_0',['offset_based_getter',['../classboost_1_1pfr_1_1detail_1_1offset__based__getter.html',1,'boost::pfr::detail']]],
+  ['operator_28_29_1',['operator()',['../structcppgres_1_1postgres__function.html#a3f1e16b082548865d63063fd27a8c759',1,'cppgres::postgres_function::operator()()'],['../structboost_1_1pfr_1_1equal__to.html#abfed1f444cc5b0549bd97d2f9225a526',1,'boost::pfr::equal_to::operator()()'],['../structboost_1_1pfr_1_1not__equal.html#a4af33460a027925b8d49e78f5549af19',1,'boost::pfr::not_equal::operator()()'],['../structboost_1_1pfr_1_1greater.html#a529518f4b8324e50200d0e5d2acc7de2',1,'boost::pfr::greater::operator()()'],['../structboost_1_1pfr_1_1less.html#ae9d40278896ffcfa58a71e134fbe1eb7',1,'boost::pfr::less::operator()()'],['../structboost_1_1pfr_1_1greater__equal.html#a3d377fda4d1010a70b1b47aadfeb67a9',1,'boost::pfr::greater_equal::operator()()'],['../structboost_1_1pfr_1_1less__equal.html#a208da0c991b1904599cf73174bc86822',1,'boost::pfr::less_equal::operator()()'],['../structboost_1_1pfr_1_1hash.html#ae39ac0c72041c3b31c7a87af7b7e8c33',1,'boost::pfr::hash::operator()()']]],
+  ['owned_5fmemory_5fcontext_2',['owned_memory_context',['../structcppgres_1_1owned__memory__context.html',1,'cppgres']]]
 ];
