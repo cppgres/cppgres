@@ -24,6 +24,7 @@ PG_MODULE_MAGIC;
 #include "errors.hpp"
 #include "function.hpp"
 #include "memory_context.hpp"
+#include "node.hpp"
 #include "spi.hpp"
 #include "srf.hpp"
 #include "type.hpp"
