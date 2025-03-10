@@ -18,6 +18,23 @@ like GCC and Clang.
 You don't really need to build this library as it is headers-only. You can,
 however, use `cppgres` target from the included CMake file.
 
+### Amalgamation
+
+If copying the entire `src` directory is not convenient, it is quite easy to
+get an amalgamated single-file header.
+
+For example, using [cpp-amalgamate](https://github.com/Felerius/cpp-amalgamate):
+
+```shell
+cpp-amalgamate src/cppgres.hpp > cppgres.hpp
+```
+
+This file can be used just as before:
+
+```c++
+#include <cppgres.h>
+```
+
 ## Running tests
 
 ```shell

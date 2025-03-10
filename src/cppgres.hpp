@@ -33,6 +33,9 @@
  */
 #pragma once
 
+#ifndef cppgres_hpp
+#define cppgres_hpp
+
 #include "cppgres/datum.hpp"
 #include "cppgres/error.hpp"
 #include "cppgres/exception_impl.hpp"
@@ -63,3 +66,5 @@
   PG_FUNCTION_INFO_V1(name);                                                                       \
   Datum name(PG_FUNCTION_ARGS) { return cppgres::postgres_function(function)(fcinfo); }            \
   }
+
+#endif // cppgres_hpp
