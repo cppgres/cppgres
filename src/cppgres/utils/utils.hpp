@@ -8,13 +8,18 @@
 #include <tuple>
 #include <utility>
 
+#include "pfr.hpp"
+#define CPPGRES_USE_BOOST_PFR 1
+/*
+// This has been commented out while Boost.PFR is embedded with Cppgres
+
 #if __has_include(<boost/pfr.hpp>)
 #include <boost/pfr.hpp>
 #define CPPGRES_USE_BOOST_PFR 1
 #else
 #define CPPGRES_USE_BOOST_PFR 0
 #endif
-
+*/
 namespace cppgres::utils {
 
 // Primary template: if T is not an optional, just yield T.
