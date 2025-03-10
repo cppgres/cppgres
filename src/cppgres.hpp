@@ -46,6 +46,7 @@
 #include "cppgres/memory.hpp"
 #include "cppgres/set.hpp"
 #include "cppgres/types.hpp"
+#include "cppgres/node.hpp"
 #include "cppgres/xact.hpp"
 
 /**
