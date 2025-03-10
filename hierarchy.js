@@ -124,6 +124,7 @@ var hierarchy =
     [ "boost::pfr::detail::tuple_of_aligned_storage< T >", "structboost_1_1pfr_1_1detail_1_1tuple__of__aligned__storage.html", null ],
     [ "boost::pfr::detail::tuple_of_aligned_storage< sequence_tuple::tuple< Ts... > >", "structboost_1_1pfr_1_1detail_1_1tuple__of__aligned__storage_3_01sequence__tuple_1_1tuple_3_01Ts_8_8_8_01_4_01_4.html", null ],
     [ "cppgres::utils::tuple_traits_impl< T, typename >", "structcppgres_1_1utils_1_1tuple__traits__impl.html", null ],
+    [ "cppgres::utils::tuple_traits_impl< T, std::enable_if_t< std::is_aggregate_v< T > > >", "structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__aggregate__v_3_01T_01_4_01_4_01_4.html", null ],
     [ "cppgres::utils::tuple_traits_impl< T, std::void_t< decltype(std::tuple_size< T >::value)> >", "structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1void__t_3_01decltype_07std_1_1tuc17d0c8e371e8a53d2c38db131d82a30.html", null ],
     [ "cppgres::type", "structcppgres_1_1type.html", [
       [ "cppgres::named_type", "structcppgres_1_1named__type.html", null ],

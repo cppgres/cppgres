@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cppgres: cppgres::utils::std_tuple Concept Reference</title>
+<title>Cppgres: cppgres::utils::tuple_traits_impl&lt; T, std::enable_if_t&lt; std::is_aggregate_v&lt; T &gt; &gt; &gt; Struct Template Reference</title>
 <!--BEGIN PROJECT_ICON-->
 <link rel="icon" href="$projecticon" type="image/x-icon" />
 <!--END PROJECT_ICON-->
@@ -110,7 +110,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('conceptcppgres_1_1utils_1_1std__tuple.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__aggregate__v_3_01T_01_4_01_4_01_4.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -136,19 +136,40 @@ $(document).ready(function(){initNavTree('conceptcppgres_1_1utils_1_1std__tuple.
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">cppgres::utils::std_tuple Concept Reference</div></div>
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__aggaa9f84cf60cb41d8f6a448859065e097.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">cppgres::utils::tuple_traits_impl&lt; T, std::enable_if_t&lt; std::is_aggregate_v&lt; T &gt; &gt; &gt; Struct Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<h2 class="groupheader">Concept definition</h2>
-<div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptcppgres_1_1utils_1_1std__tuple.html">cppgres::utils::std_tuple</a> =  is_std_tuple&lt;T&gt;::value</div>
-<div class="ttc" id="aconceptcppgres_1_1utils_1_1std__tuple_html"><div class="ttname"><a href="conceptcppgres_1_1utils_1_1std__tuple.html">cppgres::utils::std_tuple</a></div><div class="ttdef"><b>Definition:</b> utils.hpp:126</div></div>
-</div><!-- fragment --></div><!-- contents -->
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a884211a2d4606eb230d96e61082b2ef6"><td class="memItemLeft" align="right" valign="top"><a id="a884211a2d4606eb230d96e61082b2ef6" name="a884211a2d4606eb230d96e61082b2ef6"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>tuple_size_type</b> = boost::pfr::tuple_size&lt; T &gt;</td></tr>
+<tr class="separator:a884211a2d4606eb230d96e61082b2ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa18557c6d649d7083432990ad3dc3f1"><td class="memTemplParams" colspan="2"><a id="aaa18557c6d649d7083432990ad3dc3f1" name="aaa18557c6d649d7083432990ad3dc3f1"></a>
+template&lt;std::size_t I&gt; </td></tr>
+<tr class="memitem:aaa18557c6d649d7083432990ad3dc3f1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>tuple_element</b> = boost::pfr::tuple_element&lt; I, T &gt;</td></tr>
+<tr class="separator:aaa18557c6d649d7083432990ad3dc3f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:af71acd677ffc093e732fe0f86c9189a0"><td class="memTemplParams" colspan="2"><a id="af71acd677ffc093e732fe0f86c9189a0" name="af71acd677ffc093e732fe0f86c9189a0"></a>
+template&lt;std::size_t I, typename U  = T&gt; </td></tr>
+<tr class="memitem:af71acd677ffc093e732fe0f86c9189a0"><td class="memTemplItemLeft" align="right" valign="top">static constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get</b> (U &amp;&amp;t) noexcept</td></tr>
+<tr class="separator:af71acd677ffc093e732fe0f86c9189a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/cppgres/utils/<a class="el" href="utils_8hpp_source.html">utils.hpp</a></li>
+</ul>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>cppgres</b></li><li class="navelem"><b>utils</b></li><li class="navelem"><a class="el" href="conceptcppgres_1_1utils_1_1std__tuple.html">std_tuple</a></li>
+    <li class="navelem"><b>cppgres</b></li><li class="navelem"><b>utils</b></li><li class="navelem"><a class="el" href="structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__aggregate__v_3_01T_01_4_01_4_01_4.html">tuple_traits_impl&lt; T, std::enable_if_t&lt; std::is_aggregate_v&lt; T &gt; &gt; &gt;</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>

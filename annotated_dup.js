@@ -74,6 +74,7 @@ var annotated_dup =
         [ "remove_optional", "structcppgres_1_1utils_1_1remove__optional.html", null ],
         [ "remove_optional< std::optional< T > >", "structcppgres_1_1utils_1_1remove__optional_3_01std_1_1optional_3_01T_01_4_01_4.html", null ],
         [ "tuple_traits_impl", "structcppgres_1_1utils_1_1tuple__traits__impl.html", "structcppgres_1_1utils_1_1tuple__traits__impl" ],
+        [ "tuple_traits_impl< T, std::enable_if_t< std::is_aggregate_v< T > > >", "structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__aggregate__v_3_01T_01_4_01_4_01_4.html", null ],
         [ "tuple_traits_impl< T, std::void_t< decltype(std::tuple_size< T >::value)> >", "structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1void__t_3_01decltype_07std_1_1tuc17d0c8e371e8a53d2c38db131d82a30.html", null ]
       ] ],
       [ "abstract_memory_context", "structcppgres_1_1abstract__memory__context.html", null ],
