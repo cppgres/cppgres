@@ -34,6 +34,8 @@ struct abstract_memory_context {
     return cb;
   }
 
+  void delete_context() { ffi_guarded(::MemoryContextDelete)(_memory_context()); }
+
 protected:
   virtual ::MemoryContext _memory_context() = 0;
 };
@@ -46,7 +48,7 @@ protected:
 
   ~owned_memory_context() {
     if (!moved) {
-      ffi_guarded(::MemoryContextDelete)(context);
+      delete_context();
     }
   }
 
@@ -94,6 +96,9 @@ struct alloc_set_memory_context : public owned_memory_context {
   alloc_set_memory_context()
       : owned_memory_context(ffi_guarded(::AllocSetContextCreateInternal)(
             ::CurrentMemoryContext, nullptr, ALLOCSET_DEFAULT_SIZES)) {}
+  alloc_set_memory_context(memory_context &ctx)
+      : owned_memory_context(
+            ffi_guarded(::AllocSetContextCreateInternal)(ctx, nullptr, ALLOCSET_DEFAULT_SIZES)) {}
 };
 
 memory_context top_memory_context = memory_context(TopMemoryContext);

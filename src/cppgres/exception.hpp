@@ -6,6 +6,7 @@
 namespace cppgres {
 class pg_exception : public std::exception {
   ::MemoryContext mcxt;
+  ::MemoryContext error_cxt;
   ::ErrorData *error;
 
   pg_exception(::MemoryContext mcxt);
@@ -16,5 +17,6 @@ class pg_exception : public std::exception {
 
 public:
   const char *message() const noexcept { return error->message; }
+  ~pg_exception();
 };
 } // namespace cppgres
