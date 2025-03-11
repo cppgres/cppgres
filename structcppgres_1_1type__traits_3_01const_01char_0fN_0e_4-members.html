@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cppgres: src/cppgres/exception_impl.hpp Source File</title>
+<title>Cppgres: Member List</title>
 <!--BEGIN PROJECT_ICON-->
 <link rel="icon" href="$projecticon" type="image/x-icon" />
 <!--END PROJECT_ICON-->
@@ -110,7 +110,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('exception__impl_8hpp_source.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structcppgres_1_1type__traits_3_01const_01char_0fN_0e_4.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -136,38 +136,19 @@ $(document).ready(function(){initNavTree('exception__impl_8hpp_source.html','');
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">exception_impl.hpp</div></div>
+  <div class="headertitle"><div class="title">cppgres::type_traits&lt; const char[N]&gt; Member List</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="exception__impl_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="exception_8hpp.html">exception.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="guard_8hpp.html">guard.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="memory_8hpp.html">memory.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span>cppgres {</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>pg_exception::pg_exception(::MemoryContext mcxt) : mcxt(mcxt) {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  ::CurrentMemoryContext = error_cxt =</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>      memory_context(std::move(alloc_set_memory_context(top_memory_context)));</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  error = ffi_guarded(::CopyErrorData)();</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  ::CurrentMemoryContext = mcxt;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  ffi_guarded(::FlushErrorState)();</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>pg_exception::~pg_exception() { memory_context(error_cxt).delete_context(); }</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>} <span class="comment">// namespace cppgres</span></div>
-<div class="ttc" id="aexception_8hpp_html"><div class="ttname"><a href="exception_8hpp.html">exception.hpp</a></div></div>
-<div class="ttc" id="aguard_8hpp_html"><div class="ttname"><a href="guard_8hpp.html">guard.hpp</a></div></div>
-<div class="ttc" id="amemory_8hpp_html"><div class="ttname"><a href="memory_8hpp.html">memory.hpp</a></div></div>
-</div><!-- fragment --></div><!-- contents -->
+
+<p>This is the complete list of members for <a class="el" href="structcppgres_1_1type__traits_3_01const_01char_0fN_0e_4.html">cppgres::type_traits&lt; const char[N]&gt;</a>, including all inherited members.</p>
+<table class="directory">
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>is</b>(type &amp;t) (defined in <a class="el" href="structcppgres_1_1type__traits_3_01const_01char_0fN_0e_4.html">cppgres::type_traits&lt; const char[N]&gt;</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1type__traits_3_01const_01char_0fN_0e_4.html">cppgres::type_traits&lt; const char[N]&gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>type_for</b>() (defined in <a class="el" href="structcppgres_1_1type__traits_3_01const_01char_0fN_0e_4.html">cppgres::type_traits&lt; const char[N]&gt;</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1type__traits_3_01const_01char_0fN_0e_4.html">cppgres::type_traits&lt; const char[N]&gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+</table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_af1bb9dae411b5b1b5161db3c243cdc2.html">cppgres</a></li><li class="navelem"><a class="el" href="exception__impl_8hpp.html">exception_impl.hpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>
