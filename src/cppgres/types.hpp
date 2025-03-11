@@ -63,6 +63,21 @@ template <> struct type_traits<bytea> {
   static constexpr type type_for() { return type{.oid = BYTEAOID}; }
 };
 
+template <> struct type_traits<char *> {
+  static bool is(type &t) { return t.oid == CSTRINGOID; }
+  static constexpr type type_for() { return type{.oid = CSTRINGOID}; }
+};
+
+template <> struct type_traits<const char *> {
+  static bool is(type &t) { return t.oid == CSTRINGOID; }
+  static constexpr type type_for() { return type{.oid = CSTRINGOID}; }
+};
+
+template <std::size_t N> struct type_traits<const char[N]> {
+  static bool is(type &t) { return t.oid == CSTRINGOID; }
+  static constexpr type type_for() { return type{.oid = CSTRINGOID}; }
+};
+
 template <flattenable F> struct type_traits<expanded_varlena<F>> {
   static bool is(type &t) { return t.oid == F::type().oid; }
   static constexpr type type_for() { return F::type(); }
@@ -161,6 +176,14 @@ template <> struct datum_conversion<const char *> {
   }
 
   static datum into_datum(const char *const &t) { return datum(PointerGetDatum(t)); }
+};
+
+template <std::size_t N> struct datum_conversion<char[N]> {
+  static const char *from_datum(const datum &d, std::optional<memory_context> ctx) {
+    return DatumGetPointer(d);
+  }
+
+  static datum into_datum(const char (&t)[N]) { return datum(PointerGetDatum(t)); }
 };
 
 template <typename T> struct datum_conversion<T, std::enable_if_t<expanded_varlena_type<T>>> {
