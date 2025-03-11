@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['memory_5fcontext_0',['memory_context',['../structcppgres_1_1memory__context.html',1,'cppgres']]],
-  ['memory_5fcontext_5fallocator_1',['memory_context_allocator',['../structcppgres_1_1memory__context__allocator.html',1,'cppgres']]],
-  ['memory_5fcontext_5fscope_2',['memory_context_scope',['../structcppgres_1_1memory__context__scope.html',1,'cppgres']]]
+  ['pg_5fexception_0',['pg_exception',['../classcppgres_1_1pg__exception.html',1,'cppgres']]],
+  ['pointer_5fgone_5fexception_1',['pointer_gone_exception',['../structcppgres_1_1pointer__gone__exception.html',1,'cppgres']]],
+  ['postgres_5ffunction_2',['postgres_function',['../structcppgres_1_1postgres__function.html',1,'cppgres']]]
 ];
