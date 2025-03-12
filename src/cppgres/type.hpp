@@ -158,8 +158,13 @@ template <flattenable T> struct expanded_varlena : public varlena {
   expanded_varlena()
       : varlena(([]() {
           auto ctx = memory_context(std::move(alloc_set_memory_context()));
-          auto *e = ctx.alloc<expanded>();
-          e->inner = T();
+          auto *e = new (ctx.alloc<expanded>()) expanded(T());
+          ctx.register_reset_callback(
+              [](void *arg) {
+                auto v = reinterpret_cast<expanded *>(arg);
+                v->inner.~T();
+              },
+              e);
           init(&e->hdr, ctx);
           return std::make_pair(datum(PointerGetDatum(e)), ctx);
         })()),
@@ -172,9 +177,15 @@ template <flattenable T> struct expanded_varlena : public varlena {
     } else {
       auto *ptr1 = reinterpret_cast<std::byte *>(varlena::operator void *());
       auto ctx = memory_context(std::move(alloc_set_memory_context()));
-      auto *value = ctx.alloc<expanded>();
+      auto *value = new (ctx.alloc<expanded>())
+          expanded(T::restore_from(std::span(ptr1, VARSIZE_ANY_EXHDR(ptr))));
+      ctx.register_reset_callback(
+          [](void *arg) {
+            auto v = reinterpret_cast<expanded *>(arg);
+            v->inner.~T();
+          },
+          value);
       init(&value->hdr, ctx);
-      value->inner = T::restore_from(std::span(ptr1, VARSIZE_ANY_EXHDR(ptr)));
       detoasted = true;
       return value->inner;
     }
@@ -191,6 +202,7 @@ template <flattenable T> struct expanded_varlena : public varlena {
 private:
   bool detoasted = false;
   struct expanded {
+    expanded(T &&t) : inner(std::move(t)) {}
     ::ExpandedObjectHeader hdr;
     T inner;
   };

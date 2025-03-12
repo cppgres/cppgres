@@ -153,7 +153,12 @@ add_test(eoh_smoke, ([](test_case &e) {
 
            struct my_eoh {
              int a = 0;
+             int b;
+             int *c = nullptr;
              std::size_t flat_size() { return sizeof(a); }
+
+             my_eoh() : b(100) {}
+             my_eoh(int _a) : a(_a) {}
 
              void flatten_into(std::span<std::byte> buffer) {
                cppgres::report(NOTICE, "flatten_into");
@@ -171,24 +176,49 @@ add_test(eoh_smoke, ([](test_case &e) {
              static my_eoh restore_from(std::span<std::byte> buffer) {
                int *to_ptr = reinterpret_cast<int *>(buffer.data());
                std::span tbuffer(to_ptr, 1);
-               return my_eoh{.a = tbuffer[0]};
+               return my_eoh(tbuffer[0]);
+             }
+
+             ~my_eoh() {
+               if (c != nullptr) {
+                 *c = a;
+               }
              }
            };
 
            static_assert(cppgres::flattenable<my_eoh>);
 
-           // Create a new one
-           auto d = cppgres::expanded_varlena<my_eoh>();
-           my_eoh &dv = d;
-           dv.a = 650;
+           int val = 0;
 
-           // Flatten it. We are hijacking `bytea` varlena type to pass it through
-           // to avoid having to define a new type (FIXME)
-           cppgres::spi_executor spi;
-           spi.execute("create table eoh_smoke_test (v bytea)");
-           auto d2 = spi.query<cppgres::expanded_varlena<my_eoh>>(
-               "insert into eoh_smoke_test values ($1) returning v", d);
-           result = result && _assert(d2.begin()[0].operator my_eoh &().a == dv.a);
+           {
+             // Create a new one
+             auto d = cppgres::expanded_varlena<my_eoh>();
+             my_eoh &dv = d;
+             // Ensure the constructor is called
+             result = result && _assert(dv.b == 100);
+             dv.a = 650;
+             dv.c = &val;
+
+             // Flatten it. We are hijacking `bytea` varlena type to pass it through
+             // to avoid having to define a new type (FIXME)
+             cppgres::spi_executor spi;
+             spi.execute("create table eoh_smoke_test (v bytea)");
+             auto d2 = spi.query<cppgres::expanded_varlena<my_eoh>>(
+                 "insert into eoh_smoke_test values ($1) returning v", d);
+             result = result && _assert(d2.begin()[0].operator my_eoh &().a == dv.a);
+
+             // `d` is not destructed yet
+             result = result && _assert(val == 0);
+           }
+
+           // `d` is still not destructed
+           result = result && _assert(val == 0);
+
+           // Reset parent memory context
+           cppgres::memory_context().reset();
+
+           // Ensure destructor gets called on `d`
+           result = result && _assert(val == 650);
 
            return result;
          }));
