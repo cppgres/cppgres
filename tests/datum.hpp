@@ -216,6 +216,11 @@ add_test(eoh_smoke, ([](test_case &e) {
              my_eoh &dv1 = d2v;
              result = result && _assert(dv1.a == dv0.a);
 
+             // Let's insert it again
+             auto d3 = spi.query<cppgres::expanded_varlena<my_eoh>>(
+                 "insert into eoh_smoke_test values ($1) returning v", d2v);
+             result = result && _assert(d3.begin()[0].operator my_eoh &().a == dv.a);
+
              // `d` is not destructed yet
              result = result && _assert(val == 0);
            }

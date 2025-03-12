@@ -195,8 +195,7 @@ template <flattenable T> struct expanded_varlena : public varlena {
     if (!detoasted_value.has_value()) {
       throw std::runtime_error("hasn't been expanded yet");
     }
-    return datum(
-        EOHPGetRWDatum(reinterpret_cast<::ExpandedObjectHeader *>(non_by_value_type::ptr())));
+    return datum(EOHPGetRWDatum(&detoasted_value.value()->hdr));
   }
 
 private:
