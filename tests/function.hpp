@@ -40,4 +40,20 @@ add_test(cstring_fun_test, ([](test_case &) {
          }));
 
 postgres_function(_byte_array_sig, ([](const cppgres::byte_array) { return true; }));
+
+postgres_function(infer, ([](std::string_view s) { return s; }));
+
+add_test(syscache_type_inference, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           spi.execute(std::format("create function infer(text) returns text language c as '{}'",
+                                   get_library_name()));
+           auto func_oid = spi.query<cppgres::oid>("select 'infer'::regproc").begin()[0];
+           auto v = cppgres::datum_conversion<std::string_view>::from_datum(
+               cppgres::datum(cppgres::ffi_guarded(::OidFunctionCall1Coll)(
+                   func_oid, 0, PointerGetDatum(::cstring_to_text("test")))),
+               cppgres::memory_context());
+           result = result && _assert(v == "test");
+           return result;
+         }));
 } // namespace tests
