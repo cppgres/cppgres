@@ -22,6 +22,7 @@ var types_8hpp =
     [ "cppgres::datum_conversion< bool >", "structcppgres_1_1datum__conversion_3_01bool_01_4.html", null ],
     [ "cppgres::datum_conversion< text >", "structcppgres_1_1datum__conversion_3_01text_01_4.html", null ],
     [ "cppgres::datum_conversion< bytea >", "structcppgres_1_1datum__conversion_3_01bytea_01_4.html", null ],
+    [ "cppgres::datum_conversion< byte_array >", "structcppgres_1_1datum__conversion_3_01byte__array_01_4.html", null ],
     [ "cppgres::datum_conversion< std::string_view >", "structcppgres_1_1datum__conversion_3_01std_1_1string__view_01_4.html", null ],
     [ "cppgres::datum_conversion< std::string >", "structcppgres_1_1datum__conversion_3_01std_1_1string_01_4.html", null ],
     [ "cppgres::datum_conversion< const char * >", "structcppgres_1_1datum__conversion_3_01const_01char_01_5_01_4.html", null ],
