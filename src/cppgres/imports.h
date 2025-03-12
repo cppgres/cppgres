@@ -26,6 +26,7 @@ extern "C" {
 #include <access/tsmapi.h>
 #include <catalog/namespace.h>
 #include <catalog/pg_class.h>
+#include <catalog/pg_proc.h>
 #include <catalog/pg_type.h>
 #include <commands/event_trigger.h>
 #include <executor/spi.h>

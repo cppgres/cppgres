@@ -13,6 +13,10 @@ template <> struct syscache_traits<Form_pg_type> {
   static constexpr ::SysCacheIdentifier cache_id = TYPEOID;
 };
 
+template <> struct syscache_traits<Form_pg_proc> {
+  static constexpr ::SysCacheIdentifier cache_id = PROCOID;
+};
+
 template <typename T>
 concept syscached = requires(T t) {
   { *t };

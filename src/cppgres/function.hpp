@@ -116,6 +116,15 @@ template <datumable_function Func> struct postgres_function {
              auto ptyp =
                  utils::remove_optional_t<std::remove_reference_t<decltype(std::get<Is>(t))>>();
              auto typ = type{.oid = ffi_guarded(::get_fn_expr_argtype)(fc->flinfo, Is)};
+             if (!OidIsValid(typ.oid)) {
+               // TODO: not very efficient to look it up every time
+               syscache<Form_pg_proc, Oid> cache(fc->flinfo->fn_oid);
+               if ((*cache).proargtypes.dim1 > Is) {
+                 typ = type{.oid = (*cache).proargtypes.values[Is]};
+               } else {
+                 return; // skip undefined arguments (happens with type `_in` functions)
+               }
+             }
              if (!type_traits<decltype(ptyp)>::is(typ)) {
                report(ERROR, "unexpected type in position %d, can't convert `%s` into `%.*s`", Is,
                       typ.name().data(), utils::type_name<decltype(ptyp)>().length(),
