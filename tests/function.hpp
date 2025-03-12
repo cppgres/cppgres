@@ -39,4 +39,5 @@ add_test(cstring_fun_test, ([](test_case &) {
            return result;
          }));
 
+postgres_function(_byte_array_sig, ([](const cppgres::byte_array) { return true; }));
 } // namespace tests

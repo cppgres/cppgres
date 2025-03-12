@@ -143,6 +143,19 @@ template <> struct datum_conversion<bytea> {
   static datum into_datum(const bytea &t) { return t.get_datum(); }
 };
 
+template <> struct datum_conversion<byte_array> {
+  static byte_array from_datum(const datum &d, std::optional<memory_context> ctx) {
+    return bytea{d, ctx};
+  }
+
+  static datum into_datum(const byte_array &t) {
+    // This is not perfect if the data was already allocated with Postgres
+    // But once we're with the byte_array (std::span) we've lost this information
+    // TODO: can we do any better here?
+    return bytea(t, memory_context()).get_datum();
+  }
+};
+
 // Specializations for std::string_view and std::string.
 // Here we re-use the conversion for text.
 template <> struct datum_conversion<std::string_view> {

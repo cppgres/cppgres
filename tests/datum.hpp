@@ -75,6 +75,22 @@ add_test(varlena_bytea, ([](test_case &) {
            return result;
          }));
 
+add_test(varlena_byte_array, ([](test_case &) {
+           bool result = true;
+           auto nd = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test")));
+           auto s = cppgres::from_nullable_datum<cppgres::bytea>(nd);
+           cppgres::byte_array ba = s;
+           const auto d = cppgres::datum_conversion<cppgres::byte_array>::into_datum(ba);
+           // NB: below we endure a copy; can we do any better?
+           auto ba1 = cppgres::datum_conversion<cppgres::byte_array>::from_datum(d, std::nullopt);
+
+           result = result && _assert(ba1[0] == std::byte('t'));
+           result = result && _assert(ba1[1] == std::byte('e'));
+           result = result && _assert(ba1[2] == std::byte('s'));
+           result = result && _assert(ba1[3] == std::byte('t'));
+           return result;
+         }));
+
 add_test(varlena_text_into_strings, ([](test_case &) {
            bool result = true;
            auto nd = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test")));

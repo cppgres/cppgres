@@ -105,13 +105,11 @@ struct varlena : public non_by_value_type {
 
 protected:
   void *detoasted = nullptr;
-  // tracking_memory_context<memory_context> detoasted_ctx;
   void *detoasted_ptr() {
     if (detoasted != nullptr) {
       return detoasted;
     }
     detoasted = ffi_guarded(::pg_detoast_datum)(reinterpret_cast<::varlena *>(ptr()));
-    // detoasted_ctx = tracking_memory_context(memory_context::for_pointer(detoasted));
     return detoasted;
   }
 };
@@ -128,6 +126,16 @@ using byte_array = std::span<const std::byte>;
 
 struct bytea : public varlena {
   using varlena::varlena;
+
+  bytea(const byte_array &ba, memory_context ctx)
+      : varlena(([&]() {
+                  auto alloc = ctx.alloc<std::byte>(VARHDRSZ + ba.size_bytes());
+                  SET_VARSIZE(alloc, VARHDRSZ + ba.size_bytes());
+                  auto ptr = VARDATA_ANY(alloc);
+                  std::copy(ba.begin(), ba.end(), reinterpret_cast<std::byte *>(ptr));
+                  return datum(PointerGetDatum(alloc));
+                })(),
+                ctx) {}
 
   operator byte_array() {
     return {reinterpret_cast<std::byte *>(this->operator void *()),
