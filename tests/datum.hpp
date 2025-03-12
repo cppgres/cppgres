@@ -155,7 +155,7 @@ add_test(eoh_smoke, ([](test_case &e) {
              int a = 0;
              int b;
              int *c = nullptr;
-             std::size_t flat_size() { return sizeof(a); }
+             std::size_t flat_size() { return sizeof(a) * 100; }
 
              my_eoh() : b(100) {}
              my_eoh(int _a) : a(_a) {}
@@ -176,7 +176,11 @@ add_test(eoh_smoke, ([](test_case &e) {
              static my_eoh restore_from(std::span<std::byte> buffer) {
                int *to_ptr = reinterpret_cast<int *>(buffer.data());
                std::span tbuffer(to_ptr, 1);
-               return my_eoh(tbuffer[0]);
+               auto res = my_eoh(tbuffer[0]);
+               if (res.flat_size() != buffer.size_bytes()) {
+                 throw std::runtime_error("mismatch in size");
+               }
+               return res;
              }
 
              ~my_eoh() {

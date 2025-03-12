@@ -171,14 +171,13 @@ template <flattenable T> struct expanded_varlena : public varlena {
         detoasted_value(reinterpret_cast<expanded *>(DatumGetPointer(value_datum))) {}
 
   operator T &() {
-    auto *ptr = non_by_value_type::ptr();
     if (detoasted_value.has_value()) {
       return detoasted_value.value()->inner;
     } else {
       auto *ptr1 = reinterpret_cast<std::byte *>(varlena::operator void *());
       auto ctx = memory_context(std::move(alloc_set_memory_context()));
       auto *value = new (ctx.alloc<expanded>())
-          expanded(T::restore_from(std::span(ptr1, VARSIZE_ANY_EXHDR(ptr))));
+          expanded(T::restore_from(std::span(ptr1, VARSIZE_ANY_EXHDR(detoasted_ptr()))));
       ctx.register_reset_callback(
           [](void *arg) {
             auto v = reinterpret_cast<expanded *>(arg);
