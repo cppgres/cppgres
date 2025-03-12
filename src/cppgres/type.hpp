@@ -168,12 +168,12 @@ template <flattenable T> struct expanded_varlena : public varlena {
           init(&e->hdr, ctx);
           return std::make_pair(datum(PointerGetDatum(e)), ctx);
         })()),
-        detoasted(true) {}
+        detoasted_value(reinterpret_cast<expanded *>(DatumGetPointer(value_datum))) {}
 
   operator T &() {
     auto *ptr = non_by_value_type::ptr();
-    if (detoasted) {
-      return (reinterpret_cast<expanded *>(ptr))->inner;
+    if (detoasted_value.has_value()) {
+      return detoasted_value.value()->inner;
     } else {
       auto *ptr1 = reinterpret_cast<std::byte *>(varlena::operator void *());
       auto ctx = memory_context(std::move(alloc_set_memory_context()));
@@ -186,13 +186,13 @@ template <flattenable T> struct expanded_varlena : public varlena {
           },
           value);
       init(&value->hdr, ctx);
-      detoasted = true;
+      detoasted_value = value;
       return value->inner;
     }
   }
 
   datum get_expanded_datum() const {
-    if (!detoasted) {
+    if (!detoasted_value.has_value()) {
       throw std::runtime_error("hasn't been expanded yet");
     }
     return datum(
@@ -200,12 +200,12 @@ template <flattenable T> struct expanded_varlena : public varlena {
   }
 
 private:
-  bool detoasted = false;
   struct expanded {
     expanded(T &&t) : inner(std::move(t)) {}
     ::ExpandedObjectHeader hdr;
     T inner;
   };
+  std::optional<expanded *> detoasted_value = std::nullopt;
 
   static void init(ExpandedObjectHeader *hdr, memory_context &ctx) {
     using header = int32_t;

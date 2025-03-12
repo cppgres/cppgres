@@ -207,6 +207,15 @@ add_test(eoh_smoke, ([](test_case &e) {
                  "insert into eoh_smoke_test values ($1) returning v", d);
              result = result && _assert(d2.begin()[0].operator my_eoh &().a == dv.a);
 
+             // Ensure we're reusing detoasted copy correctly
+             auto d2v = d2.begin()[0];
+             my_eoh &dv0 = d2v;
+             result = result && _assert(d2v.is_detoasted());
+             result = result && _assert(dv0.a == dv.a);
+             // if we get it again, we get the same copy
+             my_eoh &dv1 = d2v;
+             result = result && _assert(dv1.a == dv0.a);
+
              // `d` is not destructed yet
              result = result && _assert(val == 0);
            }
