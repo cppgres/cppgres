@@ -63,6 +63,7 @@ var hierarchy =
     [ "cppgres::spi_plan< Args >", "structcppgres_1_1spi__plan.html", null ],
     [ "cppgres::syscache< T, D >", "structcppgres_1_1syscache.html", null ],
     [ "cppgres::syscache_traits< T >", "structcppgres_1_1syscache__traits.html", null ],
+    [ "cppgres::syscache_traits< Form_pg_proc >", "structcppgres_1_1syscache__traits_3_01Form__pg__proc_01_4.html", null ],
     [ "cppgres::syscache_traits< Form_pg_type >", "structcppgres_1_1syscache__traits_3_01Form__pg__type_01_4.html", null ],
     [ "std::true_type", null, [
       [ "cppgres::utils::is_std_tuple< std::tuple< Ts... > >", "structcppgres_1_1utils_1_1is__std__tuple_3_01std_1_1tuple_3_01Ts_8_8_8_01_4_01_4.html", null ]
