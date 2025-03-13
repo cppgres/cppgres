@@ -56,4 +56,25 @@ add_test(syscache_type_inference, ([](test_case &) {
            result = result && _assert(v == "test");
            return result;
          }));
+
+add_test(syscache_type_inference_priority, ([](test_case &) {
+           // This one ensures that we don't impose the number of args called but the number
+           // of args receivable when there's lack of typing information.
+           //
+           // This is the case with things like "input functions" – regardless of the signature,
+           // `InputFunctionCall` will supply three argument and there are no types given.
+           //
+           // We are effectively simulating this here.
+           bool result = true;
+           cppgres::spi_executor spi;
+           spi.execute(std::format("create function infer(text) returns text language c as '{}'",
+                                   get_library_name()));
+           auto func_oid = spi.query<cppgres::oid>("select 'infer'::regproc").begin()[0];
+           auto v = cppgres::datum_conversion<std::string_view>::from_datum(
+               cppgres::datum(cppgres::ffi_guarded(::OidFunctionCall2Coll)(
+                   func_oid, 0, PointerGetDatum(::cstring_to_text("test")), cppgres::datum(0))),
+               cppgres::memory_context());
+           result = result && _assert(v == "test");
+           return result;
+         }));
 } // namespace tests

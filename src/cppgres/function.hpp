@@ -106,116 +106,118 @@ template <datumable_function Func> struct postgres_function {
   auto operator()(FunctionCallInfo fc) -> ::Datum {
 
     argument_types t;
-    if (arity != fc->nargs) {
-      report(ERROR, "expected %d arguments, got %d instead", arity, fc->nargs);
-    } else {
 
-      try {
+    try {
+      short accounted_for_args = 0;
+      [&]<std::size_t... Is>(std::index_sequence<Is...>) {
+        (([&] {
+           auto ptyp =
+               utils::remove_optional_t<std::remove_reference_t<decltype(std::get<Is>(t))>>();
+           auto typ = type{.oid = ffi_guarded(::get_fn_expr_argtype)(fc->flinfo, Is)};
+           if (!OidIsValid(typ.oid)) {
+             // TODO: not very efficient to look it up every time
+             syscache<Form_pg_proc, Oid> cache(fc->flinfo->fn_oid);
+             if ((*cache).proargtypes.dim1 > Is) {
+               typ = type{.oid = (*cache).proargtypes.values[Is]};
+             } else {
+               return; // skip undefined arguments (happens with type `_in` functions)
+             }
+           }
+           if (!type_traits<decltype(ptyp)>::is(typ)) {
+             report(ERROR, "unexpected type in position %d, can't convert `%s` into `%.*s`", Is,
+                    typ.name().data(), utils::type_name<decltype(ptyp)>().length(),
+                    utils::type_name<decltype(ptyp)>().data());
+           }
+           accounted_for_args++;
+           std::get<Is>(t) = from_nullable_datum<decltype(ptyp)>(nullable_datum(fc->args[Is]));
+         }()),
+         ...);
+      }(std::make_index_sequence<utils::tuple_size_v<decltype(t)>>{});
+
+      if (arity != accounted_for_args) {
+        report(ERROR, "expected %d arguments, got %d instead", arity, accounted_for_args);
+      }
+
+      auto call_handle = current_postgres_function::push(fc);
+
+      if constexpr (datumable_iterator<return_type>) {
+        // TODO: For now, let's assume materialized model
+        auto rsinfo = reinterpret_cast<::ReturnSetInfo *>(fc->resultinfo);
+        if (rsinfo == nullptr) {
+          throw std::runtime_error("caller is not expecting a set");
+        }
+        using set_value_type = set_iterator_traits<return_type>::value_type;
+        constexpr auto nargs = utils::tuple_size_v<set_value_type>;
+
+        auto natts = rsinfo->expectedDesc->natts;
+        if (nargs != natts) {
+          throw std::runtime_error(
+              std::format("expected set with {} values, got {} instead", nargs, natts));
+        }
+
         [&]<std::size_t... Is>(std::index_sequence<Is...>) {
           (([&] {
-             auto ptyp =
-                 utils::remove_optional_t<std::remove_reference_t<decltype(std::get<Is>(t))>>();
-             auto typ = type{.oid = ffi_guarded(::get_fn_expr_argtype)(fc->flinfo, Is)};
-             if (!OidIsValid(typ.oid)) {
-               // TODO: not very efficient to look it up every time
-               syscache<Form_pg_proc, Oid> cache(fc->flinfo->fn_oid);
-               if ((*cache).proargtypes.dim1 > Is) {
-                 typ = type{.oid = (*cache).proargtypes.values[Is]};
-               } else {
-                 return; // skip undefined arguments (happens with type `_in` functions)
-               }
+             auto oid = ffi_guarded(::SPI_gettypeid)(rsinfo->expectedDesc, Is + 1);
+             auto t = type{.oid = oid};
+             using typ = utils::tuple_element_t<Is, set_value_type>;
+             if (!type_traits<typ>::is(t)) {
+               throw std::invalid_argument(
+                   std::format("invalid type in record's position {} ({}), got OID {}", Is,
+                               utils::type_name<typ>(), oid));
              }
-             if (!type_traits<decltype(ptyp)>::is(typ)) {
-               report(ERROR, "unexpected type in position %d, can't convert `%s` into `%.*s`", Is,
-                      typ.name().data(), utils::type_name<decltype(ptyp)>().length(),
-                      utils::type_name<decltype(ptyp)>().data());
-             }
-             std::get<Is>(t) = from_nullable_datum<decltype(ptyp)>(nullable_datum(fc->args[Is]));
            }()),
            ...);
-        }(std::make_index_sequence<utils::tuple_size_v<decltype(t)>>{});
+        }(std::make_index_sequence<nargs>{});
 
-        auto call_handle = current_postgres_function::push(fc);
+        rsinfo->returnMode = SFRM_Materialize;
 
-        if constexpr (datumable_iterator<return_type>) {
-          // TODO: For now, let's assume materialized model
-          auto rsinfo = reinterpret_cast<::ReturnSetInfo *>(fc->resultinfo);
-          if (rsinfo == nullptr) {
-            throw std::runtime_error("caller is not expecting a set");
-          }
-          using set_value_type = set_iterator_traits<return_type>::value_type;
-          constexpr auto nargs = utils::tuple_size_v<set_value_type>;
+        memory_context_scope scope(memory_context(rsinfo->econtext->ecxt_per_query_memory));
 
-          auto natts = rsinfo->expectedDesc->natts;
-          if (nargs != natts) {
-            throw std::runtime_error(
-                std::format("expected set with {} values, got {} instead", nargs, natts));
-          }
+        ::Tuplestorestate *tupstore = ffi_guarded(::tuplestore_begin_heap)(
+            (rsinfo->allowedModes & SFRM_Materialize_Random) == SFRM_Materialize_Random, false,
+            work_mem);
+        rsinfo->setResult = tupstore;
 
-          [&]<std::size_t... Is>(std::index_sequence<Is...>) {
-            (([&] {
-               auto oid = ffi_guarded(::SPI_gettypeid)(rsinfo->expectedDesc, Is + 1);
-               auto t = type{.oid = oid};
-               using typ = utils::tuple_element_t<Is, set_value_type>;
-               if (!type_traits<typ>::is(t)) {
-                 throw std::invalid_argument(
-                     std::format("invalid type in record's position {} ({}), got OID {}", Is,
-                                 utils::type_name<typ>(), oid));
-               }
-             }()),
-             ...);
-          }(std::make_index_sequence<nargs>{});
+        auto result = std::apply(func, t);
 
-          rsinfo->returnMode = SFRM_Materialize;
+        for (auto it : result) {
+          CHECK_FOR_INTERRUPTS();
+          std::array<::Datum, nargs> values = std::apply(
+              [](auto &&...elems) -> std::array<::Datum, sizeof...(elems)> {
+                return {into_nullable_datum(elems)...};
+              },
+              utils::tie(it));
+          std::array<bool, nargs> isnull = std::apply(
+              [](auto &&...elems) -> std::array<bool, sizeof...(elems)> {
+                return {into_nullable_datum(elems).is_null()...};
+              },
+              utils::tie(it));
+          ffi_guarded(::tuplestore_putvalues)(tupstore, rsinfo->expectedDesc, values.data(),
+                                              isnull.data());
+        }
 
-          memory_context_scope scope(memory_context(rsinfo->econtext->ecxt_per_query_memory));
-
-          ::Tuplestorestate *tupstore = ffi_guarded(::tuplestore_begin_heap)(
-              (rsinfo->allowedModes & SFRM_Materialize_Random) == SFRM_Materialize_Random, false,
-              work_mem);
-          rsinfo->setResult = tupstore;
-
-          auto result = std::apply(func, t);
-
-          for (auto it : result) {
-            CHECK_FOR_INTERRUPTS();
-            std::array<::Datum, nargs> values = std::apply(
-                [](auto &&...elems) -> std::array<::Datum, sizeof...(elems)> {
-                  return {into_nullable_datum(elems)...};
-                },
-                utils::tie(it));
-            std::array<bool, nargs> isnull = std::apply(
-                [](auto &&...elems) -> std::array<bool, sizeof...(elems)> {
-                  return {into_nullable_datum(elems).is_null()...};
-                },
-                utils::tie(it));
-            ffi_guarded(::tuplestore_putvalues)(tupstore, rsinfo->expectedDesc, values.data(),
-                                                isnull.data());
-          }
-
-          fc->isnull = true;
+        fc->isnull = true;
+        return 0;
+      } else {
+        if constexpr (std::same_as<return_type, void>) {
+          std::apply(func, t);
           return 0;
         } else {
-          if constexpr (std::same_as<return_type, void>) {
-            std::apply(func, t);
+          auto result = std::apply(func, t);
+          nullable_datum nd = into_nullable_datum(result);
+          if (nd.is_null()) {
+            fc->isnull = true;
             return 0;
-          } else {
-            auto result = std::apply(func, t);
-            nullable_datum nd = into_nullable_datum(result);
-            if (nd.is_null()) {
-              fc->isnull = true;
-              return 0;
-            }
-            return nd;
           }
+          return nd;
         }
-      } catch (const pg_exception &e) {
-        error(e);
-      } catch (const std::exception &e) {
-        report(ERROR, "exception: %s", e.what());
-      } catch (...) {
-        report(ERROR, "some exception occurred");
       }
+    } catch (const pg_exception &e) {
+      error(e);
+    } catch (const std::exception &e) {
+      report(ERROR, "exception: %s", e.what());
+    } catch (...) {
+      report(ERROR, "some exception occurred");
     }
     __builtin_unreachable();
   }
