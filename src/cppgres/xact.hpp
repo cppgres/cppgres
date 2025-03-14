@@ -15,7 +15,7 @@ struct internal_subtransaction {
   internal_subtransaction(bool commit = true)
       : owner(::CurrentResourceOwner), commit(commit), name("") {
     if (txns.empty()) {
-      ffi_guarded(::BeginInternalSubTransaction)(nullptr);
+      ffi_guard{::BeginInternalSubTransaction}(nullptr);
       txns.push(this);
     } else {
       throw std::runtime_error("internal subtransaction already started");
@@ -25,7 +25,7 @@ struct internal_subtransaction {
   internal_subtransaction(std::string_view name, bool commit = true)
       : owner(::CurrentResourceOwner), commit(commit), name(name) {
     if (txns.empty()) {
-      ffi_guarded(::BeginInternalSubTransaction)(this->name.c_str());
+      ffi_guard{::BeginInternalSubTransaction}(this->name.c_str());
       txns.push(this);
     } else {
       throw std::runtime_error("internal subtransaction already started");
@@ -35,9 +35,9 @@ struct internal_subtransaction {
   ~internal_subtransaction() {
     txns.pop();
     if (commit) {
-      ffi_guarded(::ReleaseCurrentSubTransaction)();
+      ffi_guard{::ReleaseCurrentSubTransaction}();
     } else {
-      ffi_guarded(::RollbackAndReleaseCurrentSubTransaction)();
+      ffi_guard{::RollbackAndReleaseCurrentSubTransaction}();
     }
     ::CurrentResourceOwner = owner;
   }

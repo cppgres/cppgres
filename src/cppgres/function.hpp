@@ -107,7 +107,7 @@ template <datumable_function Func> struct postgres_function {
 
     return exception_guard([&] {
       // return type
-      auto rettype = type{.oid = ffi_guarded(::get_fn_expr_rettype)(fc->flinfo)};
+      auto rettype = type{.oid = ffi_guard{::get_fn_expr_rettype}(fc->flinfo)};
       auto retset = fc->flinfo->fn_retset;
 
       if constexpr (datumable_iterator<return_type>) {
@@ -150,7 +150,7 @@ template <datumable_function Func> struct postgres_function {
       auto t = [&]<std::size_t... Is>(std::index_sequence<Is...>) {
         return argument_types{([&] -> utils::tuple_element_t<Is, argument_types> {
           using ptyp = utils::tuple_element_t<Is, argument_types>;
-          auto typ = type{.oid = ffi_guarded(::get_fn_expr_argtype)(fc->flinfo, Is)};
+          auto typ = type{.oid = ffi_guard{::get_fn_expr_argtype}(fc->flinfo, Is)};
           if (!OidIsValid(typ.oid)) {
             // TODO: not very efficient to look it up every time
             syscache<Form_pg_proc, Oid> cache(fc->flinfo->fn_oid);
@@ -188,7 +188,7 @@ template <datumable_function Func> struct postgres_function {
 
         [&]<std::size_t... Is>(std::index_sequence<Is...>) {
           (([&] {
-             auto oid = ffi_guarded(::SPI_gettypeid)(rsinfo->expectedDesc, Is + 1);
+             auto oid = ffi_guard{::SPI_gettypeid}(rsinfo->expectedDesc, Is + 1);
              auto t = type{.oid = oid};
              using typ = utils::tuple_element_t<Is, set_value_type>;
              if (!type_traits<typ>::is(t)) {
@@ -204,7 +204,7 @@ template <datumable_function Func> struct postgres_function {
 
         memory_context_scope scope(memory_context(rsinfo->econtext->ecxt_per_query_memory));
 
-        ::Tuplestorestate *tupstore = ffi_guarded(::tuplestore_begin_heap)(
+        ::Tuplestorestate *tupstore = ffi_guard{::tuplestore_begin_heap}(
             (rsinfo->allowedModes & SFRM_Materialize_Random) == SFRM_Materialize_Random, false,
             work_mem);
         rsinfo->setResult = tupstore;
@@ -223,8 +223,8 @@ template <datumable_function Func> struct postgres_function {
                 return {into_nullable_datum(elems).is_null()...};
               },
               utils::tie(it));
-          ffi_guarded(::tuplestore_putvalues)(tupstore, rsinfo->expectedDesc, values.data(),
-                                              isnull.data());
+          ffi_guard{::tuplestore_putvalues}(tupstore, rsinfo->expectedDesc, values.data(),
+                                            isnull.data());
         }
 
         fc->isnull = true;

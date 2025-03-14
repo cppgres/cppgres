@@ -183,7 +183,7 @@ template <> struct datum_conversion<std::string_view> {
 
   static datum into_datum(const std::string_view &t) {
     size_t sz = t.size();
-    void *result = ffi_guarded(::palloc)(sz + VARHDRSZ);
+    void *result = ffi_guard{::palloc}(sz + VARHDRSZ);
     SET_VARSIZE(result, t.size() + VARHDRSZ);
     memcpy(VARDATA(result), t.data(), sz);
     return datum(reinterpret_cast<::Datum>(result));
@@ -244,7 +244,7 @@ struct named_type : public type {
    */
   named_type(const std::string_view schema, const std::string_view name)
       : type(([&]() {
-          cppgres::oid nsoid = ffi_guarded(::LookupExplicitNamespace)(schema.data(), false);
+          cppgres::oid nsoid = ffi_guard{::LookupExplicitNamespace}(schema.data(), false);
           cppgres::oid oid = InvalidOid;
           if (OidIsValid(nsoid)) {
             oid = (*syscache<Form_pg_type, const char *, cppgres::oid>(

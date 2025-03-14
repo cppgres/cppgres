@@ -45,13 +45,13 @@ template <convertible_from_nullable_datum... Args> struct spi_plan {
   }
 
   void keep() {
-    ffi_guarded(::SPI_keepplan)(*this);
+    ffi_guard{::SPI_keepplan}(*this);
     kept = true;
   }
 
   ~spi_plan() {
     if (kept) {
-      ffi_guarded(::SPI_freeplan)(*this);
+      ffi_guard{::SPI_freeplan}(*this);
     }
   }
 
@@ -75,7 +75,7 @@ struct spi_executor : public executor {
    */
   spi_executor() : spi_executor(0) {}
   ~spi_executor() {
-    ffi_guarded(::SPI_finish)();
+    ffi_guard{::SPI_finish}();
     executors.pop();
   }
 
@@ -155,7 +155,7 @@ struct spi_executor : public executor {
           // if a special case of a directly convertible type
           bool isnull;
           ::Datum value =
-              ffi_guarded(::SPI_getbinval)(tuptable->vals[n], tuptable->tupdesc, 1, &isnull);
+              ffi_guard{::SPI_getbinval}(tuptable->vals[n], tuptable->tupdesc, 1, &isnull);
           ::NullableDatum datum = {.value = value, .isnull = isnull};
           auto ret =
               from_nullable_datum<T>(nullable_datum(datum), memory_context(tuptable->tuptabcxt));
@@ -167,7 +167,7 @@ struct spi_executor : public executor {
         return T{([&] {
           bool isnull;
           ::Datum value =
-              ffi_guarded(::SPI_getbinval)(tuptable->vals[n], tuptable->tupdesc, Is + 1, &isnull);
+              ffi_guard{::SPI_getbinval}(tuptable->vals[n], tuptable->tupdesc, Is + 1, &isnull);
           ::NullableDatum datum = {.value = value, .isnull = isnull};
           auto nd = nullable_datum(datum);
           return from_nullable_datum<utils::tuple_element_t<Is, T>>(
@@ -207,7 +207,7 @@ struct spi_executor : public executor {
       auto natts = table->tupdesc->natts;
       [&]<std::size_t... Is>(std::index_sequence<Is...>) {
         (([&] {
-           auto oid = ffi_guarded(::SPI_gettypeid)(table->tupdesc, Is + 1);
+           auto oid = ffi_guard{::SPI_gettypeid}(table->tupdesc, Is + 1);
            auto t = type{.oid = oid};
            if (!type_traits<utils::tuple_element_t<Is, Ret>>::is(t)) {
              throw std::invalid_argument(
@@ -248,8 +248,8 @@ struct spi_executor : public executor {
     std::array<::Oid, nargs> types = {type_traits<Args>::type_for().oid...};
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
-    auto rc = ffi_guarded(::SPI_execute_with_args)(query.data(), nargs, types.data(), datums.data(),
-                                                   nulls.data(), false, 0);
+    auto rc = ffi_guard{::SPI_execute_with_args}(query.data(), nargs, types.data(), datums.data(),
+                                                 nulls.data(), false, 0);
     if (rc > 0) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
       return results<Ret, Args...>(SPI_tuptable);
@@ -265,7 +265,7 @@ struct spi_executor : public executor {
     }
     constexpr size_t nargs = sizeof...(Args);
     std::array<::Oid, nargs> types = {type_traits<Args>::type_for().oid...};
-    return spi_plan<Args...>(ffi_guarded(::SPI_prepare)(query.data(), nargs, types.data()));
+    return spi_plan<Args...>(ffi_guard{::SPI_prepare}(query.data(), nargs, types.data()));
   }
 
   template <datumable_tuple Ret, convertible_into_nullable_datum... Args>
@@ -276,7 +276,7 @@ struct spi_executor : public executor {
     constexpr size_t nargs = sizeof...(Args);
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
-    auto rc = ffi_guarded(::SPI_execute_plan)(query, datums.data(), nulls.data(), false, 0);
+    auto rc = ffi_guard{::SPI_execute_plan}(query, datums.data(), nulls.data(), false, 0);
     if (rc > 0) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
       return results<Ret, Args...>(SPI_tuptable);
@@ -294,8 +294,8 @@ struct spi_executor : public executor {
     std::array<::Oid, nargs> types = {type_traits<Args>::type_for().oid...};
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
-    auto rc = ffi_guarded(::SPI_execute_with_args)(query.data(), nargs, types.data(), datums.data(),
-                                                   nulls.data(), false, 0);
+    auto rc = ffi_guard{::SPI_execute_with_args}(query.data(), nargs, types.data(), datums.data(),
+                                                 nulls.data(), false, 0);
     if (rc >= 0) {
       return SPI_processed;
     } else {
@@ -310,7 +310,7 @@ private:
 protected:
   static inline std::stack<spi_executor *> executors;
   spi_executor(int flags) : before_spi(::CurrentMemoryContext) {
-    ffi_guarded(::SPI_connect_ext)(flags);
+    ffi_guard{::SPI_connect_ext}(flags);
     spi = ::CurrentMemoryContext;
     ::CurrentMemoryContext = before_spi;
     executors.push(this);
@@ -331,14 +331,14 @@ struct spi_nonatomic_executor : public spi_executor {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
     }
-    ffi_guarded(chain ? ::SPI_commit_and_chain : ::SPI_commit)();
+    ffi_guard(chain ? ::SPI_commit_and_chain : ::SPI_commit)();
   }
 
   void rollback(bool chain = false) {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
     }
-    ffi_guarded(chain ? ::SPI_rollback_and_chain : ::SPI_rollback)();
+    ffi_guard(chain ? ::SPI_rollback_and_chain : ::SPI_rollback)();
   }
 };
 

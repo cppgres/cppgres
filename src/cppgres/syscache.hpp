@@ -29,7 +29,7 @@ template <syscached T, convertible_into_datum... D> struct syscache {
       requires(sizeof...(key) > 0 && sizeof...(key) < 5)
   {
     datum keys[4] = {datum_conversion<D>::into_datum(key)...};
-    tuple = ffi_guarded(::SearchSysCache)(cache_id, keys[0], keys[1], keys[2], keys[3]);
+    tuple = ffi_guard{::SearchSysCache}(cache_id, keys[0], keys[1], keys[2], keys[3]);
 
     if (!HeapTupleIsValid(tuple)) {
       throw std::runtime_error("invalid tuple");

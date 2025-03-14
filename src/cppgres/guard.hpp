@@ -19,7 +19,7 @@ namespace cppgres {
 template <typename Func> struct ffi_guard {
   Func func;
 
-  ffi_guard(Func f) : func(std::move(f)) {}
+  explicit ffi_guard(Func f) : func(std::move(f)) {}
 
   template <typename... Args>
   auto operator()(Args &&...args) -> decltype(func(std::forward<Args>(args)...)) {
@@ -49,8 +49,6 @@ template <typename Func> struct ffi_guard {
     __builtin_unreachable();
   }
 };
-
-template <typename Func> auto ffi_guarded(Func f) { return ffi_guard<Func>{f}; }
 
 /**
  * @brief Wraps a C++ function to catch exceptions and report them as Postgres errors

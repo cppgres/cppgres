@@ -16,7 +16,7 @@ struct record {
 
   record(HeapTupleHeader heap_tuple)
       : heap_tuple(heap_tuple),
-        tupdesc(ffi_guard(::lookup_rowtype_tupdesc)(HeapTupleHeaderGetTypeId(heap_tuple),
+        tupdesc(ffi_guard{::lookup_rowtype_tupdesc}(HeapTupleHeaderGetTypeId(heap_tuple),
                                                     HeapTupleHeaderGetTypMod(heap_tuple))) {
 #if PG_MAJORVERSION_NUM < 18
     tuple.t_len = HeapTupleHeaderGetDatumLength(tupdesc);
@@ -99,7 +99,7 @@ private:
 
 template <> struct datum_conversion<record> {
   static record from_datum(const datum &d, std::optional<memory_context> ctx) {
-    return {reinterpret_cast<HeapTupleHeader>(ffi_guarded(::pg_detoast_datum)(
+    return {reinterpret_cast<HeapTupleHeader>(ffi_guard{::pg_detoast_datum}(
         reinterpret_cast<struct ::varlena *>(d.operator const ::Datum &())))};
   }
 

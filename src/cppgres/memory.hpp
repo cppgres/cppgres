@@ -14,11 +14,11 @@ namespace cppgres {
 struct abstract_memory_context {
 
   template <typename T = std::byte> T *alloc(size_t n = 1) {
-    return static_cast<T *>(ffi_guarded(::MemoryContextAlloc)(_memory_context(), sizeof(T) * n));
+    return static_cast<T *>(ffi_guard{::MemoryContextAlloc}(_memory_context(), sizeof(T) * n));
   }
-  template <typename T = void> void free(T *ptr) { ffi_guarded(::pfree)(ptr); }
+  template <typename T = void> void free(T *ptr) { ffi_guard{::pfree}(ptr); }
 
-  void reset() { ffi_guarded(::MemoryContextReset)(_memory_context()); }
+  void reset() { ffi_guard{::MemoryContextReset}(_memory_context()); }
 
   bool operator==(abstract_memory_context &c) { return _memory_context() == c._memory_context(); }
   bool operator!=(abstract_memory_context &c) { return _memory_context() != c._memory_context(); }
@@ -30,11 +30,11 @@ struct abstract_memory_context {
     auto cb = alloc<::MemoryContextCallback>(sizeof(::MemoryContextCallback));
     cb->func = func;
     cb->arg = arg;
-    ffi_guarded(::MemoryContextRegisterResetCallback)(_memory_context(), cb);
+    ffi_guard{::MemoryContextRegisterResetCallback}(_memory_context(), cb);
     return cb;
   }
 
-  void delete_context() { ffi_guarded(::MemoryContextDelete)(_memory_context()); }
+  void delete_context() { ffi_guard{::MemoryContextDelete}(_memory_context()); }
 
 protected:
   virtual ::MemoryContext _memory_context() = 0;
@@ -72,7 +72,7 @@ struct memory_context : public abstract_memory_context {
     if (ptr == nullptr || ptr != (void *)MAXALIGN(ptr)) {
       throw std::runtime_error("invalid pointer");
     }
-    return memory_context(ffi_guarded(::GetMemoryChunkContext)(ptr));
+    return memory_context(ffi_guard{::GetMemoryChunkContext}(ptr));
   }
 
   template <typename C> requires std::derived_from<C, abstract_memory_context>
@@ -94,15 +94,15 @@ protected:
 struct alloc_set_memory_context : public owned_memory_context {
   using owned_memory_context::owned_memory_context;
   alloc_set_memory_context()
-      : owned_memory_context(ffi_guarded(::AllocSetContextCreateInternal)(
+      : owned_memory_context(ffi_guard{::AllocSetContextCreateInternal}(
             ::CurrentMemoryContext, nullptr, ALLOCSET_DEFAULT_SIZES)) {}
   alloc_set_memory_context(memory_context &ctx)
       : owned_memory_context(
-            ffi_guarded(::AllocSetContextCreateInternal)(ctx, nullptr, ALLOCSET_DEFAULT_SIZES)) {}
+            ffi_guard{::AllocSetContextCreateInternal}(ctx, nullptr, ALLOCSET_DEFAULT_SIZES)) {}
 
   alloc_set_memory_context(memory_context &&ctx)
       : owned_memory_context(
-            ffi_guarded(::AllocSetContextCreateInternal)(ctx, nullptr, ALLOCSET_DEFAULT_SIZES)) {}
+            ffi_guard{::AllocSetContextCreateInternal}(ctx, nullptr, ALLOCSET_DEFAULT_SIZES)) {}
 };
 
 inline memory_context top_memory_context() { return memory_context(TopMemoryContext); };

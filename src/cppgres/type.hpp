@@ -31,8 +31,8 @@ struct type {
     if (!OidIsValid(oid)) {
       throw std::runtime_error("invalid type");
     }
-    return (qualified ? ffi_guarded(::format_type_be_qualified)
-                      : ffi_guarded(::format_type_be))(oid);
+    return (qualified ? ffi_guard{::format_type_be_qualified}
+                      : ffi_guard{::format_type_be})(oid);
   }
 
   bool operator==(const type &other) const { return oid == other.oid; }
@@ -108,7 +108,7 @@ protected:
     if (detoasted != nullptr) {
       return detoasted;
     }
-    detoasted = ffi_guarded(::pg_detoast_datum)(reinterpret_cast<::varlena *>(ptr()));
+    detoasted = ffi_guard{::pg_detoast_datum}(reinterpret_cast<::varlena *>(ptr()));
     return detoasted;
   }
 };
@@ -224,7 +224,7 @@ private:
               inner->flatten_into(buffer);
             }};
 
-    ffi_guarded(::EOH_init_header)(hdr, &eom, ctx);
+    ffi_guard{::EOH_init_header}(hdr, &eom, ctx);
   }
 };
 

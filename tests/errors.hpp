@@ -6,7 +6,7 @@ namespace tests {
 
 add_test(catch_error, ([](test_case &) {
            try {
-             cppgres::ffi_guarded(::get_role_oid)("this_role_does_not_exist", false);
+             cppgres::ffi_guard{::get_role_oid}("this_role_does_not_exist", false);
              _assert(false);
            } catch (cppgres::pg_exception &e) {
              return true;
@@ -34,7 +34,7 @@ add_test(exception_to_error, ([](test_case &) {
          }));
 
 postgres_function(produce_error, ([]() {
-                    cppgres::ffi_guarded(::get_role_oid)("this_role_does_not_exist", false);
+                    cppgres::ffi_guard{::get_role_oid}("this_role_does_not_exist", false);
                     _assert(false);
                     return false;
                   }));
