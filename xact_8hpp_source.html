@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('xact_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <a class="code hl_struct" href="structcppgres_1_1internal__subtransaction.html">internal_subtransaction</a>(<span class="keywordtype">bool</span> commit = <span class="keyword">true</span>)</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      : owner(::CurrentResourceOwner), commit(commit), name(<span class="stringliteral">&quot;&quot;</span>) {</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">if</span> (txns.empty()) {</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      ffi_guarded(::BeginInternalSubTransaction)(<span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::BeginInternalSubTransaction}(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      txns.push(<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;internal subtransaction already started&quot;</span>);</div>
@@ -164,7 +164,7 @@ $(document).ready(function(){initNavTree('xact_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <a class="code hl_struct" href="structcppgres_1_1internal__subtransaction.html">internal_subtransaction</a>(std::string_view name, <span class="keywordtype">bool</span> commit = <span class="keyword">true</span>)</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      : owner(::CurrentResourceOwner), commit(commit), name(name) {</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">if</span> (txns.empty()) {</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      ffi_guarded(::BeginInternalSubTransaction)(this-&gt;name.c_str());</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::BeginInternalSubTransaction}(this-&gt;name.c_str());</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      txns.push(<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;internal subtransaction already started&quot;</span>);</div>
@@ -174,9 +174,9 @@ $(document).ready(function(){initNavTree('xact_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_struct" href="structcppgres_1_1internal__subtransaction.html">~internal_subtransaction</a>() {</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    txns.pop();</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">if</span> (commit) {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      ffi_guarded(::ReleaseCurrentSubTransaction)();</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::ReleaseCurrentSubTransaction}();</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      ffi_guarded(::RollbackAndReleaseCurrentSubTransaction)();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::RollbackAndReleaseCurrentSubTransaction}();</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    }</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    ::CurrentResourceOwner = owner;</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  }</div>
@@ -189,6 +189,7 @@ $(document).ready(function(){initNavTree('xact_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>};</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>} <span class="comment">// namespace cppgres</span></div>
+<div class="ttc" id="astructcppgres_1_1ffi__guard_html"><div class="ttname"><a href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a></div><div class="ttdef"><b>Definition:</b> guard.hpp:19</div></div>
 <div class="ttc" id="astructcppgres_1_1internal__subtransaction_html"><div class="ttname"><a href="structcppgres_1_1internal__subtransaction.html">cppgres::internal_subtransaction</a></div><div class="ttdef"><b>Definition:</b> xact.hpp:14</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

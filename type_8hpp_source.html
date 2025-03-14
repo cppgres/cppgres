@@ -160,8 +160,8 @@ $(document).ready(function(){initNavTree('type_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">if</span> (!OidIsValid(oid)) {</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;invalid type&quot;</span>);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    }</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">return</span> (qualified ? ffi_guarded(::format_type_be_qualified)</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                      : ffi_guarded(::format_type_be))(oid);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">return</span> (qualified ? <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::format_type_be_qualified}</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                      : <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::format_type_be})(oid);</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  }</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code hl_struct" href="structcppgres_1_1type.html">type</a> &amp;other)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> oid == other.oid; }</div>
@@ -237,7 +237,7 @@ $(document).ready(function(){initNavTree('type_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">if</span> (detoasted != <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      <span class="keywordflow">return</span> detoasted;</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    }</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    detoasted = ffi_guarded(::pg_detoast_datum)(<span class="keyword">reinterpret_cast&lt;</span>::<a class="code hl_struct" href="structcppgres_1_1varlena.html">varlena</a> *<span class="keyword">&gt;</span>(ptr()));</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    detoasted = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::pg_detoast_datum}(<span class="keyword">reinterpret_cast&lt;</span>::<a class="code hl_struct" href="structcppgres_1_1varlena.html">varlena</a> *<span class="keyword">&gt;</span>(ptr()));</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordflow">return</span> detoasted;</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  }</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>};</div>
@@ -353,7 +353,7 @@ $(document).ready(function(){initNavTree('type_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>              inner-&gt;flatten_into(buffer);</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>            }};</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    ffi_guarded(::EOH_init_header)(hdr, &amp;eom, ctx);</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::EOH_init_header}(hdr, &amp;eom, ctx);</div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  }</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>};</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
@@ -377,6 +377,7 @@ $(document).ready(function(){initNavTree('type_8hpp_source.html',''); initResiza
 <div class="ttc" id="astructcppgres_1_1bytea_html"><div class="ttname"><a href="structcppgres_1_1bytea.html">cppgres::bytea</a></div><div class="ttdef"><b>Definition:</b> type.hpp:126</div></div>
 <div class="ttc" id="astructcppgres_1_1datum_html"><div class="ttname"><a href="structcppgres_1_1datum.html">cppgres::datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:19</div></div>
 <div class="ttc" id="astructcppgres_1_1expanded__varlena_html"><div class="ttname"><a href="structcppgres_1_1expanded__varlena.html">cppgres::expanded_varlena</a></div><div class="ttdef"><b>Definition:</b> type.hpp:153</div></div>
+<div class="ttc" id="astructcppgres_1_1ffi__guard_html"><div class="ttname"><a href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a></div><div class="ttdef"><b>Definition:</b> guard.hpp:19</div></div>
 <div class="ttc" id="astructcppgres_1_1memory__context_html"><div class="ttname"><a href="structcppgres_1_1memory__context.html">cppgres::memory_context</a></div><div class="ttdef"><b>Definition:</b> memory.hpp:61</div></div>
 <div class="ttc" id="astructcppgres_1_1non__by__value__type_html"><div class="ttname"><a href="structcppgres_1_1non__by__value__type.html">cppgres::non_by_value_type</a></div><div class="ttdef"><b>Definition:</b> type.hpp:60</div></div>
 <div class="ttc" id="astructcppgres_1_1pointer__gone__exception_html"><div class="ttname"><a href="structcppgres_1_1pointer__gone__exception.html">cppgres::pointer_gone_exception</a></div><div class="ttdef"><b>Definition:</b> memory.hpp:243</div></div>

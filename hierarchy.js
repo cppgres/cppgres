@@ -33,6 +33,7 @@ var hierarchy =
       [ "cppgres::pg_exception", "classcppgres_1_1pg__exception.html", null ],
       [ "cppgres::pointer_gone_exception", "structcppgres_1_1pointer__gone__exception.html", null ]
     ] ],
+    [ "cppgres::exception_guard< Func >", "structcppgres_1_1exception__guard.html", null ],
     [ "cppgres::executor", "structcppgres_1_1executor.html", [
       [ "cppgres::spi_executor", "structcppgres_1_1spi__executor.html", [
         [ "cppgres::spi_nonatomic_executor", "structcppgres_1_1spi__nonatomic__executor.html", null ]

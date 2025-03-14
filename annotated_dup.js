@@ -42,6 +42,7 @@ var annotated_dup =
       [ "datum_conversion< std::string_view >", "structcppgres_1_1datum__conversion_3_01std_1_1string__view_01_4.html", null ],
       [ "datum_conversion< T, std::enable_if_t< expanded_varlena_type< T > > >", "structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01expanded__varlena__type_3_01T_01_4_01_4_01_4.html", null ],
       [ "datum_conversion< text >", "structcppgres_1_1datum__conversion_3_01text_01_4.html", null ],
+      [ "exception_guard", "structcppgres_1_1exception__guard.html", null ],
       [ "executor", "structcppgres_1_1executor.html", null ],
       [ "expanded_varlena", "structcppgres_1_1expanded__varlena.html", null ],
       [ "ffi_guard", "structcppgres_1_1ffi__guard.html", null ],
