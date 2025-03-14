@@ -1,5 +1,7 @@
 var types_8hpp =
 [
+    [ "cppgres::type_traits< void >", "structcppgres_1_1type__traits_3_01void_01_4.html", null ],
+    [ "cppgres::type_traits< S, std::enable_if_t< utils::is_std_tuple< S >::value > >", "structcppgres_1_1type__traits_3_01S_00_01std_1_1enable__if__t_3_01utils_1_1is__std__tuple_3_01S_01_4_1_1value_01_4_01_4.html", null ],
     [ "cppgres::type_traits< bool >", "structcppgres_1_1type__traits_3_01bool_01_4.html", null ],
     [ "cppgres::type_traits< int64_t >", "structcppgres_1_1type__traits_3_01int64__t_01_4.html", null ],
     [ "cppgres::type_traits< int32_t >", "structcppgres_1_1type__traits_3_01int32__t_01_4.html", null ],
