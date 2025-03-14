@@ -22,9 +22,10 @@ var searchData=
   ['type_5ftraits_3c_20int32_5ft_20_3e_19',['type_traits&lt; int32_t &gt;',['../structcppgres_1_1type__traits_3_01int32__t_01_4.html',1,'cppgres']]],
   ['type_5ftraits_3c_20int64_5ft_20_3e_20',['type_traits&lt; int64_t &gt;',['../structcppgres_1_1type__traits_3_01int64__t_01_4.html',1,'cppgres']]],
   ['type_5ftraits_3c_20int8_5ft_20_3e_21',['type_traits&lt; int8_t &gt;',['../structcppgres_1_1type__traits_3_01int8__t_01_4.html',1,'cppgres']]],
-  ['type_5ftraits_3c_20std_3a_3astring_20_3e_22',['type_traits&lt; std::string &gt;',['../structcppgres_1_1type__traits_3_01std_1_1string_01_4.html',1,'cppgres']]],
-  ['type_5ftraits_3c_20std_3a_3astring_5fview_20_3e_23',['type_traits&lt; std::string_view &gt;',['../structcppgres_1_1type__traits_3_01std_1_1string__view_01_4.html',1,'cppgres']]],
-  ['type_5ftraits_3c_20t_20_3e_24',['type_traits&lt; T &gt;',['../structcppgres_1_1type__traits_3_01T_01_4.html',1,'cppgres']]],
-  ['type_5ftraits_3c_20text_20_3e_25',['type_traits&lt; text &gt;',['../structcppgres_1_1type__traits_3_01text_01_4.html',1,'cppgres']]],
-  ['types_2ehpp_26',['types.hpp',['../types_8hpp.html',1,'']]]
+  ['type_5ftraits_3c_20record_20_3e_22',['type_traits&lt; record &gt;',['../structcppgres_1_1type__traits_3_01record_01_4.html',1,'cppgres']]],
+  ['type_5ftraits_3c_20std_3a_3astring_20_3e_23',['type_traits&lt; std::string &gt;',['../structcppgres_1_1type__traits_3_01std_1_1string_01_4.html',1,'cppgres']]],
+  ['type_5ftraits_3c_20std_3a_3astring_5fview_20_3e_24',['type_traits&lt; std::string_view &gt;',['../structcppgres_1_1type__traits_3_01std_1_1string__view_01_4.html',1,'cppgres']]],
+  ['type_5ftraits_3c_20t_20_3e_25',['type_traits&lt; T &gt;',['../structcppgres_1_1type__traits_3_01T_01_4.html',1,'cppgres']]],
+  ['type_5ftraits_3c_20text_20_3e_26',['type_traits&lt; text &gt;',['../structcppgres_1_1type__traits_3_01text_01_4.html',1,'cppgres']]],
+  ['types_2ehpp_27',['types.hpp',['../types_8hpp.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['operator_28_29_0',['operator()',['../structcppgres_1_1postgres__function.html#a3f1e16b082548865d63063fd27a8c759',1,'cppgres::postgres_function']]]
+  ['into_5fdatum_0',['into_datum',['../structcppgres_1_1datum__conversion.html#aa4b972f2d5fc81c1eef91f479a2a8264',1,'cppgres::datum_conversion']]]
 ];

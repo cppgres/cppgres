@@ -153,18 +153,19 @@ $(document).ready(function(){initNavTree('cppgres_8hpp_source.html',''); initRes
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;<a class="code" href="guard_8hpp.html">cppgres/guard.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;<a class="code" href="imports_8h.html">cppgres/imports.h</a>&quot;</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#include &quot;<a class="code" href="memory_8hpp.html">cppgres/memory.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#include &quot;<a class="code" href="set_8hpp.html">cppgres/set.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#include &quot;<a class="code" href="types_8hpp.html">cppgres/types.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#include &quot;cppgres/node.hpp&quot;</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#include &quot;<a class="code" href="xact_8hpp.html">cppgres/xact.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="cppgres_8hpp.html#a37c77119ae05c0662ba21ee00d28c843">   65</a></span><span class="preprocessor">#define postgres_function(name, function)                                                          \</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">  extern &quot;C&quot;</span> {                                                                                     \</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  PG_FUNCTION_INFO_V1(name);                                                                       \</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  Datum name(PG_FUNCTION_ARGS) { return cppgres::postgres_function(function)(fcinfo); }            \</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  }</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#endif </span><span class="comment">// cppgres_hpp</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#include &quot;cppgres/node.hpp&quot;</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#include &quot;cppgres/record.hpp&quot;</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#include &quot;<a class="code" href="set_8hpp.html">cppgres/set.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#include &quot;<a class="code" href="types_8hpp.html">cppgres/types.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#include &quot;<a class="code" href="xact_8hpp.html">cppgres/xact.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="cppgres_8hpp.html#a37c77119ae05c0662ba21ee00d28c843">   66</a></span><span class="preprocessor">#define postgres_function(name, function)                                                          \</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">  extern &quot;C&quot;</span> {                                                                                     \</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  PG_FUNCTION_INFO_V1(name);                                                                       \</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  Datum name(PG_FUNCTION_ARGS) { return cppgres::postgres_function(function)(fcinfo); }            \</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#endif </span><span class="comment">// cppgres_hpp</span></div>
 <div class="ttc" id="adatum_8hpp_html"><div class="ttname"><a href="datum_8hpp.html">datum.hpp</a></div></div>
 <div class="ttc" id="aerror_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
 <div class="ttc" id="aexception__impl_8hpp_html"><div class="ttname"><a href="exception__impl_8hpp.html">exception_impl.hpp</a></div></div>

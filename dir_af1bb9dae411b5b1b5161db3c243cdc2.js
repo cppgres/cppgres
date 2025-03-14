@@ -11,6 +11,7 @@ var dir_af1bb9dae411b5b1b5161db3c243cdc2 =
     [ "imports.h", "imports_8h.html", null ],
     [ "memory.hpp", "memory_8hpp.html", "memory_8hpp" ],
     [ "node.hpp", "node_8hpp_source.html", null ],
+    [ "record.hpp", "record_8hpp_source.html", null ],
     [ "set.hpp", "set_8hpp.html", "set_8hpp" ],
     [ "syscache.hpp", "syscache_8hpp_source.html", null ],
     [ "type.hpp", "type_8hpp.html", "type_8hpp" ],
