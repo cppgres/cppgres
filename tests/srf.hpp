@@ -68,9 +68,8 @@ add_test(srf_non_srf, ([](test_case &) {
            try {
              spi.query<std::tuple<int32_t, int32_t>>("select non_srf()");
            } catch (cppgres::pg_exception &e) {
-             cppgres::report(NOTICE, "%s", e.message());
-             exception_raised = _assert(std::string_view(e.message()) ==
-                                        "exception: caller is not expecting a set");
+             exception_raised =
+                 _assert(std::string_view(e.message()) == "caller is not expecting a set");
            }
            result = result && exception_raised;
            return result;

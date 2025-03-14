@@ -105,8 +105,7 @@ template <datumable_function Func> struct postgres_function {
    */
   auto operator()(FunctionCallInfo fc) -> ::Datum {
 
-    try {
-
+    return exception_guard([&] {
       // return type
       auto rettype = type{.oid = ffi_guarded(::get_fn_expr_rettype)(fc->flinfo)};
       auto retset = fc->flinfo->fn_retset;
@@ -115,7 +114,7 @@ template <datumable_function Func> struct postgres_function {
         // Check this before checking the type of `retset`
         auto rsinfo = reinterpret_cast<::ReturnSetInfo *>(fc->resultinfo);
         if (rsinfo == nullptr) {
-          throw std::runtime_error("caller is not expecting a set");
+          report(ERROR, "caller is not expecting a set");
         }
       }
 
@@ -233,24 +232,18 @@ template <datumable_function Func> struct postgres_function {
       } else {
         if constexpr (std::same_as<return_type, void>) {
           std::apply(func, t);
-          return 0;
+          return ::Datum(0);
         } else {
           auto result = std::apply(func, t);
           nullable_datum nd = into_nullable_datum(result);
           if (nd.is_null()) {
             fc->isnull = true;
-            return 0;
+            return ::Datum(0);
           }
-          return nd;
+          return nd.operator const ::Datum &();
         }
       }
-    } catch (const pg_exception &e) {
-      error(e);
-    } catch (const std::exception &e) {
-      report(ERROR, "exception: %s", e.what());
-    } catch (...) {
-      report(ERROR, "some exception occurred");
-    }
+    })();
     __builtin_unreachable();
   }
 };
