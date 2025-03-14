@@ -18,7 +18,11 @@ struct record {
       : heap_tuple(heap_tuple),
         tupdesc(ffi_guard(::lookup_rowtype_tupdesc)(HeapTupleHeaderGetTypeId(heap_tuple),
                                                     HeapTupleHeaderGetTypMod(heap_tuple))) {
+#if PG_MAJORVERSION_NUM < 18
     tuple.t_len = HeapTupleHeaderGetDatumLength(tupdesc);
+#else
+    tuple.t_len = HeapTupleHeaderGetDatumLength(heap_tuple);
+#endif
     tuple.t_data = heap_tuple;
   }
 
@@ -44,7 +48,7 @@ struct record {
    */
   std::string_view attribute_name(int n) const {
     check_bounds(n);
-    return {NameStr(tupdesc->attrs[n].attname)};
+    return {NameStr(TupleDescAttr(tupdesc, n)->attname)};
   }
 
   /**
