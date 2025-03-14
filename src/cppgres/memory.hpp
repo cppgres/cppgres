@@ -99,9 +99,13 @@ struct alloc_set_memory_context : public owned_memory_context {
   alloc_set_memory_context(memory_context &ctx)
       : owned_memory_context(
             ffi_guarded(::AllocSetContextCreateInternal)(ctx, nullptr, ALLOCSET_DEFAULT_SIZES)) {}
+
+  alloc_set_memory_context(memory_context &&ctx)
+      : owned_memory_context(
+            ffi_guarded(::AllocSetContextCreateInternal)(ctx, nullptr, ALLOCSET_DEFAULT_SIZES)) {}
 };
 
-memory_context top_memory_context = memory_context(TopMemoryContext);
+inline memory_context top_memory_context() { return memory_context(TopMemoryContext); };
 
 template <typename C> requires std::derived_from<C, abstract_memory_context>
 struct tracking_memory_context : public abstract_memory_context {
@@ -221,7 +225,7 @@ template <class T, a_memory_context Context = memory_context> struct memory_cont
   }
 
   void deallocate(T *p, std::size_t n) noexcept {
-    if (explicit_deallocation || context == top_memory_context) {
+    if (explicit_deallocation || context == top_memory_context()) {
       context.free(p);
     }
   }

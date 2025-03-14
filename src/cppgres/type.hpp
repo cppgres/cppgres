@@ -64,7 +64,7 @@ struct non_by_value_type : public type {
       : non_by_value_type(init.first, init.second) {}
   non_by_value_type(const struct datum &datum, std::optional<memory_context> ctx)
       : value_datum(datum),
-        ctx(tracking_memory_context(ctx.has_value() ? *ctx : top_memory_context)) {}
+        ctx(tracking_memory_context(ctx.has_value() ? *ctx : top_memory_context())) {}
 
   non_by_value_type(const non_by_value_type &other)
       : value_datum(other.value_datum), ctx(other.ctx) {}

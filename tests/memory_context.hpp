@@ -23,8 +23,8 @@ add_test(allocator, ([](test_case &) {
            result = result && _assert(alloc0.memory_context() != cppgres::memory_context());
            ::CurrentMemoryContext = old_ctx;
 
-           cppgres::memory_context_allocator<std::string> alloc(
-               std::move(cppgres::top_memory_context), true);
+           cppgres::memory_context_allocator<std::string> alloc(cppgres::top_memory_context(),
+                                                                true);
            std::vector<std::string, cppgres::memory_context_allocator<std::string>> vec(alloc);
            vec.emplace_back("a");
 
@@ -55,9 +55,9 @@ add_test(memory_context_scope, ([](test_case &) {
            cppgres::memory_context before;
            {
              [[maybe_unused]] auto scope =
-                 cppgres::memory_context_scope(cppgres::top_memory_context);
+                 cppgres::memory_context_scope(cppgres::top_memory_context());
              cppgres::memory_context now;
-             result = result && _assert(now == cppgres::top_memory_context);
+             result = result && _assert(now == cppgres::top_memory_context());
              result = result && _assert(now != before);
            }
            cppgres::memory_context now;
