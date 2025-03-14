@@ -13,73 +13,91 @@
 
 namespace cppgres {
 
+template <> struct type_traits<void> {
+  static bool is(const type &t) { return t.oid == VOIDOID; }
+  static constexpr type type_for() { return type{.oid = VOIDOID}; }
+};
+
+template <typename S> struct type_traits<S, std::enable_if_t<utils::is_std_tuple<S>::value>> {
+  static bool is(const type &t) {
+    if (t.oid == RECORDOID) {
+      return true;
+    } else if constexpr (std::tuple_size_v<S> == 1) {
+      // special case when we have a tuple of 1 matching the type
+      return type_traits<std::tuple_element_t<0, S>>::is(t);
+    }
+    return false;
+  }
+  static constexpr type type_for() { return type{.oid = RECORDOID}; }
+};
+
 template <> struct type_traits<bool> {
-  static bool is(type &t) { return t.oid == BOOLOID; }
+  static bool is(const type &t) { return t.oid == BOOLOID; }
   static constexpr type type_for() { return type{.oid = BOOLOID}; }
 };
 
 template <> struct type_traits<int64_t> {
-  static bool is(type &t) { return t.oid == INT8OID || t.oid == INT4OID || t.oid == INT2OID; }
+  static bool is(const type &t) { return t.oid == INT8OID || t.oid == INT4OID || t.oid == INT2OID; }
   static constexpr type type_for() { return type{.oid = INT8OID}; }
 };
 
 template <> struct type_traits<int32_t> {
-  static bool is(type &t) { return t.oid == INT4OID || t.oid == INT2OID; }
+  static bool is(const type &t) { return t.oid == INT4OID || t.oid == INT2OID; }
   static constexpr type type_for() { return type{.oid = INT4OID}; }
 };
 
 template <> struct type_traits<int16_t> {
-  static bool is(type &t) { return t.oid == INT2OID; }
+  static bool is(const type &t) { return t.oid == INT2OID; }
   static constexpr type type_for() { return type{.oid = INT2OID}; }
 };
 
 template <> struct type_traits<int8_t> {
-  static bool is(type &t) { return t.oid == INT2OID; }
+  static bool is(const type &t) { return t.oid == INT2OID; }
   static constexpr type type_for() { return type{.oid = INT2OID}; }
 };
 
 template <> struct type_traits<text> {
-  static bool is(type &t) { return t.oid == TEXTOID; }
+  static bool is(const type &t) { return t.oid == TEXTOID; }
   static constexpr type type_for() { return type{.oid = TEXTOID}; }
 };
 
 template <> struct type_traits<std::string_view> {
-  static bool is(type &t) { return t.oid == TEXTOID; }
+  static bool is(const type &t) { return t.oid == TEXTOID; }
   static constexpr type type_for() { return type{.oid = TEXTOID}; }
 };
 
 template <> struct type_traits<std::string> {
-  static bool is(type &t) { return t.oid == TEXTOID; }
+  static bool is(const type &t) { return t.oid == TEXTOID; }
   static constexpr type type_for() { return type{.oid = TEXTOID}; }
 };
 
 template <> struct type_traits<byte_array> {
-  static bool is(type &t) { return t.oid == BYTEAOID; }
+  static bool is(const type &t) { return t.oid == BYTEAOID; }
   static constexpr type type_for() { return type{.oid = BYTEAOID}; }
 };
 
 template <> struct type_traits<bytea> {
-  static bool is(type &t) { return t.oid == BYTEAOID; }
+  static bool is(const type &t) { return t.oid == BYTEAOID; }
   static constexpr type type_for() { return type{.oid = BYTEAOID}; }
 };
 
 template <> struct type_traits<char *> {
-  static bool is(type &t) { return t.oid == CSTRINGOID; }
+  static bool is(const type &t) { return t.oid == CSTRINGOID; }
   static constexpr type type_for() { return type{.oid = CSTRINGOID}; }
 };
 
 template <> struct type_traits<const char *> {
-  static bool is(type &t) { return t.oid == CSTRINGOID; }
+  static bool is(const type &t) { return t.oid == CSTRINGOID; }
   static constexpr type type_for() { return type{.oid = CSTRINGOID}; }
 };
 
 template <std::size_t N> struct type_traits<const char[N]> {
-  static bool is(type &t) { return t.oid == CSTRINGOID; }
+  static bool is(const type &t) { return t.oid == CSTRINGOID; }
   static constexpr type type_for() { return type{.oid = CSTRINGOID}; }
 };
 
 template <flattenable F> struct type_traits<expanded_varlena<F>> {
-  static bool is(type &t) { return t.oid == F::type().oid; }
+  static bool is(const type &t) { return t.oid == F::type().oid; }
   static constexpr type type_for() { return F::type(); }
 };
 

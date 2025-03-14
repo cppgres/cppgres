@@ -38,15 +38,14 @@ struct type {
   bool operator==(const type &other) const { return oid == other.oid; }
 };
 
-template <typename T> struct type_traits {
-  static bool is(type &t) {
+template <typename T, typename = void> struct type_traits {
+  static bool is(const type &t) {
     if constexpr (utils::is_optional<T>) {
       return type_traits<utils::remove_optional_t<T>>::is(t);
     } else {
       return false;
     }
   }
-  static bool is(type &&t) { return is(std::move(t)); }
 
   static type type_for() = delete;
 };

@@ -76,4 +76,13 @@ add_test(
       return result;
     }));
 
+add_test(tuples_are_records, ([](test_case &) {
+           bool result = true;
+
+           using t = std::tuple<std::string, std::string>;
+           result = result && _assert(cppgres::type_traits<t>::is(cppgres::type{.oid = RECORDOID}));
+
+           return result;
+         }));
+
 } // namespace tests

@@ -6,6 +6,18 @@
 #include <ranges>
 #include <tuple>
 
+struct srf_pfr_res {
+  int32_t a, b;
+};
+
+namespace cppgres {
+template <> struct type_traits<srf_pfr_res> {
+  static bool is(const type &t) { return t.oid == RECORDOID; }
+  static constexpr type type_for() { return type{.oid = RECORDOID}; }
+};
+
+} // namespace cppgres
+
 namespace tests {
 
 postgres_function(srf, ([]() {
@@ -25,9 +37,6 @@ add_test(srf, ([](test_case &) {
            return result;
          }));
 
-struct srf_pfr_res {
-  int32_t a, b;
-};
 
 postgres_function(srf_pfr, ([]() {
                     std::array<srf_pfr_res, 3> results{{{1, 10}, {2, 20}, {3, 30}}};

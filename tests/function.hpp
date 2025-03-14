@@ -77,4 +77,28 @@ add_test(syscache_type_inference_priority, ([](test_case &) {
            result = result && _assert(v == "test");
            return result;
          }));
+
+add_test(enforce_return_type, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+
+           bool exception_raised = false;
+           spi.execute(std::format("create function _sig1() returns int language c as '{}'",
+                                   get_library_name()));
+           {
+             cppgres::internal_subtransaction xact(false);
+             try {
+               spi.query<int32_t>("select _sig1()");
+             } catch (cppgres::pg_exception &e) {
+               exception_raised =
+                   true && _assert(std::string_view(e.message()) ==
+                                   "unexpected return type, can't convert `integer` into `bool`");
+             }
+           }
+
+           result = result && _assert(exception_raised);
+
+           return result;
+         }));
 } // namespace tests

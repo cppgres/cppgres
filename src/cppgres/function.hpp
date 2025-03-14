@@ -106,6 +106,47 @@ template <datumable_function Func> struct postgres_function {
   auto operator()(FunctionCallInfo fc) -> ::Datum {
 
     try {
+
+      // return type
+      auto rettype = type{.oid = ffi_guarded(::get_fn_expr_rettype)(fc->flinfo)};
+      auto retset = fc->flinfo->fn_retset;
+
+      if constexpr (datumable_iterator<return_type>) {
+        // Check this before checking the type of `retset`
+        auto rsinfo = reinterpret_cast<::ReturnSetInfo *>(fc->resultinfo);
+        if (rsinfo == nullptr) {
+          throw std::runtime_error("caller is not expecting a set");
+        }
+      }
+
+      if (!OidIsValid(rettype.oid)) {
+        // TODO: not very efficient to look it up every time
+        syscache<Form_pg_proc, Oid> cache(fc->flinfo->fn_oid);
+        rettype = type{.oid = (*cache).prorettype};
+        retset = (*cache).proretset;
+      }
+
+      if (retset) {
+        if constexpr (datumable_iterator<return_type>) {
+          using set_value_type = set_iterator_traits<return_type>::value_type;
+          if (!type_traits<set_value_type>::is(rettype)) {
+            report(ERROR, "unexpected set's return type, can't convert `%s` into `%.*s`",
+                   rettype.name().data(), utils::type_name<set_value_type>().length(),
+                   utils::type_name<set_value_type>().data());
+          }
+        } else {
+          report(ERROR,
+                 "unexpected return type, set is expected, but `%.*s` does not conform to "
+                 "`cppgres::datumable_iterator`",
+                 utils::type_name<return_type>().length(), utils::type_name<return_type>().data());
+        }
+      } else if (!type_traits<return_type>::is(rettype)) {
+        report(ERROR, "unexpected return type, can't convert `%s` into `%.*s`",
+               rettype.name().data(), utils::type_name<return_type>().length(),
+               utils::type_name<return_type>().data());
+      }
+
+      // arguments
       short accounted_for_args = 0;
       auto t = [&]<std::size_t... Is>(std::index_sequence<Is...>) {
         return argument_types{([&] -> utils::tuple_element_t<Is, argument_types> {
@@ -135,11 +176,8 @@ template <datumable_function Func> struct postgres_function {
       auto call_handle = current_postgres_function::push(fc);
 
       if constexpr (datumable_iterator<return_type>) {
-        // TODO: For now, let's assume materialized model
         auto rsinfo = reinterpret_cast<::ReturnSetInfo *>(fc->resultinfo);
-        if (rsinfo == nullptr) {
-          throw std::runtime_error("caller is not expecting a set");
-        }
+        // TODO: For now, let's assume materialized model
         using set_value_type = set_iterator_traits<return_type>::value_type;
         constexpr auto nargs = utils::tuple_size_v<set_value_type>;
 
