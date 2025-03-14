@@ -25,6 +25,7 @@ PG_MODULE_MAGIC;
 #include "function.hpp"
 #include "memory_context.hpp"
 #include "node.hpp"
+#include "record.hpp"
 #include "spi.hpp"
 #include "srf.hpp"
 #include "type.hpp"

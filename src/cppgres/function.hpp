@@ -105,34 +105,28 @@ template <datumable_function Func> struct postgres_function {
    */
   auto operator()(FunctionCallInfo fc) -> ::Datum {
 
-    argument_types t;
-
     try {
       short accounted_for_args = 0;
-      [&]<std::size_t... Is>(std::index_sequence<Is...>) {
-        (([&] {
-           auto ptyp =
-               utils::remove_optional_t<std::remove_reference_t<decltype(std::get<Is>(t))>>();
-           auto typ = type{.oid = ffi_guarded(::get_fn_expr_argtype)(fc->flinfo, Is)};
-           if (!OidIsValid(typ.oid)) {
-             // TODO: not very efficient to look it up every time
-             syscache<Form_pg_proc, Oid> cache(fc->flinfo->fn_oid);
-             if ((*cache).proargtypes.dim1 > Is) {
-               typ = type{.oid = (*cache).proargtypes.values[Is]};
-             } else {
-               return; // skip undefined arguments (happens with type `_in` functions)
-             }
-           }
-           if (!type_traits<decltype(ptyp)>::is(typ)) {
-             report(ERROR, "unexpected type in position %d, can't convert `%s` into `%.*s`", Is,
-                    typ.name().data(), utils::type_name<decltype(ptyp)>().length(),
-                    utils::type_name<decltype(ptyp)>().data());
-           }
-           accounted_for_args++;
-           std::get<Is>(t) = from_nullable_datum<decltype(ptyp)>(nullable_datum(fc->args[Is]));
-         }()),
-         ...);
-      }(std::make_index_sequence<utils::tuple_size_v<decltype(t)>>{});
+      auto t = [&]<std::size_t... Is>(std::index_sequence<Is...>) {
+        return argument_types{([&] -> utils::tuple_element_t<Is, argument_types> {
+          using ptyp = utils::tuple_element_t<Is, argument_types>;
+          auto typ = type{.oid = ffi_guarded(::get_fn_expr_argtype)(fc->flinfo, Is)};
+          if (!OidIsValid(typ.oid)) {
+            // TODO: not very efficient to look it up every time
+            syscache<Form_pg_proc, Oid> cache(fc->flinfo->fn_oid);
+            if ((*cache).proargtypes.dim1 > Is) {
+              typ = type{.oid = (*cache).proargtypes.values[Is]};
+            }
+          }
+          if (!type_traits<ptyp>::is(typ)) {
+            report(ERROR, "unexpected type in position %d, can't convert `%s` into `%.*s`", Is,
+                   typ.name().data(), utils::type_name<ptyp>().length(),
+                   utils::type_name<ptyp>().data());
+          }
+          accounted_for_args++;
+          return from_nullable_datum<ptyp>(nullable_datum(fc->args[Is]));
+        }())...};
+      }(std::make_index_sequence<utils::tuple_size_v<argument_types>>{});
 
       if (arity != accounted_for_args) {
         report(ERROR, "expected %d arguments, got %d instead", arity, accounted_for_args);

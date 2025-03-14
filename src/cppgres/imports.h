@@ -49,6 +49,7 @@ extern "C" {
 #include <utils/memutils.h>
 #include <utils/syscache.h>
 #include <utils/tuplestore.h>
+#include <utils/typcache.h>
 #ifdef __cplusplus
 }
 #endif
