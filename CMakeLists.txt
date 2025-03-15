@@ -74,7 +74,7 @@ target_link_libraries(cppgres_tests cppgres)
 target_include_directories(cppgres_tests PRIVATE tests)
 
 set_target_properties(cppgres_tests PROPERTIES LINK_FLAGS "${_link_flags}")
-target_compile_features(cppgres_tests PUBLIC cxx_std_23)
+target_compile_features(cppgres_tests PUBLIC cxx_std_20)
 
 enable_testing()
 

@@ -148,7 +148,7 @@ template <datumable_function Func> struct postgres_function {
       // arguments
       short accounted_for_args = 0;
       auto t = [&]<std::size_t... Is>(std::index_sequence<Is...>) {
-        return argument_types{([&] -> utils::tuple_element_t<Is, argument_types> {
+        return argument_types{([&]() -> utils::tuple_element_t<Is, argument_types> {
           using ptyp = utils::tuple_element_t<Is, argument_types>;
           auto typ = type{.oid = ffi_guard{::get_fn_expr_argtype}(fc->flinfo, Is)};
           if (!OidIsValid(typ.oid)) {
