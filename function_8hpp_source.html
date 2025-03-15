@@ -266,7 +266,7 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      <span class="comment">// arguments</span></div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>      <span class="keywordtype">short</span> accounted_for_args = 0;</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      <span class="keyword">auto</span> t = [&amp;]&lt;std::size_t... Is&gt;(std::index_sequence&lt;Is...&gt;) {</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <span class="keywordflow">return</span> argument_types{([&amp;] -&gt; utils::tuple_element_t&lt;Is, argument_types&gt; {</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <span class="keywordflow">return</span> argument_types{([&amp;]() -&gt; utils::tuple_element_t&lt;Is, argument_types&gt; {</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>          <span class="keyword">using </span>ptyp = utils::tuple_element_t&lt;Is, argument_types&gt;;</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>          <span class="keyword">auto</span> typ = <a class="code hl_struct" href="structcppgres_1_1type.html">type</a>{.oid = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::get_fn_expr_argtype}(fc-&gt;flinfo, Is)};</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>          <span class="keywordflow">if</span> (!OidIsValid(typ.oid)) {</div>
