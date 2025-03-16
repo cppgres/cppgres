@@ -246,4 +246,11 @@ static_assert(cppgres::convertible_from_nullable_datum<cppgres::nullable_datum>)
 static_assert(cppgres::convertible_into_nullable_datum<cppgres::datum>);
 static_assert(cppgres::convertible_into_nullable_datum<cppgres::nullable_datum>);
 
+add_test(converting_null_nullable_datum_into_datum, ([](test_case &) {
+           bool result = true;
+           result = result && _assert(cppgres::into_nullable_datum(cppgres::nullable_datum()) ==
+                                      cppgres::nullable_datum());
+           return result;
+         }));
+
 } // namespace tests

@@ -112,7 +112,7 @@ template <> struct datum_conversion<nullable_datum> {
     return nullable_datum(d);
   }
 
-  static datum into_datum(const nullable_datum &t) { return t; }
+  static datum into_datum(const nullable_datum &t) { return t.is_null() ? datum(0) : t; }
 };
 
 template <> struct datum_conversion<oid> {

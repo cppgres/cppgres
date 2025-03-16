@@ -26,6 +26,8 @@ struct datum {
   datum() : _datum(0) {}
   explicit datum(::Datum datum) : _datum(datum) {}
 
+  bool operator==(const datum &other) const { return _datum == other._datum; }
+
 private:
   ::Datum _datum;
   friend struct nullable_datum;
@@ -70,6 +72,13 @@ struct nullable_datum {
 
   explicit nullable_datum(::Datum d) : _ndatum({.value = d, .isnull = false}) {}
   explicit nullable_datum(datum d) : _ndatum({.value = d._datum, .isnull = false}) {}
+
+  bool operator==(const nullable_datum &other) const {
+    if (is_null()) {
+      return other.is_null();
+    }
+    return _datum.operator==(other._datum);
+  }
 
 private:
   union {
