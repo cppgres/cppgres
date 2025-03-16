@@ -18,8 +18,9 @@ add_test(record_fun, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
            spi.execute("create type person as (name text, position text)");
-           spi.execute(std::format("create function record_fun(record) returns table(name text, "
-                                   "type text) language 'c' as '{}'",
+           spi.execute(
+               cppgres::fmt::format("create function record_fun(record) returns table(name text, "
+                                    "type text) language 'c' as '{}'",
                                    get_library_name()));
 
            struct tab {
@@ -82,7 +83,7 @@ postgres_function(record_defining_fun, ([]() {
 add_test(record_defining, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           spi.execute(std::format(
+           spi.execute(cppgres::fmt::format(
                "create function record_defining_fun() returns setof record language 'c' as '{}'",
                get_library_name()));
 

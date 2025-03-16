@@ -28,7 +28,7 @@ postgres_function(srf, ([]() {
 add_test(srf, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           auto stmt = std::format(
+           auto stmt = cppgres::fmt::format(
                "create or replace function srf() returns table (a int, b int) language 'c' as '{}'",
                get_library_name());
            spi.execute(stmt);
@@ -47,7 +47,7 @@ add_test(
     srf_pfr, ([](test_case &) {
       bool result = true;
       cppgres::spi_executor spi;
-      auto stmt = std::format(
+      auto stmt = cppgres::fmt::format(
           "create or replace function srf_pfr() returns table (a int, b int) language 'c' as '{}'",
           get_library_name());
       spi.execute(stmt);
@@ -59,7 +59,7 @@ add_test(
 add_test(srf_non_srf, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           auto stmt = std::format(
+           auto stmt = cppgres::fmt::format(
                "create or replace function non_srf() returns int language 'c' as '{}', 'srf'",
                get_library_name());
            spi.execute(stmt);
@@ -78,8 +78,9 @@ add_test(srf_non_srf, ([](test_case &) {
 add_test(srf_mismatch_size, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           auto stmt = std::format("create or replace function srf_mismatch_size() returns table "
-                                   "(a int) language 'c' as '{}', 'srf'",
+           auto stmt =
+               cppgres::fmt::format("create or replace function srf_mismatch_size() returns table "
+                                    "(a int) language 'c' as '{}', 'srf'",
                                    get_library_name());
            spi.execute(stmt);
            bool exception_raised = false;
@@ -96,8 +97,9 @@ add_test(srf_mismatch_size, ([](test_case &) {
 add_test(srf_mismatch_types, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           auto stmt = std::format("create or replace function srf_mismatch_types() returns table "
-                                   "(a int, b text) language 'c' as '{}', 'srf'",
+           auto stmt =
+               cppgres::fmt::format("create or replace function srf_mismatch_types() returns table "
+                                    "(a int, b text) language 'c' as '{}', 'srf'",
                                    get_library_name());
            spi.execute(stmt);
            bool exception_raised = false;
@@ -119,7 +121,7 @@ postgres_function(non_record_srf, ([]() {
 add_test(srf_non_record, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           auto stmt = std::format(
+           auto stmt = cppgres::fmt::format(
                "create or replace function non_record_srf() returns setof int language 'c' as '{}'",
                get_library_name());
            spi.execute(stmt);
@@ -136,8 +138,9 @@ postgres_function(non_record_srf_non_tup, ([]() {
 add_test(srf_non_record_non_tup, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           auto stmt = std::format("create or replace function non_record_srf_non_tup() returns "
-                                   "setof int language 'c' as '{}'",
+           auto stmt =
+               cppgres::fmt::format("create or replace function non_record_srf_non_tup() returns "
+                                    "setof int language 'c' as '{}'",
                                    get_library_name());
            spi.execute(stmt);
            auto res = spi.query<std::tuple<int32_t>>("select * from non_record_srf_non_tup()");
@@ -148,8 +151,9 @@ add_test(srf_non_record_non_tup, ([](test_case &) {
 add_test(srf_non_record_non_tup_type_mismatch, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           auto stmt = std::format("create or replace function non_record_srf_non_tup() returns "
-                                   "setof text language 'c' as '{}'",
+           auto stmt =
+               cppgres::fmt::format("create or replace function non_record_srf_non_tup() returns "
+                                    "setof text language 'c' as '{}'",
                                    get_library_name());
            spi.execute(stmt);
            bool exception_raised = false;

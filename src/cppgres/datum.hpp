@@ -9,7 +9,6 @@
 #include "memory.hpp"
 
 #include <cstdint>
-#include <format>
 #include <optional>
 #include <string>
 
@@ -141,8 +140,8 @@ T from_nullable_datum(const nullable_datum &d,
     }
   } else {
     if (d.is_null()) {
-      throw std::runtime_error(
-          std::format("datum is null and can't be coerced into {}", utils::type_name<T>()));
+      throw std::runtime_error(cppgres::fmt::format("datum is null and can't be coerced into {}",
+                                                    utils::type_name<T>()));
     }
     return datum_conversion<T>::from_datum(d, context);
   }

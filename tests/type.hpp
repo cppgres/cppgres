@@ -52,7 +52,7 @@ add_test(
 
       cppgres::spi_executor spi;
       spi.execute("create domain custom_type as text");
-      spi.execute(std::format(
+      spi.execute(cppgres::fmt::format(
           "create function custom_type_fun(custom_type) returns custom_type language c as '{}'",
           get_library_name()));
 

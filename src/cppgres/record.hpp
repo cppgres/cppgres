@@ -195,7 +195,7 @@ struct tuple_descriptor {
 private:
   inline void check_bounds(int n) const {
     if (n + 1 > tupdesc->natts || n < 0) {
-      throw std::out_of_range(std::format(
+      throw std::out_of_range(cppgres::fmt::format(
           "attribute index {} is out of bounds for the tuple descriptor with the size of {}", n,
           tupdesc->natts));
     }
@@ -327,7 +327,7 @@ struct record {
         return get_attribute(i);
       }
     }
-    throw std::out_of_range(std::format("no attribute by the name of {}", name));
+    throw std::out_of_range(cppgres::fmt::format("no attribute by the name of {}", name));
   }
 
   /**
@@ -355,7 +355,7 @@ struct record {
 private:
   inline void check_bounds(int n) const {
     if (n + 1 > attributes() || n < 0) {
-      throw std::out_of_range(std::format(
+      throw std::out_of_range(cppgres::fmt::format(
           "attribute index {} is out of bounds for record with the size of {}", n, attributes()));
     }
   }
