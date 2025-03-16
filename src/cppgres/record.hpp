@@ -302,7 +302,7 @@ struct record {
   nullable_datum get_attribute(int n) {
     bool isnull;
     check_bounds(n);
-    datum d(heap_getattr(tuple, n + 1, tupdesc, &isnull));
+    datum d(heap_getattr(tuple, n + 1, tupdesc.operator TupleDesc(), &isnull));
     return isnull ? nullable_datum() : nullable_datum(d);
   }
 
