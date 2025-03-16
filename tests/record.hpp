@@ -68,4 +68,74 @@ add_test(record_test, ([](test_case &) {
 
            return result;
          }));
+
+postgres_function(record_defining_fun, ([]() {
+                    cppgres::tuple_descriptor td(3);
+                    td.set_type(0, cppgres::type{.oid = TEXTOID});
+                    td.set_type(1, cppgres::type{.oid = INT8OID});
+                    td.set_type(2, cppgres::type{.oid = BOOLOID});
+
+                    cppgres::record rec(td, std::string("hello"), 1, false);
+                    return std::array<cppgres::record, 1>{rec};
+                  }));
+
+add_test(record_defining, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           spi.execute(std::format(
+               "create function record_defining_fun() returns setof record language 'c' as '{}'",
+               get_library_name()));
+
+           {
+             struct res {
+               std::string s;
+               std::int64_t i;
+               bool b;
+             };
+             auto results =
+                 spi.query<res>("select * from record_defining_fun() as (a text, b int8, c bool)");
+
+             auto it = results.begin();
+             result = result && _assert(it[0].s == "hello");
+             result = result && _assert(it[0].i == 1);
+             result = result && _assert(it[0].b == false);
+           }
+
+           {
+             struct res {
+               std::string s;
+               bool b;
+             };
+             bool exception_raised = false;
+             cppgres::internal_subtransaction xact(false);
+
+             try {
+               spi.query<res>("select * from record_defining_fun() as (a text,  c bool)");
+             } catch (...) {
+               exception_raised = true;
+             }
+
+             result = result && _assert(exception_raised);
+           }
+
+           {
+             struct res {
+               std::string s, s1;
+               bool b;
+             };
+             bool exception_raised = false;
+             cppgres::internal_subtransaction xact(false);
+
+             try {
+               spi.query<res>("select * from record_defining_fun() as (a text, b text, c bool)");
+             } catch (...) {
+               exception_raised = true;
+             }
+
+             result = result && _assert(exception_raised);
+           }
+
+           return result;
+         }));
+
 } // namespace tests
