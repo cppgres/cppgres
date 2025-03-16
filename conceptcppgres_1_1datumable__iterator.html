@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('conceptcppgres_1_1datumable__iterator.
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> I&gt;</div>
 <div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptcppgres_1_1datumable__iterator.html">cppgres::datumable_iterator</a> = </div>
 <div class="line">    <span class="keyword">requires</span>(I i) {</div>
-<div class="line">      { std::begin(i) } -&gt; std::forward_iterator;</div>
+<div class="line">      { std::begin(i) } -&gt; std::input_iterator;</div>
 <div class="line">      { std::end(i) } -&gt; std::sentinel_for&lt;<span class="keyword">decltype</span>(std::begin(i))&gt;;</div>
 <div class="line">    } &amp;&amp;</div>
 <div class="line">    all_from_nullable_datum&lt;<span class="keyword">typename</span> std::iterator_traits&lt;<span class="keyword">decltype</span>(std::begin(</div>
