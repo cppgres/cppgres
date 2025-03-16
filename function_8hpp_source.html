@@ -326,7 +326,7 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>            <span class="keywordflow">if</span> (!checked) {</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>              <span class="keywordflow">if</span> (rsinfo-&gt;expectedDesc != <span class="keyword">nullptr</span> &amp;&amp; nargs != natts) {</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>                <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                    std::format(<span class="stringliteral">&quot;expected record with {} value{}, got {} instead&quot;</span>, nargs,</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                    cppgres::fmt::format(<span class="stringliteral">&quot;expected record with {} value{}, got {} instead&quot;</span>, nargs,</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>                                nargs == 1 ? <span class="stringliteral">&quot;&quot;</span> : <span class="stringliteral">&quot;s&quot;</span>, natts));</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>              }</div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>              <span class="keywordflow">if</span> (rsinfo-&gt;expectedDesc != <span class="keyword">nullptr</span> &amp;&amp;</div>
@@ -347,7 +347,7 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>          <span class="keyword">auto</span> natts = rsinfo-&gt;expectedDesc-&gt;natts;</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>          <span class="keywordflow">if</span> (nargs != natts) {</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>            <span class="keywordflow">throw</span> std::runtime_error(std::format(<span class="stringliteral">&quot;expected set with {} value{}, got {} instead&quot;</span>,</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>            <span class="keywordflow">throw</span> std::runtime_error(cppgres::fmt::format(<span class="stringliteral">&quot;expected set with {} value{}, got {} instead&quot;</span>,</div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>                                                 nargs, nargs == 1 ? <span class="stringliteral">&quot;&quot;</span> : <span class="stringliteral">&quot;s&quot;</span>, natts));</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>          }</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
@@ -358,7 +358,7 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>               <span class="keyword">using </span>typ = utils::tuple_element_t&lt;Is, set_value_type&gt;;</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>               <span class="keywordflow">if</span> (!<a class="code hl_struct" href="structcppgres_1_1type__traits.html">type_traits&lt;typ&gt;::is</a>(t)) {</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>                 <span class="keywordflow">throw</span> std::invalid_argument(</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                     std::format(<span class="stringliteral">&quot;invalid type in record&#39;s position {} ({}), got OID {}&quot;</span>, Is,</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                     cppgres::fmt::format(<span class="stringliteral">&quot;invalid type in record&#39;s position {} ({}), got OID {}&quot;</span>, Is,</div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                                 utils::type_name&lt;typ&gt;(), oid));</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>               }</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>             }()),</div>
@@ -416,7 +416,7 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>} <span class="comment">// namespace cppgres</span></div>
 <div class="ttc" id="aconceptcppgres_1_1convertible__into__nullable__datum__or__set__iterator__or__void_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__into__nullable__datum__or__set__iterator__or__void.html">cppgres::convertible_into_nullable_datum_or_set_iterator_or_void</a></div><div class="ttdef"><b>Definition:</b> function.hpp:25</div></div>
-<div class="ttc" id="aconceptcppgres_1_1convertible__into__nullable__datum_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__into__nullable__datum.html">cppgres::convertible_into_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:175</div></div>
+<div class="ttc" id="aconceptcppgres_1_1convertible__into__nullable__datum_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__into__nullable__datum.html">cppgres::convertible_into_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:174</div></div>
 <div class="ttc" id="aconceptcppgres_1_1datumable__function_html"><div class="ttname"><a href="conceptcppgres_1_1datumable__function.html">cppgres::datumable_function</a></div><div class="ttdoc">Function that operates on values of Postgres types.</div><div class="ttdef"><b>Definition:</b> function.hpp:37</div></div>
 <div class="ttc" id="aconceptcppgres_1_1datumable__iterator_html"><div class="ttname"><a href="conceptcppgres_1_1datumable__iterator.html">cppgres::datumable_iterator</a></div><div class="ttdef"><b>Definition:</b> set.hpp:15</div></div>
 <div class="ttc" id="adatum_8hpp_html"><div class="ttname"><a href="datum_8hpp.html">datum.hpp</a></div></div>
@@ -424,13 +424,13 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="ttc" id="aguard_8hpp_html"><div class="ttname"><a href="guard_8hpp.html">guard.hpp</a></div></div>
 <div class="ttc" id="aimports_8h_html"><div class="ttname"><a href="imports_8h.html">imports.h</a></div></div>
 <div class="ttc" id="aset_8hpp_html"><div class="ttname"><a href="set_8hpp.html">set.hpp</a></div></div>
-<div class="ttc" id="astructcppgres_1_1all__from__nullable__datum_html"><div class="ttname"><a href="structcppgres_1_1all__from__nullable__datum.html">cppgres::all_from_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:179</div></div>
+<div class="ttc" id="astructcppgres_1_1all__from__nullable__datum_html"><div class="ttname"><a href="structcppgres_1_1all__from__nullable__datum.html">cppgres::all_from_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:178</div></div>
 <div class="ttc" id="astructcppgres_1_1current__postgres__function_html"><div class="ttname"><a href="structcppgres_1_1current__postgres__function.html">cppgres::current_postgres_function</a></div><div class="ttdef"><b>Definition:</b> function.hpp:49</div></div>
 <div class="ttc" id="astructcppgres_1_1exception__guard_html"><div class="ttname"><a href="structcppgres_1_1exception__guard.html">cppgres::exception_guard</a></div><div class="ttdoc">Wraps a C++ function to catch exceptions and report them as Postgres errors.</div><div class="ttdef"><b>Definition:</b> guard.hpp:64</div></div>
 <div class="ttc" id="astructcppgres_1_1ffi__guard_html"><div class="ttname"><a href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a></div><div class="ttdef"><b>Definition:</b> guard.hpp:19</div></div>
 <div class="ttc" id="astructcppgres_1_1memory__context__scope_html"><div class="ttname"><a href="structcppgres_1_1memory__context__scope.html">cppgres::memory_context_scope</a></div><div class="ttdef"><b>Definition:</b> memory.hpp:193</div></div>
 <div class="ttc" id="astructcppgres_1_1memory__context_html"><div class="ttname"><a href="structcppgres_1_1memory__context.html">cppgres::memory_context</a></div><div class="ttdef"><b>Definition:</b> memory.hpp:61</div></div>
-<div class="ttc" id="astructcppgres_1_1nullable__datum_html"><div class="ttname"><a href="structcppgres_1_1nullable__datum.html">cppgres::nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:41</div></div>
+<div class="ttc" id="astructcppgres_1_1nullable__datum_html"><div class="ttname"><a href="structcppgres_1_1nullable__datum.html">cppgres::nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:40</div></div>
 <div class="ttc" id="astructcppgres_1_1postgres__function_html"><div class="ttname"><a href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a></div><div class="ttdoc">Postgres function implemented in C++.</div><div class="ttdef"><b>Definition:</b> function.hpp:101</div></div>
 <div class="ttc" id="astructcppgres_1_1postgres__function_html_a3f1e16b082548865d63063fd27a8c759"><div class="ttname"><a href="structcppgres_1_1postgres__function.html#a3f1e16b082548865d63063fd27a8c759">cppgres::postgres_function::operator()</a></div><div class="ttdeci">auto operator()(FunctionCallInfo fc) -&gt; ::Datum</div><div class="ttdef"><b>Definition:</b> function.hpp:115</div></div>
 <div class="ttc" id="astructcppgres_1_1syscache_html"><div class="ttname"><a href="structcppgres_1_1syscache.html">cppgres::syscache</a></div><div class="ttdef"><b>Definition:</b> syscache.hpp:26</div></div>
