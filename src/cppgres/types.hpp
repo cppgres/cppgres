@@ -56,6 +56,16 @@ template <> struct type_traits<int8_t> {
   static constexpr type type_for() { return type{.oid = INT2OID}; }
 };
 
+template <> struct type_traits<double> {
+  static bool is(const type &t) { return t.oid == FLOAT8OID || t.oid == FLOAT4OID; }
+  static constexpr type type_for() { return type{.oid = FLOAT8OID}; }
+};
+
+template <> struct type_traits<float> {
+  static bool is(const type &t) { return t.oid == FLOAT4OID; }
+  static constexpr type type_for() { return type{.oid = FLOAT4OID}; }
+};
+
 template <> struct type_traits<text> {
   static bool is(const type &t) { return t.oid == TEXTOID; }
   static constexpr type type_for() { return type{.oid = TEXTOID}; }
@@ -158,6 +168,22 @@ template <> struct datum_conversion<bool> {
     return static_cast<bool>(d.operator const ::Datum &());
   }
   static datum into_datum(const bool &t) { return datum(static_cast<::Datum>(t)); }
+};
+
+template <> struct datum_conversion<double> {
+  static double from_datum(const datum &d, std::optional<memory_context>) {
+    return static_cast<double>(d.operator const ::Datum &());
+  }
+
+  static datum into_datum(const double &t) { return datum(static_cast<::Datum>(t)); }
+};
+
+template <> struct datum_conversion<float> {
+  static float from_datum(const datum &d, std::optional<memory_context>) {
+    return static_cast<float>(d.operator const ::Datum &());
+  }
+
+  static datum into_datum(const float &t) { return datum(static_cast<::Datum>(t)); }
 };
 
 // Specializations for text and bytea:
