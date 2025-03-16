@@ -342,7 +342,7 @@ template <> struct datum_conversion<record> {
 };
 
 template <> struct type_traits<record> {
-  static bool is(type &t) { return t.oid == RECORDOID; }
+  static bool is(const type &t) { return t.oid == RECORDOID; }
   static constexpr type type_for() { return {.oid = RECORDOID}; }
 };
 
