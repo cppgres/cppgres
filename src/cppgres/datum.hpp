@@ -155,9 +155,10 @@ template <typename T> nullable_datum into_nullable_datum(const std::optional<T> 
   }
 }
 
-template <> nullable_datum into_nullable_datum(const nullable_datum &v) { return v; }
-
 template <typename T> nullable_datum into_nullable_datum(const T &v) {
+  if constexpr (std::same_as<nullable_datum, T>) {
+    return v;
+  }
   return nullable_datum(datum_conversion<T>::into_datum(v));
 }
 
