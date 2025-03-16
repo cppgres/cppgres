@@ -101,4 +101,15 @@ add_test(enforce_return_type, ([](test_case &) {
 
            return result;
          }));
+
+add_test(current_postgres_function, ([](test_case &) {
+           bool result = true;
+
+           auto ci = cppgres::current_postgres_function::call_info();
+           result = result && _assert(ci.has_value());
+           cppgres::syscache<Form_pg_proc, cppgres::oid> proc((*ci)->flinfo->fn_oid);
+           result = result && _assert(std::string_view(NameStr((*proc).proname)) == "cppgres_test");
+
+           return result;
+         }));
 } // namespace tests

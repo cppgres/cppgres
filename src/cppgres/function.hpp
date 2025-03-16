@@ -59,6 +59,14 @@ struct current_postgres_function {
     return std::nullopt;
   }
 
+  static std::optional<::FunctionCallInfo> call_info() {
+    if (!calls.empty()) {
+      return calls.top();
+    }
+
+    return std::nullopt;
+  }
+
   template <datumable_function Func> friend struct postgres_function;
 
 private:
