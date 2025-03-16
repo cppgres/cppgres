@@ -20,7 +20,7 @@ postgres_function(raise_exception,
 add_test(exception_to_error, ([](test_case &) {
            bool result = false;
            cppgres::spi_executor spi;
-           auto stmt = std::format(
+           auto stmt = cppgres::fmt::format(
                "create or replace function raise_exception() returns bool language 'c' as '{}'",
                get_library_name());
            spi.execute(stmt);
@@ -42,7 +42,7 @@ postgres_function(produce_error, ([]() {
 add_test(handle_produced_error, ([](test_case &) {
            bool result = false;
            cppgres::spi_executor spi;
-           auto stmt = std::format(
+           auto stmt = cppgres::fmt::format(
                "create or replace function produce_error() returns bool language 'c' as '{}'",
                get_library_name());
            spi.execute(stmt);

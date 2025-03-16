@@ -19,9 +19,9 @@ add_test(cstring_fun_test, ([](test_case &) {
 
            cppgres::spi_executor spi;
            spi.execute(
-               std::format("create function cstring_fun(cstring) returns text language c as '{}'",
+               cppgres::fmt::format("create function cstring_fun(cstring) returns text language c as '{}'",
                            get_library_name()));
-           spi.execute(std::format(
+           spi.execute(cppgres::fmt::format(
                "create function to_cstring_fun(text) returns cstring language c as '{}'",
                get_library_name()));
 
@@ -46,7 +46,7 @@ postgres_function(infer, ([](std::string_view s) { return s; }));
 add_test(syscache_type_inference, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
-           spi.execute(std::format("create function infer(text) returns text language c as '{}'",
+           spi.execute(cppgres::fmt::format("create function infer(text) returns text language c as '{}'",
                                    get_library_name()));
            auto func_oid = spi.query<cppgres::oid>("select 'infer'::regproc").begin()[0];
            auto v = cppgres::datum_conversion<std::string_view>::from_datum(
@@ -67,7 +67,7 @@ add_test(syscache_type_inference_priority, ([](test_case &) {
            // We are effectively simulating this here.
            bool result = true;
            cppgres::spi_executor spi;
-           spi.execute(std::format("create function infer(text) returns text language c as '{}'",
+           spi.execute(cppgres::fmt::format("create function infer(text) returns text language c as '{}'",
                                    get_library_name()));
            auto func_oid = spi.query<cppgres::oid>("select 'infer'::regproc").begin()[0];
            auto v = cppgres::datum_conversion<std::string_view>::from_datum(
@@ -84,7 +84,7 @@ add_test(enforce_return_type, ([](test_case &) {
            cppgres::spi_executor spi;
 
            bool exception_raised = false;
-           spi.execute(std::format("create function _sig1() returns int language c as '{}'",
+           spi.execute(cppgres::fmt::format("create function _sig1() returns int language c as '{}'",
                                    get_library_name()));
            {
              cppgres::internal_subtransaction xact(false);

@@ -211,7 +211,7 @@ struct spi_executor : public executor {
            auto t = type{.oid = oid};
            if (!type_traits<utils::tuple_element_t<Is, Ret>>::is(t)) {
              throw std::invalid_argument(
-                 std::format("invalid return type in position {} ({}), got OID {}", Is,
+                 cppgres::fmt::format("invalid return type in position {} ({}), got OID {}", Is,
                              utils::type_name<utils::tuple_element_t<Is, Ret>>(), oid));
            }
          }()),
@@ -222,7 +222,7 @@ struct spi_executor : public executor {
           // okay, this is just a type we can convert
         } else {
           throw std::runtime_error(
-              std::format("expected {} return values, got {}", utils::tuple_size_v<Ret>, natts));
+              cppgres::fmt::format("expected {} return values, got {}", utils::tuple_size_v<Ret>, natts));
         }
       }
     }
@@ -299,7 +299,7 @@ struct spi_executor : public executor {
     if (rc >= 0) {
       return SPI_processed;
     } else {
-      throw std::runtime_error(std::format("spi error"));
+      throw std::runtime_error(cppgres::fmt::format("spi error"));
     }
   }
 

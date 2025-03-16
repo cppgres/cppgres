@@ -208,7 +208,7 @@ template <datumable_function Func> struct postgres_function {
             if (!checked) {
               if (rsinfo->expectedDesc != nullptr && nargs != natts) {
                 throw std::runtime_error(
-                    std::format("expected record with {} value{}, got {} instead", nargs,
+                    cppgres::fmt::format("expected record with {} value{}, got {} instead", nargs,
                                 nargs == 1 ? "" : "s", natts));
               }
               if (rsinfo->expectedDesc != nullptr &&
@@ -229,7 +229,7 @@ template <datumable_function Func> struct postgres_function {
           auto natts = rsinfo->expectedDesc->natts;
 
           if (nargs != natts) {
-            throw std::runtime_error(std::format("expected set with {} value{}, got {} instead",
+            throw std::runtime_error(cppgres::fmt::format("expected set with {} value{}, got {} instead",
                                                  nargs, nargs == 1 ? "" : "s", natts));
           }
 
@@ -240,7 +240,7 @@ template <datumable_function Func> struct postgres_function {
                using typ = utils::tuple_element_t<Is, set_value_type>;
                if (!type_traits<typ>::is(t)) {
                  throw std::invalid_argument(
-                     std::format("invalid type in record's position {} ({}), got OID {}", Is,
+                     cppgres::fmt::format("invalid type in record's position {} ({}), got OID {}", Is,
                                  utils::type_name<typ>(), oid));
                }
              }()),

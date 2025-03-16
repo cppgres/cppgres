@@ -36,6 +36,33 @@
 #ifndef cppgres_hpp
 #define cppgres_hpp
 
+#if !defined(cppgres_prefer_fmt) && __has_include(<format>)
+#include <format>
+#if (defined(__clang__) && defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT))
+#if __has_include(<fmt/core.h>)
+#define FMT_HEADER_ONLY
+#include <fmt/core.h>
+namespace cppgres::fmt {
+using ::fmt::format;
+}
+#else
+#error "Neither functional <format> nor <fmt/core.h> available"
+#endif
+#else
+namespace cppgres::fmt {
+using std::format;
+}
+#endif
+#elif __has_include(<fmt/core.h>)
+#define FMT_HEADER_ONLY
+#include <fmt/core.h>
+namespace cppgres::fmt {
+using ::fmt::format;
+}
+#else
+#error "Neither functional <format> nor <fmt/core.h> available"
+#endif
+
 #include "cppgres/datum.hpp"
 #include "cppgres/error.hpp"
 #include "cppgres/exception_impl.hpp"
@@ -55,7 +82,8 @@
  *
  * Its argument types must conform to the @ref cppgres::convertible_from_nullable_datum concept and
  * its return type must conform to the @ref cppgres::convertible_into_nullable_datum or
- * @ref cppgres::datumable_iterator concepts. This requirement is inherited from @ref cppgres::postgres_function.
+ * @ref cppgres::datumable_iterator concepts. This requirement is inherited from @ref
+ * cppgres::postgres_function.
  *
  * \arg name Name to export it under
  * \arg function C++ function or lambda
