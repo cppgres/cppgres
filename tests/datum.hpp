@@ -241,4 +241,9 @@ add_test(eoh_smoke, ([](test_case &e) {
            return result;
          }));
 
+static_assert(cppgres::convertible_from_nullable_datum<cppgres::datum>);
+static_assert(cppgres::convertible_from_nullable_datum<cppgres::nullable_datum>);
+static_assert(cppgres::convertible_into_nullable_datum<cppgres::datum>);
+static_assert(cppgres::convertible_into_nullable_datum<cppgres::nullable_datum>);
+
 } // namespace tests

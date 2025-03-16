@@ -101,6 +101,20 @@ template <flattenable F> struct type_traits<expanded_varlena<F>> {
   static constexpr type type_for() { return F::type(); }
 };
 
+template <> struct datum_conversion<datum> {
+  static datum from_datum(const datum &d, std::optional<memory_context>) { return d; }
+
+  static datum into_datum(const datum &t) { return t; }
+};
+
+template <> struct datum_conversion<nullable_datum> {
+  static nullable_datum from_datum(const datum &d, std::optional<memory_context>) {
+    return nullable_datum(d);
+  }
+
+  static datum into_datum(const nullable_datum &t) { return t; }
+};
+
 template <> struct datum_conversion<oid> {
   static oid from_datum(const datum &d, std::optional<memory_context>) {
     return static_cast<oid>(d.operator const ::Datum &());
