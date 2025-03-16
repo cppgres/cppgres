@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('xact_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="structcppgres_1_1internal__subtransaction.html">   14</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1internal__subtransaction.html">internal_subtransaction</a> {</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <a class="code hl_struct" href="structcppgres_1_1internal__subtransaction.html">internal_subtransaction</a>(<span class="keywordtype">bool</span> commit = <span class="keyword">true</span>)</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      : owner(::CurrentResourceOwner), commit(commit), name(<span class="stringliteral">&quot;&quot;</span>) {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      : owner(::CurrentResourceOwner), commit(commit), <a class="code hl_struct" href="structcppgres_1_1name.html">name</a>(<span class="stringliteral">&quot;&quot;</span>) {</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">if</span> (txns.empty()) {</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::BeginInternalSubTransaction}(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      txns.push(<span class="keyword">this</span>);</div>
@@ -161,8 +161,8 @@ $(document).ready(function(){initNavTree('xact_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    }</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  }</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <a class="code hl_struct" href="structcppgres_1_1internal__subtransaction.html">internal_subtransaction</a>(std::string_view name, <span class="keywordtype">bool</span> commit = <span class="keyword">true</span>)</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      : owner(::CurrentResourceOwner), commit(commit), name(name) {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <a class="code hl_struct" href="structcppgres_1_1internal__subtransaction.html">internal_subtransaction</a>(std::string_view <a class="code hl_struct" href="structcppgres_1_1name.html">name</a>, <span class="keywordtype">bool</span> commit = <span class="keyword">true</span>)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      : owner(::CurrentResourceOwner), commit(commit), <a class="code hl_struct" href="structcppgres_1_1name.html">name</a>(<a class="code hl_struct" href="structcppgres_1_1name.html">name</a>) {</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">if</span> (txns.empty()) {</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::BeginInternalSubTransaction}(this-&gt;name.c_str());</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      txns.push(<span class="keyword">this</span>);</div>
@@ -184,13 +184,14 @@ $(document).ready(function(){initNavTree('xact_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  ::ResourceOwner owner;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordtype">bool</span> commit;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  std::string name;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  std::string <a class="code hl_struct" href="structcppgres_1_1name.html">name</a>;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">static</span> <span class="keyword">inline</span> std::stack&lt;internal_subtransaction *&gt; txns;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>};</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>} <span class="comment">// namespace cppgres</span></div>
 <div class="ttc" id="astructcppgres_1_1ffi__guard_html"><div class="ttname"><a href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a></div><div class="ttdef"><b>Definition:</b> guard.hpp:19</div></div>
 <div class="ttc" id="astructcppgres_1_1internal__subtransaction_html"><div class="ttname"><a href="structcppgres_1_1internal__subtransaction.html">cppgres::internal_subtransaction</a></div><div class="ttdef"><b>Definition:</b> xact.hpp:14</div></div>
+<div class="ttc" id="astructcppgres_1_1name_html"><div class="ttname"><a href="structcppgres_1_1name.html">cppgres::name</a></div><div class="ttdef"><b>Definition:</b> name.hpp:7</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

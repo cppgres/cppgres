@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['spi_5fexecutor_0',['spi_executor',['../structcppgres_1_1spi__executor.html#a726d3a8355cbd06be5aec2b252c6d9b9',1,'cppgres::spi_executor::spi_executor()'],['../structcppgres_1_1spi__nonatomic__executor.html#a726d3a8355cbd06be5aec2b252c6d9b9',1,'cppgres::spi_nonatomic_executor::spi_executor()']]]
+  ['query_0',['query',['../structcppgres_1_1spi__executor.html#ad9fb1f571b8190b420dd43db23c54087',1,'cppgres::spi_executor']]]
 ];

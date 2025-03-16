@@ -55,6 +55,7 @@ var hierarchy =
     [ "cppgres::utils::function_traits::invoke_result_from_tuple< Func, std::tuple< Args... > >", "structcppgres_1_1utils_1_1function__traits_1_1invoke__result__from__tuple_3_01Func_00_01std_1_1tuple_3_01Args_8_8_8_01_4_01_4.html", null ],
     [ "cppgres::memory_context_allocator< T, Context >", "structcppgres_1_1memory__context__allocator.html", null ],
     [ "cppgres::memory_context_scope< Context >", "structcppgres_1_1memory__context__scope.html", null ],
+    [ "cppgres::name", "structcppgres_1_1name.html", null ],
     [ "cppgres::node_tag_traits< T >", "structcppgres_1_1node__tag__traits.html", null ],
     [ "cppgres::node_traits< T >", "structcppgres_1_1node__traits.html", null ],
     [ "cppgres::nullable_datum", "structcppgres_1_1nullable__datum.html", null ],
@@ -73,6 +74,7 @@ var hierarchy =
     [ "std::true_type", null, [
       [ "cppgres::utils::is_std_tuple< std::tuple< Ts... > >", "structcppgres_1_1utils_1_1is__std__tuple_3_01std_1_1tuple_3_01Ts_8_8_8_01_4_01_4.html", null ]
     ] ],
+    [ "cppgres::tuple_descriptor", "structcppgres_1_1tuple__descriptor.html", null ],
     [ "cppgres::utils::tuple_traits_impl< T, typename >::tuple_element_t", "structcppgres_1_1utils_1_1tuple__traits__impl_1_1tuple__element__t.html", null ],
     [ "cppgres::utils::tuple_traits_impl< T, typename >", "structcppgres_1_1utils_1_1tuple__traits__impl.html", null ],
     [ "cppgres::utils::tuple_traits_impl< T, std::enable_if_t< std::is_aggregate_v< T > > >", "structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__aggregate__v_3_01T_01_4_01_4_01_4.html", null ],

@@ -151,9 +151,21 @@ $(document).ready(function(){initNavTree('structcppgres_1_1record.html',''); ini
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af2cbb96b53ae145b5a847550ffb52bcc"><td class="memItemLeft" align="right" valign="top"><a id="af2cbb96b53ae145b5a847550ffb52bcc" name="af2cbb96b53ae145b5a847550ffb52bcc"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>record</b> (HeapTupleHeader heap_tuple)</td></tr>
-<tr class="separator:af2cbb96b53ae145b5a847550ffb52bcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9186d39ca87158f31b61ce92decb766a"><td class="memItemLeft" align="right" valign="top"><a id="a9186d39ca87158f31b61ce92decb766a" name="a9186d39ca87158f31b61ce92decb766a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>record</b> (HeapTupleHeader heap_tuple, <a class="el" href="structcppgres_1_1abstract__memory__context.html">abstract_memory_context</a> &amp;ctx)</td></tr>
+<tr class="separator:a9186d39ca87158f31b61ce92decb766a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a1d84b8672d885aa1574eb5cacce5c0"><td class="memItemLeft" align="right" valign="top"><a id="a4a1d84b8672d885aa1574eb5cacce5c0" name="a4a1d84b8672d885aa1574eb5cacce5c0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>record</b> (HeapTupleHeader heap_tuple, <a class="el" href="structcppgres_1_1abstract__memory__context.html">abstract_memory_context</a> &amp;&amp;ctx)</td></tr>
+<tr class="separator:a4a1d84b8672d885aa1574eb5cacce5c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5daaa2c953d4d63a97150f348f4013a1"><td class="memTemplParams" colspan="2"><a id="a5daaa2c953d4d63a97150f348f4013a1" name="a5daaa2c953d4d63a97150f348f4013a1"></a>
+template&lt;std::input_iterator Iter&gt; <br />
+requires convertible_into_nullable_datum&lt;typename std::iterator_traits&lt;Iter&gt;::value_type&gt;</td></tr>
+<tr class="memitem:a5daaa2c953d4d63a97150f348f4013a1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>record</b> (<a class="el" href="structcppgres_1_1tuple__descriptor.html">tuple_descriptor</a> &amp;tupdesc, Iter begin, Iter end)</td></tr>
+<tr class="separator:a5daaa2c953d4d63a97150f348f4013a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a849007614c55b592f6fd43158c0bbee2"><td class="memTemplParams" colspan="2"><a id="a849007614c55b592f6fd43158c0bbee2" name="a849007614c55b592f6fd43158c0bbee2"></a>
+template&lt;convertible_into_nullable_datum... D&gt; </td></tr>
+<tr class="memitem:a849007614c55b592f6fd43158c0bbee2"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>record</b> (<a class="el" href="structcppgres_1_1tuple__descriptor.html">tuple_descriptor</a> &amp;tupdesc, D &amp;&amp;...args)</td></tr>
+<tr class="separator:a849007614c55b592f6fd43158c0bbee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4cb9245dc50072185926b411057eac9"><td class="memItemLeft" align="right" valign="top"><a id="ac4cb9245dc50072185926b411057eac9" name="ac4cb9245dc50072185926b411057eac9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>attributes</b> () const</td></tr>
 <tr class="memdesc:ac4cb9245dc50072185926b411057eac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of attributes in the record. <br /></td></tr>
@@ -167,12 +179,19 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>attributes</b> () cons
 <tr class="memitem:aa91a3ce5246d1da28337e8f80661a3fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1nullable__datum.html">nullable_datum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1record.html#aa91a3ce5246d1da28337e8f80661a3fe">get_attribute</a> (int n)</td></tr>
 <tr class="memdesc:aa91a3ce5246d1da28337e8f80661a3fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get attribute value (datum) using a 0-based index.  <br /></td></tr>
 <tr class="separator:aa91a3ce5246d1da28337e8f80661a3fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dca730bad191c5697a8863bb474cc12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1nullable__datum.html">nullable_datum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1record.html#a4dca730bad191c5697a8863bb474cc12">operator[]</a> (std::string_view name)</td></tr>
+<tr class="memitem:a4dca730bad191c5697a8863bb474cc12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1nullable__datum.html">nullable_datum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1record.html#a4dca730bad191c5697a8863bb474cc12">operator[]</a> (std::string_view <a class="el" href="structcppgres_1_1name.html">name</a>)</td></tr>
 <tr class="memdesc:a4dca730bad191c5697a8863bb474cc12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get attribute by name.  <br /></td></tr>
 <tr class="separator:a4dca730bad191c5697a8863bb474cc12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac381737091bbd5f09a15544d70043a26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1nullable__datum.html">nullable_datum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1record.html#ac381737091bbd5f09a15544d70043a26">operator[]</a> (int n)</td></tr>
 <tr class="memdesc:ac381737091bbd5f09a15544d70043a26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get attribute by 0-based index.  <br /></td></tr>
 <tr class="separator:ac381737091bbd5f09a15544d70043a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae73ae9379ff13c2b76f71513beb6b80e"><td class="memItemLeft" align="right" valign="top"><a id="ae73ae9379ff13c2b76f71513beb6b80e" name="ae73ae9379ff13c2b76f71513beb6b80e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator HeapTuple</b> () const</td></tr>
+<tr class="separator:ae73ae9379ff13c2b76f71513beb6b80e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b14b61c47967866ea4ef6f6291467f3"><td class="memItemLeft" align="right" valign="top"><a id="a2b14b61c47967866ea4ef6f6291467f3" name="a2b14b61c47967866ea4ef6f6291467f3"></a>
+<a class="el" href="structcppgres_1_1tuple__descriptor.html">tuple_descriptor</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get_tuple_descriptor</b> () const</td></tr>
+<tr class="memdesc:a2b14b61c47967866ea4ef6f6291467f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns tuple descriptor. <br /></td></tr>
+<tr class="separator:a2b14b61c47967866ea4ef6f6291467f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>

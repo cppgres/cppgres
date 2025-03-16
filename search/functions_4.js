@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['name_0',['name',['../structcppgres_1_1type.html#aa8e44205d8ca27137acb86a74830f2ad',1,'cppgres::type']]],
-  ['named_5ftype_1',['named_type',['../structcppgres_1_1named__type.html#aea5469c05cdd8aaba9d215b2fa6e33df',1,'cppgres::named_type::named_type(const std::string_view name)'],['../structcppgres_1_1named__type.html#a0085edaedc5891411cb275b0feeaf8a8',1,'cppgres::named_type::named_type(const std::string_view schema, const std::string_view name)']]]
+  ['into_5fdatum_0',['into_datum',['../structcppgres_1_1datum__conversion.html#aa4b972f2d5fc81c1eef91f479a2a8264',1,'cppgres::datum_conversion']]],
+  ['is_5fblessed_1',['is_blessed',['../structcppgres_1_1tuple__descriptor.html#a37e908964c91cc457132ff620079e6ca',1,'cppgres::tuple_descriptor']]]
 ];
