@@ -6,6 +6,7 @@
 #include "datum.hpp"
 #include "guard.hpp"
 #include "imports.h"
+#include "record.hpp"
 #include "set.hpp"
 #include "types.hpp"
 #include "utils/function_traits.hpp"
@@ -178,57 +179,96 @@ template <datumable_function Func> struct postgres_function {
         auto rsinfo = reinterpret_cast<::ReturnSetInfo *>(fc->resultinfo);
         // TODO: For now, let's assume materialized model
         using set_value_type = set_iterator_traits<return_type>::value_type;
-        constexpr auto nargs = utils::tuple_size_v<set_value_type>;
+        if constexpr (std::same_as<set_value_type, record>) {
 
-        auto natts = rsinfo->expectedDesc->natts;
-        if (nargs != natts) {
-          throw std::runtime_error(
-              std::format("expected set with {} values, got {} instead", nargs, natts));
+          auto natts = rsinfo->expectedDesc == nullptr ? -1 : rsinfo->expectedDesc->natts;
+
+          rsinfo->returnMode = SFRM_Materialize;
+
+          memory_context_scope scope(memory_context(rsinfo->econtext->ecxt_per_query_memory));
+
+          ::Tuplestorestate *tupstore = ffi_guard{::tuplestore_begin_heap}(
+              (rsinfo->allowedModes & SFRM_Materialize_Random) == SFRM_Materialize_Random, false,
+              work_mem);
+          rsinfo->setResult = tupstore;
+
+          auto res = std::apply(func, t);
+
+          bool checked = false;
+          for (auto r : res) {
+            auto nargs = r.attributes();
+            if (!checked) {
+              if (rsinfo->expectedDesc != nullptr && nargs != natts) {
+                throw std::runtime_error(
+                    std::format("expected record with {} value{}, got {} instead", nargs,
+                                nargs == 1 ? "" : "s", natts));
+              }
+              if (rsinfo->expectedDesc != nullptr &&
+                  !r.get_tuple_descriptor().equal_types(
+                      cppgres::tuple_descriptor(rsinfo->expectedDesc))) {
+                throw std::runtime_error("expected and returned records do not match");
+              }
+              checked = true;
+            }
+
+            ffi_guard{::tuplestore_puttuple}(tupstore, r);
+          }
+          fc->isnull = true;
+          return ::Datum(0);
+        } else {
+          constexpr auto nargs = utils::tuple_size_v<set_value_type>;
+
+          auto natts = rsinfo->expectedDesc->natts;
+
+          if (nargs != natts) {
+            throw std::runtime_error(std::format("expected set with {} value{}, got {} instead",
+                                                 nargs, nargs == 1 ? "" : "s", natts));
+          }
+
+          [&]<std::size_t... Is>(std::index_sequence<Is...>) {
+            (([&] {
+               auto oid = ffi_guard{::SPI_gettypeid}(rsinfo->expectedDesc, Is + 1);
+               auto t = type{.oid = oid};
+               using typ = utils::tuple_element_t<Is, set_value_type>;
+               if (!type_traits<typ>::is(t)) {
+                 throw std::invalid_argument(
+                     std::format("invalid type in record's position {} ({}), got OID {}", Is,
+                                 utils::type_name<typ>(), oid));
+               }
+             }()),
+             ...);
+          }(std::make_index_sequence<nargs>{});
+
+          rsinfo->returnMode = SFRM_Materialize;
+
+          memory_context_scope scope(memory_context(rsinfo->econtext->ecxt_per_query_memory));
+
+          ::Tuplestorestate *tupstore = ffi_guard{::tuplestore_begin_heap}(
+              (rsinfo->allowedModes & SFRM_Materialize_Random) == SFRM_Materialize_Random, false,
+              work_mem);
+          rsinfo->setResult = tupstore;
+
+          auto result = std::apply(func, t);
+
+          for (auto it : result) {
+            CHECK_FOR_INTERRUPTS();
+            std::array<::Datum, nargs> values = std::apply(
+                [](auto &&...elems) -> std::array<::Datum, sizeof...(elems)> {
+                  return {into_nullable_datum(elems)...};
+                },
+                utils::tie(it));
+            std::array<bool, nargs> isnull = std::apply(
+                [](auto &&...elems) -> std::array<bool, sizeof...(elems)> {
+                  return {into_nullable_datum(elems).is_null()...};
+                },
+                utils::tie(it));
+            ffi_guard{::tuplestore_putvalues}(tupstore, rsinfo->expectedDesc, values.data(),
+                                              isnull.data());
+          }
+
+          fc->isnull = true;
+          return ::Datum(0);
         }
-
-        [&]<std::size_t... Is>(std::index_sequence<Is...>) {
-          (([&] {
-             auto oid = ffi_guard{::SPI_gettypeid}(rsinfo->expectedDesc, Is + 1);
-             auto t = type{.oid = oid};
-             using typ = utils::tuple_element_t<Is, set_value_type>;
-             if (!type_traits<typ>::is(t)) {
-               throw std::invalid_argument(
-                   std::format("invalid type in record's position {} ({}), got OID {}", Is,
-                               utils::type_name<typ>(), oid));
-             }
-           }()),
-           ...);
-        }(std::make_index_sequence<nargs>{});
-
-        rsinfo->returnMode = SFRM_Materialize;
-
-        memory_context_scope scope(memory_context(rsinfo->econtext->ecxt_per_query_memory));
-
-        ::Tuplestorestate *tupstore = ffi_guard{::tuplestore_begin_heap}(
-            (rsinfo->allowedModes & SFRM_Materialize_Random) == SFRM_Materialize_Random, false,
-            work_mem);
-        rsinfo->setResult = tupstore;
-
-        auto result = std::apply(func, t);
-
-        for (auto it : result) {
-          CHECK_FOR_INTERRUPTS();
-          std::array<::Datum, nargs> values = std::apply(
-              [](auto &&...elems) -> std::array<::Datum, sizeof...(elems)> {
-                return {into_nullable_datum(elems)...};
-              },
-              utils::tie(it));
-          std::array<bool, nargs> isnull = std::apply(
-              [](auto &&...elems) -> std::array<bool, sizeof...(elems)> {
-                return {into_nullable_datum(elems).is_null()...};
-              },
-              utils::tie(it));
-          ffi_guard{::tuplestore_putvalues}(tupstore, rsinfo->expectedDesc, values.data(),
-                                            isnull.data());
-        }
-
-        fc->isnull = true;
-        return 0;
       } else {
         if constexpr (std::same_as<return_type, void>) {
           std::apply(func, t);

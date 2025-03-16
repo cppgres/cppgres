@@ -24,6 +24,7 @@ extern "C" {
 #include <access/amapi.h>
 #include <access/tableam.h>
 #include <access/tsmapi.h>
+#include <access/tupdesc.h>
 #include <catalog/namespace.h>
 #include <catalog/pg_class.h>
 #include <catalog/pg_proc.h>
@@ -31,6 +32,7 @@ extern "C" {
 #include <commands/event_trigger.h>
 #include <executor/spi.h>
 #include <foreign/fdwapi.h>
+#include <funcapi.h>
 #include <miscadmin.h>
 #include <nodes/execnodes.h>
 #include <nodes/extensible.h>
