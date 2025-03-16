@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('exception__impl_8hpp_source.html','');
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span>cppgres {</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>pg_exception::pg_exception(::MemoryContext mcxt) : mcxt(mcxt) {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">inline</span> pg_exception::pg_exception(::MemoryContext mcxt) : mcxt(mcxt) {</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  ::CurrentMemoryContext = error_cxt =</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>      memory_context(std::move(alloc_set_memory_context(top_memory_context())));</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  error = ffi_guard{::CopyErrorData}();</div>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('exception__impl_8hpp_source.html','');
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  ffi_guard{::FlushErrorState}();</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>pg_exception::~pg_exception() { memory_context(error_cxt).delete_context(); }</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">inline</span> pg_exception::~pg_exception() { memory_context(error_cxt).delete_context(); }</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>} <span class="comment">// namespace cppgres</span></div>
 <div class="ttc" id="aexception_8hpp_html"><div class="ttname"><a href="exception_8hpp.html">exception.hpp</a></div></div>
