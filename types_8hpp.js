@@ -16,6 +16,8 @@ var types_8hpp =
     [ "cppgres::type_traits< const char * >", "structcppgres_1_1type__traits_3_01const_01char_01_5_01_4.html", null ],
     [ "cppgres::type_traits< const char[N]>", "structcppgres_1_1type__traits_3_01const_01char_0fN_0e_4.html", null ],
     [ "cppgres::type_traits< expanded_varlena< F > >", "structcppgres_1_1type__traits_3_01expanded__varlena_3_01F_01_4_01_4.html", null ],
+    [ "cppgres::datum_conversion< datum >", "structcppgres_1_1datum__conversion_3_01datum_01_4.html", null ],
+    [ "cppgres::datum_conversion< nullable_datum >", "structcppgres_1_1datum__conversion_3_01nullable__datum_01_4.html", null ],
     [ "cppgres::datum_conversion< oid >", "structcppgres_1_1datum__conversion_3_01oid_01_4.html", null ],
     [ "cppgres::datum_conversion< size_t >", "structcppgres_1_1datum__conversion_3_01size__t_01_4.html", null ],
     [ "cppgres::datum_conversion< int64_t >", "structcppgres_1_1datum__conversion_3_01int64__t_01_4.html", null ],
