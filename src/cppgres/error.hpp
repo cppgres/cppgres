@@ -12,8 +12,8 @@
 
 namespace cppgres {
 
-void error(pg_exception e);
-void error(pg_exception e) {
+inline void error(pg_exception e);
+inline void error(pg_exception e) {
   ::errstart(ERROR, TEXTDOMAIN);
 #ifdef __GNUC__
 #pragma GCC diagnostic push
@@ -35,7 +35,7 @@ concept error_formattable =
     std::is_pointer_v<std::decay_t<T>>;
 
 template <std::size_t N, error_formattable... Args>
-void report(int elevel, const char (&fmt)[N], Args... args) {
+inline void report(int elevel, const char (&fmt)[N], Args... args) {
   ::errstart(elevel, TEXTDOMAIN);
 #ifdef __GNUC__
 #pragma GCC diagnostic push

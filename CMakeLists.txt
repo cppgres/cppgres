@@ -68,7 +68,7 @@ endif ()
 
 #### TESTS
 
-add_library(cppgres_tests MODULE tests/tests.cpp)
+add_library(cppgres_tests MODULE tests/tests.cpp tests/dummy.cpp)
 add_dependencies(cppgres_tests cppgres)
 target_link_libraries(cppgres_tests cppgres)
 target_include_directories(cppgres_tests PRIVATE tests)

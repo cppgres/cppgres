@@ -9,7 +9,7 @@
 
 namespace cppgres {
 
-pg_exception::pg_exception(::MemoryContext mcxt) : mcxt(mcxt) {
+inline pg_exception::pg_exception(::MemoryContext mcxt) : mcxt(mcxt) {
   ::CurrentMemoryContext = error_cxt =
       memory_context(std::move(alloc_set_memory_context(top_memory_context())));
   error = ffi_guard{::CopyErrorData}();
@@ -17,6 +17,6 @@ pg_exception::pg_exception(::MemoryContext mcxt) : mcxt(mcxt) {
   ffi_guard{::FlushErrorState}();
 }
 
-pg_exception::~pg_exception() { memory_context(error_cxt).delete_context(); }
+inline pg_exception::~pg_exception() { memory_context(error_cxt).delete_context(); }
 
 } // namespace cppgres
