@@ -250,6 +250,8 @@ add_test(converting_null_nullable_datum_into_datum, ([](test_case &) {
            bool result = true;
            result = result && _assert(cppgres::into_nullable_datum(cppgres::nullable_datum()) ==
                                       cppgres::nullable_datum());
+           result =
+               result && _assert(cppgres::into_nullable_datum(cppgres::nullable_datum()).is_null());
            return result;
          }));
 

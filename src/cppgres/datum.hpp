@@ -77,6 +77,9 @@ struct nullable_datum {
     if (is_null()) {
       return other.is_null();
     }
+    if (other.is_null()) {
+      return is_null();
+    }
     return _datum.operator==(other._datum);
   }
 
@@ -151,6 +154,8 @@ template <typename T> nullable_datum into_nullable_datum(const std::optional<T> 
     return nullable_datum();
   }
 }
+
+template <> nullable_datum into_nullable_datum(const nullable_datum &v) { return v; }
 
 template <typename T> nullable_datum into_nullable_datum(const T &v) {
   return nullable_datum(datum_conversion<T>::into_datum(v));
