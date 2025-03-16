@@ -150,9 +150,9 @@ $(document).ready(function(){initNavTree('structcppgres_1_1tuple__descriptor.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a85201aa9d5bced9a13e1871728cb309e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1tuple__descriptor.html#a85201aa9d5bced9a13e1871728cb309e">tuple_descriptor</a> (int nattrs)</td></tr>
-<tr class="memdesc:a85201aa9d5bced9a13e1871728cb309e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a tuple descriptor for a given number of attributes.  <br /></td></tr>
-<tr class="separator:a85201aa9d5bced9a13e1871728cb309e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa947e809a1e7290a335b23c291edc9d2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1tuple__descriptor.html#aa947e809a1e7290a335b23c291edc9d2">tuple_descriptor</a> (int nattrs, <a class="el" href="structcppgres_1_1memory__context.html">memory_context</a> ctx=<a class="el" href="structcppgres_1_1memory__context.html">memory_context</a>())</td></tr>
+<tr class="memdesc:aa947e809a1e7290a335b23c291edc9d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a tuple descriptor for a given number of attributes.  <br /></td></tr>
+<tr class="separator:aa947e809a1e7290a335b23c291edc9d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d06b002b3e2d96c6836009618652b53"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1tuple__descriptor.html#a9d06b002b3e2d96c6836009618652b53">tuple_descriptor</a> (TupleDesc tupdesc, bool blessed=true)</td></tr>
 <tr class="memdesc:a9d06b002b3e2d96c6836009618652b53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a tuple descriptor for a given <code>TupleDesc</code>  <br /></td></tr>
 <tr class="separator:a9d06b002b3e2d96c6836009618652b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,9 +163,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>tuple_descriptor</b> (<a class="el" href="structcppgres_1_1tuple__descriptor.html">tuple_descriptor</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:a4f6aa1b11919158ca3044dae572ea2c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:a4f6aa1b11919158ca3044dae572ea2c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a499d88a116637e664a524e7bab36a0f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1tuple__descriptor.html">tuple_descriptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1tuple__descriptor.html#a499d88a116637e664a524e7bab36a0f3">operator=</a> (<a class="el" href="structcppgres_1_1tuple__descriptor.html">tuple_descriptor</a> &amp;other)</td></tr>
-<tr class="memdesc:a499d88a116637e664a524e7bab36a0f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment.  <br /></td></tr>
-<tr class="separator:a499d88a116637e664a524e7bab36a0f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd4654c937e15d53866cd3176d308c94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1tuple__descriptor.html">tuple_descriptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1tuple__descriptor.html#afd4654c937e15d53866cd3176d308c94">operator=</a> (const <a class="el" href="structcppgres_1_1tuple__descriptor.html">tuple_descriptor</a> &amp;other)</td></tr>
+<tr class="memdesc:afd4654c937e15d53866cd3176d308c94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment.  <br /></td></tr>
+<tr class="separator:afd4654c937e15d53866cd3176d308c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35dd1d6485a39d51acc1835c02da5a26"><td class="memItemLeft" align="right" valign="top"><a id="a35dd1d6485a39d51acc1835c02da5a26" name="a35dd1d6485a39d51acc1835c02da5a26"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>attributes</b> () const</td></tr>
 <tr class="memdesc:a35dd1d6485a39d51acc1835c02da5a26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of attributes. <br /></td></tr>
@@ -192,13 +192,16 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>attributes</b> () cons
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_blessed</b> () const</td></tr>
 <tr class="memdesc:a37e908964c91cc457132ff620079e6ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the tuple descriptor is blessed. <br /></td></tr>
 <tr class="separator:a37e908964c91cc457132ff620079e6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92e357726b5e8317f73a6673a6276a88"><td class="memItemLeft" align="right" valign="top"><a id="a92e357726b5e8317f73a6673a6276a88" name="a92e357726b5e8317f73a6673a6276a88"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator TupleDesc</b> () const</td></tr>
+<tr class="separator:a92e357726b5e8317f73a6673a6276a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Tuple descriptor operator. </p>
 <p>Allows to create new or manipulate existing tuple descriptors </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a85201aa9d5bced9a13e1871728cb309e" name="a85201aa9d5bced9a13e1871728cb309e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85201aa9d5bced9a13e1871728cb309e">&#9670;&#160;</a></span>tuple_descriptor() <span class="overload">[1/3]</span></h2>
+<a id="aa947e809a1e7290a335b23c291edc9d2" name="aa947e809a1e7290a335b23c291edc9d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa947e809a1e7290a335b23c291edc9d2">&#9670;&#160;</a></span>tuple_descriptor() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,8 +213,18 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_blessed</b> () con
           <td class="memname">cppgres::tuple_descriptor::tuple_descriptor </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>nattrs</em></td><td>)</td>
+          <td class="paramname"><em>nattrs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="structcppgres_1_1memory__context.html">memory_context</a>&#160;</td>
+          <td class="paramname"><em>ctx</em> = <code><a class="el" href="structcppgres_1_1memory__context.html">memory_context</a>()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -222,10 +235,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_blessed</b> () con
 </div><div class="memdoc">
 
 <p>Create a tuple descriptor for a given number of attributes. </p>
-<p>Creates in the current memory context</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">nattrs</td><td>number of attributes </td></tr>
+    <tr><td class="paramname">ctx</td><td>memory context, current transaction context by default </td></tr>
   </table>
   </dd>
 </dl>
@@ -364,8 +377,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_blessed</b> () con
 
 </div>
 </div>
-<a id="a499d88a116637e664a524e7bab36a0f3" name="a499d88a116637e664a524e7bab36a0f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a499d88a116637e664a524e7bab36a0f3">&#9670;&#160;</a></span>operator=()</h2>
+<a id="afd4654c937e15d53866cd3176d308c94" name="afd4654c937e15d53866cd3176d308c94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd4654c937e15d53866cd3176d308c94">&#9670;&#160;</a></span>operator=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -376,7 +389,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_blessed</b> () con
         <tr>
           <td class="memname"><a class="el" href="structcppgres_1_1tuple__descriptor.html">tuple_descriptor</a> &amp; cppgres::tuple_descriptor::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structcppgres_1_1tuple__descriptor.html">tuple_descriptor</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structcppgres_1_1tuple__descriptor.html">tuple_descriptor</a> &amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
