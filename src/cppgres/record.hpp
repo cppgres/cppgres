@@ -302,7 +302,17 @@ struct record {
   nullable_datum get_attribute(int n) {
     bool isnull;
     check_bounds(n);
-    datum d(heap_getattr(tuple, n + 1, tupdesc.operator TupleDesc(), &isnull));
+    auto _heap_getattr = ffi_guard{
+#if PG_MAJORVERSION_NUM < 15
+        // Handle the fact that it is a macro
+        [](::HeapTuple tup, int attnum, ::TupleDesc tupleDesc, bool *isnull) {
+          return heap_getattr(tup, attnum, tupleDesc, isnull);
+        }
+#else
+        ::heap_getattr
+#endif
+    };
+    datum d(_heap_getattr(tuple, n + 1, tupdesc.operator TupleDesc(), &isnull));
     return isnull ? nullable_datum() : nullable_datum(d);
   }
 
