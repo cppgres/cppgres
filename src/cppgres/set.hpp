@@ -14,7 +14,7 @@ namespace cppgres {
 template <typename I>
 concept datumable_iterator =
     requires(I i) {
-      { std::begin(i) } -> std::forward_iterator;
+      { std::begin(i) } -> std::input_iterator;
       { std::end(i) } -> std::sentinel_for<decltype(std::begin(i))>;
     } &&
     all_from_nullable_datum<typename std::iterator_traits<decltype(std::begin(
