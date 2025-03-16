@@ -3,9 +3,10 @@
  */
 #pragma once
 
+#include "utils/utils.hpp"
+
 #include "imports.h"
 #include "memory.hpp"
-#include "utils/utils.hpp"
 
 #include <cstdint>
 #include <format>
