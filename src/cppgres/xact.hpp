@@ -49,4 +49,51 @@ private:
   static inline std::stack<internal_subtransaction *> txns;
 };
 
+struct transaction {
+  transaction(bool commit = true)
+      : should_commit(commit), resowner(::CurrentResourceOwner), released(false) {
+    ffi_guard([]() {
+      if (!::IsTransactionState()) {
+        ::SetCurrentStatementStartTimestamp();
+        ::StartTransactionCommand();
+        ::PushActiveSnapshot(::GetTransactionSnapshot());
+      }
+    })();
+  }
+
+  ~transaction() {
+    if (!released) {
+      ffi_guard([this]() {
+        ::PopActiveSnapshot();
+        if (should_commit) {
+          ::CommitTransactionCommand();
+        } else {
+          ::AbortCurrentTransaction();
+        }
+      })();
+    }
+  }
+
+  void commit() {
+    ffi_guard([this]() {
+      ::PopActiveSnapshot();
+      ::CommitTransactionCommand();
+    })();
+    released = true;
+  }
+
+  void rollback() {
+    ffi_guard([this]() {
+      ::PopActiveSnapshot();
+      ::AbortCurrentTransaction();
+    })();
+    released = true;
+  }
+
+private:
+  bool should_commit;
+  ::ResourceOwner resowner;
+  bool released;
+};
+
 } // namespace cppgres
