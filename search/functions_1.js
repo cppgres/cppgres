@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['equal_5ftypes_0',['equal_types',['../structcppgres_1_1tuple__descriptor.html#a1abaf536248e05b8875332f418c601ab',1,'cppgres::tuple_descriptor']]]
+  ['background_5fworker_0',['background_worker',['../structcppgres_1_1background__worker.html#ab0574193096c787a89c54624de8abae6',1,'cppgres::background_worker::background_worker()'],['../structcppgres_1_1background__worker.html#a5f4ba87ed2273cda04eecee957756c63',1,'cppgres::background_worker::background_worker(::BackgroundWorker &amp;worker)']]]
 ];

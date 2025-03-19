@@ -10,6 +10,7 @@ var hierarchy =
       [ "cppgres::tracking_memory_context< C >", "structcppgres_1_1tracking__memory__context.html", null ]
     ] ],
     [ "cppgres::all_from_nullable_datum< T >", "structcppgres_1_1all__from__nullable__datum.html", null ],
+    [ "cppgres::background_worker", "structcppgres_1_1background__worker.html", null ],
     [ "cppgres::current_postgres_function", "structcppgres_1_1current__postgres__function.html", null ],
     [ "cppgres::datum", "structcppgres_1_1datum.html", null ],
     [ "cppgres::datum_conversion< T, typename >", "structcppgres_1_1datum__conversion.html", null ],
@@ -33,6 +34,9 @@ var hierarchy =
     [ "cppgres::datum_conversion< T, std::enable_if_t< expanded_varlena_type< T > > >", "structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01expanded__varlena__type_3_01T_01_4_01_4_01_4.html", null ],
     [ "cppgres::datum_conversion< text >", "structcppgres_1_1datum__conversion_3_01text_01_4.html", null ],
     [ "std::exception", null, [
+      [ "cppgres::background_worker::postmaster_died", "structcppgres_1_1background__worker_1_1postmaster__died.html", null ],
+      [ "cppgres::background_worker::worker_not_yet_started", "structcppgres_1_1background__worker_1_1worker__not__yet__started.html", null ],
+      [ "cppgres::background_worker::worker_stopped", "structcppgres_1_1background__worker_1_1worker__stopped.html", null ],
       [ "cppgres::null_datum_exception", "classcppgres_1_1null__datum__exception.html", null ],
       [ "cppgres::pg_exception", "classcppgres_1_1pg__exception.html", null ],
       [ "cppgres::pointer_gone_exception", "structcppgres_1_1pointer__gone__exception.html", null ]
@@ -52,9 +56,12 @@ var hierarchy =
     [ "cppgres::utils::function_traits::function_traits< R(*)(Args...)>", "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07_5_08_07Args_8_8_8_08_4.html", null ],
     [ "cppgres::utils::function_traits::function_traits< R(Args...)>", "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07Args_8_8_8_08_4.html", null ],
     [ "cppgres::utils::function_traits::function_traits< R(C::*)(Args...) const >", "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07C_1_1_5_08_07Args_8_8_8_08_01const_01_4.html", null ],
+    [ "cppgres::background_worker::handle", "structcppgres_1_1background__worker_1_1handle.html", null ],
     [ "cppgres::internal_subtransaction", "structcppgres_1_1internal__subtransaction.html", null ],
     [ "cppgres::utils::function_traits::invoke_result_from_tuple< Func, Tuple >", "structcppgres_1_1utils_1_1function__traits_1_1invoke__result__from__tuple.html", null ],
     [ "cppgres::utils::function_traits::invoke_result_from_tuple< Func, std::tuple< Args... > >", "structcppgres_1_1utils_1_1function__traits_1_1invoke__result__from__tuple_3_01Func_00_01std_1_1tuple_3_01Args_8_8_8_01_4_01_4.html", null ],
+    [ "cppgres::utils::maybe_ref< T >", "structcppgres_1_1utils_1_1maybe__ref.html", null ],
+    [ "cppgres::utils::maybe_ref<::BackgroundWorker >", "structcppgres_1_1utils_1_1maybe__ref.html", null ],
     [ "cppgres::memory_context_allocator< T, Context >", "structcppgres_1_1memory__context__allocator.html", null ],
     [ "cppgres::memory_context_scope< Context >", "structcppgres_1_1memory__context__scope.html", null ],
     [ "cppgres::name", "structcppgres_1_1name.html", null ],

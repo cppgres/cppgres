@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['operator_20tupledesc_0',['operator TupleDesc',['../structcppgres_1_1tuple__descriptor.html#a073f384375f107202be3393f6aeb6c34',1,'cppgres::tuple_descriptor']]],
-  ['operator_28_29_1',['operator()',['../structcppgres_1_1postgres__function.html#a3f1e16b082548865d63063fd27a8c759',1,'cppgres::postgres_function']]],
-  ['operator_3d_2',['operator=',['../structcppgres_1_1tuple__descriptor.html#afd4654c937e15d53866cd3176d308c94',1,'cppgres::tuple_descriptor']]],
-  ['operator_3d_3d_3',['operator==',['../structcppgres_1_1tuple__descriptor.html#ab00fa97a429a29a21cf21531c6efd858',1,'cppgres::tuple_descriptor']]],
-  ['operator_5b_5d_4',['operator[]',['../structcppgres_1_1tuple__descriptor.html#a6ee700f0172147ff2f7388c9febe4932',1,'cppgres::tuple_descriptor::operator[]()'],['../structcppgres_1_1record.html#a4dca730bad191c5697a8863bb474cc12',1,'cppgres::record::operator[](std::string_view name)'],['../structcppgres_1_1record.html#ac381737091bbd5f09a15544d70043a26',1,'cppgres::record::operator[](int n)']]],
-  ['owned_5fmemory_5fcontext_5',['owned_memory_context',['../structcppgres_1_1owned__memory__context.html',1,'cppgres']]]
+  ['name_0',['name',['../structcppgres_1_1name.html',1,'cppgres::name'],['../structcppgres_1_1type.html#aa8e44205d8ca27137acb86a74830f2ad',1,'cppgres::type::name()']]],
+  ['named_5ftype_1',['named_type',['../structcppgres_1_1named__type.html',1,'cppgres::named_type'],['../structcppgres_1_1named__type.html#aea5469c05cdd8aaba9d215b2fa6e33df',1,'cppgres::named_type::named_type(const std::string_view name)'],['../structcppgres_1_1named__type.html#a0085edaedc5891411cb275b0feeaf8a8',1,'cppgres::named_type::named_type(const std::string_view schema, const std::string_view name)']]],
+  ['node_5ftag_5ftraits_2',['node_tag_traits',['../structcppgres_1_1node__tag__traits.html',1,'cppgres']]],
+  ['node_5ftraits_3',['node_traits',['../structcppgres_1_1node__traits.html',1,'cppgres']]],
+  ['non_5fby_5fvalue_5ftype_4',['non_by_value_type',['../structcppgres_1_1non__by__value__type.html',1,'cppgres']]],
+  ['null_5fdatum_5fexception_5',['null_datum_exception',['../classcppgres_1_1null__datum__exception.html',1,'cppgres']]],
+  ['nullable_5fdatum_6',['nullable_datum',['../structcppgres_1_1nullable__datum.html',1,'cppgres']]]
 ];

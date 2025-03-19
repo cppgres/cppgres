@@ -1,6 +1,7 @@
 var dir_af1bb9dae411b5b1b5161db3c243cdc2 =
 [
     [ "utils", "dir_dca1f27a09f228d6b5929aa1d69d04c4.html", "dir_dca1f27a09f228d6b5929aa1d69d04c4" ],
+    [ "bgw.hpp", "bgw_8hpp.html", "bgw_8hpp" ],
     [ "datum.hpp", "datum_8hpp.html", "datum_8hpp" ],
     [ "error.hpp", "error_8hpp.html", "error_8hpp" ],
     [ "exception.hpp", "exception_8hpp.html", "exception_8hpp" ],

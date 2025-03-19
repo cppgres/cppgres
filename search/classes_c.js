@@ -1,11 +1,8 @@
 var searchData=
 [
-  ['set_5fiterator_5ftraits_0',['set_iterator_traits',['../structcppgres_1_1set__iterator__traits.html',1,'cppgres']]],
-  ['spi_5fexecutor_1',['spi_executor',['../structcppgres_1_1spi__executor.html',1,'cppgres']]],
-  ['spi_5fnonatomic_5fexecutor_2',['spi_nonatomic_executor',['../structcppgres_1_1spi__nonatomic__executor.html',1,'cppgres']]],
-  ['spi_5fplan_3',['spi_plan',['../structcppgres_1_1spi__plan.html',1,'cppgres']]],
-  ['syscache_4',['syscache',['../structcppgres_1_1syscache.html',1,'cppgres']]],
-  ['syscache_5ftraits_5',['syscache_traits',['../structcppgres_1_1syscache__traits.html',1,'cppgres']]],
-  ['syscache_5ftraits_3c_20form_5fpg_5fproc_20_3e_6',['syscache_traits&lt; Form_pg_proc &gt;',['../structcppgres_1_1syscache__traits_3_01Form__pg__proc_01_4.html',1,'cppgres']]],
-  ['syscache_5ftraits_3c_20form_5fpg_5ftype_20_3e_7',['syscache_traits&lt; Form_pg_type &gt;',['../structcppgres_1_1syscache__traits_3_01Form__pg__type_01_4.html',1,'cppgres']]]
+  ['record_0',['record',['../structcppgres_1_1record.html',1,'cppgres']]],
+  ['remove_5foptional_1',['remove_optional',['../structcppgres_1_1utils_1_1remove__optional.html',1,'cppgres::utils']]],
+  ['remove_5foptional_3c_20std_3a_3aoptional_3c_20t_20_3e_20_3e_2',['remove_optional&lt; std::optional&lt; T &gt; &gt;',['../structcppgres_1_1utils_1_1remove__optional_3_01std_1_1optional_3_01T_01_4_01_4.html',1,'cppgres::utils']]],
+  ['result_5fiterator_3',['result_iterator',['../structcppgres_1_1spi__executor_1_1result__iterator.html',1,'cppgres::spi_executor']]],
+  ['results_4',['results',['../structcppgres_1_1spi__executor_1_1results.html',1,'cppgres::spi_executor']]]
 ];

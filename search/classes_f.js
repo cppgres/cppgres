@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['varlena_0',['varlena',['../structcppgres_1_1varlena.html',1,'cppgres']]]
+  ['unsupported_5ftype_0',['unsupported_type',['../structcppgres_1_1unsupported__type.html',1,'cppgres']]]
 ];

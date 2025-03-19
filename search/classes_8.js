@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['name_0',['name',['../structcppgres_1_1name.html',1,'cppgres']]],
-  ['named_5ftype_1',['named_type',['../structcppgres_1_1named__type.html',1,'cppgres']]],
-  ['node_5ftag_5ftraits_2',['node_tag_traits',['../structcppgres_1_1node__tag__traits.html',1,'cppgres']]],
-  ['node_5ftraits_3',['node_traits',['../structcppgres_1_1node__traits.html',1,'cppgres']]],
-  ['non_5fby_5fvalue_5ftype_4',['non_by_value_type',['../structcppgres_1_1non__by__value__type.html',1,'cppgres']]],
-  ['null_5fdatum_5fexception_5',['null_datum_exception',['../classcppgres_1_1null__datum__exception.html',1,'cppgres']]],
-  ['nullable_5fdatum_6',['nullable_datum',['../structcppgres_1_1nullable__datum.html',1,'cppgres']]]
+  ['maybe_5fref_0',['maybe_ref',['../structcppgres_1_1utils_1_1maybe__ref.html',1,'cppgres::utils']]],
+  ['maybe_5fref_3c_3a_3abackgroundworker_20_3e_1',['maybe_ref&lt;::BackgroundWorker &gt;',['../structcppgres_1_1utils_1_1maybe__ref.html',1,'cppgres::utils']]],
+  ['memory_5fcontext_2',['memory_context',['../structcppgres_1_1memory__context.html',1,'cppgres']]],
+  ['memory_5fcontext_5fallocator_3',['memory_context_allocator',['../structcppgres_1_1memory__context__allocator.html',1,'cppgres']]],
+  ['memory_5fcontext_5fscope_4',['memory_context_scope',['../structcppgres_1_1memory__context__scope.html',1,'cppgres']]]
 ];
