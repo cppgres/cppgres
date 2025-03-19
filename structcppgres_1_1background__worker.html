@@ -139,7 +139,6 @@ $(document).ready(function(){initNavTree('structcppgres_1_1background__worker.ht
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structcppgres_1_1background__worker-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">cppgres::background_worker Struct Reference</div></div>
 </div><!--header-->
@@ -149,16 +148,21 @@ $(document).ready(function(){initNavTree('structcppgres_1_1background__worker.ht
  <a href="structcppgres_1_1background__worker.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="bgw_8hpp_source.html">bgw.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for cppgres::background_worker:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="structcppgres_1_1background__worker.png" usemap="#cppgres::background_5Fworker_map" alt=""/>
+  <map id="cppgres::background_5Fworker_map" name="cppgres::background_5Fworker_map">
+<area href="structcppgres_1_1current__background__worker.html" alt="cppgres::current_background_worker" shape="rect" coords="0,56,225,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1background__worker_1_1handle.html">handle</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1background__worker_1_1postmaster__died.html">postmaster_died</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1background__worker_1_1scoped__blocked__signals.html">scoped_blocked_signals</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1background__worker_1_1scoped__unblocked__signals.html">scoped_unblocked_signals</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1background__worker_1_1worker__not__yet__started.html">worker_not_yet_started</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -241,18 +245,6 @@ pid_t&#160;</td><td class="memItemRight" valign="bottom"><b>notify_pid</b> () co
 <tr class="memitem:aa917d6de28a7074c3d61e25575e6f936"><td class="memItemLeft" align="right" valign="top"><a id="aa917d6de28a7074c3d61e25575e6f936" name="aa917d6de28a7074c3d61e25575e6f936"></a>
 <a class="el" href="structcppgres_1_1background__worker_1_1handle.html">handle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>start</b> (bool dynamic=true)</td></tr>
 <tr class="separator:aa917d6de28a7074c3d61e25575e6f936"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a372d9db0919a2b86c31a6007e99a1100"><td class="memItemLeft" align="right" valign="top"><a id="a372d9db0919a2b86c31a6007e99a1100" name="a372d9db0919a2b86c31a6007e99a1100"></a>
-static std::optional&lt; <a class="el" href="structcppgres_1_1background__worker.html">background_worker</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>current</b> ()</td></tr>
-<tr class="separator:a372d9db0919a2b86c31a6007e99a1100"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afce74868c883a1cc9c62b65037163949"><td class="memItemLeft" align="right" valign="top"><a id="afce74868c883a1cc9c62b65037163949" name="afce74868c883a1cc9c62b65037163949"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>unblock_signals</b> ()</td></tr>
-<tr class="separator:afce74868c883a1cc9c62b65037163949"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d4dc4d6a928075503713526e74da253"><td class="memItemLeft" align="right" valign="top"><a id="a3d4dc4d6a928075503713526e74da253" name="a3d4dc4d6a928075503713526e74da253"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>block_signals</b> ()</td></tr>
-<tr class="separator:a3d4dc4d6a928075503713526e74da253"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Background worker construction and operations. </p>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cppgres: Member List</title>
+<title>Cppgres: src/cppgres/backend.hpp Source File</title>
 <!--BEGIN PROJECT_ICON-->
 <link rel="icon" href="$projecticon" type="image/x-icon" />
 <!--END PROJECT_ICON-->
@@ -110,7 +110,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('structcppgres_1_1background__worker_1_1scoped__unblocked__signals.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('backend_8hpp_source.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -136,19 +136,52 @@ $(document).ready(function(){initNavTree('structcppgres_1_1background__worker_1_
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">cppgres::background_worker::scoped_unblocked_signals Member List</div></div>
+  <div class="headertitle"><div class="title">backend.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>This is the complete list of members for <a class="el" href="structcppgres_1_1background__worker_1_1scoped__unblocked__signals.html">cppgres::background_worker::scoped_unblocked_signals</a>, including all inherited members.</p>
-<table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>scoped_unblocked_signals</b>() (defined in <a class="el" href="structcppgres_1_1background__worker_1_1scoped__unblocked__signals.html">cppgres::background_worker::scoped_unblocked_signals</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1background__worker_1_1scoped__unblocked__signals.html">cppgres::background_worker::scoped_unblocked_signals</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>~scoped_unblocked_signals</b>() (defined in <a class="el" href="structcppgres_1_1background__worker_1_1scoped__unblocked__signals.html">cppgres::background_worker::scoped_unblocked_signals</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1background__worker_1_1scoped__unblocked__signals.html">cppgres::background_worker::scoped_unblocked_signals</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-</table></div><!-- contents -->
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="imports_8h.html">imports.h</a>&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span>cppgres {</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">enum</span> q { backend };</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span>backend_type {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">enum</span> type {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  invalid = B_INVALID,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  backend = B_BACKEND,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  autovac_launcher = B_AUTOVAC_LAUNCHER,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  autovac_worker = B_AUTOVAC_WORKER,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  bg_worker = B_BG_WORKER,</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  wal_sender = B_WAL_SENDER,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  slotsync_worker = B_SLOTSYNC_WORKER,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  standalone_backend = B_STANDALONE_BACKEND,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  archiver = B_ARCHIVER,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  bg_writer = B_BG_WRITER,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  checkpointer = B_CHECKPOINTER,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  startup = B_STARTUP,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  wal_receiver = B_WAL_RECEIVER,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  wal_summarizer = B_WAL_SUMMARIZER,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  wal_writer = B_WAL_WRITER,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  logger = B_LOGGER</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>};</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="structcppgres_1_1backend.html">   30</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1backend.html">backend</a> {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">static</span> backend_type::type <a class="code hl_struct" href="structcppgres_1_1type.html">type</a>() { <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>backend_type::type<span class="keyword">&gt;</span>(::MyBackendType); };</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace cppgres</span></div>
+<div class="ttc" id="aimports_8h_html"><div class="ttname"><a href="imports_8h.html">imports.h</a></div></div>
+<div class="ttc" id="astructcppgres_1_1backend_html"><div class="ttname"><a href="structcppgres_1_1backend.html">cppgres::backend</a></div><div class="ttdef"><b>Definition:</b> backend.hpp:30</div></div>
+<div class="ttc" id="astructcppgres_1_1type_html"><div class="ttname"><a href="structcppgres_1_1type.html">cppgres::type</a></div><div class="ttdoc">Postgres type.</div><div class="ttdef"><b>Definition:</b> type.hpp:20</div></div>
+</div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_af1bb9dae411b5b1b5161db3c243cdc2.html">cppgres</a></li><li class="navelem"><b>backend.hpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>

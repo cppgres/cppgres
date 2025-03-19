@@ -10,7 +10,10 @@ var hierarchy =
       [ "cppgres::tracking_memory_context< C >", "structcppgres_1_1tracking__memory__context.html", null ]
     ] ],
     [ "cppgres::all_from_nullable_datum< T >", "structcppgres_1_1all__from__nullable__datum.html", null ],
-    [ "cppgres::background_worker", "structcppgres_1_1background__worker.html", null ],
+    [ "cppgres::backend", "structcppgres_1_1backend.html", null ],
+    [ "cppgres::background_worker", "structcppgres_1_1background__worker.html", [
+      [ "cppgres::current_background_worker", "structcppgres_1_1current__background__worker.html", null ]
+    ] ],
     [ "cppgres::current_postgres_function", "structcppgres_1_1current__postgres__function.html", null ],
     [ "cppgres::datum", "structcppgres_1_1datum.html", null ],
     [ "cppgres::datum_conversion< T, typename >", "structcppgres_1_1datum__conversion.html", null ],
@@ -74,8 +77,6 @@ var hierarchy =
     [ "cppgres::utils::remove_optional< std::optional< T > >", "structcppgres_1_1utils_1_1remove__optional_3_01std_1_1optional_3_01T_01_4_01_4.html", null ],
     [ "cppgres::spi_executor::result_iterator< T >", "structcppgres_1_1spi__executor_1_1result__iterator.html", null ],
     [ "cppgres::spi_executor::results< Ret, Args >", "structcppgres_1_1spi__executor_1_1results.html", null ],
-    [ "cppgres::background_worker::scoped_blocked_signals", "structcppgres_1_1background__worker_1_1scoped__blocked__signals.html", null ],
-    [ "cppgres::background_worker::scoped_unblocked_signals", "structcppgres_1_1background__worker_1_1scoped__unblocked__signals.html", null ],
     [ "cppgres::set_iterator_traits< I >", "structcppgres_1_1set__iterator__traits.html", null ],
     [ "cppgres::spi_plan< Args >", "structcppgres_1_1spi__plan.html", null ],
     [ "cppgres::syscache< T, D >", "structcppgres_1_1syscache.html", null ],
