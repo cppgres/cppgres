@@ -7,7 +7,7 @@ namespace tests {
 extern "C" void test_bgw(::Datum arg);
 extern "C" inline void test_bgw(::Datum arg) {
   cppgres::exception_guard([](auto arg) {
-
+    cppgres::background_worker::scoped_unblocked_signals _unblocked;
   })(arg);
 }
 

@@ -19,6 +19,37 @@ struct background_worker {
     return std::nullopt;
   }
 
+  static void unblock_signals()  {
+    if (current().has_value()) {
+      ffi_guard{::BackgroundWorkerUnblockSignals}();
+    }
+  }
+
+  static void block_signals() {
+    if (current().has_value()) {
+      ffi_guard{::BackgroundWorkerBlockSignals}();
+    }
+  }
+
+  struct scoped_unblocked_signals {
+    scoped_unblocked_signals() {
+      unblock_signals();
+    }
+    ~scoped_unblocked_signals() {
+      block_signals();
+    }
+  };
+
+  struct scoped_blocked_signals {
+    scoped_blocked_signals() {
+      block_signals();
+    }
+    ~scoped_blocked_signals() {
+      unblock_signals();
+    }
+  };
+
+
   /**
    * @brief Initialize background worker specification
    *
@@ -200,4 +231,5 @@ struct background_worker {
 private:
   utils::maybe_ref<::BackgroundWorker> worker = {};
 };
+
 } // namespace cppgres
