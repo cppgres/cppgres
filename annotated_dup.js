@@ -78,6 +78,7 @@ var annotated_dup =
       [ "syscache_traits< Form_pg_type >", "structcppgres_1_1syscache__traits_3_01Form__pg__type_01_4.html", null ],
       [ "text", "structcppgres_1_1text.html", null ],
       [ "tracking_memory_context", "structcppgres_1_1tracking__memory__context.html", null ],
+      [ "transaction", "structcppgres_1_1transaction.html", null ],
       [ "tuple_descriptor", "structcppgres_1_1tuple__descriptor.html", "structcppgres_1_1tuple__descriptor" ],
       [ "type", "structcppgres_1_1type.html", "structcppgres_1_1type" ],
       [ "type_traits", "structcppgres_1_1type__traits.html", null ],
