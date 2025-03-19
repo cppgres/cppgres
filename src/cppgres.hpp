@@ -63,6 +63,7 @@ using ::fmt::format;
 #error "Neither functional <format> nor <fmt/core.h> available"
 #endif
 
+#include "cppgres/bgw.hpp"
 #include "cppgres/datum.hpp"
 #include "cppgres/error.hpp"
 #include "cppgres/exception_impl.hpp"
