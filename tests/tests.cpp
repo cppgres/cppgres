@@ -20,6 +20,7 @@ PG_MODULE_MAGIC;
 
 #include "tests.hpp"
 
+#include "bgw.hpp"
 #include "datum.hpp"
 #include "errors.hpp"
 #include "function.hpp"
@@ -148,6 +149,9 @@ postgres_function(cppgres_tests, []() {
 extern "C" void _PG_init(void);
 
 extern "C" void _PG_init(void) {
+  if (cppgres::background_worker::current().has_value()) {
+    return;
+  }
   static bool initialized = false;
   // avoid recursion when creating procedures and functions
   if (!initialized) {
