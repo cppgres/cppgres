@@ -3,6 +3,7 @@
  */
 #pragma once
 
+#include "backend.hpp"
 #include "datum.hpp"
 #include "utils/maybe_ref.hpp"
 
@@ -11,44 +12,6 @@ namespace cppgres {
  * @brief Background worker construction and operations
  */
 struct background_worker {
-
-  static std::optional<background_worker> current() {
-    if (::MyBackendType == B_BG_WORKER) {
-      return *::MyBgworkerEntry;
-    }
-    return std::nullopt;
-  }
-
-  static void unblock_signals()  {
-    if (current().has_value()) {
-      ffi_guard{::BackgroundWorkerUnblockSignals}();
-    }
-  }
-
-  static void block_signals() {
-    if (current().has_value()) {
-      ffi_guard{::BackgroundWorkerBlockSignals}();
-    }
-  }
-
-  struct scoped_unblocked_signals {
-    scoped_unblocked_signals() {
-      unblock_signals();
-    }
-    ~scoped_unblocked_signals() {
-      block_signals();
-    }
-  };
-
-  struct scoped_blocked_signals {
-    scoped_blocked_signals() {
-      block_signals();
-    }
-    ~scoped_blocked_signals() {
-      unblock_signals();
-    }
-  };
-
 
   /**
    * @brief Initialize background worker specification
@@ -230,6 +193,20 @@ struct background_worker {
 
 private:
   utils::maybe_ref<::BackgroundWorker> worker = {};
+};
+
+struct current_background_worker : public background_worker {
+  friend std::optional<current_background_worker> get_current_background_worker();
+
+  current_background_worker() : background_worker(*::MyBgworkerEntry) {
+    if (backend::type() == backend_type::bg_worker) {
+      throw std::logic_error("can't access current background worker in a different backend type");
+    }
+  }
+
+  void unblock_signals() { ffi_guard{::BackgroundWorkerUnblockSignals}(); }
+
+  void block_signals() { ffi_guard{::BackgroundWorkerBlockSignals}(); }
 };
 
 } // namespace cppgres

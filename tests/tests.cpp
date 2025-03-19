@@ -149,7 +149,7 @@ postgres_function(cppgres_tests, []() {
 extern "C" void _PG_init(void);
 
 extern "C" void _PG_init(void) {
-  if (cppgres::background_worker::current().has_value()) {
+  if (cppgres::backend::type() == cppgres::backend_type::bg_worker) {
     return;
   }
   static bool initialized = false;
