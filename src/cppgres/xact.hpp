@@ -1,5 +1,5 @@
 /**
-* \file
+ * \file
  */
 #pragma once
 
@@ -50,8 +50,7 @@ private:
 };
 
 struct transaction {
-  transaction(bool commit = true)
-      : should_commit(commit), resowner(::CurrentResourceOwner), released(false) {
+  transaction(bool commit = true) : should_commit(commit), released(false) {
     ffi_guard([]() {
       if (!::IsTransactionState()) {
         ::SetCurrentStatementStartTimestamp();
@@ -75,7 +74,7 @@ struct transaction {
   }
 
   void commit() {
-    ffi_guard([this]() {
+    ffi_guard([]() {
       ::PopActiveSnapshot();
       ::CommitTransactionCommand();
     })();
@@ -83,7 +82,7 @@ struct transaction {
   }
 
   void rollback() {
-    ffi_guard([this]() {
+    ffi_guard([]() {
       ::PopActiveSnapshot();
       ::AbortCurrentTransaction();
     })();
@@ -92,7 +91,6 @@ struct transaction {
 
 private:
   bool should_commit;
-  ::ResourceOwner resowner;
   bool released;
 };
 
