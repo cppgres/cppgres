@@ -204,10 +204,12 @@ struct background_worker_bypass_allow_connection
   int flag() const override { return BGWORKER_BYPASS_ALLOWCONN; }
 };
 
+#if PG_MAJORVERSION_NUM >= 17
 struct background_worker_bypass_role_login_check
     : public background_worker_database_conection_flag {
   int flag() const override { return BGWORKER_BYPASS_ROLELOGINCHECK; }
 };
+#endif
 
 struct current_background_worker : public background_worker {
   friend std::optional<current_background_worker> get_current_background_worker();
