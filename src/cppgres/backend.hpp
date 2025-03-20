@@ -7,6 +7,12 @@ namespace cppgres {
 enum q { backend };
 
 namespace backend_type {
+
+/**
+ * @brief Backend type
+ *
+ * A copy of Postgres' BackendType with minor renaming
+ */
 enum type {
   invalid = B_INVALID,
   backend = B_BACKEND,
@@ -27,7 +33,14 @@ enum type {
 };
 }
 
+/**
+ * @brief Backend management
+ */
 struct backend {
+  /**
+   * @brief get current backend type
+   * @return backend type
+   */
   static backend_type::type type() { return static_cast<backend_type::type>(::MyBackendType); };
 };
 

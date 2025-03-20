@@ -198,6 +198,12 @@ private:
 struct current_background_worker : public background_worker {
   friend std::optional<current_background_worker> get_current_background_worker();
 
+  /**
+   * @brief gets current background worker's entry
+   *
+   * @throws std::logic_error if not in a background worker; to check the backend type
+   *         use cppgres::backend::type()
+   */
   current_background_worker() : background_worker(*::MyBgworkerEntry) {
     if (backend::type() == backend_type::bg_worker) {
       throw std::logic_error("can't access current background worker in a different backend type");
