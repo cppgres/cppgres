@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['into_5fdatum_0',['into_datum',['../structcppgres_1_1datum__conversion.html#aa4b972f2d5fc81c1eef91f479a2a8264',1,'cppgres::datum_conversion']]],
-  ['is_5fblessed_1',['is_blessed',['../structcppgres_1_1tuple__descriptor.html#a37e908964c91cc457132ff620079e6ca',1,'cppgres::tuple_descriptor']]]
+  ['get_5fattribute_0',['get_attribute',['../structcppgres_1_1record.html#aa91a3ce5246d1da28337e8f80661a3fe',1,'cppgres::record']]],
+  ['get_5ftuple_5fdescriptor_1',['get_tuple_descriptor',['../structcppgres_1_1record.html#a2b14b61c47967866ea4ef6f6291467f3',1,'cppgres::record']]]
 ];

@@ -9,7 +9,7 @@ var searchData=
   ['tuple_5ftraits_5fimpl_6',['tuple_traits_impl',['../structcppgres_1_1utils_1_1tuple__traits__impl.html',1,'cppgres::utils']]],
   ['tuple_5ftraits_5fimpl_3c_20t_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5faggregate_5fv_3c_20t_20_3e_20_3e_20_3e_7',['tuple_traits_impl&lt; T, std::enable_if_t&lt; std::is_aggregate_v&lt; T &gt; &gt; &gt;',['../structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__aggregate__v_3_01T_01_4_01_4_01_4.html',1,'cppgres::utils']]],
   ['tuple_5ftraits_5fimpl_3c_20t_2c_20std_3a_3avoid_5ft_3c_20decltype_28std_3a_3atuple_5fsize_3c_20t_20_3e_3a_3avalue_29_3e_20_3e_8',['tuple_traits_impl&lt; T, std::void_t&lt; decltype(std::tuple_size&lt; T &gt;::value)&gt; &gt;',['../structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1void__t_3_01decltype_07std_1_1tuc17d0c8e371e8a53d2c38db131d82a30.html',1,'cppgres::utils']]],
-  ['type_9',['type',['../structcppgres_1_1type.html',1,'cppgres']]],
+  ['type_9',['type',['../structcppgres_1_1type.html',1,'cppgres::type'],['../structcppgres_1_1backend.html#a67d39608b1cba784b5f33079c6148e89',1,'cppgres::backend::type()']]],
   ['type_2ehpp_10',['type.hpp',['../type_8hpp.html',1,'']]],
   ['type_5ftraits_11',['type_traits',['../structcppgres_1_1type__traits.html',1,'cppgres']]],
   ['type_5ftraits_3c_20bool_20_3e_12',['type_traits&lt; bool &gt;',['../structcppgres_1_1type__traits_3_01bool_01_4.html',1,'cppgres']]],

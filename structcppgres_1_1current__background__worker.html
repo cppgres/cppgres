@@ -155,12 +155,25 @@ Inheritance diagram for cppgres::current_background_worker:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a0d80d38d9f6c00c179ccace83c966d28"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1current__background__worker.html#a0d80d38d9f6c00c179ccace83c966d28">current_background_worker</a> ()</td></tr>
+<tr class="memdesc:a0d80d38d9f6c00c179ccace83c966d28"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets current background worker's entry  <br /></td></tr>
+<tr class="separator:a0d80d38d9f6c00c179ccace83c966d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad634393301ae2cace212bb10e8f050cb"><td class="memItemLeft" align="right" valign="top"><a id="ad634393301ae2cace212bb10e8f050cb" name="ad634393301ae2cace212bb10e8f050cb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>unblock_signals</b> ()</td></tr>
 <tr class="separator:ad634393301ae2cace212bb10e8f050cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03d908072dce478588a0e54322109885"><td class="memItemLeft" align="right" valign="top"><a id="a03d908072dce478588a0e54322109885" name="a03d908072dce478588a0e54322109885"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>block_signals</b> ()</td></tr>
 <tr class="separator:a03d908072dce478588a0e54322109885"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2dd9091ee501563274f792b878c81b4"><td class="memTemplParams" colspan="2">template&lt;typename... Flags&gt; <br />
+requires ( std::conjunction_v&lt;std::is_base_of&lt;<a class="el" href="structcppgres_1_1background__worker__database__conection__flag.html">background_worker_database_conection_flag</a>, Flags&gt;...&gt;)</td></tr>
+<tr class="memitem:af2dd9091ee501563274f792b878c81b4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structcppgres_1_1current__background__worker.html#af2dd9091ee501563274f792b878c81b4">connect</a> (std::string dbname, std::optional&lt; std::string &gt; user=std::nullopt, Flags... flags)</td></tr>
+<tr class="memdesc:af2dd9091ee501563274f792b878c81b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect to the database using db name and, optionally, username.  <br /></td></tr>
+<tr class="separator:af2dd9091ee501563274f792b878c81b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7576f073770d6e35b919b0602a67f946"><td class="memTemplParams" colspan="2">template&lt;typename... Flags&gt; <br />
+requires ( std::conjunction_v&lt;std::is_base_of&lt;<a class="el" href="structcppgres_1_1background__worker__database__conection__flag.html">background_worker_database_conection_flag</a>, Flags&gt;...&gt;)</td></tr>
+<tr class="memitem:a7576f073770d6e35b919b0602a67f946"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structcppgres_1_1current__background__worker.html#a7576f073770d6e35b919b0602a67f946">connect</a> (oid db, std::optional&lt; oid &gt; user=std::nullopt, Flags... flags)</td></tr>
+<tr class="memdesc:a7576f073770d6e35b919b0602a67f946"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect to the database using db oid and, optionally, user oid.  <br /></td></tr>
+<tr class="separator:a7576f073770d6e35b919b0602a67f946"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structcppgres_1_1background__worker"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structcppgres_1_1background__worker')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structcppgres_1_1background__worker.html">cppgres::background_worker</a></td></tr>
 <tr class="memitem:ab0574193096c787a89c54624de8abae6 inherit pub_methods_structcppgres_1_1background__worker"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1background__worker.html#ab0574193096c787a89c54624de8abae6">background_worker</a> ()</td></tr>
 <tr class="memdesc:ab0574193096c787a89c54624de8abae6 inherit pub_methods_structcppgres_1_1background__worker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize background worker specification.  <br /></td></tr>
@@ -243,6 +256,163 @@ Friends</h2></td></tr>
 std::optional&lt; <a class="el" href="structcppgres_1_1current__background__worker.html">current_background_worker</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_current_background_worker</b> ()</td></tr>
 <tr class="separator:a0b98f2bdd3a392a4962d1addd14c35e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a0d80d38d9f6c00c179ccace83c966d28" name="a0d80d38d9f6c00c179ccace83c966d28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d80d38d9f6c00c179ccace83c966d28">&#9670;&#160;</a></span>current_background_worker()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">cppgres::current_background_worker::current_background_worker </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>gets current background worker's entry </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>if not in a background worker; to check the backend type use <a class="el" href="structcppgres_1_1backend.html#a67d39608b1cba784b5f33079c6148e89" title="get current backend type">cppgres::backend::type()</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7576f073770d6e35b919b0602a67f946" name="a7576f073770d6e35b919b0602a67f946"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7576f073770d6e35b919b0602a67f946">&#9670;&#160;</a></span>connect() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Flags&gt; <br />
+requires ( std::conjunction_v&lt;std::is_base_of&lt;<a class="el" href="structcppgres_1_1background__worker__database__conection__flag.html">background_worker_database_conection_flag</a>, Flags&gt;...&gt;)</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cppgres::current_background_worker::connect </td>
+          <td>(</td>
+          <td class="paramtype">oid&#160;</td>
+          <td class="paramname"><em>db</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::optional&lt; oid &gt;&#160;</td>
+          <td class="paramname"><em>user</em> = <code>std::nullopt</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Flags...&#160;</td>
+          <td class="paramname"><em>flags</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Connect to the database using db oid and, optionally, user oid. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Flags</td><td>connection flags of <a class="el" href="structcppgres_1_1background__worker__database__conection__flag.html">cppgres::background_worker_database_conection_flag</a> derived flags </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">db</td><td>database oid </td></tr>
+    <tr><td class="paramname">user</td><td>user oid </td></tr>
+    <tr><td class="paramname">flags</td><td>connection flags of <a class="el" href="structcppgres_1_1background__worker__database__conection__flag.html">cppgres::background_worker_database_conection_flag</a> derived flags </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af2dd9091ee501563274f792b878c81b4" name="af2dd9091ee501563274f792b878c81b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2dd9091ee501563274f792b878c81b4">&#9670;&#160;</a></span>connect() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Flags&gt; <br />
+requires ( std::conjunction_v&lt;std::is_base_of&lt;<a class="el" href="structcppgres_1_1background__worker__database__conection__flag.html">background_worker_database_conection_flag</a>, Flags&gt;...&gt;)</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cppgres::current_background_worker::connect </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>dbname</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::optional&lt; std::string &gt;&#160;</td>
+          <td class="paramname"><em>user</em> = <code>std::nullopt</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Flags...&#160;</td>
+          <td class="paramname"><em>flags</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Connect to the database using db name and, optionally, username. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Flags</td><td>connection flags of <a class="el" href="structcppgres_1_1background__worker__database__conection__flag.html">cppgres::background_worker_database_conection_flag</a> derived flags </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dbname</td><td>database name </td></tr>
+    <tr><td class="paramname">user</td><td>user name </td></tr>
+    <tr><td class="paramname">flags</td><td>connection flags of <a class="el" href="structcppgres_1_1background__worker__database__conection__flag.html">cppgres::background_worker_database_conection_flag</a> derived flags </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cppgres/<a class="el" href="bgw_8hpp_source.html">bgw.hpp</a></li>
 </ul>

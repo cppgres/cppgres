@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['from_5fdatum_0',['from_datum',['../structcppgres_1_1datum__conversion.html#a5054e9acfaf9e6cb503f50cbab12ddf1',1,'cppgres::datum_conversion']]]
+  ['equal_5ftypes_0',['equal_types',['../structcppgres_1_1tuple__descriptor.html#a1abaf536248e05b8875332f418c601ab',1,'cppgres::tuple_descriptor']]]
 ];
