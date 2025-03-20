@@ -219,7 +219,7 @@ struct current_background_worker : public background_worker {
    *         use cppgres::backend::type()
    */
   current_background_worker() : background_worker(*::MyBgworkerEntry) {
-    if (backend::type() == backend_type::bg_worker) {
+    if (backend::type() != backend_type::bg_worker) {
       throw std::logic_error("can't access current background worker in a different backend type");
     }
   }
