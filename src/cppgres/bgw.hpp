@@ -195,6 +195,20 @@ private:
   utils::maybe_ref<::BackgroundWorker> worker = {};
 };
 
+struct background_worker_database_conection_flag {
+  virtual int flag() const { return 0; }
+};
+
+struct background_worker_bypass_allow_connection
+    : public background_worker_database_conection_flag {
+  int flag() const override { return BGWORKER_BYPASS_ALLOWCONN; }
+};
+
+struct background_worker_bypass_role_login_check
+    : public background_worker_database_conection_flag {
+  int flag() const override { return BGWORKER_BYPASS_ROLELOGINCHECK; }
+};
+
 struct current_background_worker : public background_worker {
   friend std::optional<current_background_worker> get_current_background_worker();
 
@@ -213,6 +227,44 @@ struct current_background_worker : public background_worker {
   void unblock_signals() { ffi_guard{::BackgroundWorkerUnblockSignals}(); }
 
   void block_signals() { ffi_guard{::BackgroundWorkerBlockSignals}(); }
+
+  /**
+   * @brief Connect to the database using db name and, optionally, username
+   *
+   * @tparam Flags connection flags of @ref cppgres::background_worker_database_conection_flag
+   *               derived flags
+   * @param dbname database name
+   * @param user user name
+   * @param flags connection flags of @ref cppgres::background_worker_database_conection_flag
+   * derived flags
+   */
+  template <typename... Flags>
+  void connect(std::string dbname, std::optional<std::string> user = std::nullopt, Flags... flags)
+      requires(
+          std::conjunction_v<std::is_base_of<background_worker_database_conection_flag, Flags>...>)
+  {
+    ffi_guard{::BackgroundWorkerInitializeConnection}(
+        dbname.c_str(), user.has_value() ? user.value().c_str() : nullptr,
+        (flags.flag() | ... | 0));
+  }
+
+  /**
+   * @brief Connect to the database using db oid and, optionally, user oid
+   *
+   * @tparam Flags connection flags of @ref cppgres::background_worker_database_conection_flag
+   *               derived flags
+   * @param db database oid
+   * @param user user oid
+   * @param flags connection flags of @ref cppgres::background_worker_database_conection_flag
+   * derived flags
+   */
+  template <typename... Flags>
+  void connect(oid db, std::optional<oid> user = std::nullopt, Flags... flags) requires(
+      std::conjunction_v<std::is_base_of<background_worker_database_conection_flag, Flags>...>)
+  {
+    ffi_guard{::BackgroundWorkerInitializeConnectionByOid}(
+        db, user.has_value() ? user.value() : InvalidOid, (flags.flag() | ... | 0));
+  }
 };
 
 } // namespace cppgres
