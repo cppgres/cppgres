@@ -27,7 +27,6 @@ var annotated_dup =
       [ "backend", "structcppgres_1_1backend.html", null ],
       [ "background_worker", "structcppgres_1_1background__worker.html", "structcppgres_1_1background__worker" ],
       [ "background_worker_bypass_allow_connection", "structcppgres_1_1background__worker__bypass__allow__connection.html", null ],
-      [ "background_worker_bypass_role_login_check", "structcppgres_1_1background__worker__bypass__role__login__check.html", null ],
       [ "background_worker_database_conection_flag", "structcppgres_1_1background__worker__database__conection__flag.html", null ],
       [ "bytea", "structcppgres_1_1bytea.html", null ],
       [ "current_background_worker", "structcppgres_1_1current__background__worker.html", "structcppgres_1_1current__background__worker" ],
