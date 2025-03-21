@@ -1,4 +1,4 @@
-#include <cppgres.h>
+#include <cppgres.hpp>
 
 extern "C" {
 PG_MODULE_MAGIC;
