@@ -81,3 +81,7 @@ jobs:
       - name: Test
         working-directory: ${{github.workspace}}/build
         run: ctest --timeout 1000 --force-new-ctest-process --repeat until-pass:10 --output-on-failure -j $(nproc) -C ${{matrix.build_type}}
+
+      - name: Ensure demo builds
+        working-directory: ${{github.workspace}}/demo
+        run: find ../.pg/*/*/build/bin -name pg_config -exec make PG_CONFIG={} all \;
