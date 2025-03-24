@@ -20,6 +20,7 @@ PG_MODULE_MAGIC;
 
 #include "tests.hpp"
 
+#include "aggregate.hpp"
 #include "bgw.hpp"
 #include "datum.hpp"
 #include "errors.hpp"
