@@ -75,6 +75,7 @@ using ::fmt::format;
 #include "cppgres/node.hpp"
 #include "cppgres/record.hpp"
 #include "cppgres/set.hpp"
+#include "cppgres/threading.hpp"
 #include "cppgres/types.hpp"
 #include "cppgres/xact.hpp"
 
