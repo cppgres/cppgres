@@ -127,5 +127,6 @@ var hierarchy =
     [ "cppgres::type_traits< T >", "structcppgres_1_1type__traits_3_01T_01_4.html", null ],
     [ "cppgres::type_traits< text >", "structcppgres_1_1type__traits_3_01text_01_4.html", null ],
     [ "cppgres::type_traits< void >", "structcppgres_1_1type__traits_3_01void_01_4.html", null ],
-    [ "cppgres::unsupported_type< T >", "structcppgres_1_1unsupported__type.html", null ]
+    [ "cppgres::unsupported_type< T >", "structcppgres_1_1unsupported__type.html", null ],
+    [ "cppgres::worker", "structcppgres_1_1worker.html", null ]
 ];

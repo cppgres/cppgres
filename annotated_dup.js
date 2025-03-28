@@ -108,6 +108,7 @@ var annotated_dup =
       [ "type_traits< text >", "structcppgres_1_1type__traits_3_01text_01_4.html", null ],
       [ "type_traits< void >", "structcppgres_1_1type__traits_3_01void_01_4.html", null ],
       [ "unsupported_type", "structcppgres_1_1unsupported__type.html", null ],
-      [ "varlena", "structcppgres_1_1varlena.html", null ]
+      [ "varlena", "structcppgres_1_1varlena.html", null ],
+      [ "worker", "structcppgres_1_1worker.html", "structcppgres_1_1worker" ]
     ] ]
 ];
