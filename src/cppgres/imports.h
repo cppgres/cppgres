@@ -46,6 +46,7 @@ extern "C" {
 #include <nodes/replnodes.h>
 #include <nodes/supportnodes.h>
 #include <nodes/tidbitmap.h>
+#include <storage/ipc.h>
 #include <utils/builtins.h>
 #include <utils/expandeddatum.h>
 #include <utils/memutils.h>
