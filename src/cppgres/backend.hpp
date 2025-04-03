@@ -1,6 +1,7 @@
 #pragma once
 
 #include "imports.h"
+#include "memory.hpp"
 
 namespace cppgres {
 
@@ -46,6 +47,27 @@ struct backend {
    * @return backend type
    */
   static backend_type::type type() { return static_cast<backend_type::type>(::MyBackendType); };
+
+  /**
+   * @brief Register a callback for when Postgres will be exiting
+   *
+   * This allows passing a lambda with a closure (not just a plain C function / lambda without a
+   * closure), it'll initialize the closure in the top memory context.
+   */
+  template <typename T> requires requires(T t, int code) {
+    { t(code) };
+  }
+  static void atexit(T &&func) {
+    T *raw_mem = top_memory_context().alloc<T>();
+    T *allocation = new (raw_mem) T(std::forward<T>(func));
+
+    ffi_guard{::on_proc_exit}(
+        [](int code, ::Datum datum) {
+          T *func = reinterpret_cast<T *>(DatumGetPointer(datum));
+          (*func)(code);
+        },
+        PointerGetDatum(allocation));
+  }
 };
 
 } // namespace cppgres
