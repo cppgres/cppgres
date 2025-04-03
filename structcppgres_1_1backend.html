@@ -153,10 +153,47 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a67d39608b1cba784b5f33079c6148e89"><td class="memItemLeft" align="right" valign="top">static backend_type::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1backend.html#a67d39608b1cba784b5f33079c6148e89">type</a> ()</td></tr>
 <tr class="memdesc:a67d39608b1cba784b5f33079c6148e89"><td class="mdescLeft">&#160;</td><td class="mdescRight">get current backend type  <br /></td></tr>
 <tr class="separator:a67d39608b1cba784b5f33079c6148e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37b7653b688b1ca96aeac6ad7472229f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; <br />
+requires requires(T t, int code) { { t(code) }; }</td></tr>
+<tr class="memitem:a37b7653b688b1ca96aeac6ad7472229f"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structcppgres_1_1backend.html#a37b7653b688b1ca96aeac6ad7472229f">atexit</a> (T &amp;&amp;func)</td></tr>
+<tr class="memdesc:a37b7653b688b1ca96aeac6ad7472229f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a callback for when Postgres will be exiting.  <br /></td></tr>
+<tr class="separator:a37b7653b688b1ca96aeac6ad7472229f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Backend management. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a37b7653b688b1ca96aeac6ad7472229f" name="a37b7653b688b1ca96aeac6ad7472229f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37b7653b688b1ca96aeac6ad7472229f">&#9670;&#160;</a></span>atexit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; <br />
+requires requires(T t, int code) { { t(code) }; }</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void cppgres::backend::atexit </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&amp;&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Register a callback for when Postgres will be exiting. </p>
+<p>This allows passing a lambda with a closure (not just a plain C function / lambda without a closure), it'll initialize the closure in the top memory context. </p>
+
+</div>
+</div>
 <a id="a67d39608b1cba784b5f33079c6148e89" name="a67d39608b1cba784b5f33079c6148e89"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a67d39608b1cba784b5f33079c6148e89">&#9670;&#160;</a></span>type()</h2>
 

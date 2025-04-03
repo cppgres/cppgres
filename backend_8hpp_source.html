@@ -142,45 +142,65 @@ $(document).ready(function(){initNavTree('backend_8hpp_source.html',''); initRes
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="imports_8h.html">imports.h</a>&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span>cppgres {</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">enum</span> q { backend };</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span>backend_type {</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">enum</span> type {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  invalid = B_INVALID,</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  backend = B_BACKEND,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  autovac_launcher = B_AUTOVAC_LAUNCHER,</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  autovac_worker = B_AUTOVAC_WORKER,</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  bg_worker = B_BG_WORKER,</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  wal_sender = B_WAL_SENDER,</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#if PG_MAJORVERSION_NUM &gt;= 17</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  slotsync_worker = B_SLOTSYNC_WORKER,</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  standalone_backend = B_STANDALONE_BACKEND,</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  archiver = B_ARCHIVER,</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  bg_writer = B_BG_WRITER,</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  checkpointer = B_CHECKPOINTER,</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  startup = B_STARTUP,</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  wal_receiver = B_WAL_RECEIVER,</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#if PG_MAJORVERSION_NUM &gt;= 17</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  wal_summarizer = B_WAL_SUMMARIZER,</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  wal_writer = B_WAL_WRITER,</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  logger = B_LOGGER</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>};</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structcppgres_1_1backend.html">   43</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1backend.html">backend</a> {</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="structcppgres_1_1backend.html#a67d39608b1cba784b5f33079c6148e89">   48</a></span>  <span class="keyword">static</span> backend_type::type <a class="code hl_function" href="structcppgres_1_1backend.html#a67d39608b1cba784b5f33079c6148e89">type</a>() { <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>backend_type::type<span class="keyword">&gt;</span>(::MyBackendType); };</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>};</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="memory_8hpp.html">memory.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span>cppgres {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">enum</span> q { backend };</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span>backend_type {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">enum</span> type {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  invalid = B_INVALID,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  backend = B_BACKEND,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  autovac_launcher = B_AUTOVAC_LAUNCHER,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  autovac_worker = B_AUTOVAC_WORKER,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  bg_worker = B_BG_WORKER,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  wal_sender = B_WAL_SENDER,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#if PG_MAJORVERSION_NUM &gt;= 17</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  slotsync_worker = B_SLOTSYNC_WORKER,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  standalone_backend = B_STANDALONE_BACKEND,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  archiver = B_ARCHIVER,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  bg_writer = B_BG_WRITER,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  checkpointer = B_CHECKPOINTER,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  startup = B_STARTUP,</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  wal_receiver = B_WAL_RECEIVER,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#if PG_MAJORVERSION_NUM &gt;= 17</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  wal_summarizer = B_WAL_SUMMARIZER,</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  wal_writer = B_WAL_WRITER,</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  logger = B_LOGGER</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>};</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="structcppgres_1_1backend.html">   44</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1backend.html">backend</a> {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="structcppgres_1_1backend.html#a67d39608b1cba784b5f33079c6148e89">   49</a></span>  <span class="keyword">static</span> backend_type::type <a class="code hl_function" href="structcppgres_1_1backend.html#a67d39608b1cba784b5f33079c6148e89">type</a>() { <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>backend_type::type<span class="keyword">&gt;</span>(::MyBackendType); };</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>} <span class="comment">// namespace cppgres</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">requires</span> <span class="keyword">requires</span>(T t, <span class="keywordtype">int</span> code) {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    { t(code) };</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="structcppgres_1_1backend.html#a37b7653b688b1ca96aeac6ad7472229f">   60</a></span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="structcppgres_1_1backend.html#a37b7653b688b1ca96aeac6ad7472229f">atexit</a>(T &amp;&amp;func) {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    T *raw_mem = top_memory_context().alloc&lt;T&gt;();</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    T *allocation = <span class="keyword">new</span> (raw_mem) T(std::forward&lt;T&gt;(func));</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::on_proc_exit}(</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        [](<span class="keywordtype">int</span> code, ::Datum <a class="code hl_struct" href="structcppgres_1_1datum.html">datum</a>) {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>          T *func = <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(DatumGetPointer(<a class="code hl_struct" href="structcppgres_1_1datum.html">datum</a>));</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>          (*func)(code);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        },</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        PointerGetDatum(allocation));</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>};</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>} <span class="comment">// namespace cppgres</span></div>
 <div class="ttc" id="aimports_8h_html"><div class="ttname"><a href="imports_8h.html">imports.h</a></div></div>
-<div class="ttc" id="astructcppgres_1_1backend_html"><div class="ttname"><a href="structcppgres_1_1backend.html">cppgres::backend</a></div><div class="ttdoc">Backend management.</div><div class="ttdef"><b>Definition:</b> backend.hpp:43</div></div>
-<div class="ttc" id="astructcppgres_1_1backend_html_a67d39608b1cba784b5f33079c6148e89"><div class="ttname"><a href="structcppgres_1_1backend.html#a67d39608b1cba784b5f33079c6148e89">cppgres::backend::type</a></div><div class="ttdeci">static backend_type::type type()</div><div class="ttdoc">get current backend type</div><div class="ttdef"><b>Definition:</b> backend.hpp:48</div></div>
+<div class="ttc" id="amemory_8hpp_html"><div class="ttname"><a href="memory_8hpp.html">memory.hpp</a></div></div>
+<div class="ttc" id="astructcppgres_1_1backend_html"><div class="ttname"><a href="structcppgres_1_1backend.html">cppgres::backend</a></div><div class="ttdoc">Backend management.</div><div class="ttdef"><b>Definition:</b> backend.hpp:44</div></div>
+<div class="ttc" id="astructcppgres_1_1backend_html_a37b7653b688b1ca96aeac6ad7472229f"><div class="ttname"><a href="structcppgres_1_1backend.html#a37b7653b688b1ca96aeac6ad7472229f">cppgres::backend::atexit</a></div><div class="ttdeci">static void atexit(T &amp;&amp;func)</div><div class="ttdoc">Register a callback for when Postgres will be exiting.</div><div class="ttdef"><b>Definition:</b> backend.hpp:60</div></div>
+<div class="ttc" id="astructcppgres_1_1backend_html_a67d39608b1cba784b5f33079c6148e89"><div class="ttname"><a href="structcppgres_1_1backend.html#a67d39608b1cba784b5f33079c6148e89">cppgres::backend::type</a></div><div class="ttdeci">static backend_type::type type()</div><div class="ttdoc">get current backend type</div><div class="ttdef"><b>Definition:</b> backend.hpp:49</div></div>
+<div class="ttc" id="astructcppgres_1_1datum_html"><div class="ttname"><a href="structcppgres_1_1datum.html">cppgres::datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:19</div></div>
+<div class="ttc" id="astructcppgres_1_1ffi__guard_html"><div class="ttname"><a href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a></div><div class="ttdef"><b>Definition:</b> guard.hpp:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
