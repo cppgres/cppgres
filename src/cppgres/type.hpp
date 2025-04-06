@@ -39,22 +39,18 @@ struct type {
 };
 
 template <typename T, typename = void> struct type_traits {
-  static bool is(const type &t) {
-    if constexpr (utils::is_optional<T>) {
-      return type_traits<utils::remove_optional_t<T>>::is(t);
-    } else {
-      return false;
-    }
-  }
-
+  static bool is(const type &t) { return false; }
   static type type_for() = delete;
 };
 
 template <typename T> requires std::is_reference_v<T>
 struct type_traits<T> {
-  static constexpr type type_for() {
-    return type_traits<std::remove_reference_t<utils::remove_optional_t<T>>>::type_for();
-  }
+  static constexpr type type_for() { return type_traits<std::remove_reference_t<T>>::type_for(); }
+};
+
+template <typename T> struct type_traits<std::optional<T>> {
+  static bool is(const type &t) { return type_traits<T>::is(t); }
+  static constexpr type type_for() { return type_traits<T>::type_for(); }
 };
 
 struct non_by_value_type : public type {
