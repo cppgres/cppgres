@@ -122,6 +122,7 @@ var hierarchy =
     [ "cppgres::type_traits< int8_t >", "structcppgres_1_1type__traits_3_01int8__t_01_4.html", null ],
     [ "cppgres::type_traits< record >", "structcppgres_1_1type__traits_3_01record_01_4.html", null ],
     [ "cppgres::type_traits< S, std::enable_if_t< utils::is_std_tuple< S >::value > >", "structcppgres_1_1type__traits_3_01S_00_01std_1_1enable__if__t_3_01utils_1_1is__std__tuple_3_01S_01_4_1_1value_01_4_01_4.html", null ],
+    [ "cppgres::type_traits< std::optional< T > >", "structcppgres_1_1type__traits_3_01std_1_1optional_3_01T_01_4_01_4.html", null ],
     [ "cppgres::type_traits< std::string >", "structcppgres_1_1type__traits_3_01std_1_1string_01_4.html", null ],
     [ "cppgres::type_traits< std::string_view >", "structcppgres_1_1type__traits_3_01std_1_1string__view_01_4.html", null ],
     [ "cppgres::type_traits< T >", "structcppgres_1_1type__traits_3_01T_01_4.html", null ],
