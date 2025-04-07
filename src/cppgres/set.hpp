@@ -26,7 +26,7 @@ template <datumable_iterator I> struct set_iterator_traits {
 
 template <typename I> requires datumable_iterator<I>
 struct type_traits<I> {
-  static bool is(type &t) { return t.oid == RECORDOID; }
+  bool is(type &t) { return t.oid == RECORDOID; }
 };
 
 } // namespace cppgres

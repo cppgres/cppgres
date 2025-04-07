@@ -52,7 +52,7 @@ add_test(syscache_type_inference, ([](test_case &) {
            auto v = cppgres::datum_conversion<std::string_view>::from_datum(
                cppgres::datum(cppgres::ffi_guard{::OidFunctionCall1Coll}(
                    func_oid, 0, PointerGetDatum(::cstring_to_text("test")))),
-               cppgres::memory_context());
+               TEXTOID, cppgres::memory_context());
            result = result && _assert(v == "test");
            return result;
          }));
@@ -73,7 +73,7 @@ add_test(syscache_type_inference_priority, ([](test_case &) {
            auto v = cppgres::datum_conversion<std::string_view>::from_datum(
                cppgres::datum(cppgres::ffi_guard{::OidFunctionCall2Coll}(
                    func_oid, 0, PointerGetDatum(::cstring_to_text("test")), cppgres::datum(0))),
-               cppgres::memory_context());
+               TEXTOID, cppgres::memory_context());
            result = result && _assert(v == "test");
            return result;
          }));

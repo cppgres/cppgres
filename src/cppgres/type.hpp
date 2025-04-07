@@ -39,18 +39,24 @@ struct type {
 };
 
 template <typename T, typename = void> struct type_traits {
-  static bool is(const type &t) { return false; }
-  static type type_for() = delete;
+  type_traits() {}
+  type_traits(const T &) {}
+  bool is(const type &t) { return false; }
+  type type_for() = delete;
 };
 
 template <typename T> requires std::is_reference_v<T>
 struct type_traits<T> {
-  static constexpr type type_for() { return type_traits<std::remove_reference_t<T>>::type_for(); }
+  type_traits() {}
+  type_traits(const T &) {}
+  constexpr type type_for() { return type_traits<std::remove_reference_t<T>>().type_for(); }
 };
 
 template <typename T> struct type_traits<std::optional<T>> {
-  static bool is(const type &t) { return type_traits<T>::is(t); }
-  static constexpr type type_for() { return type_traits<T>::type_for(); }
+  type_traits() {}
+  type_traits(const std::optional<T> &) {}
+  bool is(const type &t) { return type_traits<T>().is(t); }
+  constexpr type type_for() { return type_traits<T>().type_for(); }
 };
 
 struct non_by_value_type : public type {
@@ -228,8 +234,8 @@ template <typename T>
 concept expanded_varlena_type = requires { typename T::flattenable_type; };
 
 template <typename T>
-concept has_a_type = requires {
-  { type_traits<T>::type_for() } -> std::same_as<type>;
+concept has_a_type = requires(type_traits<T> t) {
+  { t.type_for() } -> std::same_as<type>;
 };
 
 } // namespace cppgres

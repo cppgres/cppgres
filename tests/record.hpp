@@ -53,18 +53,18 @@ add_test(record_test, ([](test_case &) {
              result = result && _assert(it[0].attribute_name(0) == "name");
              result = result && _assert(it[0].attribute_name(1) == "position");
              result = result && _assert(cppgres::from_nullable_datum<std::string_view>(
-                                            it[0].get_attribute(0)) == "Joe");
+                                            it[0].get_attribute(0), TEXTOID) == "Joe");
              result =
-                 result &&
-                 _assert(cppgres::from_nullable_datum<std::string_view>(it[0]["name"]) == "Joe");
-             result = result &&
-                      _assert(cppgres::from_nullable_datum<std::string_view>(it[0][0]) == "Joe");
+                 result && _assert(cppgres::from_nullable_datum<std::string_view>(
+                                            it[0]["name"], TEXTOID) == "Joe");
              result = result && _assert(cppgres::from_nullable_datum<std::string_view>(
-                                            it[0].get_attribute(1)) == "Manager");
+                                            it[0][0], TEXTOID) == "Joe");
              result = result && _assert(cppgres::from_nullable_datum<std::string_view>(
-                                            it[0]["position"]) == "Manager");
-             result = result && _assert(cppgres::from_nullable_datum<std::string_view>(it[0][1]) ==
-                                        "Manager");
+                                            it[0].get_attribute(1), TEXTOID) == "Manager");
+             result = result && _assert(cppgres::from_nullable_datum<std::string_view>(
+                                            it[0]["position"], TEXTOID) == "Manager");
+             result = result && _assert(cppgres::from_nullable_datum<std::string_view>(
+                                            it[0][1], TEXTOID) == "Manager");
            }
 
            return result;

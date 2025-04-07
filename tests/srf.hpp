@@ -12,8 +12,8 @@ struct srf_pfr_res {
 
 namespace cppgres {
 template <> struct type_traits<srf_pfr_res> {
-  static bool is(const type &t) { return t.oid == RECORDOID; }
-  static constexpr type type_for() { return type{.oid = RECORDOID}; }
+  bool is(const type &t) { return t.oid == RECORDOID; }
+  constexpr type type_for() { return type{.oid = RECORDOID}; }
 };
 
 } // namespace cppgres

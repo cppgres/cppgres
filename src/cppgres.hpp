@@ -77,6 +77,7 @@ using ::fmt::format;
 #include "cppgres/set.hpp"
 #include "cppgres/threading.hpp"
 #include "cppgres/types.hpp"
+#include "cppgres/value.hpp"
 #include "cppgres/xact.hpp"
 
 /**

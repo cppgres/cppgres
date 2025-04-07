@@ -313,4 +313,42 @@ add_test(spi_ptr_gone, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_value_type, ([](test_case &) {
+           bool result = true;
+
+           {
+             cppgres::spi_executor spi;
+             auto res = spi.query<cppgres::value>("select $1 + i from generate_series(1,100) i",
+                                                  static_cast<int64_t>(1LL));
+
+             int i = 0;
+             for (auto &re : res) {
+               i++;
+               result = result && _assert(re.get_type() == cppgres::type{.oid = INT8OID});
+
+               result = result && _assert(cppgres::from_nullable_datum<int64_t>(
+                                              re.get_nullable_datum(), re.get_type().oid) == i + 1);
+             }
+           }
+
+           {
+             cppgres::spi_executor spi;
+             auto res = spi.query<std::tuple<cppgres::value>>(
+                 "select $1 + i from generate_series(1,100) i", static_cast<int64_t>(1LL));
+
+             int i = 0;
+             for (auto &re : res) {
+               i++;
+               result =
+                   result && _assert(std::get<0>(re).get_type() == cppgres::type{.oid = INT8OID});
+
+               result = result && _assert(cppgres::from_nullable_datum<int64_t>(
+                                              std::get<0>(re).get_nullable_datum(),
+                                              std::get<0>(re).get_type().oid) == i + 1);
+             }
+           }
+
+           return result;
+         }));
+
 } // namespace tests

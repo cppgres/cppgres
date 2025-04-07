@@ -9,12 +9,12 @@ struct my_custom_type {
 
 namespace cppgres {
 template <> struct type_traits<::my_custom_type> {
-  static bool is(type &t) { return t == type_for(); }
-  static type type_for() { return cppgres::named_type("custom_type"); }
+  bool is(type &t) { return t == type_for(); }
+  type type_for() { return cppgres::named_type("custom_type"); }
 };
 template <> struct datum_conversion<::my_custom_type> {
-  static ::my_custom_type from_datum(const datum &d, std::optional<memory_context> ctx) {
-    std::string s(datum_conversion<text>::from_datum(d, ctx).operator std::string_view());
+  static ::my_custom_type from_datum(const datum &d, oid oid, std::optional<memory_context> ctx) {
+    std::string s(datum_conversion<text>::from_datum(d, oid, ctx).operator std::string_view());
     return {.s = s};
   }
   static datum into_datum(const ::my_custom_type &t) {
@@ -27,7 +27,7 @@ template <> struct datum_conversion<::my_custom_type> {
 namespace tests {
 
 add_test(type_name_smoke, [](test_case &) {
-  auto ty = cppgres::type_traits<std::string_view>::type_for();
+  auto ty = cppgres::type_traits<std::string_view>().type_for();
   return _assert(ty.name() == "text") && _assert(ty.name(true) == "pg_catalog.text");
 });
 
@@ -80,7 +80,8 @@ add_test(tuples_are_records, ([](test_case &) {
            bool result = true;
 
            using t = std::tuple<std::string, std::string>;
-           result = result && _assert(cppgres::type_traits<t>::is(cppgres::type{.oid = RECORDOID}));
+           result =
+               result && _assert(cppgres::type_traits<t>().is(cppgres::type{.oid = RECORDOID}));
 
            return result;
          }));

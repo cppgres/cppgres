@@ -157,8 +157,9 @@ struct spi_executor : public executor {
           ::Datum value =
               ffi_guard{::SPI_getbinval}(tuptable->vals[n], tuptable->tupdesc, 1, &isnull);
           ::NullableDatum datum = {.value = value, .isnull = isnull};
-          auto ret =
-              from_nullable_datum<T>(nullable_datum(datum), memory_context(tuptable->tuptabcxt));
+          auto ret = from_nullable_datum<T>(nullable_datum(datum),
+                                            ffi_guard{::SPI_gettypeid}(tuptable->tupdesc, 1),
+                                            memory_context(tuptable->tuptabcxt));
           tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);
           return tuples.at(n).value();
         }
@@ -171,7 +172,8 @@ struct spi_executor : public executor {
           ::NullableDatum datum = {.value = value, .isnull = isnull};
           auto nd = nullable_datum(datum);
           return from_nullable_datum<utils::tuple_element_t<Is, T>>(
-              nd, memory_context(tuptable->tuptabcxt));
+              nd, ffi_guard{::SPI_gettypeid}(tuptable->tupdesc, Is + 1),
+              memory_context(tuptable->tuptabcxt));
         }())...};
       }(std::make_index_sequence<utils::tuple_size_v<T>>{});
       tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);
@@ -217,7 +219,7 @@ struct spi_executor : public executor {
           (([&] {
              auto oid = ffi_guard{::SPI_gettypeid}(table->tupdesc, Is + 1);
              auto t = type{.oid = oid};
-             if (!type_traits<utils::tuple_element_t<Is, Ret>>::is(t)) {
+             if (!type_traits<utils::tuple_element_t<Is, Ret>>().is(t)) {
                throw std::invalid_argument(
                    cppgres::fmt::format("invalid return type in position {} ({}), got OID {}", Is,
                                         utils::type_name<utils::tuple_element_t<Is, Ret>>(), oid));
@@ -246,7 +248,7 @@ struct spi_executor : public executor {
       throw std::runtime_error("not a current SPI executor");
     }
     constexpr size_t nargs = sizeof...(Args);
-    std::array<::Oid, nargs> types = {type_traits<Args>::type_for().oid...};
+    std::array<::Oid, nargs> types = {type_traits<Args>(args...).type_for().oid...};
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
     auto rc = ffi_guard{::SPI_execute_with_args}(query.data(), nargs, types.data(), datums.data(),
@@ -265,7 +267,7 @@ struct spi_executor : public executor {
       throw std::runtime_error("not a current SPI executor");
     }
     constexpr size_t nargs = sizeof...(Args);
-    std::array<::Oid, nargs> types = {type_traits<Args>::type_for().oid...};
+    std::array<::Oid, nargs> types = {type_traits<Args>().type_for().oid...};
     return spi_plan<Args...>(ffi_guard{::SPI_prepare}(query.data(), nargs, types.data()));
   }
 
@@ -292,7 +294,7 @@ struct spi_executor : public executor {
       throw std::runtime_error("not a current SPI executor");
     }
     constexpr size_t nargs = sizeof...(Args);
-    std::array<::Oid, nargs> types = {type_traits<Args>::type_for().oid...};
+    std::array<::Oid, nargs> types = {type_traits<Args>(args...).type_for().oid...};
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
     auto rc = ffi_guard{::SPI_execute_with_args}(query.data(), nargs, types.data(), datums.data(),

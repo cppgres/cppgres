@@ -373,7 +373,7 @@ static_assert(std::move_constructible<record>);
 static_assert(std::is_copy_assignable_v<record>);
 
 template <> struct datum_conversion<record> {
-  static record from_datum(const datum &d, std::optional<memory_context> ctx) {
+  static record from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
     return {reinterpret_cast<HeapTupleHeader>(ffi_guard{::pg_detoast_datum}(
                 reinterpret_cast<struct ::varlena *>(d.operator const ::Datum &()))),
             ctx.has_value() ? ctx.value() : memory_context()};
@@ -383,14 +383,14 @@ template <> struct datum_conversion<record> {
 };
 
 template <> struct type_traits<record> {
-  static bool is(const type &t) {
+  bool is(const type &t) {
     if (t.oid == RECORDOID)
       return true;
     // Check if it is a composite type and therefore can be coerced to a record
     syscache<Form_pg_type, oid> cache(t.oid);
     return (*cache).typtype == 'c';
   }
-  static constexpr type type_for() { return {.oid = RECORDOID}; }
+  constexpr type type_for() { return {.oid = RECORDOID}; }
 };
 
 } // namespace cppgres
