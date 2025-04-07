@@ -50,8 +50,8 @@ struct tuple_descriptor {
    * Creates a copy instance of the tuple descriptor in the current memory contet
    */
   tuple_descriptor(tuple_descriptor &other)
-      : tupdesc(ffi_guard{::CreateTupleDescCopyConstr}(other.tupdesc)), blessed(other.blessed),
-        owned(other.owned) {}
+      : tupdesc(ffi_guard{::CreateTupleDescCopyConstr}(other.populate_compact_attribute())),
+        blessed(other.blessed), owned(other.owned) {}
 
   /**
    * @brief Move constructor
@@ -65,7 +65,7 @@ struct tuple_descriptor {
    * Creates a copy instance of the tuple descriptor in the current memory contet
    */
   tuple_descriptor &operator=(const tuple_descriptor &other) {
-    tupdesc = ffi_guard{::CreateTupleDescCopyConstr}(other.tupdesc);
+    tupdesc = ffi_guard{::CreateTupleDescCopyConstr}(other.populate_compact_attribute());
     blessed = other.blessed;
     return *this;
   }
@@ -126,12 +126,8 @@ struct tuple_descriptor {
    * At this point, it'll be prepared and blessed.
    */
   operator TupleDesc() {
+    populate_compact_attribute();
     if (!blessed) {
-#if PG_MAJORVERSION_NUM >= 18
-      for (int i = 0; i < tupdesc->natts; i++) {
-        ffi_guard{::populate_compact_attribute}(tupdesc, i);
-      }
-#endif
       tupdesc = ffi_guard{::BlessTupleDesc}(tupdesc);
       blessed = true;
     }
@@ -204,6 +200,15 @@ private:
     if (blessed) {
       throw std::runtime_error("tuple_descriptor already blessed");
     }
+  }
+
+  TupleDesc populate_compact_attribute() const {
+#if PG_MAJORVERSION_NUM >= 18
+    for (int i = 0; i < tupdesc->natts; i++) {
+      ffi_guard{::populate_compact_attribute}(tupdesc, i);
+    }
+#endif
+    return tupdesc;
   }
 
   TupleDesc tupdesc;
