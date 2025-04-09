@@ -53,6 +53,39 @@ add_test(spi_plural_tuple, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_vector, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto res = spi.query<std::vector<int64_t>>(
+               "select $1 + i, i from generate_series(1,100) i", static_cast<int64_t>(1LL));
+
+           int i = 0;
+           for (auto &re : res) {
+             i++;
+             result = result && _assert(re[0] == i + 1);
+             result = result && _assert(re[1] == i);
+           }
+           return result;
+         }));
+
+add_test(spi_vector_mismatch, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+
+           bool exception_raised = false;
+
+           try {
+             spi.query<std::vector<int64_t>>("select $1 + i, 'test' from generate_series(1,100) i",
+                                             static_cast<int64_t>(1LL));
+           } catch (std::invalid_argument) {
+             exception_raised = true;
+           }
+
+           result = result && _assert(exception_raised);
+
+           return result;
+         }));
+
 add_test(spi_pfr, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
@@ -345,6 +378,22 @@ add_test(spi_value_type, ([](test_case &) {
                result = result && _assert(cppgres::from_nullable_datum<int64_t>(
                                               std::get<0>(re).get_nullable_datum(),
                                               std::get<0>(re).get_type().oid) == i + 1);
+             }
+           }
+
+           {
+             cppgres::spi_executor spi;
+             auto res = spi.query<std::vector<cppgres::value>>(
+                 "select $1 + i from generate_series(1,100) i", static_cast<int64_t>(1LL));
+
+             int i = 0;
+             for (auto &re : res) {
+               i++;
+               result = result && _assert(re[0].get_type() == cppgres::type{.oid = INT8OID});
+
+               result = result &&
+                        _assert(cppgres::from_nullable_datum<int64_t>(
+                                    re[0].get_nullable_datum(), re[0].get_type().oid) == i + 1);
              }
            }
 
