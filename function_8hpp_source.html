@@ -247,7 +247,7 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>      <span class="keywordflow">if</span> (!OidIsValid(rettype.oid)) {</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="comment">// TODO: not very efficient to look it up every time</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache&lt;Form_pg_proc, Oid&gt;</a> cache(fc-&gt;flinfo-&gt;fn_oid);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache&lt;Form_pg_proc, oid&gt;</a> cache(fc-&gt;flinfo-&gt;fn_oid);</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        rettype = <a class="code hl_struct" href="structcppgres_1_1type.html">type</a>{.oid = (*cache).prorettype};</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        retset = (*cache).proretset;</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      }</div>
@@ -280,7 +280,7 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>          <span class="keyword">auto</span> typ = <a class="code hl_struct" href="structcppgres_1_1type.html">type</a>{.oid = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::get_fn_expr_argtype}(fc-&gt;flinfo, Is)};</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>          <span class="keywordflow">if</span> (!OidIsValid(typ.oid)) {</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            <span class="comment">// TODO: not very efficient to look it up every time</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>            <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache&lt;Form_pg_proc, Oid&gt;</a> cache(fc-&gt;flinfo-&gt;fn_oid);</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>            <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache&lt;Form_pg_proc, oid&gt;</a> cache(fc-&gt;flinfo-&gt;fn_oid);</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>            <span class="keywordflow">if</span> ((*cache).proargtypes.dim1 &gt; Is) {</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>              typ = <a class="code hl_struct" href="structcppgres_1_1type.html">type</a>{.oid = (*cache).proargtypes.values[Is]};</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>            }</div>
@@ -353,13 +353,13 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>          [&amp;]&lt;std::size_t... Is&gt;(std::index_sequence&lt;Is...&gt;) {</div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>            (([&amp;] {</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>               <span class="keyword">auto</span> oid = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SPI_gettypeid}(rsinfo-&gt;expectedDesc, Is + 1);</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>               <span class="keyword">auto</span> t = <a class="code hl_struct" href="structcppgres_1_1type.html">type</a>{.oid = oid};</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>               <span class="keyword">auto</span> <a class="code hl_struct" href="structcppgres_1_1oid.html">oid</a> = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SPI_gettypeid}(rsinfo-&gt;expectedDesc, Is + 1);</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>               <span class="keyword">auto</span> t = <a class="code hl_struct" href="structcppgres_1_1type.html">type</a>{.oid = <a class="code hl_struct" href="structcppgres_1_1oid.html">oid</a>};</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>               <span class="keyword">using </span>typ = utils::tuple_element_t&lt;Is, set_value_type&gt;;</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>               <span class="keywordflow">if</span> (!<a class="code hl_struct" href="structcppgres_1_1type__traits.html">type_traits&lt;typ&gt;::is</a>(t)) {</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>                 <span class="keywordflow">throw</span> std::invalid_argument(</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                     cppgres::fmt::format(<span class="stringliteral">&quot;invalid type in record&#39;s position {} ({}), got OID {}&quot;</span>, Is,</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                                 utils::type_name&lt;typ&gt;(), oid));</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                                 utils::type_name&lt;typ&gt;(), <a class="code hl_struct" href="structcppgres_1_1oid.html">oid</a>));</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>               }</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>             }()),</div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>             ...);</div>
@@ -416,7 +416,7 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>} <span class="comment">// namespace cppgres</span></div>
 <div class="ttc" id="aconceptcppgres_1_1convertible__into__nullable__datum__or__set__iterator__or__void_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__into__nullable__datum__or__set__iterator__or__void.html">cppgres::convertible_into_nullable_datum_or_set_iterator_or_void</a></div><div class="ttdef"><b>Definition:</b> function.hpp:25</div></div>
-<div class="ttc" id="aconceptcppgres_1_1convertible__into__nullable__datum_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__into__nullable__datum.html">cppgres::convertible_into_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:174</div></div>
+<div class="ttc" id="aconceptcppgres_1_1convertible__into__nullable__datum_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__into__nullable__datum.html">cppgres::convertible_into_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:189</div></div>
 <div class="ttc" id="aconceptcppgres_1_1datumable__function_html"><div class="ttname"><a href="conceptcppgres_1_1datumable__function.html">cppgres::datumable_function</a></div><div class="ttdoc">Function that operates on values of Postgres types.</div><div class="ttdef"><b>Definition:</b> function.hpp:37</div></div>
 <div class="ttc" id="aconceptcppgres_1_1datumable__iterator_html"><div class="ttname"><a href="conceptcppgres_1_1datumable__iterator.html">cppgres::datumable_iterator</a></div><div class="ttdef"><b>Definition:</b> set.hpp:15</div></div>
 <div class="ttc" id="adatum_8hpp_html"><div class="ttname"><a href="datum_8hpp.html">datum.hpp</a></div></div>
@@ -424,13 +424,14 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="ttc" id="aguard_8hpp_html"><div class="ttname"><a href="guard_8hpp.html">guard.hpp</a></div></div>
 <div class="ttc" id="aimports_8h_html"><div class="ttname"><a href="imports_8h.html">imports.h</a></div></div>
 <div class="ttc" id="aset_8hpp_html"><div class="ttname"><a href="set_8hpp.html">set.hpp</a></div></div>
-<div class="ttc" id="astructcppgres_1_1all__from__nullable__datum_html"><div class="ttname"><a href="structcppgres_1_1all__from__nullable__datum.html">cppgres::all_from_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:178</div></div>
+<div class="ttc" id="astructcppgres_1_1all__from__nullable__datum_html"><div class="ttname"><a href="structcppgres_1_1all__from__nullable__datum.html">cppgres::all_from_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:193</div></div>
 <div class="ttc" id="astructcppgres_1_1current__postgres__function_html"><div class="ttname"><a href="structcppgres_1_1current__postgres__function.html">cppgres::current_postgres_function</a></div><div class="ttdef"><b>Definition:</b> function.hpp:49</div></div>
 <div class="ttc" id="astructcppgres_1_1exception__guard_html"><div class="ttname"><a href="structcppgres_1_1exception__guard.html">cppgres::exception_guard</a></div><div class="ttdoc">Wraps a C++ function to catch exceptions and report them as Postgres errors.</div><div class="ttdef"><b>Definition:</b> guard.hpp:64</div></div>
 <div class="ttc" id="astructcppgres_1_1ffi__guard_html"><div class="ttname"><a href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a></div><div class="ttdef"><b>Definition:</b> guard.hpp:19</div></div>
 <div class="ttc" id="astructcppgres_1_1memory__context__scope_html"><div class="ttname"><a href="structcppgres_1_1memory__context__scope.html">cppgres::memory_context_scope</a></div><div class="ttdef"><b>Definition:</b> memory.hpp:193</div></div>
 <div class="ttc" id="astructcppgres_1_1memory__context_html"><div class="ttname"><a href="structcppgres_1_1memory__context.html">cppgres::memory_context</a></div><div class="ttdef"><b>Definition:</b> memory.hpp:61</div></div>
-<div class="ttc" id="astructcppgres_1_1nullable__datum_html"><div class="ttname"><a href="structcppgres_1_1nullable__datum.html">cppgres::nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:40</div></div>
+<div class="ttc" id="astructcppgres_1_1nullable__datum_html"><div class="ttname"><a href="structcppgres_1_1nullable__datum.html">cppgres::nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:55</div></div>
+<div class="ttc" id="astructcppgres_1_1oid_html"><div class="ttname"><a href="structcppgres_1_1oid.html">cppgres::oid</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:17</div></div>
 <div class="ttc" id="astructcppgres_1_1postgres__function_html"><div class="ttname"><a href="structcppgres_1_1postgres__function.html">cppgres::postgres_function</a></div><div class="ttdoc">Postgres function implemented in C++.</div><div class="ttdef"><b>Definition:</b> function.hpp:101</div></div>
 <div class="ttc" id="astructcppgres_1_1postgres__function_html_a3f1e16b082548865d63063fd27a8c759"><div class="ttname"><a href="structcppgres_1_1postgres__function.html#a3f1e16b082548865d63063fd27a8c759">cppgres::postgres_function::operator()</a></div><div class="ttdeci">auto operator()(FunctionCallInfo fc) -&gt; ::Datum</div><div class="ttdef"><b>Definition:</b> function.hpp:115</div></div>
 <div class="ttc" id="astructcppgres_1_1syscache_html"><div class="ttname"><a href="structcppgres_1_1syscache.html">cppgres::syscache</a></div><div class="ttdef"><b>Definition:</b> syscache.hpp:26</div></div>

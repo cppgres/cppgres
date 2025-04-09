@@ -1,5 +1,6 @@
 var datum_8hpp =
 [
+    [ "cppgres::oid", "structcppgres_1_1oid.html", null ],
     [ "cppgres::datum", "structcppgres_1_1datum.html", null ],
     [ "cppgres::null_datum_exception", "classcppgres_1_1null__datum__exception.html", null ],
     [ "cppgres::nullable_datum", "structcppgres_1_1nullable__datum.html", null ],

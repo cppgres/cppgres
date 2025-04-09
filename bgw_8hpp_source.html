@@ -361,11 +361,11 @@ $(document).ready(function(){initNavTree('bgw_8hpp_source.html',''); initResizab
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  }</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Flags&gt;</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno"><a class="line" href="structcppgres_1_1current__background__worker.html#a7576f073770d6e35b919b0602a67f946">  264</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structcppgres_1_1current__background__worker.html#a7576f073770d6e35b919b0602a67f946">connect</a>(oid db, std::optional&lt;oid&gt; user = std::nullopt, Flags... flags) <span class="keyword">requires</span>(</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno"><a class="line" href="structcppgres_1_1current__background__worker.html#a7576f073770d6e35b919b0602a67f946">  264</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structcppgres_1_1current__background__worker.html#a7576f073770d6e35b919b0602a67f946">connect</a>(<a class="code hl_struct" href="structcppgres_1_1oid.html">oid</a> db, std::optional&lt;oid&gt; user = std::nullopt, Flags... flags) <span class="keyword">requires</span>(</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>      std::conjunction_v&lt;std::is_base_of&lt;background_worker_database_conection_flag, Flags&gt;...&gt;)</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  {</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::BackgroundWorkerInitializeConnectionByOid}(</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        db, user.has_value() ? user.value() : InvalidOid, (flags.flag() | ... | 0));</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        db, user.has_value() ? user.value() : <a class="code hl_struct" href="structcppgres_1_1oid.html">oid</a>(InvalidOid), (flags.flag() | ... | 0));</div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  }</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>};</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
@@ -387,6 +387,7 @@ $(document).ready(function(){initNavTree('bgw_8hpp_source.html',''); initResizab
 <div class="ttc" id="astructcppgres_1_1current__background__worker_html_af2dd9091ee501563274f792b878c81b4"><div class="ttname"><a href="structcppgres_1_1current__background__worker.html#af2dd9091ee501563274f792b878c81b4">cppgres::current_background_worker::connect</a></div><div class="ttdeci">void connect(std::string dbname, std::optional&lt; std::string &gt; user=std::nullopt, Flags... flags)</div><div class="ttdoc">Connect to the database using db name and, optionally, username.</div><div class="ttdef"><b>Definition:</b> bgw.hpp:244</div></div>
 <div class="ttc" id="astructcppgres_1_1ffi__guard_html"><div class="ttname"><a href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a></div><div class="ttdef"><b>Definition:</b> guard.hpp:19</div></div>
 <div class="ttc" id="astructcppgres_1_1name_html"><div class="ttname"><a href="structcppgres_1_1name.html">cppgres::name</a></div><div class="ttdef"><b>Definition:</b> name.hpp:7</div></div>
+<div class="ttc" id="astructcppgres_1_1oid_html"><div class="ttname"><a href="structcppgres_1_1oid.html">cppgres::oid</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:17</div></div>
 <div class="ttc" id="astructcppgres_1_1worker_html"><div class="ttname"><a href="structcppgres_1_1worker.html">cppgres::worker</a></div><div class="ttdoc">Single-threaded Postgres workload worker.</div><div class="ttdef"><b>Definition:</b> threading.hpp:34</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

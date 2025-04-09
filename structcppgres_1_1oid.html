@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cppgres: cppgres::datum_conversion&lt; oid &gt; Struct Reference</title>
+<title>Cppgres: cppgres::oid Struct Reference</title>
 <!--BEGIN PROJECT_ICON-->
 <link rel="icon" href="$projecticon" type="image/x-icon" />
 <!--END PROJECT_ICON-->
@@ -110,7 +110,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('structcppgres_1_1datum__conversion_3_01oid_01_4.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structcppgres_1_1oid.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,30 +137,45 @@ $(document).ready(function(){initNavTree('structcppgres_1_1datum__conversion_3_0
 
 <div class="header">
   <div class="summary">
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="structcppgres_1_1datum__conversion_3_01oid_01_4-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">cppgres::datum_conversion&lt; oid &gt; Struct Reference</div></div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="structcppgres_1_1oid-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">cppgres::oid Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ab5d054bf6087fed2bbbc7a8a034b44a3"><td class="memItemLeft" align="right" valign="top"><a id="ab5d054bf6087fed2bbbc7a8a034b44a3" name="ab5d054bf6087fed2bbbc7a8a034b44a3"></a>
-static <a class="el" href="structcppgres_1_1oid.html">oid</a>&#160;</td><td class="memItemRight" valign="bottom"><b>from_datum</b> (const <a class="el" href="structcppgres_1_1datum.html">datum</a> &amp;d, std::optional&lt; <a class="el" href="structcppgres_1_1memory__context.html">memory_context</a> &gt;)</td></tr>
-<tr class="separator:ab5d054bf6087fed2bbbc7a8a034b44a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2d50cb01fc57ef9b52181b424035668"><td class="memItemLeft" align="right" valign="top"><a id="aa2d50cb01fc57ef9b52181b424035668" name="aa2d50cb01fc57ef9b52181b424035668"></a>
-static <a class="el" href="structcppgres_1_1datum.html">datum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>into_datum</b> (const <a class="el" href="structcppgres_1_1oid.html">oid</a> &amp;t)</td></tr>
-<tr class="separator:aa2d50cb01fc57ef9b52181b424035668"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ae5331bbd506093c5a60d9d93b86b7565"><td class="memItemLeft" align="right" valign="top"><a id="ae5331bbd506093c5a60d9d93b86b7565" name="ae5331bbd506093c5a60d9d93b86b7565"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>oid</b> (::Oid <a class="el" href="structcppgres_1_1oid.html">oid</a>)</td></tr>
+<tr class="separator:ae5331bbd506093c5a60d9d93b86b7565"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af37621156d6c659d1d0c3263f3c1a8e3"><td class="memItemLeft" align="right" valign="top"><a id="af37621156d6c659d1d0c3263f3c1a8e3" name="af37621156d6c659d1d0c3263f3c1a8e3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>oid</b> (<a class="el" href="structcppgres_1_1oid.html">oid</a> &amp;<a class="el" href="structcppgres_1_1oid.html">oid</a>)</td></tr>
+<tr class="separator:af37621156d6c659d1d0c3263f3c1a8e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b2e1061daee2afc6083c363dd84ff90"><td class="memItemLeft" align="right" valign="top"><a id="a1b2e1061daee2afc6083c363dd84ff90" name="a1b2e1061daee2afc6083c363dd84ff90"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="structcppgres_1_1oid.html">oid</a> &amp;rhs) const</td></tr>
+<tr class="separator:a1b2e1061daee2afc6083c363dd84ff90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bffcb0452eea399293e02d1b2e250be"><td class="memItemLeft" align="right" valign="top"><a id="a1bffcb0452eea399293e02d1b2e250be" name="a1bffcb0452eea399293e02d1b2e250be"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (const <a class="el" href="structcppgres_1_1oid.html">oid</a> &amp;rhs) const</td></tr>
+<tr class="separator:a1bffcb0452eea399293e02d1b2e250be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61656bb4cdf1fa4fc001227dbe303f56"><td class="memItemLeft" align="right" valign="top"><a id="a61656bb4cdf1fa4fc001227dbe303f56" name="a61656bb4cdf1fa4fc001227dbe303f56"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const ::Oid &amp;rhs) const</td></tr>
+<tr class="separator:a61656bb4cdf1fa4fc001227dbe303f56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec16bd9eb0324d5bd35f096042efc575"><td class="memItemLeft" align="right" valign="top"><a id="aec16bd9eb0324d5bd35f096042efc575" name="aec16bd9eb0324d5bd35f096042efc575"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (const ::Oid &amp;rhs) const</td></tr>
+<tr class="separator:aec16bd9eb0324d5bd35f096042efc575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a347308aaae580fdbe5791bba630b66"><td class="memItemLeft" align="right" valign="top"><a id="a3a347308aaae580fdbe5791bba630b66" name="a3a347308aaae580fdbe5791bba630b66"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator::Oid</b> () const</td></tr>
+<tr class="separator:a3a347308aaae580fdbe5791bba630b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/cppgres/<a class="el" href="types_8hpp_source.html">types.hpp</a></li>
+<li>src/cppgres/<a class="el" href="datum_8hpp_source.html">datum.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>cppgres</b></li><li class="navelem"><a class="el" href="structcppgres_1_1datum__conversion_3_01oid_01_4.html">datum_conversion&lt; oid &gt;</a></li>
+    <li class="navelem"><b>cppgres</b></li><li class="navelem"><a class="el" href="structcppgres_1_1oid.html">oid</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>
