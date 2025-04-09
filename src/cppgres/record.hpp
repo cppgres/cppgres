@@ -383,7 +383,13 @@ template <> struct datum_conversion<record> {
 };
 
 template <> struct type_traits<record> {
-  static bool is(const type &t) { return t.oid == RECORDOID; }
+  static bool is(const type &t) {
+    if (t.oid == RECORDOID)
+      return true;
+    // Check if it is a composite type and therefore can be coerced to a record
+    syscache<Form_pg_type, oid> cache(t.oid);
+    return (*cache).typtype == 'c';
+  }
   static constexpr type type_for() { return {.oid = RECORDOID}; }
 };
 

@@ -265,7 +265,7 @@ struct current_background_worker : public background_worker {
       std::conjunction_v<std::is_base_of<background_worker_database_conection_flag, Flags>...>)
   {
     ffi_guard{::BackgroundWorkerInitializeConnectionByOid}(
-        db, user.has_value() ? user.value() : InvalidOid, (flags.flag() | ... | 0));
+        db, user.has_value() ? user.value() : oid(InvalidOid), (flags.flag() | ... | 0));
   }
 };
 

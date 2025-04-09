@@ -129,7 +129,7 @@ template <datumable_function Func> struct postgres_function {
 
       if (!OidIsValid(rettype.oid)) {
         // TODO: not very efficient to look it up every time
-        syscache<Form_pg_proc, Oid> cache(fc->flinfo->fn_oid);
+        syscache<Form_pg_proc, oid> cache(fc->flinfo->fn_oid);
         rettype = type{.oid = (*cache).prorettype};
         retset = (*cache).proretset;
       }
@@ -162,7 +162,7 @@ template <datumable_function Func> struct postgres_function {
           auto typ = type{.oid = ffi_guard{::get_fn_expr_argtype}(fc->flinfo, Is)};
           if (!OidIsValid(typ.oid)) {
             // TODO: not very efficient to look it up every time
-            syscache<Form_pg_proc, Oid> cache(fc->flinfo->fn_oid);
+            syscache<Form_pg_proc, oid> cache(fc->flinfo->fn_oid);
             if ((*cache).proargtypes.dim1 > Is) {
               typ = type{.oid = (*cache).proargtypes.values[Is]};
             }

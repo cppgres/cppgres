@@ -200,30 +200,31 @@ struct spi_executor : public executor {
   private:
   };
 
-  template <datumable_tuple Ret, convertible_into_nullable_datum... Args> struct results {
+  template <datumable_tuple Ret> struct results {
     ::SPITupleTable *table;
 
     results(::SPITupleTable *table) : table(table) {
       auto natts = table->tupdesc->natts;
-      [&]<std::size_t... Is>(std::index_sequence<Is...>) {
-        (([&] {
-           auto oid = ffi_guard{::SPI_gettypeid}(table->tupdesc, Is + 1);
-           auto t = type{.oid = oid};
-           if (!type_traits<utils::tuple_element_t<Is, Ret>>::is(t)) {
-             throw std::invalid_argument(
-                 cppgres::fmt::format("invalid return type in position {} ({}), got OID {}", Is,
-                             utils::type_name<utils::tuple_element_t<Is, Ret>>(), oid));
-           }
-         }()),
-         ...);
-      }(std::make_index_sequence<sizeof...(Args)>{});
       if (natts != utils::tuple_size_v<Ret>) {
         if (natts == 1 && convertible_from_datum<Ret>) {
           // okay, this is just a type we can convert
         } else {
-          throw std::runtime_error(
-              cppgres::fmt::format("expected {} return values, got {}", utils::tuple_size_v<Ret>, natts));
+          throw std::runtime_error(cppgres::fmt::format("expected {} return values, got {}",
+                                                        utils::tuple_size_v<Ret>, natts));
         }
+      } else {
+        [&]<std::size_t... Is>(std::index_sequence<Is...>) {
+          (([&] {
+             auto oid = ffi_guard{::SPI_gettypeid}(table->tupdesc, Is + 1);
+             auto t = type{.oid = oid};
+             if (!type_traits<utils::tuple_element_t<Is, Ret>>::is(t)) {
+               throw std::invalid_argument(
+                   cppgres::fmt::format("invalid return type in position {} ({}), got OID {}", Is,
+                                        utils::type_name<utils::tuple_element_t<Is, Ret>>(), oid));
+             }
+           }()),
+           ...);
+        }(std::make_index_sequence<utils::tuple_size_v<Ret>>{});
       }
     }
 
@@ -240,7 +241,7 @@ struct spi_executor : public executor {
    * @throws std::runtime_error if there's an SPI error
    */
   template <datumable_tuple Ret, convertible_into_nullable_datum_and_has_a_type... Args>
-  results<Ret, Args...> query(std::string_view query, Args &&...args) {
+  results<Ret> query(std::string_view query, Args &&...args) {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
     }
@@ -252,7 +253,7 @@ struct spi_executor : public executor {
                                                  nulls.data(), false, 0);
     if (rc > 0) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
-      return results<Ret, Args...>(SPI_tuptable);
+      return results<Ret>(SPI_tuptable);
     } else {
       throw std::runtime_error("spi error");
     }
@@ -269,7 +270,7 @@ struct spi_executor : public executor {
   }
 
   template <datumable_tuple Ret, convertible_into_nullable_datum... Args>
-  results<Ret, Args...> query(spi_plan<Args...> &query, Args &&...args) {
+  results<Ret> query(spi_plan<Args...> &query, Args &&...args) {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
     }
@@ -279,7 +280,7 @@ struct spi_executor : public executor {
     auto rc = ffi_guard{::SPI_execute_plan}(query, datums.data(), nulls.data(), false, 0);
     if (rc > 0) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
-      return results<Ret, Args...>(SPI_tuptable);
+      return results<Ret>(SPI_tuptable);
     } else {
       throw std::runtime_error("spi error");
     }

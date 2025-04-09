@@ -18,6 +18,11 @@ template <> struct type_traits<void> {
   static constexpr type type_for() { return type{.oid = VOIDOID}; }
 };
 
+template <> struct type_traits<oid> {
+  static bool is(const type &t) { return t.oid == OIDOID; }
+  static constexpr type type_for() { return type{.oid = OIDOID}; }
+};
+
 template <typename S> struct type_traits<S, std::enable_if_t<utils::is_std_tuple<S>::value>> {
   static bool is(const type &t) {
     if (t.oid == RECORDOID) {
