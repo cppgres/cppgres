@@ -14,7 +14,22 @@
 
 namespace cppgres {
 
-using oid = ::Oid;
+struct oid {
+  oid(::Oid oid) : oid_(oid) {}
+  oid(oid &oid) : oid_(oid.oid_) {}
+
+  bool operator==(const oid &rhs) const { return oid_ == rhs.oid_; }
+  bool operator!=(const oid &rhs) const { return !(rhs == *this); }
+
+  bool operator==(const ::Oid &rhs) const { return oid_ == rhs; }
+  bool operator!=(const ::Oid &rhs) const { return oid_ != rhs; }
+
+  operator ::Oid() const { return oid_; }
+
+private:
+  ::Oid oid_;
+};
+static_assert(sizeof(::Oid) == sizeof(oid));
 
 struct datum {
   template <typename T, typename> friend struct datum_conversion;

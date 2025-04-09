@@ -35,7 +35,7 @@ add_test(internal_subtransaction_commit, ([](test_case &) {
              spi.execute("insert into internal_subtransaction_commit default values");
            }
            cppgres::spi_executor spi;
-           auto res = spi.query<std::tuple<int32_t>>(
+           auto res = spi.query<std::tuple<int64_t>>(
                "select count(*) from internal_subtransaction_commit");
            result = result && _assert(std::get<0>(res.begin()[0]) == 1);
            return result;
@@ -53,7 +53,7 @@ add_test(internal_subtransaction_rollback, ([](test_case &) {
              spi.execute("insert into internal_subtransaction_rollback default values");
            }
            cppgres::spi_executor spi;
-           auto res = spi.query<std::tuple<int32_t>>(
+           auto res = spi.query<std::tuple<int64_t>>(
                "select count(*) from internal_subtransaction_rollback");
            result = result && _assert(std::get<0>(res.begin()[0]) == 0);
            return result;

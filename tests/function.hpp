@@ -48,7 +48,7 @@ add_test(syscache_type_inference, ([](test_case &) {
            cppgres::spi_executor spi;
            spi.execute(cppgres::fmt::format("create function infer(text) returns text language c as '{}'",
                                    get_library_name()));
-           auto func_oid = spi.query<cppgres::oid>("select 'infer'::regproc").begin()[0];
+           auto func_oid = spi.query<cppgres::oid>("select 'infer'::regproc::oid").begin()[0];
            auto v = cppgres::datum_conversion<std::string_view>::from_datum(
                cppgres::datum(cppgres::ffi_guard{::OidFunctionCall1Coll}(
                    func_oid, 0, PointerGetDatum(::cstring_to_text("test")))),
@@ -69,7 +69,7 @@ add_test(syscache_type_inference_priority, ([](test_case &) {
            cppgres::spi_executor spi;
            spi.execute(cppgres::fmt::format("create function infer(text) returns text language c as '{}'",
                                    get_library_name()));
-           auto func_oid = spi.query<cppgres::oid>("select 'infer'::regproc").begin()[0];
+           auto func_oid = spi.query<cppgres::oid>("select 'infer'::regproc::oid").begin()[0];
            auto v = cppgres::datum_conversion<std::string_view>::from_datum(
                cppgres::datum(cppgres::ffi_guard{::OidFunctionCall2Coll}(
                    func_oid, 0, PointerGetDatum(::cstring_to_text("test")), cppgres::datum(0))),
