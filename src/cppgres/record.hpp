@@ -85,6 +85,11 @@ struct tuple_descriptor {
     return *TupleDescAttr(tupdesc, n);
   }
 
+  type get_type(int n) const {
+    auto &att = operator[](n);
+    return {att.atttypid};
+  }
+
   /**
    * @brief Set attribute type
    *
@@ -104,6 +109,11 @@ struct tuple_descriptor {
     att.attalign = (*typ).typalign;
     att.atttypmod = (*typ).typtypmod;
     att.attbyval = (*typ).typbyval;
+  }
+
+  std::string_view get_name(int n) {
+    auto &att = operator[](n);
+    return NameStr(att.attname);
   }
 
   /**

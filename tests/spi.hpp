@@ -400,4 +400,20 @@ add_test(spi_value_type, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_tupdesc_access, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           auto res = spi.query<std::tuple<cppgres::value, cppgres::value>>(
+               "select 1 as a, 'a'::text as b");
+
+           auto td = res.get_tuple_descriptor();
+           result = result && _assert(td.get_name(0) == "a");
+           result = result && _assert(td.get_type(0).oid == INT4OID);
+           result = result && _assert(td.get_name(1) == "b");
+           result = result && _assert(td.get_type(1).oid == TEXTOID);
+
+           return result;
+         }));
+
 } // namespace tests

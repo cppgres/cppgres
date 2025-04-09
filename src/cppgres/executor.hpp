@@ -253,6 +253,8 @@ struct spi_executor : public executor {
 
     result_iterator<Ret> begin() const { return result_iterator<Ret>(table); }
     size_t end() const { return table->numvals; }
+
+    tuple_descriptor get_tuple_descriptor() const { return table->tupdesc; }
   };
 
   /**
