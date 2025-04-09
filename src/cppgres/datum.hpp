@@ -25,6 +25,7 @@ struct oid {
   bool operator!=(const ::Oid &rhs) const { return oid_ != rhs; }
 
   operator ::Oid() const { return oid_; }
+  operator ::Oid &() { return oid_; }
 
 private:
   ::Oid oid_;
