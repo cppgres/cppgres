@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('maybe__ref_8hpp_source.html',''); init
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="structcppgres_1_1utils_1_1maybe__ref.html">    7</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1utils_1_1maybe__ref.html">maybe_ref</a> {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>  <span class="comment">// In-place constructor: constructs T inside the variant using forwarded arguments.</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Args&gt; <a class="code hl_struct" href="structcppgres_1_1utils_1_1maybe__ref.html">maybe_ref</a>(Args &amp;&amp;...args) : data(std::forward&lt;Args&gt;(args)...) {}</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <a class="code hl_struct" href="structcppgres_1_1utils_1_1maybe__ref.html">maybe_ref</a>(<span class="keyword">const</span> T &amp;value) : data(value) {}</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <a class="code hl_struct" href="structcppgres_1_1utils_1_1maybe__ref.html">maybe_ref</a>(<span class="keyword">const</span> T &amp;<a class="code hl_struct" href="structcppgres_1_1value.html">value</a>) : data(<a class="code hl_struct" href="structcppgres_1_1value.html">value</a>) {}</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  <a class="code hl_struct" href="structcppgres_1_1utils_1_1maybe__ref.html">maybe_ref</a>(T &amp;ref) : data(std::ref(ref)) {}</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keyword">operator</span> T &amp;() {</div>
@@ -175,6 +175,7 @@ $(document).ready(function(){initNavTree('maybe__ref_8hpp_source.html',''); init
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>};</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>} <span class="comment">// namespace cppgres::utils</span></div>
 <div class="ttc" id="astructcppgres_1_1utils_1_1maybe__ref_html"><div class="ttname"><a href="structcppgres_1_1utils_1_1maybe__ref.html">cppgres::utils::maybe_ref</a></div><div class="ttdef"><b>Definition:</b> maybe_ref.hpp:7</div></div>
+<div class="ttc" id="astructcppgres_1_1value_html"><div class="ttname"><a href="structcppgres_1_1value.html">cppgres::value</a></div><div class="ttdef"><b>Definition:</b> value.hpp:8</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -183,11 +183,11 @@ Concepts</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac0562abf8a8978c0a8b0d24ca6ed122a"><td class="memTemplParams" colspan="2"><a id="ac0562abf8a8978c0a8b0d24ca6ed122a" name="ac0562abf8a8978c0a8b0d24ca6ed122a"></a>
+<tr class="memitem:a9439fdedf0246e41a47bcb1afa2a33a2"><td class="memTemplParams" colspan="2"><a id="a9439fdedf0246e41a47bcb1afa2a33a2" name="a9439fdedf0246e41a47bcb1afa2a33a2"></a>
 template&lt;typename T &gt; <br />
 requires convertible_from_datum&lt;T&gt; || (utils::is_optional&lt;T&gt; &amp;&amp; convertible_from_datum&lt;utils::remove_optional_t&lt;T&gt;&gt;)</td></tr>
-<tr class="memitem:ac0562abf8a8978c0a8b0d24ca6ed122a"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::from_nullable_datum</b> (const nullable_datum &amp;d, std::optional&lt; memory_context &gt; context=std::nullopt)</td></tr>
-<tr class="separator:ac0562abf8a8978c0a8b0d24ca6ed122a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9439fdedf0246e41a47bcb1afa2a33a2"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::from_nullable_datum</b> (const nullable_datum &amp;d, const oid oid, std::optional&lt; memory_context &gt; context=std::nullopt)</td></tr>
+<tr class="separator:a9439fdedf0246e41a47bcb1afa2a33a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1db0723cc9ac174ea6e54d93a8144165"><td class="memTemplParams" colspan="2"><a id="a1db0723cc9ac174ea6e54d93a8144165" name="a1db0723cc9ac174ea6e54d93a8144165"></a>
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a1db0723cc9ac174ea6e54d93a8144165"><td class="memTemplItemLeft" align="right" valign="top">nullable_datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_nullable_datum</b> (const std::optional&lt; T &gt; &amp;v)</td></tr>

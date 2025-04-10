@@ -52,6 +52,7 @@ var annotated_dup =
       [ "datum_conversion< std::string_view >", "structcppgres_1_1datum__conversion_3_01std_1_1string__view_01_4.html", null ],
       [ "datum_conversion< T, std::enable_if_t< expanded_varlena_type< T > > >", "structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01expanded__varlena__type_3_01T_01_4_01_4_01_4.html", null ],
       [ "datum_conversion< text >", "structcppgres_1_1datum__conversion_3_01text_01_4.html", null ],
+      [ "datum_conversion< value >", "structcppgres_1_1datum__conversion_3_01value_01_4.html", null ],
       [ "exception_guard", "structcppgres_1_1exception__guard.html", null ],
       [ "executor", "structcppgres_1_1executor.html", null ],
       [ "expanded_varlena", "structcppgres_1_1expanded__varlena.html", null ],
@@ -109,8 +110,10 @@ var annotated_dup =
       [ "type_traits< std::string_view >", "structcppgres_1_1type__traits_3_01std_1_1string__view_01_4.html", null ],
       [ "type_traits< T >", "structcppgres_1_1type__traits_3_01T_01_4.html", null ],
       [ "type_traits< text >", "structcppgres_1_1type__traits_3_01text_01_4.html", null ],
+      [ "type_traits< value >", "structcppgres_1_1type__traits_3_01value_01_4.html", null ],
       [ "type_traits< void >", "structcppgres_1_1type__traits_3_01void_01_4.html", null ],
       [ "unsupported_type", "structcppgres_1_1unsupported__type.html", null ],
+      [ "value", "structcppgres_1_1value.html", null ],
       [ "varlena", "structcppgres_1_1varlena.html", null ],
       [ "worker", "structcppgres_1_1worker.html", "structcppgres_1_1worker" ]
     ] ]

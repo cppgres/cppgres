@@ -6,5 +6,6 @@ var searchData=
   ['operator_3d_3',['operator=',['../structcppgres_1_1tuple__descriptor.html#afd4654c937e15d53866cd3176d308c94',1,'cppgres::tuple_descriptor']]],
   ['operator_3d_3d_4',['operator==',['../structcppgres_1_1tuple__descriptor.html#ab00fa97a429a29a21cf21531c6efd858',1,'cppgres::tuple_descriptor']]],
   ['operator_5b_5d_5',['operator[]',['../structcppgres_1_1tuple__descriptor.html#a6ee700f0172147ff2f7388c9febe4932',1,'cppgres::tuple_descriptor::operator[]()'],['../structcppgres_1_1record.html#a4dca730bad191c5697a8863bb474cc12',1,'cppgres::record::operator[](std::string_view name)'],['../structcppgres_1_1record.html#ac381737091bbd5f09a15544d70043a26',1,'cppgres::record::operator[](int n)']]],
-  ['owned_5fmemory_5fcontext_6',['owned_memory_context',['../structcppgres_1_1owned__memory__context.html',1,'cppgres']]]
+  ['options_6',['options',['../structcppgres_1_1spi__executor_1_1options.html',1,'cppgres::spi_executor']]],
+  ['owned_5fmemory_5fcontext_7',['owned_memory_context',['../structcppgres_1_1owned__memory__context.html',1,'cppgres']]]
 ];

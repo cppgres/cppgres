@@ -34,6 +34,7 @@ var searchData=
   ['type_5ftraits_3c_20std_3a_3astring_5fview_20_3e_31',['type_traits&lt; std::string_view &gt;',['../structcppgres_1_1type__traits_3_01std_1_1string__view_01_4.html',1,'cppgres']]],
   ['type_5ftraits_3c_20t_20_3e_32',['type_traits&lt; T &gt;',['../structcppgres_1_1type__traits_3_01T_01_4.html',1,'cppgres']]],
   ['type_5ftraits_3c_20text_20_3e_33',['type_traits&lt; text &gt;',['../structcppgres_1_1type__traits_3_01text_01_4.html',1,'cppgres']]],
-  ['type_5ftraits_3c_20void_20_3e_34',['type_traits&lt; void &gt;',['../structcppgres_1_1type__traits_3_01void_01_4.html',1,'cppgres']]],
-  ['types_2ehpp_35',['types.hpp',['../types_8hpp.html',1,'']]]
+  ['type_5ftraits_3c_20value_20_3e_34',['type_traits&lt; value &gt;',['../structcppgres_1_1type__traits_3_01value_01_4.html',1,'cppgres']]],
+  ['type_5ftraits_3c_20void_20_3e_35',['type_traits&lt; void &gt;',['../structcppgres_1_1type__traits_3_01void_01_4.html',1,'cppgres']]],
+  ['types_2ehpp_36',['types.hpp',['../types_8hpp.html',1,'']]]
 ];

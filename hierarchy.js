@@ -39,6 +39,7 @@ var hierarchy =
     [ "cppgres::datum_conversion< std::string_view >", "structcppgres_1_1datum__conversion_3_01std_1_1string__view_01_4.html", null ],
     [ "cppgres::datum_conversion< T, std::enable_if_t< expanded_varlena_type< T > > >", "structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01expanded__varlena__type_3_01T_01_4_01_4_01_4.html", null ],
     [ "cppgres::datum_conversion< text >", "structcppgres_1_1datum__conversion_3_01text_01_4.html", null ],
+    [ "cppgres::datum_conversion< value >", "structcppgres_1_1datum__conversion_3_01value_01_4.html", null ],
     [ "std::exception", null, [
       [ "cppgres::background_worker::postmaster_died", "structcppgres_1_1background__worker_1_1postmaster__died.html", null ],
       [ "cppgres::background_worker::worker_not_yet_started", "structcppgres_1_1background__worker_1_1worker__not__yet__started.html", null ],
@@ -75,6 +76,7 @@ var hierarchy =
     [ "cppgres::node_traits< T >", "structcppgres_1_1node__traits.html", null ],
     [ "cppgres::nullable_datum", "structcppgres_1_1nullable__datum.html", null ],
     [ "cppgres::oid", "structcppgres_1_1oid.html", null ],
+    [ "cppgres::spi_executor::options", "structcppgres_1_1spi__executor_1_1options.html", null ],
     [ "cppgres::postgres_function< Func >", "structcppgres_1_1postgres__function.html", null ],
     [ "cppgres::record", "structcppgres_1_1record.html", null ],
     [ "cppgres::utils::remove_optional< T >", "structcppgres_1_1utils_1_1remove__optional.html", null ],
@@ -129,7 +131,9 @@ var hierarchy =
     [ "cppgres::type_traits< std::string_view >", "structcppgres_1_1type__traits_3_01std_1_1string__view_01_4.html", null ],
     [ "cppgres::type_traits< T >", "structcppgres_1_1type__traits_3_01T_01_4.html", null ],
     [ "cppgres::type_traits< text >", "structcppgres_1_1type__traits_3_01text_01_4.html", null ],
+    [ "cppgres::type_traits< value >", "structcppgres_1_1type__traits_3_01value_01_4.html", null ],
     [ "cppgres::type_traits< void >", "structcppgres_1_1type__traits_3_01void_01_4.html", null ],
     [ "cppgres::unsupported_type< T >", "structcppgres_1_1unsupported__type.html", null ],
+    [ "cppgres::value", "structcppgres_1_1value.html", null ],
     [ "cppgres::worker", "structcppgres_1_1worker.html", null ]
 ];

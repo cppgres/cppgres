@@ -21,5 +21,6 @@ var searchData=
   ['datum_5fconversion_3c_20std_3a_3astring_20_3e_18',['datum_conversion&lt; std::string &gt;',['../structcppgres_1_1datum__conversion_3_01std_1_1string_01_4.html',1,'cppgres']]],
   ['datum_5fconversion_3c_20std_3a_3astring_5fview_20_3e_19',['datum_conversion&lt; std::string_view &gt;',['../structcppgres_1_1datum__conversion_3_01std_1_1string__view_01_4.html',1,'cppgres']]],
   ['datum_5fconversion_3c_20t_2c_20std_3a_3aenable_5fif_5ft_3c_20expanded_5fvarlena_5ftype_3c_20t_20_3e_20_3e_20_3e_20',['datum_conversion&lt; T, std::enable_if_t&lt; expanded_varlena_type&lt; T &gt; &gt; &gt;',['../structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01expanded__varlena__type_3_01T_01_4_01_4_01_4.html',1,'cppgres']]],
-  ['datum_5fconversion_3c_20text_20_3e_21',['datum_conversion&lt; text &gt;',['../structcppgres_1_1datum__conversion_3_01text_01_4.html',1,'cppgres']]]
+  ['datum_5fconversion_3c_20text_20_3e_21',['datum_conversion&lt; text &gt;',['../structcppgres_1_1datum__conversion_3_01text_01_4.html',1,'cppgres']]],
+  ['datum_5fconversion_3c_20value_20_3e_22',['datum_conversion&lt; value &gt;',['../structcppgres_1_1datum__conversion_3_01value_01_4.html',1,'cppgres']]]
 ];

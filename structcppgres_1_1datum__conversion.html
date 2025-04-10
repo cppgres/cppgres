@@ -150,9 +150,9 @@ $(document).ready(function(){initNavTree('structcppgres_1_1datum__conversion.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a5054e9acfaf9e6cb503f50cbab12ddf1"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion.html#a5054e9acfaf9e6cb503f50cbab12ddf1">from_datum</a> (const <a class="el" href="structcppgres_1_1datum.html">datum</a> &amp;, std::optional&lt; <a class="el" href="structcppgres_1_1memory__context.html">memory_context</a> &gt; context=std::nullopt)=delete</td></tr>
-<tr class="memdesc:a5054e9acfaf9e6cb503f50cbab12ddf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from a datum.  <br /></td></tr>
-<tr class="separator:a5054e9acfaf9e6cb503f50cbab12ddf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31161ce8dfdaf241f1b33ea8382c1a2e"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion.html#a31161ce8dfdaf241f1b33ea8382c1a2e">from_datum</a> (const <a class="el" href="structcppgres_1_1datum.html">datum</a> &amp;, const <a class="el" href="structcppgres_1_1oid.html">oid</a>, std::optional&lt; <a class="el" href="structcppgres_1_1memory__context.html">memory_context</a> &gt; context=std::nullopt)=delete</td></tr>
+<tr class="memdesc:a31161ce8dfdaf241f1b33ea8382c1a2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from a datum.  <br /></td></tr>
+<tr class="separator:a31161ce8dfdaf241f1b33ea8382c1a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4b972f2d5fc81c1eef91f479a2a8264"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structcppgres_1_1datum.html">datum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion.html#aa4b972f2d5fc81c1eef91f479a2a8264">into_datum</a> (const T &amp;d)=delete</td></tr>
 <tr class="memdesc:aa4b972f2d5fc81c1eef91f479a2a8264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert datum into a type.  <br /></td></tr>
 <tr class="separator:aa4b972f2d5fc81c1eef91f479a2a8264"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,8 +167,8 @@ struct cppgres::datum_conversion&lt; T, typename &gt;</div><p>A trait to convert
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5054e9acfaf9e6cb503f50cbab12ddf1" name="a5054e9acfaf9e6cb503f50cbab12ddf1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5054e9acfaf9e6cb503f50cbab12ddf1">&#9670;&#160;</a></span>from_datum()</h2>
+<a id="a31161ce8dfdaf241f1b33ea8382c1a2e" name="a31161ce8dfdaf241f1b33ea8382c1a2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31161ce8dfdaf241f1b33ea8382c1a2e">&#9670;&#160;</a></span>from_datum()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -183,6 +183,12 @@ template&lt;typename T , typename  = void&gt; </div>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structcppgres_1_1datum.html">datum</a> &amp;&#160;</td>
           <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const&#160;</td>
+          <td class="paramname"><em>oid</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -235,7 +241,7 @@ template&lt;typename T , typename  = void&gt; </div>
 </div><div class="memdoc">
 
 <p>Convert datum into a type. </p>
-<p>Unlike <a class="el" href="structcppgres_1_1datum__conversion.html#a5054e9acfaf9e6cb503f50cbab12ddf1">from_datum</a>, gets no memory context. </p>
+<p>Unlike <a class="el" href="structcppgres_1_1datum__conversion.html#a31161ce8dfdaf241f1b33ea8382c1a2e">from_datum</a>, gets no memory context. </p>
 
 </div>
 </div>

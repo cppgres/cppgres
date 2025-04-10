@@ -20,5 +20,6 @@ var dir_af1bb9dae411b5b1b5161db3c243cdc2 =
     [ "threading.hpp", "threading_8hpp_source.html", null ],
     [ "type.hpp", "type_8hpp.html", "type_8hpp" ],
     [ "types.hpp", "types_8hpp.html", "types_8hpp" ],
+    [ "value.hpp", "value_8hpp_source.html", null ],
     [ "xact.hpp", "xact_8hpp.html", "xact_8hpp" ]
 ];

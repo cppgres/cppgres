@@ -143,11 +143,11 @@ $(document).ready(function(){initNavTree('conceptcppgres_1_1convertible__from__n
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptcppgres_1_1convertible__from__nullable__datum.html">cppgres::convertible_from_nullable_datum</a> =  <span class="keyword">requires</span> {</div>
 <div class="line">  {</div>
-<div class="line">    cppgres::from_nullable_datum&lt;T&gt;(std::declval&lt;nullable_datum&gt;(),</div>
+<div class="line">    cppgres::from_nullable_datum&lt;T&gt;(std::declval&lt;nullable_datum&gt;(), std::declval&lt;oid&gt;(),</div>
 <div class="line">                                    std::declval&lt;std::optional&lt;memory_context&gt;&gt;())</div>
 <div class="line">  } -&gt; std::same_as&lt;T&gt;;</div>
 <div class="line">}</div>
-<div class="ttc" id="aconceptcppgres_1_1convertible__from__nullable__datum_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__from__nullable__datum.html">cppgres::convertible_from_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:182</div></div>
+<div class="ttc" id="aconceptcppgres_1_1convertible__from__nullable__datum_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__from__nullable__datum.html">cppgres::convertible_from_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:184</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

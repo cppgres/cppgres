@@ -5,7 +5,8 @@ var executor_8hpp =
     [ "cppgres::spi_executor", "structcppgres_1_1spi__executor.html", "structcppgres_1_1spi__executor" ],
     [ "cppgres::spi_executor::result_iterator< T >", "structcppgres_1_1spi__executor_1_1result__iterator.html", null ],
     [ "cppgres::spi_executor::results< Ret >", "structcppgres_1_1spi__executor_1_1results.html", null ],
+    [ "cppgres::spi_executor::options", "structcppgres_1_1spi__executor_1_1options.html", null ],
     [ "cppgres::spi_nonatomic_executor", "structcppgres_1_1spi__nonatomic__executor.html", "structcppgres_1_1spi__nonatomic__executor" ],
-    [ "cppgres::datumable_tuple", "conceptcppgres_1_1datumable__tuple.html", null ],
-    [ "cppgres::convertible_into_nullable_datum_and_has_a_type", "conceptcppgres_1_1convertible__into__nullable__datum__and__has__a__type.html", null ]
+    [ "cppgres::convertible_into_nullable_datum_and_has_a_type", "conceptcppgres_1_1convertible__into__nullable__datum__and__has__a__type.html", null ],
+    [ "cppgres::a_vector", "conceptcppgres_1_1a__vector.html", null ]
 ];
