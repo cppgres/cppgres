@@ -53,6 +53,39 @@ add_test(spi_plural_tuple, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_vector, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto res = spi.query<std::vector<int64_t>>(
+               "select $1 + i, i from generate_series(1,100) i", static_cast<int64_t>(1LL));
+
+           int i = 0;
+           for (auto &re : res) {
+             i++;
+             result = result && _assert(re[0] == i + 1);
+             result = result && _assert(re[1] == i);
+           }
+           return result;
+         }));
+
+add_test(spi_vector_mismatch, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+
+           bool exception_raised = false;
+
+           try {
+             spi.query<std::vector<int64_t>>("select $1 + i, 'test' from generate_series(1,100) i",
+                                             static_cast<int64_t>(1LL));
+           } catch (std::invalid_argument) {
+             exception_raised = true;
+           }
+
+           result = result && _assert(exception_raised);
+
+           return result;
+         }));
+
 add_test(spi_pfr, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
@@ -309,6 +342,159 @@ add_test(spi_ptr_gone, ([](test_case &) {
              exception_raised = true;
            }
            result = result && _assert(exception_raised);
+
+           return result;
+         }));
+
+add_test(spi_value_type, ([](test_case &) {
+           bool result = true;
+
+           {
+             cppgres::spi_executor spi;
+             auto res = spi.query<cppgres::value>("select $1 + i from generate_series(1,100) i",
+                                                  static_cast<int64_t>(1LL));
+
+             int i = 0;
+             for (auto &re : res) {
+               i++;
+               result = result && _assert(re.get_type() == cppgres::type{.oid = INT8OID});
+
+               result = result && _assert(cppgres::from_nullable_datum<int64_t>(
+                                              re.get_nullable_datum(), re.get_type().oid) == i + 1);
+             }
+           }
+
+           {
+             cppgres::spi_executor spi;
+             auto res = spi.query<std::tuple<cppgres::value>>(
+                 "select $1 + i from generate_series(1,100) i", static_cast<int64_t>(1LL));
+
+             int i = 0;
+             for (auto &re : res) {
+               i++;
+               result =
+                   result && _assert(std::get<0>(re).get_type() == cppgres::type{.oid = INT8OID});
+
+               result = result && _assert(cppgres::from_nullable_datum<int64_t>(
+                                              std::get<0>(re).get_nullable_datum(),
+                                              std::get<0>(re).get_type().oid) == i + 1);
+             }
+           }
+
+           {
+             cppgres::spi_executor spi;
+             auto res = spi.query<std::vector<cppgres::value>>(
+                 "select $1 + i from generate_series(1,100) i", static_cast<int64_t>(1LL));
+
+             int i = 0;
+             for (auto &re : res) {
+               i++;
+               result = result && _assert(re[0].get_type() == cppgres::type{.oid = INT8OID});
+
+               result = result &&
+                        _assert(cppgres::from_nullable_datum<int64_t>(
+                                    re[0].get_nullable_datum(), re[0].get_type().oid) == i + 1);
+             }
+           }
+
+           return result;
+         }));
+
+add_test(spi_tupdesc_access, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           auto res = spi.query<std::tuple<cppgres::value, cppgres::value>>(
+               "select 1 as a, 'a'::text as b");
+
+           auto td = res.get_tuple_descriptor();
+           result = result && _assert(td.get_name(0) == "a");
+           result = result && _assert(td.get_type(0).oid == INT4OID);
+           result = result && _assert(td.get_name(1) == "b");
+           result = result && _assert(td.get_type(1).oid == TEXTOID);
+
+           return result;
+         }));
+
+add_test(spi_readonly, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           spi.execute("create table q (i int)");
+
+           bool exception_raised = false;
+
+           try {
+             spi.query<int>("insert into q default values returning i",
+                            cppgres::spi_executor::options(true));
+           } catch (...) {
+             exception_raised = true;
+           }
+
+           result = result && _assert(exception_raised);
+
+           return result;
+         }));
+
+add_test(spi_execute_readonly, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+
+           bool exception_raised = false;
+
+           try {
+             spi.execute("create table q (i int)", cppgres::spi_executor::options(true));
+           } catch (...) {
+             exception_raised = true;
+           }
+
+           result = result && _assert(exception_raised);
+
+           return result;
+         }));
+
+add_test(spi_plan_readonly, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           spi.execute("create table q (i int)");
+
+           bool exception_raised = false;
+
+           auto plan = spi.plan("insert into q default values returning i");
+
+           try {
+             spi.query<int>(plan, cppgres::spi_executor::options(true));
+           } catch (...) {
+             exception_raised = true;
+           }
+
+           result = result && _assert(exception_raised);
+
+           return result;
+         }));
+
+add_test(spi_count, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           auto res = spi.query<int>("select i from generate_series(1,10) i",
+                                     cppgres::spi_executor::options(2));
+
+           result = result && _assert(res.count() == 2);
+
+           return result;
+         }));
+
+add_test(spi_plan_count, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           auto plan = spi.plan("select i from generate_series(1,10) i");
+           auto res = spi.query<int>(plan, cppgres::spi_executor::options(2));
+
+           result = result && _assert(res.count() == 2);
 
            return result;
          }));

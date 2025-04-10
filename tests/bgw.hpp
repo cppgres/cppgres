@@ -7,7 +7,7 @@ namespace tests {
 extern "C" void test_bgw(::Datum arg);
 extern "C" inline void test_bgw(::Datum arg) {
   cppgres::exception_guard([](auto arg) {
-    auto db_oid = cppgres::from_nullable_datum<cppgres::oid>(cppgres::nullable_datum(arg));
+    auto db_oid = cppgres::from_nullable_datum<cppgres::oid>(cppgres::nullable_datum(arg), OIDOID);
     auto bgw = cppgres::current_background_worker();
     bgw.connect(db_oid, std::nullopt, cppgres::background_worker_bypass_allow_connection());
     bgw.unblock_signals();

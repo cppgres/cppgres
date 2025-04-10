@@ -137,7 +137,7 @@ template <datumable_function Func> struct postgres_function {
       if (retset) {
         if constexpr (datumable_iterator<return_type>) {
           using set_value_type = set_iterator_traits<return_type>::value_type;
-          if (!type_traits<set_value_type>::is(rettype)) {
+          if (!type_traits<set_value_type>().is(rettype)) {
             report(ERROR, "unexpected set's return type, can't convert `%s` into `%.*s`",
                    rettype.name().data(), utils::type_name<set_value_type>().length(),
                    utils::type_name<set_value_type>().data());
@@ -148,7 +148,7 @@ template <datumable_function Func> struct postgres_function {
                  "`cppgres::datumable_iterator`",
                  utils::type_name<return_type>().length(), utils::type_name<return_type>().data());
         }
-      } else if (!type_traits<return_type>::is(rettype)) {
+      } else if (!type_traits<return_type>().is(rettype)) {
         report(ERROR, "unexpected return type, can't convert `%s` into `%.*s`",
                rettype.name().data(), utils::type_name<return_type>().length(),
                utils::type_name<return_type>().data());
@@ -167,13 +167,13 @@ template <datumable_function Func> struct postgres_function {
               typ = type{.oid = (*cache).proargtypes.values[Is]};
             }
           }
-          if (!type_traits<ptyp>::is(typ)) {
+          if (!type_traits<ptyp>().is(typ)) {
             report(ERROR, "unexpected type in position %d, can't convert `%s` into `%.*s`", Is,
                    typ.name().data(), utils::type_name<ptyp>().length(),
                    utils::type_name<ptyp>().data());
           }
           accounted_for_args++;
-          return from_nullable_datum<ptyp>(nullable_datum(fc->args[Is]));
+          return from_nullable_datum<ptyp>(nullable_datum(fc->args[Is]), typ.oid);
         }())...};
       }(std::make_index_sequence<utils::tuple_size_v<argument_types>>{});
 
@@ -238,7 +238,7 @@ template <datumable_function Func> struct postgres_function {
                auto oid = ffi_guard{::SPI_gettypeid}(rsinfo->expectedDesc, Is + 1);
                auto t = type{.oid = oid};
                using typ = utils::tuple_element_t<Is, set_value_type>;
-               if (!type_traits<typ>::is(t)) {
+               if (!type_traits<typ>().is(t)) {
                  throw std::invalid_argument(
                      cppgres::fmt::format("invalid type in record's position {} ({}), got OID {}", Is,
                                  utils::type_name<typ>(), oid));

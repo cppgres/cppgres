@@ -14,8 +14,8 @@
 namespace cppgres {
 
 template <> struct type_traits<void> {
-  static bool is(const type &t) { return t.oid == VOIDOID; }
-  static constexpr type type_for() { return type{.oid = VOIDOID}; }
+  bool is(const type &t) { return t.oid == VOIDOID; }
+  constexpr type type_for() { return type{.oid = VOIDOID}; }
 };
 
 template <> struct type_traits<oid> {
@@ -24,106 +24,138 @@ template <> struct type_traits<oid> {
 };
 
 template <typename S> struct type_traits<S, std::enable_if_t<utils::is_std_tuple<S>::value>> {
-  static bool is(const type &t) {
+  bool is(const type &t) {
     if (t.oid == RECORDOID) {
       return true;
     } else if constexpr (std::tuple_size_v<S> == 1) {
       // special case when we have a tuple of 1 matching the type
-      return type_traits<std::tuple_element_t<0, S>>::is(t);
+      return type_traits<std::tuple_element_t<0, S>>().is(t);
     }
     return false;
   }
-  static constexpr type type_for() { return type{.oid = RECORDOID}; }
+  constexpr type type_for() { return type{.oid = RECORDOID}; }
 };
 
 template <> struct type_traits<bool> {
-  static bool is(const type &t) { return t.oid == BOOLOID; }
-  static constexpr type type_for() { return type{.oid = BOOLOID}; }
+  type_traits() {}
+  type_traits(const bool &) {}
+  bool is(const type &t) { return t.oid == BOOLOID; }
+  constexpr type type_for() { return type{.oid = BOOLOID}; }
 };
 
 template <> struct type_traits<int64_t> {
-  static bool is(const type &t) { return t.oid == INT8OID || t.oid == INT4OID || t.oid == INT2OID; }
-  static constexpr type type_for() { return type{.oid = INT8OID}; }
+  type_traits() {}
+  type_traits(const int64_t &) {}
+  bool is(const type &t) { return t.oid == INT8OID || t.oid == INT4OID || t.oid == INT2OID; }
+  constexpr type type_for() { return type{.oid = INT8OID}; }
 };
 
 template <> struct type_traits<int32_t> {
-  static bool is(const type &t) { return t.oid == INT4OID || t.oid == INT2OID; }
-  static constexpr type type_for() { return type{.oid = INT4OID}; }
+  type_traits() {}
+  type_traits(const int32_t &) {}
+  bool is(const type &t) { return t.oid == INT4OID || t.oid == INT2OID; }
+  constexpr type type_for() { return type{.oid = INT4OID}; }
 };
 
 template <> struct type_traits<int16_t> {
-  static bool is(const type &t) { return t.oid == INT2OID; }
-  static constexpr type type_for() { return type{.oid = INT2OID}; }
+  type_traits() {}
+  type_traits(const int16_t &) {}
+  bool is(const type &t) { return t.oid == INT2OID; }
+  constexpr type type_for() { return type{.oid = INT2OID}; }
 };
 
 template <> struct type_traits<int8_t> {
-  static bool is(const type &t) { return t.oid == INT2OID; }
-  static constexpr type type_for() { return type{.oid = INT2OID}; }
+  type_traits() {}
+  type_traits(const int8_t &) {}
+  bool is(const type &t) { return t.oid == INT2OID; }
+  constexpr type type_for() { return type{.oid = INT2OID}; }
 };
 
 template <> struct type_traits<double> {
-  static bool is(const type &t) { return t.oid == FLOAT8OID || t.oid == FLOAT4OID; }
-  static constexpr type type_for() { return type{.oid = FLOAT8OID}; }
+  type_traits() {}
+  type_traits(const double &) {}
+  bool is(const type &t) { return t.oid == FLOAT8OID || t.oid == FLOAT4OID; }
+  constexpr type type_for() { return type{.oid = FLOAT8OID}; }
 };
 
 template <> struct type_traits<float> {
-  static bool is(const type &t) { return t.oid == FLOAT4OID; }
-  static constexpr type type_for() { return type{.oid = FLOAT4OID}; }
+  type_traits() {}
+  type_traits(const float &) {}
+  bool is(const type &t) { return t.oid == FLOAT4OID; }
+  constexpr type type_for() { return type{.oid = FLOAT4OID}; }
 };
 
 template <> struct type_traits<text> {
-  static bool is(const type &t) { return t.oid == TEXTOID; }
-  static constexpr type type_for() { return type{.oid = TEXTOID}; }
+  type_traits() {}
+  type_traits(const text &) {}
+  bool is(const type &t) { return t.oid == TEXTOID; }
+  constexpr type type_for() { return type{.oid = TEXTOID}; }
 };
 
 template <> struct type_traits<std::string_view> {
-  static bool is(const type &t) { return t.oid == TEXTOID; }
-  static constexpr type type_for() { return type{.oid = TEXTOID}; }
+  type_traits() {}
+  type_traits(const std::string_view &) {}
+  bool is(const type &t) { return t.oid == TEXTOID; }
+  constexpr type type_for() { return type{.oid = TEXTOID}; }
 };
 
 template <> struct type_traits<std::string> {
-  static bool is(const type &t) { return t.oid == TEXTOID; }
-  static constexpr type type_for() { return type{.oid = TEXTOID}; }
+  type_traits() {}
+  type_traits(const std::string &) {}
+  bool is(const type &t) { return t.oid == TEXTOID; }
+  constexpr type type_for() { return type{.oid = TEXTOID}; }
 };
 
 template <> struct type_traits<byte_array> {
-  static bool is(const type &t) { return t.oid == BYTEAOID; }
-  static constexpr type type_for() { return type{.oid = BYTEAOID}; }
+  type_traits() {}
+  type_traits(const byte_array &) {}
+  bool is(const type &t) { return t.oid == BYTEAOID; }
+  constexpr type type_for() { return type{.oid = BYTEAOID}; }
 };
 
 template <> struct type_traits<bytea> {
-  static bool is(const type &t) { return t.oid == BYTEAOID; }
-  static constexpr type type_for() { return type{.oid = BYTEAOID}; }
+  type_traits() {}
+  type_traits(const bytea &) {}
+  bool is(const type &t) { return t.oid == BYTEAOID; }
+  constexpr type type_for() { return type{.oid = BYTEAOID}; }
 };
 
 template <> struct type_traits<char *> {
-  static bool is(const type &t) { return t.oid == CSTRINGOID; }
-  static constexpr type type_for() { return type{.oid = CSTRINGOID}; }
+  type_traits() {}
+  type_traits(const char *&) {}
+  bool is(const type &t) { return t.oid == CSTRINGOID; }
+  constexpr type type_for() { return type{.oid = CSTRINGOID}; }
 };
 
 template <> struct type_traits<const char *> {
-  static bool is(const type &t) { return t.oid == CSTRINGOID; }
-  static constexpr type type_for() { return type{.oid = CSTRINGOID}; }
+  type_traits() {}
+  type_traits(const char *&) {}
+  bool is(const type &t) { return t.oid == CSTRINGOID; }
+  constexpr type type_for() { return type{.oid = CSTRINGOID}; }
 };
 
 template <std::size_t N> struct type_traits<const char[N]> {
-  static bool is(const type &t) { return t.oid == CSTRINGOID; }
-  static constexpr type type_for() { return type{.oid = CSTRINGOID}; }
+  type_traits() {}
+  type_traits(const char (&)[N]) {}
+  bool is(const type &t) { return t.oid == CSTRINGOID; }
+  constexpr type type_for() { return type{.oid = CSTRINGOID}; }
 };
 
 template <flattenable F> struct type_traits<expanded_varlena<F>> {
-  static bool is(const type &t) { return t.oid == F::type().oid; }
-  static constexpr type type_for() { return F::type(); }
+  type_traits() {}
+  type_traits(const expanded_varlena<F> &) {}
+  bool is(const type &t) { return t.oid == F::type().oid; }
+  constexpr type type_for() { return F::type(); }
 };
 
 template <> struct datum_conversion<datum> {
-  static datum from_datum(const datum &d, std::optional<memory_context>) { return d; }
+  static datum from_datum(const datum &d, oid, std::optional<memory_context>) { return d; }
 
   static datum into_datum(const datum &t) { return t; }
 };
 
 template <> struct datum_conversion<nullable_datum> {
-  static nullable_datum from_datum(const datum &d, std::optional<memory_context>) {
+  static nullable_datum from_datum(const datum &d, oid, std::optional<memory_context>) {
     return nullable_datum(d);
   }
 
@@ -131,7 +163,7 @@ template <> struct datum_conversion<nullable_datum> {
 };
 
 template <> struct datum_conversion<oid> {
-  static oid from_datum(const datum &d, std::optional<memory_context>) {
+  static oid from_datum(const datum &d, oid, std::optional<memory_context>) {
     return static_cast<oid>(d.operator const ::Datum &());
   }
 
@@ -139,7 +171,7 @@ template <> struct datum_conversion<oid> {
 };
 
 template <> struct datum_conversion<size_t> {
-  static size_t from_datum(const datum &d, std::optional<memory_context>) {
+  static size_t from_datum(const datum &d, oid, std::optional<memory_context>) {
     return static_cast<size_t>(d.operator const ::Datum &());
   }
 
@@ -147,7 +179,7 @@ template <> struct datum_conversion<size_t> {
 };
 
 template <> struct datum_conversion<int64_t> {
-  static int64_t from_datum(const datum &d, std::optional<memory_context>) {
+  static int64_t from_datum(const datum &d, oid, std::optional<memory_context>) {
     return static_cast<int64_t>(d.operator const ::Datum &());
   }
 
@@ -155,28 +187,28 @@ template <> struct datum_conversion<int64_t> {
 };
 
 template <> struct datum_conversion<int32_t> {
-  static int32_t from_datum(const datum &d, std::optional<memory_context>) {
+  static int32_t from_datum(const datum &d, oid, std::optional<memory_context>) {
     return static_cast<int32_t>(d.operator const ::Datum &());
   }
   static datum into_datum(const int32_t &t) { return datum(static_cast<::Datum>(t)); }
 };
 
 template <> struct datum_conversion<int16_t> {
-  static int16_t from_datum(const datum &d, std::optional<memory_context>) {
+  static int16_t from_datum(const datum &d, oid, std::optional<memory_context>) {
     return static_cast<int16_t>(d.operator const ::Datum &());
   }
   static datum into_datum(const int16_t &t) { return datum(static_cast<::Datum>(t)); }
 };
 
 template <> struct datum_conversion<bool> {
-  static bool from_datum(const datum &d, std::optional<memory_context>) {
+  static bool from_datum(const datum &d, oid, std::optional<memory_context>) {
     return static_cast<bool>(d.operator const ::Datum &());
   }
   static datum into_datum(const bool &t) { return datum(static_cast<::Datum>(t)); }
 };
 
 template <> struct datum_conversion<double> {
-  static double from_datum(const datum &d, std::optional<memory_context>) {
+  static double from_datum(const datum &d, oid, std::optional<memory_context>) {
     return static_cast<double>(d.operator const ::Datum &());
   }
 
@@ -184,7 +216,7 @@ template <> struct datum_conversion<double> {
 };
 
 template <> struct datum_conversion<float> {
-  static float from_datum(const datum &d, std::optional<memory_context>) {
+  static float from_datum(const datum &d, oid, std::optional<memory_context>) {
     return static_cast<float>(d.operator const ::Datum &());
   }
 
@@ -193,13 +225,15 @@ template <> struct datum_conversion<float> {
 
 // Specializations for text and bytea:
 template <> struct datum_conversion<text> {
-  static text from_datum(const datum &d, std::optional<memory_context> ctx) { return text{d, ctx}; }
+  static text from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
+    return text{d, ctx};
+  }
 
   static datum into_datum(const text &t) { return t.get_datum(); }
 };
 
 template <> struct datum_conversion<bytea> {
-  static bytea from_datum(const datum &d, std::optional<memory_context> ctx) {
+  static bytea from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
     return bytea{d, ctx};
   }
 
@@ -207,7 +241,7 @@ template <> struct datum_conversion<bytea> {
 };
 
 template <> struct datum_conversion<byte_array> {
-  static byte_array from_datum(const datum &d, std::optional<memory_context> ctx) {
+  static byte_array from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
     return bytea{d, ctx};
   }
 
@@ -222,8 +256,8 @@ template <> struct datum_conversion<byte_array> {
 // Specializations for std::string_view and std::string.
 // Here we re-use the conversion for text.
 template <> struct datum_conversion<std::string_view> {
-  static std::string_view from_datum(const datum &d, std::optional<memory_context> ctx) {
-    return datum_conversion<text>::from_datum(d, ctx);
+  static std::string_view from_datum(const datum &d, oid oid, std::optional<memory_context> ctx) {
+    return datum_conversion<text>::from_datum(d, oid, ctx);
   }
 
   static datum into_datum(const std::string_view &t) {
@@ -236,9 +270,9 @@ template <> struct datum_conversion<std::string_view> {
 };
 
 template <> struct datum_conversion<std::string> {
-  static std::string from_datum(const datum &d, std::optional<memory_context> ctx) {
+  static std::string from_datum(const datum &d, oid oid, std::optional<memory_context> ctx) {
     // Convert the text to a std::string_view then construct a std::string.
-    return std::string(datum_conversion<text>::from_datum(d, ctx).operator std::string_view());
+    return std::string(datum_conversion<text>::from_datum(d, oid, ctx).operator std::string_view());
   }
 
   static datum into_datum(const std::string &t) {
@@ -247,7 +281,7 @@ template <> struct datum_conversion<std::string> {
 };
 
 template <> struct datum_conversion<const char *> {
-  static const char *from_datum(const datum &d, std::optional<memory_context> ctx) {
+  static const char *from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
     return DatumGetPointer(d);
   }
 
@@ -255,7 +289,7 @@ template <> struct datum_conversion<const char *> {
 };
 
 template <std::size_t N> struct datum_conversion<char[N]> {
-  static const char *from_datum(const datum &d, std::optional<memory_context> ctx) {
+  static const char *from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
     return DatumGetPointer(d);
   }
 
@@ -263,7 +297,7 @@ template <std::size_t N> struct datum_conversion<char[N]> {
 };
 
 template <typename T> struct datum_conversion<T, std::enable_if_t<expanded_varlena_type<T>>> {
-  static T from_datum(const datum &d, std::optional<memory_context> ctx) { return {d, ctx}; }
+  static T from_datum(const datum &d, oid, std::optional<memory_context> ctx) { return {d, ctx}; }
 
   static datum into_datum(const T &t) { return t.get_expanded_datum(); }
 };

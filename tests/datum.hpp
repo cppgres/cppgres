@@ -22,7 +22,7 @@ add_test(nullable_type_to_non_optional, ([](test_case &) {
 
            try {
              auto nd = cppgres::nullable_datum();
-             cppgres::from_nullable_datum<int64_t>(nd);
+             cppgres::from_nullable_datum<int64_t>(nd, INT8OID);
            } catch (std::runtime_error &e) {
              exception_raised = true;
            }
@@ -34,7 +34,7 @@ add_test(nullable_type_to_non_optional, ([](test_case &) {
 add_test(varlena_text, [](test_case &) {
   bool result = true;
   auto nd = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test")));
-  auto s = cppgres::from_nullable_datum<cppgres::text>(nd);
+  auto s = cppgres::from_nullable_datum<cppgres::text>(nd, TEXTOID);
   std::string_view str = s;
   result = result && _assert(s.is_detoasted());
   result = result && _assert(str == "test");
@@ -46,7 +46,7 @@ add_test(varlena_text, [](test_case &) {
     _assert(p != ctx);
     ::CurrentMemoryContext = ctx;
     auto nd1 = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test1")));
-    auto s1 = cppgres::from_nullable_datum<cppgres::text>(nd1, ctx);
+    auto s1 = cppgres::from_nullable_datum<cppgres::text>(nd1, TEXTOID, ctx);
     _assert(s1.get_memory_context() == ctx);
     ::CurrentMemoryContext = p;
     ctx.reset();
@@ -66,7 +66,7 @@ add_test(varlena_text, [](test_case &) {
 add_test(varlena_bytea, ([](test_case &) {
            bool result = true;
            auto nd = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test")));
-           auto s = cppgres::from_nullable_datum<cppgres::bytea>(nd);
+           auto s = cppgres::from_nullable_datum<cppgres::bytea>(nd, BYTEAOID);
            cppgres::byte_array ba = s;
            result = result && _assert(ba[0] == std::byte('t'));
            result = result && _assert(ba[1] == std::byte('e'));
@@ -78,11 +78,12 @@ add_test(varlena_bytea, ([](test_case &) {
 add_test(varlena_byte_array, ([](test_case &) {
            bool result = true;
            auto nd = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test")));
-           auto s = cppgres::from_nullable_datum<cppgres::bytea>(nd);
+           auto s = cppgres::from_nullable_datum<cppgres::bytea>(nd, BYTEAOID);
            cppgres::byte_array ba = s;
            const auto d = cppgres::datum_conversion<cppgres::byte_array>::into_datum(ba);
            // NB: below we endure a copy; can we do any better?
-           auto ba1 = cppgres::datum_conversion<cppgres::byte_array>::from_datum(d, std::nullopt);
+           auto ba1 = cppgres::datum_conversion<cppgres::byte_array>::from_datum(d, BYTEAOID,
+                                                                                 std::nullopt);
 
            result = result && _assert(ba1[0] == std::byte('t'));
            result = result && _assert(ba1[1] == std::byte('e'));
@@ -95,11 +96,11 @@ add_test(varlena_text_into_strings, ([](test_case &) {
            bool result = true;
            auto nd = cppgres::nullable_datum(PointerGetDatum(::cstring_to_text("test")));
            {
-             auto str = cppgres::from_nullable_datum<std::string_view>(nd);
+             auto str = cppgres::from_nullable_datum<std::string_view>(nd, TEXTOID);
              result = result && _assert(str == "test");
            }
            {
-             auto str = cppgres::from_nullable_datum<std::string>(nd);
+             auto str = cppgres::from_nullable_datum<std::string>(nd, TEXTOID);
              result = result && _assert(str == "test");
            }
 
@@ -112,13 +113,15 @@ add_test(varlena_text_from_strings, ([](test_case &) {
            {
              auto d =
                  cppgres::datum_conversion<std::string_view>::into_datum(std::string_view("test"));
-             auto str = cppgres::datum_conversion<std::string_view>::from_datum(d, std::nullopt);
+             auto str =
+                 cppgres::datum_conversion<std::string_view>::from_datum(d, TEXTOID, std::nullopt);
              result = result && _assert(str == "test");
            }
 
            {
              auto d = cppgres::datum_conversion<std::string>::into_datum(std::string("test"));
-             auto str = cppgres::datum_conversion<std::string_view>::from_datum(d, std::nullopt);
+             auto str =
+                 cppgres::datum_conversion<std::string_view>::from_datum(d, TEXTOID, std::nullopt);
              result = result && _assert(str == "test");
            }
 
