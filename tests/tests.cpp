@@ -30,6 +30,7 @@ PG_MODULE_MAGIC;
 #include "record.hpp"
 #include "spi.hpp"
 #include "srf.hpp"
+#include "syscache.hpp"
 #include "threading.hpp"
 #include "type.hpp"
 #include "xact.hpp"

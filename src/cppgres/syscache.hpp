@@ -27,7 +27,7 @@ template <syscached T, convertible_into_datum... D> struct syscache {
   syscache(const D &...key) : syscache(syscache_traits<T>::cache_id, key...) {}
   syscache(::SysCacheIdentifier cache_id, const D &...key)
       requires(sizeof...(key) > 0 && sizeof...(key) < 5)
-  {
+      : cache_id(cache_id) {
     datum keys[4] = {datum_conversion<D>::into_datum(key)...};
     tuple = ffi_guard{::SearchSysCache}(cache_id, keys[0], keys[1], keys[2], keys[3]);
 
@@ -43,8 +43,25 @@ template <syscached T, convertible_into_datum... D> struct syscache {
     return *reinterpret_cast<T>(GETSTRUCT(tuple));
   }
 
+  /**
+   * @brief Get an attribute by index
+   *
+   * @tparam V type to convert to
+   * @param attr attribute index
+   * @return
+   */
+  template <convertible_from_datum V> std::optional<V> get_attribute(int attr) {
+    bool isnull;
+    Datum ret = ffi_guard{::SysCacheGetAttr}(cache_id, tuple, attr, &isnull);
+    if (isnull) {
+      return std::nullopt;
+    }
+    return from_nullable_datum<V>(nullable_datum(ret), oid(/*FIXME*/ InvalidOid));
+  }
+
 private:
   HeapTuple tuple;
+  ::SysCacheIdentifier cache_id;
 };
 
 } // namespace cppgres
