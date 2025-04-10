@@ -78,7 +78,7 @@ var annotated_dup =
       [ "spi_executor", "structcppgres_1_1spi__executor.html", "structcppgres_1_1spi__executor" ],
       [ "spi_nonatomic_executor", "structcppgres_1_1spi__nonatomic__executor.html", "structcppgres_1_1spi__nonatomic__executor" ],
       [ "spi_plan", "structcppgres_1_1spi__plan.html", null ],
-      [ "syscache", "structcppgres_1_1syscache.html", null ],
+      [ "syscache", "structcppgres_1_1syscache.html", "structcppgres_1_1syscache" ],
       [ "syscache_traits", "structcppgres_1_1syscache__traits.html", null ],
       [ "syscache_traits< Form_pg_proc >", "structcppgres_1_1syscache__traits_3_01Form__pg__proc_01_4.html", null ],
       [ "syscache_traits< Form_pg_type >", "structcppgres_1_1syscache__traits_3_01Form__pg__type_01_4.html", null ],

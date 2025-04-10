@@ -168,7 +168,7 @@ $(document).ready(function(){initNavTree('syscache_8hpp_source.html',''); initRe
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache</a>(<span class="keyword">const</span> D &amp;...key) : <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache</a>(<a class="code hl_struct" href="structcppgres_1_1syscache__traits.html">syscache_traits&lt;T&gt;::cache_id</a>, key...) {}</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache</a>(::SysCacheIdentifier cache_id, <span class="keyword">const</span> D &amp;...key)</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      <span class="keyword">requires</span>(<span class="keyword">sizeof</span>...(key) &gt; 0 &amp;&amp; <span class="keyword">sizeof</span>...(key) &lt; 5)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      : cache_id(cache_id) {</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <a class="code hl_struct" href="structcppgres_1_1datum.html">datum</a> keys[4] = {<a class="code hl_function" href="structcppgres_1_1datum__conversion.html#aa4b972f2d5fc81c1eef91f479a2a8264">datum_conversion&lt;D&gt;::into_datum</a>(key)...};</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    tuple = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SearchSysCache}(cache_id, keys[0], keys[1], keys[2], keys[3]);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
@@ -184,11 +184,21 @@ $(document).ready(function(){initNavTree('syscache_8hpp_source.html',''); initRe
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">return</span> *<span class="keyword">reinterpret_cast&lt;</span>T<span class="keyword">&gt;</span>(GETSTRUCT(tuple));</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  }</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  HeapTuple tuple;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>};</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace cppgres</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="structcppgres_1_1syscache.html#a21fcf2326df6fd2be92b55a4665b5c5b">   53</a></span>  <span class="keyword">template</span> &lt;convertible_from_datum V&gt; std::optional&lt;V&gt; <a class="code hl_function" href="structcppgres_1_1syscache.html#a21fcf2326df6fd2be92b55a4665b5c5b">get_attribute</a>(<span class="keywordtype">int</span> attr) {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordtype">bool</span> isnull;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    Datum ret = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SysCacheGetAttr}(cache_id, tuple, attr, &amp;isnull);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">if</span> (isnull) {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <span class="keywordflow">return</span> std::nullopt;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    }</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">return</span> from_nullable_datum&lt;V&gt;(<a class="code hl_struct" href="structcppgres_1_1nullable__datum.html">nullable_datum</a>(ret), <a class="code hl_struct" href="structcppgres_1_1oid.html">oid</a>(<span class="comment">/*FIXME*/</span> InvalidOid));</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  HeapTuple tuple;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  ::SysCacheIdentifier cache_id;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>};</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>} <span class="comment">// namespace cppgres</span></div>
 <div class="ttc" id="aconceptcppgres_1_1convertible__into__datum_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__into__datum.html">cppgres::convertible_into_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:133</div></div>
 <div class="ttc" id="aconceptcppgres_1_1syscached_html"><div class="ttname"><a href="conceptcppgres_1_1syscached.html">cppgres::syscached</a></div><div class="ttdef"><b>Definition:</b> syscache.hpp:21</div></div>
 <div class="ttc" id="adatum_8hpp_html"><div class="ttname"><a href="datum_8hpp.html">datum.hpp</a></div></div>
@@ -197,8 +207,11 @@ $(document).ready(function(){initNavTree('syscache_8hpp_source.html',''); initRe
 <div class="ttc" id="astructcppgres_1_1datum__conversion_html_aa4b972f2d5fc81c1eef91f479a2a8264"><div class="ttname"><a href="structcppgres_1_1datum__conversion.html#aa4b972f2d5fc81c1eef91f479a2a8264">cppgres::datum_conversion::into_datum</a></div><div class="ttdeci">static datum into_datum(const T &amp;d)=delete</div><div class="ttdoc">Convert datum into a type.</div></div>
 <div class="ttc" id="astructcppgres_1_1datum_html"><div class="ttname"><a href="structcppgres_1_1datum.html">cppgres::datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:35</div></div>
 <div class="ttc" id="astructcppgres_1_1ffi__guard_html"><div class="ttname"><a href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a></div><div class="ttdef"><b>Definition:</b> guard.hpp:19</div></div>
+<div class="ttc" id="astructcppgres_1_1nullable__datum_html"><div class="ttname"><a href="structcppgres_1_1nullable__datum.html">cppgres::nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:56</div></div>
+<div class="ttc" id="astructcppgres_1_1oid_html"><div class="ttname"><a href="structcppgres_1_1oid.html">cppgres::oid</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:17</div></div>
 <div class="ttc" id="astructcppgres_1_1syscache__traits_html"><div class="ttname"><a href="structcppgres_1_1syscache__traits.html">cppgres::syscache_traits</a></div><div class="ttdef"><b>Definition:</b> syscache.hpp:9</div></div>
 <div class="ttc" id="astructcppgres_1_1syscache_html"><div class="ttname"><a href="structcppgres_1_1syscache.html">cppgres::syscache</a></div><div class="ttdef"><b>Definition:</b> syscache.hpp:26</div></div>
+<div class="ttc" id="astructcppgres_1_1syscache_html_a21fcf2326df6fd2be92b55a4665b5c5b"><div class="ttname"><a href="structcppgres_1_1syscache.html#a21fcf2326df6fd2be92b55a4665b5c5b">cppgres::syscache::get_attribute</a></div><div class="ttdeci">std::optional&lt; V &gt; get_attribute(int attr)</div><div class="ttdoc">Get an attribute by index.</div><div class="ttdef"><b>Definition:</b> syscache.hpp:53</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

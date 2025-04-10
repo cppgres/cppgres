@@ -152,6 +152,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad848abf09a3c6dfe6eed61a9fc08c383"><td class="memItemLeft" align="right" valign="top"><a id="ad848abf09a3c6dfe6eed61a9fc08c383" name="ad848abf09a3c6dfe6eed61a9fc08c383"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>syscache</b> (::SysCacheIdentifier cache_id, const D &amp;...key)</td></tr>
 <tr class="separator:ad848abf09a3c6dfe6eed61a9fc08c383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21fcf2326df6fd2be92b55a4665b5c5b"><td class="memTemplParams" colspan="2">template&lt;convertible_from_datum V&gt; </td></tr>
+<tr class="memitem:a21fcf2326df6fd2be92b55a4665b5c5b"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; V &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structcppgres_1_1syscache.html#a21fcf2326df6fd2be92b55a4665b5c5b">get_attribute</a> (int attr)</td></tr>
+<tr class="memdesc:a21fcf2326df6fd2be92b55a4665b5c5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an attribute by index.  <br /></td></tr>
+<tr class="separator:a21fcf2326df6fd2be92b55a4665b5c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -162,6 +166,52 @@ decltype(*std::declval&lt; T &gt;())&#160;</td><td class="memItemRight" valign="
 const decltype(*std::declval&lt; T &gt;())&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> )() const</td></tr>
 <tr class="separator:a0a7f7a2045d21389a9b5fb81a7feb63b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a21fcf2326df6fd2be92b55a4665b5c5b" name="a21fcf2326df6fd2be92b55a4665b5c5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21fcf2326df6fd2be92b55a4665b5c5b">&#9670;&#160;</a></span>get_attribute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;syscached T, convertible_into_datum... D&gt; </div>
+<div class="memtemplate">
+template&lt;convertible_from_datum V&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; V &gt; <a class="el" href="structcppgres_1_1syscache.html">cppgres::syscache</a>&lt; T, D &gt;::get_attribute </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>attr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get an attribute by index. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">V</td><td>type to convert to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attr</td><td>attribute index </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cppgres/<a class="el" href="syscache_8hpp_source.html">syscache.hpp</a></li>
 </ul>
