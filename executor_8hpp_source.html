@@ -420,112 +420,114 @@ $(document).ready(function(){initNavTree('executor_8hpp_source.html',''); initRe
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    std::array&lt;::Oid, nargs&gt; types = {<a class="code hl_struct" href="structcppgres_1_1type__traits.html">type_traits&lt;Args&gt;</a>(args...).type_for().oid...};</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    std::array&lt;::Datum, nargs&gt; datums = {into_nullable_datum(args)...};</div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    std::array&lt;const char, nargs&gt; nulls = {into_nullable_datum(args).is_null() ? <span class="charliteral">&#39;n&#39;</span> : <span class="charliteral">&#39; &#39;</span> ...};</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    <span class="keyword">auto</span> rc = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SPI_execute_with_args}(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>.data(), nargs, types.data(), datums.data(),</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>                                                 nulls.data(), opts.read_only(), opts.count());</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    <span class="keywordflow">if</span> (rc &gt; 0) {</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>      <span class="comment">//      static_assert(std::random_access_iterator&lt;result_iterator&lt;Ret&gt;&gt;);</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>      <span class="keywordflow">return</span> <a class="code hl_struct" href="structcppgres_1_1spi__executor_1_1results.html">results&lt;Ret&gt;</a>(SPI_tuptable);</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;spi error&quot;</span>);</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    }</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  }</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  <span class="keyword">template</span> &lt;<a class="code hl_concept" href="conceptcppgres_1_1convertible__into__nullable__datum__and__has__a__type.html">convertible_into_nullable_datum_and_has_a_type</a>... Args&gt;</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  <a class="code hl_struct" href="structcppgres_1_1spi__plan.html">spi_plan</a>&lt;Args...&gt; plan(std::string_view <a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>) {</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="keywordflow">if</span> (executors.top() != <span class="keyword">this</span>) {</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;not a current SPI executor&quot;</span>);</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    }</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> nargs = <span class="keyword">sizeof</span>...(Args);</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    std::array&lt;::Oid, nargs&gt; types = {type_traits&lt;Args&gt;().type_for().oid...};</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    <span class="keywordflow">return</span> spi_plan&lt;Args...&gt;(ffi_guard{::SPI_prepare}(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>.data(), nargs, types.data()));</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  }</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Ret, convertible_into_nullable_datum... Args&gt;</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  results&lt;Ret&gt; <a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>(spi_plan&lt;Args...&gt; &amp;<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, Args &amp;&amp;...args) {</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    <span class="keywordflow">return</span> this-&gt;query&lt;Ret, Args...&gt;(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, options(), std::forward&lt;Args&gt;(args)...);</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  }</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Ret, convertible_into_nullable_datum... Args&gt;</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>  results&lt;Ret&gt; <a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>(spi_plan&lt;Args...&gt; &amp;<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, options &amp;&amp;opts, Args &amp;&amp;...args) {</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    <span class="keywordflow">if</span> (executors.top() != <span class="keyword">this</span>) {</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;not a current SPI executor&quot;</span>);</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    }</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> nargs = <span class="keyword">sizeof</span>...(Args);</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    std::array&lt;::Datum, nargs&gt; datums = {into_nullable_datum(args)...};</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    std::array&lt;const char, nargs&gt; nulls = {into_nullable_datum(args).is_null() ? <span class="charliteral">&#39;n&#39;</span> : <span class="charliteral">&#39; &#39;</span> ...};</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="keyword">auto</span> rc = ffi_guard{::SPI_execute_plan}(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, datums.data(), nulls.data(), opts.read_only(),</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>                                            opts.count());</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    <span class="keywordflow">if</span> (rc &gt; 0) {</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>      <span class="comment">//      static_assert(std::random_access_iterator&lt;result_iterator&lt;Ret&gt;&gt;);</span></div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>      <span class="keywordflow">return</span> results&lt;Ret&gt;(SPI_tuptable);</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;spi error&quot;</span>);</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    }</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  }</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span> </div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>  <span class="keyword">template</span> &lt;convertible_into_nullable_datum_and_has_a_type... Args&gt;</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>  uint64_t execute(std::string_view <a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, Args &amp;&amp;...args) {</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    <span class="keywordflow">return</span> execute(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, options(), std::forward&lt;Args&gt;(args)...);</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>  }</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>  <span class="keyword">template</span> &lt;convertible_into_nullable_datum_and_has_a_type... Args&gt;</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  uint64_t execute(std::string_view <a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, options &amp;&amp;opts, Args &amp;&amp;...args) {</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>    <span class="keywordflow">if</span> (executors.top() != <span class="keyword">this</span>) {</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;not a current SPI executor&quot;</span>);</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    }</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> nargs = <span class="keyword">sizeof</span>...(Args);</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    std::array&lt;::Oid, nargs&gt; types = {type_traits&lt;Args&gt;(args...).type_for().oid...};</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    std::array&lt;::Datum, nargs&gt; datums = {into_nullable_datum(args)...};</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    std::array&lt;const char, nargs&gt; nulls = {into_nullable_datum(args).is_null() ? <span class="charliteral">&#39;n&#39;</span> : <span class="charliteral">&#39; &#39;</span> ...};</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    <span class="keyword">auto</span> rc = ffi_guard{::SPI_execute_with_args}(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>.data(), nargs, types.data(), datums.data(),</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>                                                 nulls.data(), opts.read_only(), opts.count());</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <span class="keywordflow">if</span> (rc &gt;= 0) {</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>      <span class="keywordflow">return</span> SPI_processed;</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>      <span class="keywordflow">throw</span> std::runtime_error(cppgres::fmt::format(<span class="stringliteral">&quot;spi error&quot;</span>));</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    }</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  }</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span> </div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  ::MemoryContext before_spi;</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  ::MemoryContext spi;</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span> </div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>  <span class="keyword">static</span> <span class="keyword">inline</span> std::stack&lt;spi_executor *&gt; executors;</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  <a class="code hl_function" href="structcppgres_1_1spi__executor.html#a726d3a8355cbd06be5aec2b252c6d9b9">spi_executor</a>(<span class="keywordtype">int</span> flags) : before_spi(::CurrentMemoryContext) {</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    ffi_guard{::SPI_connect_ext}(flags);</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    spi = ::CurrentMemoryContext;</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    ::CurrentMemoryContext = before_spi;</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    executors.push(<span class="keyword">this</span>);</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>  }</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>};</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span> </div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno"><a class="line" href="structcppgres_1_1spi__nonatomic__executor.html">  396</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1spi__nonatomic__executor.html">spi_nonatomic_executor</a> : <span class="keyword">public</span> <a class="code hl_struct" href="structcppgres_1_1spi__executor.html">spi_executor</a> {</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  <span class="keyword">using </span><a class="code hl_function" href="structcppgres_1_1spi__executor.html#a726d3a8355cbd06be5aec2b252c6d9b9">spi_executor::spi_executor</a>;</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  <a class="code hl_struct" href="structcppgres_1_1spi__nonatomic__executor.html">spi_nonatomic_executor</a>() : <a class="code hl_function" href="structcppgres_1_1spi__nonatomic__executor.html#a726d3a8355cbd06be5aec2b252c6d9b9">spi_executor</a>(SPI_OPT_NONATOMIC) {</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    <span class="keyword">auto</span> atomic = cppgres::current_postgres_function::atomic();</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    <span class="keywordflow">if</span> (atomic.has_value() &amp;&amp; atomic.value()) {</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;must be called in a non-atomic context&quot;</span>);</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    }</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  }</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span> </div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>  <span class="keywordtype">void</span> commit(<span class="keywordtype">bool</span> chain = <span class="keyword">false</span>) {</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    <span class="keywordflow">if</span> (executors.top() != <span class="keyword">this</span>) {</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;not a current SPI executor&quot;</span>);</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    }</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>    <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>(chain ? ::SPI_commit_and_chain : ::SPI_commit)();</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  }</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span> </div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>  <span class="keywordtype">void</span> rollback(<span class="keywordtype">bool</span> chain = <span class="keyword">false</span>) {</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>    <span class="keywordflow">if</span> (executors.top() != <span class="keyword">this</span>) {</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;not a current SPI executor&quot;</span>);</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    }</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>(chain ? ::SPI_rollback_and_chain : ::SPI_rollback)();</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  }</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>};</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span> </div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>} <span class="comment">// namespace cppgres</span></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    <span class="keyword">auto</span> rc = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SPI_execute_with_args}(std::string(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>).c_str(), nargs, types.data(),</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>                                                 datums.data(), nulls.data(), opts.read_only(),</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>                                                 opts.count());</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>    <span class="keywordflow">if</span> (rc &gt; 0) {</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>      <span class="comment">//      static_assert(std::random_access_iterator&lt;result_iterator&lt;Ret&gt;&gt;);</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>      <span class="keywordflow">return</span> <a class="code hl_struct" href="structcppgres_1_1spi__executor_1_1results.html">results&lt;Ret&gt;</a>(SPI_tuptable);</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;spi error&quot;</span>);</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    }</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  }</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  <span class="keyword">template</span> &lt;<a class="code hl_concept" href="conceptcppgres_1_1convertible__into__nullable__datum__and__has__a__type.html">convertible_into_nullable_datum_and_has_a_type</a>... Args&gt;</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  <a class="code hl_struct" href="structcppgres_1_1spi__plan.html">spi_plan</a>&lt;Args...&gt; plan(std::string_view <a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>) {</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    <span class="keywordflow">if</span> (executors.top() != <span class="keyword">this</span>) {</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;not a current SPI executor&quot;</span>);</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    }</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> nargs = <span class="keyword">sizeof</span>...(Args);</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    std::array&lt;::Oid, nargs&gt; types = {type_traits&lt;Args&gt;().type_for().oid...};</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    <span class="keywordflow">return</span> spi_plan&lt;Args...&gt;(</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>        ffi_guard{::SPI_prepare}(std::string(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>).c_str(), nargs, types.data()));</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  }</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Ret, convertible_into_nullable_datum... Args&gt;</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  results&lt;Ret&gt; <a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>(spi_plan&lt;Args...&gt; &amp;<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, Args &amp;&amp;...args) {</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <span class="keywordflow">return</span> this-&gt;query&lt;Ret, Args...&gt;(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, options(), std::forward&lt;Args&gt;(args)...);</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  }</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Ret, convertible_into_nullable_datum... Args&gt;</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  results&lt;Ret&gt; <a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>(spi_plan&lt;Args...&gt; &amp;<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, options &amp;&amp;opts, Args &amp;&amp;...args) {</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <span class="keywordflow">if</span> (executors.top() != <span class="keyword">this</span>) {</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;not a current SPI executor&quot;</span>);</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    }</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> nargs = <span class="keyword">sizeof</span>...(Args);</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    std::array&lt;::Datum, nargs&gt; datums = {into_nullable_datum(args)...};</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    std::array&lt;const char, nargs&gt; nulls = {into_nullable_datum(args).is_null() ? <span class="charliteral">&#39;n&#39;</span> : <span class="charliteral">&#39; &#39;</span> ...};</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    <span class="keyword">auto</span> rc = ffi_guard{::SPI_execute_plan}(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, datums.data(), nulls.data(), opts.read_only(),</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>                                            opts.count());</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="keywordflow">if</span> (rc &gt; 0) {</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>      <span class="comment">//      static_assert(std::random_access_iterator&lt;result_iterator&lt;Ret&gt;&gt;);</span></div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>      <span class="keywordflow">return</span> results&lt;Ret&gt;(SPI_tuptable);</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;spi error&quot;</span>);</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    }</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>  }</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  <span class="keyword">template</span> &lt;convertible_into_nullable_datum_and_has_a_type... Args&gt;</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>  uint64_t execute(std::string_view <a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, Args &amp;&amp;...args) {</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    <span class="keywordflow">return</span> execute(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, options(), std::forward&lt;Args&gt;(args)...);</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>  }</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span> </div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  <span class="keyword">template</span> &lt;convertible_into_nullable_datum_and_has_a_type... Args&gt;</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>  uint64_t execute(std::string_view <a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, options &amp;&amp;opts, Args &amp;&amp;...args) {</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    <span class="keywordflow">if</span> (executors.top() != <span class="keyword">this</span>) {</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;not a current SPI executor&quot;</span>);</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    }</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> nargs = <span class="keyword">sizeof</span>...(Args);</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    std::array&lt;::Oid, nargs&gt; types = {type_traits&lt;Args&gt;(args...).type_for().oid...};</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    std::array&lt;::Datum, nargs&gt; datums = {into_nullable_datum(args)...};</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    std::array&lt;const char, nargs&gt; nulls = {into_nullable_datum(args).is_null() ? <span class="charliteral">&#39;n&#39;</span> : <span class="charliteral">&#39; &#39;</span> ...};</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <span class="keyword">auto</span> rc = ffi_guard{::SPI_execute_with_args}(<a class="code hl_function" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>.data(), nargs, types.data(), datums.data(),</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>                                                 nulls.data(), opts.read_only(), opts.count());</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    <span class="keywordflow">if</span> (rc &gt;= 0) {</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>      <span class="keywordflow">return</span> SPI_processed;</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>      <span class="keywordflow">throw</span> std::runtime_error(cppgres::fmt::format(<span class="stringliteral">&quot;spi error&quot;</span>));</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    }</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  }</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>  ::MemoryContext before_spi;</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  ::MemoryContext spi;</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span> </div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>  <span class="keyword">static</span> <span class="keyword">inline</span> std::stack&lt;spi_executor *&gt; executors;</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>  <a class="code hl_function" href="structcppgres_1_1spi__executor.html#a726d3a8355cbd06be5aec2b252c6d9b9">spi_executor</a>(<span class="keywordtype">int</span> flags) : before_spi(::CurrentMemoryContext) {</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    ffi_guard{::SPI_connect_ext}(flags);</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    spi = ::CurrentMemoryContext;</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    ::CurrentMemoryContext = before_spi;</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    executors.push(<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  }</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>};</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span> </div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno"><a class="line" href="structcppgres_1_1spi__nonatomic__executor.html">  398</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1spi__nonatomic__executor.html">spi_nonatomic_executor</a> : <span class="keyword">public</span> <a class="code hl_struct" href="structcppgres_1_1spi__executor.html">spi_executor</a> {</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  <span class="keyword">using </span><a class="code hl_function" href="structcppgres_1_1spi__executor.html#a726d3a8355cbd06be5aec2b252c6d9b9">spi_executor::spi_executor</a>;</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  <a class="code hl_struct" href="structcppgres_1_1spi__nonatomic__executor.html">spi_nonatomic_executor</a>() : <a class="code hl_function" href="structcppgres_1_1spi__nonatomic__executor.html#a726d3a8355cbd06be5aec2b252c6d9b9">spi_executor</a>(SPI_OPT_NONATOMIC) {</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>    <span class="keyword">auto</span> atomic = cppgres::current_postgres_function::atomic();</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    <span class="keywordflow">if</span> (atomic.has_value() &amp;&amp; atomic.value()) {</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;must be called in a non-atomic context&quot;</span>);</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    }</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>  }</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span> </div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  <span class="keywordtype">void</span> commit(<span class="keywordtype">bool</span> chain = <span class="keyword">false</span>) {</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    <span class="keywordflow">if</span> (executors.top() != <span class="keyword">this</span>) {</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;not a current SPI executor&quot;</span>);</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>    }</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>(chain ? ::SPI_commit_and_chain : ::SPI_commit)();</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>  }</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span> </div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>  <span class="keywordtype">void</span> rollback(<span class="keywordtype">bool</span> chain = <span class="keyword">false</span>) {</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    <span class="keywordflow">if</span> (executors.top() != <span class="keyword">this</span>) {</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;not a current SPI executor&quot;</span>);</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    }</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>(chain ? ::SPI_rollback_and_chain : ::SPI_rollback)();</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>  }</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>};</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span> </div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>} <span class="comment">// namespace cppgres</span></div>
 <div class="ttc" id="aconceptcppgres_1_1a__vector_html"><div class="ttname"><a href="conceptcppgres_1_1a__vector.html">cppgres::a_vector</a></div><div class="ttdef"><b>Definition:</b> executor.hpp:58</div></div>
 <div class="ttc" id="aconceptcppgres_1_1convertible__from__datum_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__from__datum.html">cppgres::convertible_from_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:138</div></div>
 <div class="ttc" id="aconceptcppgres_1_1convertible__from__nullable__datum_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__from__nullable__datum.html">cppgres::convertible_from_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:184</div></div>
@@ -550,7 +552,7 @@ $(document).ready(function(){initNavTree('executor_8hpp_source.html',''); initRe
 <div class="ttc" id="astructcppgres_1_1spi__executor_html_a726d3a8355cbd06be5aec2b252c6d9b9"><div class="ttname"><a href="structcppgres_1_1spi__executor.html#a726d3a8355cbd06be5aec2b252c6d9b9">cppgres::spi_executor::spi_executor</a></div><div class="ttdeci">spi_executor()</div><div class="ttdoc">Creates an SPI executor.</div><div class="ttdef"><b>Definition:</b> executor.hpp:70</div></div>
 <div class="ttc" id="astructcppgres_1_1spi__executor_html_a7849b041b8fa5afb77855a33bd4ccc5d"><div class="ttname"><a href="structcppgres_1_1spi__executor.html#a7849b041b8fa5afb77855a33bd4ccc5d">cppgres::spi_executor::query</a></div><div class="ttdeci">results&lt; Ret &gt; query(std::string_view query, options &amp;&amp;opts, Args &amp;&amp;...args)</div><div class="ttdoc">Queries using a string view.</div><div class="ttdef"><b>Definition:</b> executor.hpp:308</div></div>
 <div class="ttc" id="astructcppgres_1_1spi__executor_html_af670063de425649c08c78a5fde6c36b4"><div class="ttname"><a href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">cppgres::spi_executor::query</a></div><div class="ttdeci">results&lt; Ret &gt; query(std::string_view query, Args &amp;&amp;...args)</div><div class="ttdoc">Queries using a string view.</div><div class="ttdef"><b>Definition:</b> executor.hpp:291</div></div>
-<div class="ttc" id="astructcppgres_1_1spi__nonatomic__executor_html"><div class="ttname"><a href="structcppgres_1_1spi__nonatomic__executor.html">cppgres::spi_nonatomic_executor</a></div><div class="ttdef"><b>Definition:</b> executor.hpp:396</div></div>
+<div class="ttc" id="astructcppgres_1_1spi__nonatomic__executor_html"><div class="ttname"><a href="structcppgres_1_1spi__nonatomic__executor.html">cppgres::spi_nonatomic_executor</a></div><div class="ttdef"><b>Definition:</b> executor.hpp:398</div></div>
 <div class="ttc" id="astructcppgres_1_1spi__nonatomic__executor_html_a726d3a8355cbd06be5aec2b252c6d9b9"><div class="ttname"><a href="structcppgres_1_1spi__nonatomic__executor.html#a726d3a8355cbd06be5aec2b252c6d9b9">cppgres::spi_nonatomic_executor::spi_executor</a></div><div class="ttdeci">spi_executor()</div><div class="ttdoc">Creates an SPI executor.</div><div class="ttdef"><b>Definition:</b> executor.hpp:70</div></div>
 <div class="ttc" id="astructcppgres_1_1spi__plan_html"><div class="ttname"><a href="structcppgres_1_1spi__plan.html">cppgres::spi_plan</a></div><div class="ttdef"><b>Definition:</b> executor.hpp:23</div></div>
 <div class="ttc" id="astructcppgres_1_1tracking__memory__context_html"><div class="ttname"><a href="structcppgres_1_1tracking__memory__context.html">cppgres::tracking_memory_context</a></div><div class="ttdef"><b>Definition:</b> memory.hpp:111</div></div>
