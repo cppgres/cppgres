@@ -526,4 +526,31 @@ add_test(spi_plan_count, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_string_length, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           std::string query = "select trueGARBAGEHERE";
+           auto res =
+               spi.query<bool>(std::string_view(query.c_str(), query.find_first_of("GARBAGEHERE")));
+
+           result = result && _assert(res.begin()[0]);
+
+           return result;
+         }));
+
+add_test(spi_plan_string_length, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           std::string query = "select trueGARBAGEHERE";
+           auto plan =
+               spi.plan(std::string_view(query.c_str(), query.find_first_of("GARBAGEHERE")));
+           auto res = spi.query<bool>(plan);
+
+           result = result && _assert(res.begin()[0]);
+
+           return result;
+         }));
+
 } // namespace tests

@@ -313,8 +313,9 @@ struct spi_executor : public executor {
     std::array<::Oid, nargs> types = {type_traits<Args>(args...).type_for().oid...};
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
-    auto rc = ffi_guard{::SPI_execute_with_args}(query.data(), nargs, types.data(), datums.data(),
-                                                 nulls.data(), opts.read_only(), opts.count());
+    auto rc = ffi_guard{::SPI_execute_with_args}(std::string(query).c_str(), nargs, types.data(),
+                                                 datums.data(), nulls.data(), opts.read_only(),
+                                                 opts.count());
     if (rc > 0) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
       return results<Ret>(SPI_tuptable);
@@ -330,7 +331,8 @@ struct spi_executor : public executor {
     }
     constexpr size_t nargs = sizeof...(Args);
     std::array<::Oid, nargs> types = {type_traits<Args>().type_for().oid...};
-    return spi_plan<Args...>(ffi_guard{::SPI_prepare}(query.data(), nargs, types.data()));
+    return spi_plan<Args...>(
+        ffi_guard{::SPI_prepare}(std::string(query).c_str(), nargs, types.data()));
   }
 
   template <typename Ret, convertible_into_nullable_datum... Args>
