@@ -38,6 +38,33 @@ add_test(spi_single, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_empty, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+
+           {
+             auto res = spi.query<std::tuple<>>("select from generate_series(1,100) i",
+                                                static_cast<int64_t>(1LL));
+             result = result && _assert(res.count() == 100);
+           }
+
+           {
+             struct res_t {};
+             auto res = spi.query<res_t>("select from generate_series(1,100) i",
+                                         static_cast<int64_t>(1LL));
+             result = result && _assert(res.count() == 100);
+           }
+
+           {
+             auto res = spi.query<std::vector<cppgres::value>>(
+                 "select from generate_series(1,100) i", static_cast<int64_t>(1LL));
+             result = result && _assert(res.count() == 100);
+             result = result && _assert(res.begin()[0].size() == 0);
+           }
+
+           return result;
+         }));
+
 add_test(spi_plural_tuple, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
