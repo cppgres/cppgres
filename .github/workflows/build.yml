@@ -24,6 +24,8 @@ jobs:
         compiler: [ clang++, g++ ]
         exclude:
           - os: macos-15
+            compiler: g++
+          - os: macos-15
             pgver: 16
           - os: macos-15
             pgver: 15
