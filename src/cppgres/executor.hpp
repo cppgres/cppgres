@@ -252,13 +252,35 @@ struct spi_executor : public executor {
     }
 
     result_iterator<Ret> begin() const { return result_iterator<Ret>(table); }
-    size_t end() const { return table->numvals; }
+    size_t end() const { return count(); }
+
+    size_t count() const { return table->numvals; }
 
     tuple_descriptor get_tuple_descriptor() const { return table->tupdesc; }
   };
 
+  struct options {
+    explicit options() : read_only_(false), count_(0) {}
+    options(bool read_only) : read_only_(read_only), count_(0) {}
+    options(int count) : read_only_(false), count_(count) {}
+    options(bool read_only, int count) : read_only_(read_only), count_(count) {}
+
+    bool read_only() const { return read_only_; }
+    int count() const { return count_; }
+
+  private:
+    bool read_only_;
+    int count_;
+  };
+
   /**
    * @brief Queries using a string view
+   *
+   * @param query Query string
+   * @param args Query arguments
+   *
+   * @note if you need to be able to configure the execution, use another version of
+   *       the function with @ref cppgres::spi_executor::options argument
    *
    * @return Iterable @ref cppgres::spi_executor::results, can be a single value
    *
@@ -267,6 +289,23 @@ struct spi_executor : public executor {
    */
   template <typename Ret, convertible_into_nullable_datum_and_has_a_type... Args>
   results<Ret> query(std::string_view query, Args &&...args) {
+    return this->query<Ret>(query, options(), std::forward<Args>(args)...);
+  }
+
+  /**
+   * @brief Queries using a string view
+   *
+   * @param query Query string
+   * @param opts Execution options
+   * @param args Query arguments
+   *
+   * @return Iterable @ref cppgres::spi_executor::results, can be a single value
+   *
+   * @throws std::runtime_error if there's another SPI executor in scope
+   * @throws std::runtime_error if there's an SPI error
+   */
+  template <typename Ret, convertible_into_nullable_datum_and_has_a_type... Args>
+  results<Ret> query(std::string_view query, options &&opts, Args &&...args) {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
     }
@@ -275,7 +314,7 @@ struct spi_executor : public executor {
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
     auto rc = ffi_guard{::SPI_execute_with_args}(query.data(), nargs, types.data(), datums.data(),
-                                                 nulls.data(), false, 0);
+                                                 nulls.data(), opts.read_only(), opts.count());
     if (rc > 0) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
       return results<Ret>(SPI_tuptable);
@@ -296,13 +335,19 @@ struct spi_executor : public executor {
 
   template <typename Ret, convertible_into_nullable_datum... Args>
   results<Ret> query(spi_plan<Args...> &query, Args &&...args) {
+    return this->query<Ret, Args...>(query, options(), std::forward<Args>(args)...);
+  }
+
+  template <typename Ret, convertible_into_nullable_datum... Args>
+  results<Ret> query(spi_plan<Args...> &query, options &&opts, Args &&...args) {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
     }
     constexpr size_t nargs = sizeof...(Args);
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
-    auto rc = ffi_guard{::SPI_execute_plan}(query, datums.data(), nulls.data(), false, 0);
+    auto rc = ffi_guard{::SPI_execute_plan}(query, datums.data(), nulls.data(), opts.read_only(),
+                                            opts.count());
     if (rc > 0) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
       return results<Ret>(SPI_tuptable);
@@ -313,6 +358,11 @@ struct spi_executor : public executor {
 
   template <convertible_into_nullable_datum_and_has_a_type... Args>
   uint64_t execute(std::string_view query, Args &&...args) {
+    return execute(query, options(), std::forward<Args>(args)...);
+  }
+
+  template <convertible_into_nullable_datum_and_has_a_type... Args>
+  uint64_t execute(std::string_view query, options &&opts, Args &&...args) {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
     }
@@ -321,7 +371,7 @@ struct spi_executor : public executor {
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
     auto rc = ffi_guard{::SPI_execute_with_args}(query.data(), nargs, types.data(), datums.data(),
-                                                 nulls.data(), false, 0);
+                                                 nulls.data(), opts.read_only(), opts.count());
     if (rc >= 0) {
       return SPI_processed;
     } else {

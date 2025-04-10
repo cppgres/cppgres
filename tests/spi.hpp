@@ -416,4 +416,87 @@ add_test(spi_tupdesc_access, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_readonly, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           spi.execute("create table q (i int)");
+
+           bool exception_raised = false;
+
+           try {
+             spi.query<int>("insert into q default values returning i",
+                            cppgres::spi_executor::options(true));
+           } catch (...) {
+             exception_raised = true;
+           }
+
+           result = result && _assert(exception_raised);
+
+           return result;
+         }));
+
+add_test(spi_execute_readonly, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+
+           bool exception_raised = false;
+
+           try {
+             spi.execute("create table q (i int)", cppgres::spi_executor::options(true));
+           } catch (...) {
+             exception_raised = true;
+           }
+
+           result = result && _assert(exception_raised);
+
+           return result;
+         }));
+
+add_test(spi_plan_readonly, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           spi.execute("create table q (i int)");
+
+           bool exception_raised = false;
+
+           auto plan = spi.plan("insert into q default values returning i");
+
+           try {
+             spi.query<int>(plan, cppgres::spi_executor::options(true));
+           } catch (...) {
+             exception_raised = true;
+           }
+
+           result = result && _assert(exception_raised);
+
+           return result;
+         }));
+
+add_test(spi_count, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           auto res = spi.query<int>("select i from generate_series(1,10) i",
+                                     cppgres::spi_executor::options(2));
+
+           result = result && _assert(res.count() == 2);
+
+           return result;
+         }));
+
+add_test(spi_plan_count, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           auto plan = spi.plan("select i from generate_series(1,10) i");
+           auto res = spi.query<int>(plan, cppgres::spi_executor::options(2));
+
+           result = result && _assert(res.count() == 2);
+
+           return result;
+         }));
+
 } // namespace tests
