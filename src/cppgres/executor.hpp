@@ -8,6 +8,7 @@
 #include "guard.hpp"
 #include "memory.hpp"
 #include "types.hpp"
+#include "utils/cstring.hpp"
 
 #include <iterator>
 #include <optional>
@@ -288,7 +289,7 @@ struct spi_executor : public executor {
    * @throws std::runtime_error if there's an SPI error
    */
   template <typename Ret, convertible_into_nullable_datum_and_has_a_type... Args>
-  results<Ret> query(std::string_view query, Args &&...args) {
+  results<Ret> query(utils::convertible_to_cstring auto query, Args &&...args) {
     return this->query<Ret>(query, options(), std::forward<Args>(args)...);
   }
 
@@ -305,7 +306,7 @@ struct spi_executor : public executor {
    * @throws std::runtime_error if there's an SPI error
    */
   template <typename Ret, convertible_into_nullable_datum_and_has_a_type... Args>
-  results<Ret> query(std::string_view query, options &&opts, Args &&...args) {
+  results<Ret> query(utils::convertible_to_cstring auto query, options &&opts, Args &&...args) {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
     }
@@ -313,7 +314,7 @@ struct spi_executor : public executor {
     std::array<::Oid, nargs> types = {type_traits<Args>(args...).type_for().oid...};
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
-    auto rc = ffi_guard{::SPI_execute_with_args}(std::string(query).c_str(), nargs, types.data(),
+    auto rc = ffi_guard{::SPI_execute_with_args}(utils::to_cstring(query), nargs, types.data(),
                                                  datums.data(), nulls.data(), opts.read_only(),
                                                  opts.count());
     if (rc > 0) {
@@ -325,14 +326,14 @@ struct spi_executor : public executor {
   }
 
   template <convertible_into_nullable_datum_and_has_a_type... Args>
-  spi_plan<Args...> plan(std::string_view query) {
+  spi_plan<Args...> plan(utils::convertible_to_cstring auto query) {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
     }
     constexpr size_t nargs = sizeof...(Args);
     std::array<::Oid, nargs> types = {type_traits<Args>().type_for().oid...};
     return spi_plan<Args...>(
-        ffi_guard{::SPI_prepare}(std::string(query).c_str(), nargs, types.data()));
+        ffi_guard{::SPI_prepare}(utils::to_cstring(query), nargs, types.data()));
   }
 
   template <typename Ret, convertible_into_nullable_datum... Args>
