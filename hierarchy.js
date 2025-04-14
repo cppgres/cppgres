@@ -77,6 +77,7 @@ var hierarchy =
     [ "cppgres::nullable_datum", "structcppgres_1_1nullable__datum.html", null ],
     [ "cppgres::oid", "structcppgres_1_1oid.html", null ],
     [ "cppgres::spi_executor::options", "structcppgres_1_1spi__executor_1_1options.html", null ],
+    [ "cppgres::utils::owned_cstring", "structcppgres_1_1utils_1_1owned__cstring.html", null ],
     [ "cppgres::postgres_function< Func >", "structcppgres_1_1postgres__function.html", null ],
     [ "cppgres::record", "structcppgres_1_1record.html", null ],
     [ "cppgres::utils::remove_optional< T >", "structcppgres_1_1utils_1_1remove__optional.html", null ],

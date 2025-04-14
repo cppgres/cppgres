@@ -14,6 +14,7 @@ var annotated_dup =
         [ "is_std_tuple", "structcppgres_1_1utils_1_1is__std__tuple.html", null ],
         [ "is_std_tuple< std::tuple< Ts... > >", "structcppgres_1_1utils_1_1is__std__tuple_3_01std_1_1tuple_3_01Ts_8_8_8_01_4_01_4.html", null ],
         [ "maybe_ref", "structcppgres_1_1utils_1_1maybe__ref.html", null ],
+        [ "owned_cstring", "structcppgres_1_1utils_1_1owned__cstring.html", null ],
         [ "remove_optional", "structcppgres_1_1utils_1_1remove__optional.html", null ],
         [ "remove_optional< std::optional< T > >", "structcppgres_1_1utils_1_1remove__optional_3_01std_1_1optional_3_01T_01_4_01_4.html", null ],
         [ "tuple_traits_impl", "structcppgres_1_1utils_1_1tuple__traits__impl.html", "structcppgres_1_1utils_1_1tuple__traits__impl" ],

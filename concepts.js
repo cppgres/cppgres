@@ -2,6 +2,10 @@ var concepts =
 [
     [ "cppgres", null, [
       [ "utils", null, [
+        [ "is_cstring", "conceptcppgres_1_1utils_1_1is__cstring.html", null ],
+        [ "c_str_available", "conceptcppgres_1_1utils_1_1c__str__available.html", null ],
+        [ "data_length_available", "conceptcppgres_1_1utils_1_1data__length__available.html", null ],
+        [ "convertible_to_cstring", "conceptcppgres_1_1utils_1_1convertible__to__cstring.html", null ],
         [ "is_optional", "conceptcppgres_1_1utils_1_1is__optional.html", null ],
         [ "std_tuple", "conceptcppgres_1_1utils_1_1std__tuple.html", null ]
       ] ],

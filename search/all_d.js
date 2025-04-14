@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['query_0',['query',['../structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4',1,'cppgres::spi_executor::query(std::string_view query, Args &amp;&amp;...args)'],['../structcppgres_1_1spi__executor.html#a7849b041b8fa5afb77855a33bd4ccc5d',1,'cppgres::spi_executor::query(std::string_view query, options &amp;&amp;opts, Args &amp;&amp;...args)']]]
+  ['query_0',['query',['../structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578',1,'cppgres::spi_executor::query(utils::convertible_to_cstring auto query, Args &amp;&amp;...args)'],['../structcppgres_1_1spi__executor.html#a1a6443d5aa50601c86bc74251b5f0b4b',1,'cppgres::spi_executor::query(utils::convertible_to_cstring auto query, options &amp;&amp;opts, Args &amp;&amp;...args)']]]
 ];

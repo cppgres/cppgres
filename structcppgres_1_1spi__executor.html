@@ -176,18 +176,18 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>spi_executor</b> ()</td></tr>
 <tr class="memdesc:a726d3a8355cbd06be5aec2b252c6d9b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an SPI executor. <br /></td></tr>
 <tr class="separator:a726d3a8355cbd06be5aec2b252c6d9b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af670063de425649c08c78a5fde6c36b4"><td class="memTemplParams" colspan="2">template&lt;typename Ret , convertible_into_nullable_datum_and_has_a_type... Args&gt; </td></tr>
-<tr class="memitem:af670063de425649c08c78a5fde6c36b4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1spi__executor_1_1results.html">results</a>&lt; Ret &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a> (std::string_view query, Args &amp;&amp;...args)</td></tr>
-<tr class="memdesc:af670063de425649c08c78a5fde6c36b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries using a string view.  <br /></td></tr>
-<tr class="separator:af670063de425649c08c78a5fde6c36b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7849b041b8fa5afb77855a33bd4ccc5d"><td class="memTemplParams" colspan="2">template&lt;typename Ret , convertible_into_nullable_datum_and_has_a_type... Args&gt; </td></tr>
-<tr class="memitem:a7849b041b8fa5afb77855a33bd4ccc5d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1spi__executor_1_1results.html">results</a>&lt; Ret &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structcppgres_1_1spi__executor.html#a7849b041b8fa5afb77855a33bd4ccc5d">query</a> (std::string_view query, <a class="el" href="structcppgres_1_1spi__executor_1_1options.html">options</a> &amp;&amp;opts, Args &amp;&amp;...args)</td></tr>
-<tr class="memdesc:a7849b041b8fa5afb77855a33bd4ccc5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries using a string view.  <br /></td></tr>
-<tr class="separator:a7849b041b8fa5afb77855a33bd4ccc5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74210d54abcc08ae332c69b9a617b182"><td class="memTemplParams" colspan="2"><a id="a74210d54abcc08ae332c69b9a617b182" name="a74210d54abcc08ae332c69b9a617b182"></a>
+<tr class="memitem:a8359eb7667f973a7370981baa0b2b578"><td class="memTemplParams" colspan="2">template&lt;typename Ret , convertible_into_nullable_datum_and_has_a_type... Args&gt; </td></tr>
+<tr class="memitem:a8359eb7667f973a7370981baa0b2b578"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1spi__executor_1_1results.html">results</a>&lt; Ret &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578">query</a> (utils::convertible_to_cstring auto query, Args &amp;&amp;...args)</td></tr>
+<tr class="memdesc:a8359eb7667f973a7370981baa0b2b578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries using a string view.  <br /></td></tr>
+<tr class="separator:a8359eb7667f973a7370981baa0b2b578"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a6443d5aa50601c86bc74251b5f0b4b"><td class="memTemplParams" colspan="2">template&lt;typename Ret , convertible_into_nullable_datum_and_has_a_type... Args&gt; </td></tr>
+<tr class="memitem:a1a6443d5aa50601c86bc74251b5f0b4b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1spi__executor_1_1results.html">results</a>&lt; Ret &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structcppgres_1_1spi__executor.html#a1a6443d5aa50601c86bc74251b5f0b4b">query</a> (utils::convertible_to_cstring auto query, <a class="el" href="structcppgres_1_1spi__executor_1_1options.html">options</a> &amp;&amp;opts, Args &amp;&amp;...args)</td></tr>
+<tr class="memdesc:a1a6443d5aa50601c86bc74251b5f0b4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries using a string view.  <br /></td></tr>
+<tr class="separator:a1a6443d5aa50601c86bc74251b5f0b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a343f5fe7db5dd435d3af0d0f6ff6abe7"><td class="memTemplParams" colspan="2"><a id="a343f5fe7db5dd435d3af0d0f6ff6abe7" name="a343f5fe7db5dd435d3af0d0f6ff6abe7"></a>
 template&lt;convertible_into_nullable_datum_and_has_a_type... Args&gt; </td></tr>
-<tr class="memitem:a74210d54abcc08ae332c69b9a617b182"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1spi__plan.html">spi_plan</a>&lt; Args... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>plan</b> (std::string_view <a class="el" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>)</td></tr>
-<tr class="separator:a74210d54abcc08ae332c69b9a617b182"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a343f5fe7db5dd435d3af0d0f6ff6abe7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1spi__plan.html">spi_plan</a>&lt; Args... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>plan</b> (utils::convertible_to_cstring auto <a class="el" href="structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578">query</a>)</td></tr>
+<tr class="separator:a343f5fe7db5dd435d3af0d0f6ff6abe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57d1a17b0381a37df4085d22fc6df295"><td class="memTemplParams" colspan="2"><a id="a57d1a17b0381a37df4085d22fc6df295" name="a57d1a17b0381a37df4085d22fc6df295"></a>
 template&lt;typename Ret , convertible_into_nullable_datum... Args&gt; </td></tr>
 <tr class="memitem:a57d1a17b0381a37df4085d22fc6df295"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1spi__executor_1_1results.html">results</a>&lt; Ret &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>query</b> (<a class="el" href="structcppgres_1_1spi__plan.html">spi_plan</a>&lt; Args... &gt; &amp;query, Args &amp;&amp;...args)</td></tr>
@@ -198,11 +198,11 @@ template&lt;typename Ret , convertible_into_nullable_datum... Args&gt; </td></tr
 <tr class="separator:ab6287684582e88f0eab6d7d77ffcf587"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae94871906b4bc9823dbbdfa63851a9e3"><td class="memTemplParams" colspan="2"><a id="ae94871906b4bc9823dbbdfa63851a9e3" name="ae94871906b4bc9823dbbdfa63851a9e3"></a>
 template&lt;convertible_into_nullable_datum_and_has_a_type... Args&gt; </td></tr>
-<tr class="memitem:ae94871906b4bc9823dbbdfa63851a9e3"><td class="memTemplItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>execute</b> (std::string_view <a class="el" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, Args &amp;&amp;...args)</td></tr>
+<tr class="memitem:ae94871906b4bc9823dbbdfa63851a9e3"><td class="memTemplItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>execute</b> (std::string_view <a class="el" href="structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578">query</a>, Args &amp;&amp;...args)</td></tr>
 <tr class="separator:ae94871906b4bc9823dbbdfa63851a9e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58d36d3a7fec3b8d2038be20f3e194f9"><td class="memTemplParams" colspan="2"><a id="a58d36d3a7fec3b8d2038be20f3e194f9" name="a58d36d3a7fec3b8d2038be20f3e194f9"></a>
 template&lt;convertible_into_nullable_datum_and_has_a_type... Args&gt; </td></tr>
-<tr class="memitem:a58d36d3a7fec3b8d2038be20f3e194f9"><td class="memTemplItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>execute</b> (std::string_view <a class="el" href="structcppgres_1_1spi__executor.html#af670063de425649c08c78a5fde6c36b4">query</a>, <a class="el" href="structcppgres_1_1spi__executor_1_1options.html">options</a> &amp;&amp;opts, Args &amp;&amp;...args)</td></tr>
+<tr class="memitem:a58d36d3a7fec3b8d2038be20f3e194f9"><td class="memTemplItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>execute</b> (std::string_view <a class="el" href="structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578">query</a>, <a class="el" href="structcppgres_1_1spi__executor_1_1options.html">options</a> &amp;&amp;opts, Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a58d36d3a7fec3b8d2038be20f3e194f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
@@ -220,8 +220,8 @@ static std::stack&lt; <a class="el" href="structcppgres_1_1spi__executor.html">s
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a href="https://www.postgresql.org/docs/current/spi.html">SPI</a> executor API </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="af670063de425649c08c78a5fde6c36b4" name="af670063de425649c08c78a5fde6c36b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af670063de425649c08c78a5fde6c36b4">&#9670;&#160;</a></span>query() <span class="overload">[1/2]</span></h2>
+<a id="a8359eb7667f973a7370981baa0b2b578" name="a8359eb7667f973a7370981baa0b2b578"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8359eb7667f973a7370981baa0b2b578">&#9670;&#160;</a></span>query() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,7 +234,7 @@ template&lt;typename Ret , convertible_into_nullable_datum_and_has_a_type... Arg
         <tr>
           <td class="memname"><a class="el" href="structcppgres_1_1spi__executor_1_1results.html">results</a>&lt; Ret &gt; cppgres::spi_executor::query </td>
           <td>(</td>
-          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramtype">utils::convertible_to_cstring auto&#160;</td>
           <td class="paramname"><em>query</em>, </td>
         </tr>
         <tr>
@@ -276,8 +276,8 @@ template&lt;typename Ret , convertible_into_nullable_datum_and_has_a_type... Arg
 
 </div>
 </div>
-<a id="a7849b041b8fa5afb77855a33bd4ccc5d" name="a7849b041b8fa5afb77855a33bd4ccc5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7849b041b8fa5afb77855a33bd4ccc5d">&#9670;&#160;</a></span>query() <span class="overload">[2/2]</span></h2>
+<a id="a1a6443d5aa50601c86bc74251b5f0b4b" name="a1a6443d5aa50601c86bc74251b5f0b4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a6443d5aa50601c86bc74251b5f0b4b">&#9670;&#160;</a></span>query() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -290,7 +290,7 @@ template&lt;typename Ret , convertible_into_nullable_datum_and_has_a_type... Arg
         <tr>
           <td class="memname"><a class="el" href="structcppgres_1_1spi__executor_1_1results.html">results</a>&lt; Ret &gt; cppgres::spi_executor::query </td>
           <td>(</td>
-          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramtype">utils::convertible_to_cstring auto&#160;</td>
           <td class="paramname"><em>query</em>, </td>
         </tr>
         <tr>
