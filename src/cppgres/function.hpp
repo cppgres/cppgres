@@ -59,25 +59,21 @@ struct function_call_info {
   /**
    * @brief passed arguments
    */
-  std::vector<nullable_datum> args() const {
-    std::vector<nullable_datum> args;
-    args.reserve(nargs());
-    for (auto i = 0; i < nargs(); i++) {
-      args.emplace_back(info_->args[i]);
-    }
-    return args;
+
+  auto args() const {
+    return std::views::iota(0, nargs()) | std::views::transform([this](int i) -> nullable_datum {
+             return nullable_datum(info_->args[i]);
+           });
   }
 
   /**
    * @brief argument types
    */
-  std::vector<type> arg_types() const {
-    std::vector<type> types;
-    for (auto i = 0; i < nargs(); i++) {
-      types.emplace_back(type{.oid = ffi_guard{::get_fn_expr_argtype}(info_->flinfo, i)});
-    }
-    return types;
-  };
+  auto arg_types() const {
+    return std::views::iota(0, nargs()) | std::views::transform([this](int i) -> type {
+             return {.oid = ffi_guard{::get_fn_expr_argtype}(info_->flinfo, i)};
+           });
+  }
 
   /**
    * @brief called function OID
