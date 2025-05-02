@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cppgres: src/cppgres/function.hpp File Reference</title>
+<title>Cppgres: cppgres::function_call_info Struct Reference</title>
 <!--BEGIN PROJECT_ICON-->
 <link rel="icon" href="$projecticon" type="image/x-icon" />
 <!--END PROJECT_ICON-->
@@ -110,7 +110,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('function_8hpp.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structcppgres_1_1function__call__info.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,52 +137,50 @@ $(document).ready(function(){initNavTree('function_8hpp.html',''); initResizable
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#concepts">Concepts</a>  </div>
-  <div class="headertitle"><div class="title">function.hpp File Reference</div></div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="structcppgres_1_1function__call__info-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">cppgres::function_call_info Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="datum_8hpp_source.html">datum.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="guard_8hpp_source.html">guard.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="imports_8h_source.html">imports.h</a>&quot;</code><br />
-<code>#include &quot;record.hpp&quot;</code><br />
-<code>#include &quot;<a class="el" href="set_8hpp_source.html">set.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="types_8hpp_source.html">types.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="function__traits_8hpp_source.html">utils/function_traits.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="utils_8hpp_source.html">utils/utils.hpp</a>&quot;</code><br />
-<code>#include &lt;array&gt;</code><br />
-<code>#include &lt;complex&gt;</code><br />
-<code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;stack&gt;</code><br />
-<code>#include &lt;tuple&gt;</code><br />
-<code>#include &lt;typeinfo&gt;</code><br />
-</div>
-<p><a href="function_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1function__call__info.html">cppgres::function_call_info</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1current__postgres__function.html">cppgres::current_postgres_function</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1postgres__function.html">cppgres::postgres_function&lt; Func &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postgres function implemented in C++.  <a href="structcppgres_1_1postgres__function.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
-Concepts</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptcppgres_1_1convertible__into__nullable__datum__or__set__iterator__or__void.html">cppgres::convertible_into_nullable_datum_or_set_iterator_or_void</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptcppgres_1_1datumable__function.html">cppgres::datumable_function</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that operates on values of Postgres types. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a239daa93cada9f12af1ae5034ea7ed3c"><td class="memItemLeft" align="right" valign="top"><a id="a239daa93cada9f12af1ae5034ea7ed3c" name="a239daa93cada9f12af1ae5034ea7ed3c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>function_call_info</b> (::FunctionCallInfo info)</td></tr>
+<tr class="separator:a239daa93cada9f12af1ae5034ea7ed3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab467abc993549baa28064c45b215b30e"><td class="memItemLeft" align="right" valign="top"><a id="ab467abc993549baa28064c45b215b30e" name="ab467abc993549baa28064c45b215b30e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator FunctionCallInfo</b> () const</td></tr>
+<tr class="separator:ab467abc993549baa28064c45b215b30e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fb11c69768071663f2bfcf4d8900d7b"><td class="memItemLeft" align="right" valign="top"><a id="a8fb11c69768071663f2bfcf4d8900d7b" name="a8fb11c69768071663f2bfcf4d8900d7b"></a>
+short&#160;</td><td class="memItemRight" valign="bottom"><b>nargs</b> () const</td></tr>
+<tr class="memdesc:a8fb11c69768071663f2bfcf4d8900d7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of arguments actually passed <br /></td></tr>
+<tr class="separator:a8fb11c69768071663f2bfcf4d8900d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbb852f575bfae3c3dc745fc627a536a"><td class="memItemLeft" align="right" valign="top"><a id="abbb852f575bfae3c3dc745fc627a536a" name="abbb852f575bfae3c3dc745fc627a536a"></a>
+std::vector&lt; <a class="el" href="structcppgres_1_1nullable__datum.html">nullable_datum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>args</b> () const</td></tr>
+<tr class="memdesc:abbb852f575bfae3c3dc745fc627a536a"><td class="mdescLeft">&#160;</td><td class="mdescRight">passed arguments <br /></td></tr>
+<tr class="separator:abbb852f575bfae3c3dc745fc627a536a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9060e4d5649e063ea09074ec95fc011"><td class="memItemLeft" align="right" valign="top"><a id="ac9060e4d5649e063ea09074ec95fc011" name="ac9060e4d5649e063ea09074ec95fc011"></a>
+std::vector&lt; <a class="el" href="structcppgres_1_1type.html">type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>arg_types</b> () const</td></tr>
+<tr class="memdesc:ac9060e4d5649e063ea09074ec95fc011"><td class="mdescLeft">&#160;</td><td class="mdescRight">argument types <br /></td></tr>
+<tr class="separator:ac9060e4d5649e063ea09074ec95fc011"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6428897ab9e61264346acff944e784d"><td class="memItemLeft" align="right" valign="top"><a id="af6428897ab9e61264346acff944e784d" name="af6428897ab9e61264346acff944e784d"></a>
+<a class="el" href="structcppgres_1_1oid.html">oid</a>&#160;</td><td class="memItemRight" valign="bottom"><b>called_function_oid</b> () const</td></tr>
+<tr class="memdesc:af6428897ab9e61264346acff944e784d"><td class="mdescLeft">&#160;</td><td class="mdescRight">called function OID <br /></td></tr>
+<tr class="separator:af6428897ab9e61264346acff944e784d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89b216048464974f421690df76edd123"><td class="memItemLeft" align="right" valign="top"><a id="a89b216048464974f421690df76edd123" name="a89b216048464974f421690df76edd123"></a>
+<a class="el" href="structcppgres_1_1type.html">type</a>&#160;</td><td class="memItemRight" valign="bottom"><b>return_type</b> () const</td></tr>
+<tr class="memdesc:a89b216048464974f421690df76edd123"><td class="mdescLeft">&#160;</td><td class="mdescRight">return type <br /></td></tr>
+<tr class="separator:a89b216048464974f421690df76edd123"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/cppgres/<a class="el" href="function_8hpp_source.html">function.hpp</a></li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_af1bb9dae411b5b1b5161db3c243cdc2.html">cppgres</a></li><li class="navelem"><a class="el" href="function_8hpp.html">function.hpp</a></li>
+    <li class="navelem"><b>cppgres</b></li><li class="navelem"><a class="el" href="structcppgres_1_1function__call__info.html">function_call_info</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>

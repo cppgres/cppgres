@@ -58,6 +58,7 @@ var annotated_dup =
       [ "executor", "structcppgres_1_1executor.html", null ],
       [ "expanded_varlena", "structcppgres_1_1expanded__varlena.html", null ],
       [ "ffi_guard", "structcppgres_1_1ffi__guard.html", null ],
+      [ "function_call_info", "structcppgres_1_1function__call__info.html", "structcppgres_1_1function__call__info" ],
       [ "internal_subtransaction", "structcppgres_1_1internal__subtransaction.html", null ],
       [ "memory_context", "structcppgres_1_1memory__context.html", null ],
       [ "memory_context_allocator", "structcppgres_1_1memory__context__allocator.html", null ],
