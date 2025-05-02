@@ -61,12 +61,9 @@ struct function_call_info {
    */
   std::vector<nullable_datum> args() const {
     std::vector<nullable_datum> args;
+    args.reserve(nargs());
     for (auto i = 0; i < nargs(); i++) {
-      if (info_->args[i].isnull) {
-        args.emplace_back();
-      } else {
-        args.emplace_back(info_->args[i].value);
-      }
+      args.emplace_back(info_->args[i]);
     }
     return args;
   }
