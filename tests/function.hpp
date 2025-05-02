@@ -107,8 +107,15 @@ add_test(current_postgres_function, ([](test_case &) {
 
            auto ci = cppgres::current_postgres_function::call_info();
            result = result && _assert(ci.has_value());
-           cppgres::syscache<Form_pg_proc, cppgres::oid> proc((*ci)->flinfo->fn_oid);
+           cppgres::syscache<Form_pg_proc, cppgres::oid> proc((*ci).called_function_oid());
            result = result && _assert(std::string_view(NameStr((*proc).proname)) == "cppgres_test");
+
+           // args
+           result = result && _assert((*ci).nargs() == 1);
+           result = result && _assert((*ci).arg_types()[0] == cppgres::type{.oid = TEXTOID});
+
+           // return type
+           result = result && _assert((*ci).return_type() == cppgres::type{.oid = BOOLOID});
 
            return result;
          }));

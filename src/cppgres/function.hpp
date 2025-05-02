@@ -46,6 +46,56 @@ concept datumable_function =
       } -> convertible_into_nullable_datum_or_set_iterator_or_void;
     };
 
+struct function_call_info {
+  function_call_info(::FunctionCallInfo info) : info_(info) {}
+
+  operator FunctionCallInfo() const { return info_; }
+
+  /**
+   * @brief number of arguments actually passed
+   */
+  short nargs() const { return info_->nargs; }
+
+  /**
+   * @brief passed arguments
+   */
+  std::vector<nullable_datum> args() const {
+    std::vector<nullable_datum> args;
+    for (auto i = 0; i < nargs(); i++) {
+      if (info_->args[i].isnull) {
+        args.emplace_back();
+      } else {
+        args.emplace_back(info_->args[i].value);
+      }
+    }
+    return args;
+  }
+
+  /**
+   * @brief argument types
+   */
+  std::vector<type> arg_types() const {
+    std::vector<type> types;
+    for (auto i = 0; i < nargs(); i++) {
+      types.emplace_back(type{.oid = ffi_guard{::get_fn_expr_argtype}(info_->flinfo, i)});
+    }
+    return types;
+  };
+
+  /**
+   * @brief called function OID
+   */
+  oid called_function_oid() const { return info_->flinfo->fn_oid; }
+
+  /**
+   * @brief return type
+   */
+  type return_type() const { return {.oid = ffi_guard{::get_fn_expr_rettype}(info_->flinfo)}; }
+
+private:
+  ::FunctionCallInfo info_;
+};
+
 struct current_postgres_function {
 
   static std::optional<bool> atomic() {
@@ -59,7 +109,7 @@ struct current_postgres_function {
     return std::nullopt;
   }
 
-  static std::optional<::FunctionCallInfo> call_info() {
+  static std::optional<function_call_info> call_info() {
     if (!calls.empty()) {
       return calls.top();
     }
