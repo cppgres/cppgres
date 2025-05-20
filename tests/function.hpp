@@ -113,6 +113,8 @@ add_test(current_postgres_function, ([](test_case &) {
            // args
            result = result && _assert((*ci).nargs() == 1);
            result = result && _assert((*ci).arg_types()[0] == cppgres::type{.oid = TEXTOID});
+           result =
+               result && _assert((*ci).arg_values()[0].get_type() == cppgres::type{.oid = TEXTOID});
 
            // return type
            result = result && _assert((*ci).return_type() == cppgres::type{.oid = BOOLOID});

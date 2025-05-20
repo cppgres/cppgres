@@ -11,6 +11,7 @@
 #include "types.hpp"
 #include "utils/function_traits.hpp"
 #include "utils/utils.hpp"
+#include "value.hpp"
 
 #include <array>
 #include <complex>
@@ -72,6 +73,17 @@ struct function_call_info {
   auto arg_types() const {
     return std::views::iota(0, nargs()) | std::views::transform([this](int i) -> type {
              return {.oid = ffi_guard{::get_fn_expr_argtype}(info_->flinfo, i)};
+           });
+  }
+
+  /**
+   * @brief typed passed argument
+   */
+
+  auto arg_values() const {
+    return std::views::iota(0, nargs()) | std::views::transform([this](int i) -> value {
+             return value(nullable_datum(info_->args[i]),
+                          {.oid = ffi_guard{::get_fn_expr_argtype}(info_->flinfo, i)});
            });
   }
 
