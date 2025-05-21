@@ -19,6 +19,12 @@ private:
 };
 
 template <> struct datum_conversion<value> {
+
+  static value from_nullable_datum(const nullable_datum &d, oid oid,
+                                   std::optional<memory_context>) {
+    return {nullable_datum(d), type{.oid = oid}};
+  }
+
   static value from_datum(const datum &d, oid oid, std::optional<memory_context>) {
     return {nullable_datum(d), type{.oid = oid}};
   }
