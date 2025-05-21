@@ -12,7 +12,7 @@ template <> struct type_traits<::my_custom_type> {
   bool is(type &t) { return t == type_for(); }
   type type_for() { return cppgres::named_type("custom_type"); }
 };
-template <> struct datum_conversion<::my_custom_type> {
+template <> struct datum_conversion<::my_custom_type> : default_datum_conversion<::my_custom_type> {
   static ::my_custom_type from_datum(const datum &d, oid oid, std::optional<memory_context> ctx) {
     std::string s(datum_conversion<text>::from_datum(d, oid, ctx).operator std::string_view());
     return {.s = s};

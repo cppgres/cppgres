@@ -382,7 +382,7 @@ static_assert(std::copy_constructible<record>);
 static_assert(std::move_constructible<record>);
 static_assert(std::is_copy_assignable_v<record>);
 
-template <> struct datum_conversion<record> {
+template <> struct datum_conversion<record> : default_datum_conversion<record> {
   static record from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
     return {reinterpret_cast<HeapTupleHeader>(ffi_guard{::pg_detoast_datum}(
                 reinterpret_cast<struct ::varlena *>(d.operator const ::Datum &()))),
