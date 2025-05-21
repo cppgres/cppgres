@@ -55,10 +55,6 @@ class null_datum_exception : public std::exception {
 
 struct nullable_datum {
 
-  template <typename T>
-  friend T from_nullable_datum(const nullable_datum &d, std::optional<memory_context> ctx);
-  template <typename T> friend nullable_datum into_nullable_datum(const T &d);
-
   bool is_null() const noexcept { return _ndatum.isnull; }
 
   operator struct datum &() {
@@ -104,7 +100,6 @@ private:
     ::NullableDatum _ndatum;
     datum _datum;
   };
-
 };
 
 /**
@@ -113,6 +108,16 @@ private:
  * @tparam T C++ type to convert into and from
  */
 template <typename T, typename = void> struct datum_conversion {
+
+  /**
+   * @brief Convert from a nullable datum
+   *
+   * Gets an optional @ref cppgres::memory_context when available to be able to determine the source
+   * of the (pointer) datum.
+   */
+  static T from_nullable_datum(const nullable_datum &d, const oid oid,
+                               std::optional<memory_context> context = std::nullopt) = delete;
+
   /**
    * @brief Convert from a datum
    *
@@ -129,6 +134,23 @@ template <typename T, typename = void> struct datum_conversion {
   static datum into_datum(const T &d) = delete;
 };
 
+template <typename T, typename R = T> struct default_datum_conversion {
+  /**
+   * @brief Convert from a nullable datum
+   *
+   * Gets an optional @ref cppgres::memory_context when available to be able to determine the source
+   * of the (pointer) datum.
+   */
+  static R from_nullable_datum(const nullable_datum &d, const oid oid,
+                               std::optional<memory_context> context = std::nullopt) {
+    if (d.is_null()) {
+      throw std::runtime_error(cppgres::fmt::format("datum is null and can't be coerced into {}",
+                                                    utils::type_name<T>()));
+    }
+    return datum_conversion<T>::from_datum(d, oid, context);
+  }
+};
+
 template <typename T>
 concept convertible_into_datum = requires(T t) {
   { datum_conversion<T, void>::into_datum(std::declval<T>()) } -> std::same_as<datum>;
@@ -142,27 +164,10 @@ concept convertible_from_datum = requires(datum d, oid oid, std::optional<memory
 template <typename T> struct unsupported_type {};
 
 template <typename T>
-requires convertible_from_datum<T> ||
-         (utils::is_optional<T> && convertible_from_datum<utils::remove_optional_t<T>>)
+requires convertible_from_datum<std::remove_cv_t<T>>
 T from_nullable_datum(const nullable_datum &d, const oid oid,
                       std::optional<memory_context> context = std::nullopt) {
-  if constexpr (utils::is_optional<T>) {
-    if (d.is_null()) {
-      return std::nullopt;
-    }
-    if constexpr (convertible_from_datum<utils::remove_optional_t<T>>) {
-      return std::optional(
-          datum_conversion<utils::remove_optional_t<T>>::from_datum(d, oid, context));
-    } else {
-      static_assert("no viable conversion");
-    }
-  } else {
-    if (d.is_null()) {
-      throw std::runtime_error(cppgres::fmt::format("datum is null and can't be coerced into {}",
-                                                    utils::type_name<T>()));
-    }
-    return datum_conversion<T>::from_datum(d, oid, context);
-  }
+  return datum_conversion<std::remove_cv_t<T>>::from_nullable_datum(d, oid, context);
 }
 
 template <typename T> nullable_datum into_nullable_datum(const std::optional<T> &v) {
