@@ -2,12 +2,13 @@
 
 #include "datum.hpp"
 #include "guard.hpp"
+#include "heap_tuple.hpp"
 #include "imports.h"
+#include "xact.hpp"
 
 namespace cppgres {
 
-template <typename T> struct syscache_traits {
-};
+template <typename T> struct syscache_traits {};
 
 template <> struct syscache_traits<Form_pg_type> {
   static constexpr ::SysCacheIdentifier cache_id = TYPEOID;
@@ -27,10 +28,10 @@ template <syscached T, convertible_into_datum... D> struct syscache {
   syscache(const D &...key) : syscache(syscache_traits<T>::cache_id, key...) {}
   syscache(::SysCacheIdentifier cache_id, const D &...key)
       requires(sizeof...(key) > 0 && sizeof...(key) < 5)
-      : cache_id(cache_id) {
-    datum keys[4] = {datum_conversion<D>::into_datum(key)...};
-    tuple = ffi_guard{::SearchSysCache}(cache_id, keys[0], keys[1], keys[2], keys[3]);
-
+      : cache_id(cache_id), tuple([&]() {
+          datum keys[4] = {datum_conversion<D>::into_datum(key)...};
+          return ffi_guard{::SearchSysCache}(cache_id, keys[0], keys[1], keys[2], keys[3]);
+        }()) {
     if (!HeapTupleIsValid(tuple)) {
       throw std::runtime_error("invalid tuple");
     }
@@ -38,9 +39,11 @@ template <syscached T, convertible_into_datum... D> struct syscache {
 
   ~syscache() { ReleaseSysCache(tuple); }
 
-  decltype(*std::declval<T>()) &operator*() { return *reinterpret_cast<T>(GETSTRUCT(tuple)); }
+  decltype(*std::declval<T>()) &operator*() {
+    return *reinterpret_cast<T>(GETSTRUCT(tuple.operator HeapTuple()));
+  }
   const decltype(*std::declval<T>()) &operator*() const {
-    return *reinterpret_cast<T>(GETSTRUCT(tuple));
+    return *reinterpret_cast<T>(GETSTRUCT(tuple.operator HeapTuple()));
   }
 
   /**
@@ -59,9 +62,11 @@ template <syscached T, convertible_into_datum... D> struct syscache {
     return from_nullable_datum<V>(nullable_datum(ret), oid(/*FIXME*/ InvalidOid));
   }
 
+  operator const heap_tuple &() const { return tuple; }
+
 private:
-  HeapTuple tuple;
   ::SysCacheIdentifier cache_id;
+  heap_tuple tuple;
 };
 
 } // namespace cppgres

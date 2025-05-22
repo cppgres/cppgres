@@ -11,6 +11,42 @@ extern "C" {
 
 namespace cppgres {
 
+using command_id = ::CommandId;
+
+struct transaction_id {
+
+  transaction_id() : id_(InvalidTransactionId) {}
+  transaction_id(::TransactionId id) : id_(id) {}
+  transaction_id(const transaction_id &id) : id_(id.id_) {}
+
+  static transaction_id current(bool acquire = true) {
+    return transaction_id(
+        ffi_guard{acquire ? ::GetCurrentTransactionId : ::GetCurrentTransactionIdIfAny}());
+  }
+
+  bool is_valid() const { return TransactionIdIsValid(id_); }
+
+  bool operator==(const transaction_id &other) const { return TransactionIdEquals(id_, other.id_); }
+  bool operator>(const transaction_id &other) const { return TransactionIdFollows(id_, other.id_); }
+  bool operator>=(const transaction_id &other) const {
+    return TransactionIdFollowsOrEquals(id_, other.id_);
+  }
+  bool operator<(const transaction_id &other) const {
+    return TransactionIdPrecedes(id_, other.id_);
+  }
+  bool operator<=(const transaction_id &other) const {
+    return TransactionIdPrecedesOrEquals(id_, other.id_);
+  }
+
+  bool did_abort() const { return is_valid() && TransactionIdDidAbort(id_); }
+  bool did_commit() const { return is_valid() && TransactionIdDidCommit(id_); }
+
+private:
+  ::TransactionId id_;
+};
+
+static_assert(sizeof(transaction_id) == sizeof(::TransactionId));
+
 struct internal_subtransaction {
   internal_subtransaction(bool commit = true)
       : owner(::CurrentResourceOwner), commit(commit), name("") {
