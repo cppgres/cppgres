@@ -18,6 +18,9 @@ PG_MODULE_MAGIC;
 #include <utils/date.h>
 }
 
+#include <algorithm>
+#include <ranges>
+
 #include "tests.hpp"
 
 #include "backend.hpp"
@@ -25,6 +28,7 @@ PG_MODULE_MAGIC;
 #include "datum.hpp"
 #include "errors.hpp"
 #include "function.hpp"
+#include "heap_tuple.hpp"
 #include "memory_context.hpp"
 #include "node.hpp"
 #include "record.hpp"
@@ -35,7 +39,8 @@ PG_MODULE_MAGIC;
 #include "type.hpp"
 #include "xact.hpp"
 
-test_case::test_case(std::string_view name, bool (*function)(test_case &c)) : function(function) {
+test_case::test_case(std::string_view name, bool (*function)(test_case &c), bool is_atomic)
+    : function(function), atomic(is_atomic) {
   test_cases[name] = this;
 }
 bool test_case::operator()() { return function(*this); }
@@ -130,21 +135,49 @@ postgres_function(cppgres_tests, []() {
   // </Debugging>
 
   bool result = true;
-  for (auto t : test_case::test_cases) {
-    auto name = t.first;
-    cppgres::report(NOTICE, "%s", name.data());
-    cppgres::spi_nonatomic_executor spi;
-    try {
-      auto res = spi.query<std::tuple<bool>>("select cppgres_test($1)", name);
-      bool _result = std::get<0>(res.begin()[0]);
-      result = result && _result;
-      cppgres::report(NOTICE, "%s: %s", name.data(), _result ? "passed" : "failed");
-    } catch (std::exception &e) {
-      cppgres::report(NOTICE, "%s: exception: %s", name.data(), e.what());
-      result = result && false;
-    }
-    spi.rollback();
+
+  // Atomic tests
+
+  std::ranges::for_each(
+      test_case::test_cases | std::views::filter([](auto t) { return t.second->is_atomic(); }),
+      [&](auto t) {
+        auto name = t.first;
+        cppgres::report(NOTICE, "%s", name.data());
+        cppgres::spi_nonatomic_executor spi;
+        try {
+          auto res = spi.query<std::tuple<bool>>("select cppgres_test($1)", name);
+          bool _result = std::get<0>(res.begin()[0]);
+          result = result && _result;
+          cppgres::report(NOTICE, "%s: %s", name.data(), _result ? "passed" : "failed");
+        } catch (std::exception &e) {
+          cppgres::report(NOTICE, "%s: exception: %s", name.data(), e.what());
+          result = result && false;
+        }
+        spi.rollback();
+      });
+
+  // Non-atomic tests
+  //   For now, we don't do any cleanup, but in the future
+  //   we should consider running them in separate databases
+  //   or something like that (TODO)
+
+  {
+    std::ranges::for_each(
+        test_case::test_cases | std::views::filter([](auto t) { return !t.second->is_atomic(); }),
+        [&](auto t) {
+          auto name = t.first;
+          cppgres::report(NOTICE, "%s", name.data());
+          try {
+            bool _result = (*t.second)();
+            result = result && _result;
+            cppgres::report(NOTICE, "%s: %s", name.data(), _result ? "passed" : "failed");
+          } catch (std::exception &e) {
+            cppgres::report(NOTICE, "%s: exception: %s", name.data(), e.what());
+            result = result && false;
+          }
+        });
   }
+
   if (!result) {
     cppgres::report(ERROR, "test(s) failed");
   }

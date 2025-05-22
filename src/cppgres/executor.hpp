@@ -209,6 +209,8 @@ struct spi_executor : public executor {
       return index >= other.index;
     }
 
+    operator const heap_tuple() const { return tuptable->vals[index]; }
+
   private:
   };
 
