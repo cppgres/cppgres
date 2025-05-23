@@ -143,75 +143,82 @@ $(document).ready(function(){initNavTree('syscache_8hpp_source.html',''); initRe
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="datum_8hpp.html">datum.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="guard_8hpp.html">guard.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="imports_8h.html">imports.h</a>&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span>cppgres {</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;heap_tuple.hpp&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="imports_8h.html">imports.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="xact_8hpp.html">xact.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="structcppgres_1_1syscache__traits.html">    9</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1syscache__traits.html">syscache_traits</a> {</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>};</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="structcppgres_1_1syscache__traits_3_01Form__pg__type_01_4.html">   12</a></span><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1syscache__traits.html">syscache_traits</a>&lt;Form_pg_type&gt; {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keyword">static</span> constexpr ::SysCacheIdentifier cache_id = TYPEOID;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>};</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="structcppgres_1_1syscache__traits_3_01Form__pg__proc_01_4.html">   16</a></span><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1syscache__traits.html">syscache_traits</a>&lt;Form_pg_proc&gt; {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keyword">static</span> constexpr ::SysCacheIdentifier cache_id = PROCOID;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>};</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="conceptcppgres_1_1syscached.html">   21</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptcppgres_1_1syscached.html">syscached</a> = <span class="keyword">requires</span>(T t) {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  { *t };</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  { syscache_traits&lt;T&gt;::cache_id } -&gt; std::same_as&lt;const ::SysCacheIdentifier &amp;&gt;;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>};</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="structcppgres_1_1syscache.html">   26</a></span><span class="keyword">template</span> &lt;<a class="code hl_concept" href="conceptcppgres_1_1syscached.html">syscached</a> T, <a class="code hl_concept" href="conceptcppgres_1_1convertible__into__datum.html">convertible_into_datum</a>... D&gt; <span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache</a> {</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache</a>(<span class="keyword">const</span> D &amp;...key) : <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache</a>(<a class="code hl_struct" href="structcppgres_1_1syscache__traits.html">syscache_traits&lt;T&gt;::cache_id</a>, key...) {}</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache</a>(::SysCacheIdentifier cache_id, <span class="keyword">const</span> D &amp;...key)</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      <span class="keyword">requires</span>(<span class="keyword">sizeof</span>...(key) &gt; 0 &amp;&amp; <span class="keyword">sizeof</span>...(key) &lt; 5)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      : cache_id(cache_id) {</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <a class="code hl_struct" href="structcppgres_1_1datum.html">datum</a> keys[4] = {<a class="code hl_function" href="structcppgres_1_1datum__conversion.html#aa4b972f2d5fc81c1eef91f479a2a8264">datum_conversion&lt;D&gt;::into_datum</a>(key)...};</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    tuple = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SearchSysCache}(cache_id, keys[0], keys[1], keys[2], keys[3]);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">if</span> (!HeapTupleIsValid(tuple)) {</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;invalid tuple&quot;</span>);</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    }</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  }</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <a class="code hl_struct" href="structcppgres_1_1syscache.html">~syscache</a>() { ReleaseSysCache(tuple); }</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">decltype</span>(*std::declval&lt;T&gt;()) &amp;<span class="keyword">operator</span>*() { <span class="keywordflow">return</span> *<span class="keyword">reinterpret_cast&lt;</span>T<span class="keyword">&gt;</span>(GETSTRUCT(tuple)); }</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keyword">decltype</span>(*std::declval&lt;T&gt;()) &amp;<span class="keyword">operator</span>*() <span class="keyword">const</span> {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">return</span> *<span class="keyword">reinterpret_cast&lt;</span>T<span class="keyword">&gt;</span>(GETSTRUCT(tuple));</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span>cppgres {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="structcppgres_1_1syscache__traits.html">   11</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1syscache__traits.html">syscache_traits</a> {};</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="structcppgres_1_1syscache__traits_3_01Form__pg__type_01_4.html">   13</a></span><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1syscache__traits.html">syscache_traits</a>&lt;Form_pg_type&gt; {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keyword">static</span> constexpr ::SysCacheIdentifier cache_id = TYPEOID;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>};</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="structcppgres_1_1syscache__traits_3_01Form__pg__proc_01_4.html">   17</a></span><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1syscache__traits.html">syscache_traits</a>&lt;Form_pg_proc&gt; {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keyword">static</span> constexpr ::SysCacheIdentifier cache_id = PROCOID;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>};</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="conceptcppgres_1_1syscached.html">   22</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptcppgres_1_1syscached.html">syscached</a> = <span class="keyword">requires</span>(T t) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  { *t };</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  { syscache_traits&lt;T&gt;::cache_id } -&gt; std::same_as&lt;const ::SysCacheIdentifier &amp;&gt;;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>};</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="structcppgres_1_1syscache.html">   27</a></span><span class="keyword">template</span> &lt;<a class="code hl_concept" href="conceptcppgres_1_1syscached.html">syscached</a> T, <a class="code hl_concept" href="conceptcppgres_1_1convertible__into__datum.html">convertible_into_datum</a>... D&gt; <span class="keyword">struct </span><a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache</a> {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache</a>(<span class="keyword">const</span> D &amp;...key) : <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache</a>(<a class="code hl_struct" href="structcppgres_1_1syscache__traits.html">syscache_traits&lt;T&gt;::cache_id</a>, key...) {}</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <a class="code hl_struct" href="structcppgres_1_1syscache.html">syscache</a>(::SysCacheIdentifier cache_id, <span class="keyword">const</span> D &amp;...key)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      <span class="keyword">requires</span>(<span class="keyword">sizeof</span>...(key) &gt; 0 &amp;&amp; <span class="keyword">sizeof</span>...(key) &lt; 5)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      : cache_id(cache_id), tuple([&amp;]() {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>          <a class="code hl_struct" href="structcppgres_1_1datum.html">datum</a> keys[4] = {<a class="code hl_function" href="structcppgres_1_1datum__conversion.html#aa4b972f2d5fc81c1eef91f479a2a8264">datum_conversion&lt;D&gt;::into_datum</a>(key)...};</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>          <span class="keywordflow">return</span> <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SearchSysCache}(cache_id, keys[0], keys[1], keys[2], keys[3]);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        }()) {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">if</span> (!HeapTupleIsValid(tuple)) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;invalid tuple&quot;</span>);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_struct" href="structcppgres_1_1syscache.html">~syscache</a>() { ReleaseSysCache(tuple); }</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">decltype</span>(*std::declval&lt;T&gt;()) &amp;<span class="keyword">operator</span>*() {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">return</span> *<span class="keyword">reinterpret_cast&lt;</span>T<span class="keyword">&gt;</span>(GETSTRUCT(tuple.operator HeapTuple()));</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  }</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="structcppgres_1_1syscache.html#a21fcf2326df6fd2be92b55a4665b5c5b">   53</a></span>  <span class="keyword">template</span> &lt;convertible_from_datum V&gt; std::optional&lt;V&gt; <a class="code hl_function" href="structcppgres_1_1syscache.html#a21fcf2326df6fd2be92b55a4665b5c5b">get_attribute</a>(<span class="keywordtype">int</span> attr) {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordtype">bool</span> isnull;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    Datum ret = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SysCacheGetAttr}(cache_id, tuple, attr, &amp;isnull);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">if</span> (isnull) {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <span class="keywordflow">return</span> std::nullopt;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    }</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">return</span> from_nullable_datum&lt;V&gt;(<a class="code hl_struct" href="structcppgres_1_1nullable__datum.html">nullable_datum</a>(ret), <a class="code hl_struct" href="structcppgres_1_1oid.html">oid</a>(<span class="comment">/*FIXME*/</span> InvalidOid));</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  HeapTuple tuple;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  ::SysCacheIdentifier cache_id;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>};</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keyword">decltype</span>(*std::declval&lt;T&gt;()) &amp;<span class="keyword">operator</span>*() <span class="keyword">const</span> {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">return</span> *<span class="keyword">reinterpret_cast&lt;</span>T<span class="keyword">&gt;</span>(GETSTRUCT(tuple.operator HeapTuple()));</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="structcppgres_1_1syscache.html#a21fcf2326df6fd2be92b55a4665b5c5b">   56</a></span>  <span class="keyword">template</span> &lt;convertible_from_datum V&gt; std::optional&lt;V&gt; <a class="code hl_function" href="structcppgres_1_1syscache.html#a21fcf2326df6fd2be92b55a4665b5c5b">get_attribute</a>(<span class="keywordtype">int</span> attr) {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordtype">bool</span> isnull;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    Datum ret = <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SysCacheGetAttr}(cache_id, tuple, attr, &amp;isnull);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">if</span> (isnull) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      <span class="keywordflow">return</span> std::nullopt;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">return</span> from_nullable_datum&lt;V&gt;(<a class="code hl_struct" href="structcppgres_1_1nullable__datum.html">nullable_datum</a>(ret), <a class="code hl_struct" href="structcppgres_1_1oid.html">oid</a>(<span class="comment">/*FIXME*/</span> InvalidOid));</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">operator</span> <span class="keyword">const</span> <a class="code hl_struct" href="structcppgres_1_1heap__tuple.html">heap_tuple</a> &amp;() <span class="keyword">const</span> { <span class="keywordflow">return</span> tuple; }</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>} <span class="comment">// namespace cppgres</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  ::SysCacheIdentifier cache_id;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  heap_tuple tuple;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>};</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>} <span class="comment">// namespace cppgres</span></div>
 <div class="ttc" id="aconceptcppgres_1_1convertible__into__datum_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__into__datum.html">cppgres::convertible_into_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:133</div></div>
-<div class="ttc" id="aconceptcppgres_1_1syscached_html"><div class="ttname"><a href="conceptcppgres_1_1syscached.html">cppgres::syscached</a></div><div class="ttdef"><b>Definition:</b> syscache.hpp:21</div></div>
+<div class="ttc" id="aconceptcppgres_1_1syscached_html"><div class="ttname"><a href="conceptcppgres_1_1syscached.html">cppgres::syscached</a></div><div class="ttdef"><b>Definition:</b> syscache.hpp:22</div></div>
 <div class="ttc" id="adatum_8hpp_html"><div class="ttname"><a href="datum_8hpp.html">datum.hpp</a></div></div>
 <div class="ttc" id="aguard_8hpp_html"><div class="ttname"><a href="guard_8hpp.html">guard.hpp</a></div></div>
 <div class="ttc" id="aimports_8h_html"><div class="ttname"><a href="imports_8h.html">imports.h</a></div></div>
 <div class="ttc" id="astructcppgres_1_1datum__conversion_html_aa4b972f2d5fc81c1eef91f479a2a8264"><div class="ttname"><a href="structcppgres_1_1datum__conversion.html#aa4b972f2d5fc81c1eef91f479a2a8264">cppgres::datum_conversion::into_datum</a></div><div class="ttdeci">static datum into_datum(const T &amp;d)=delete</div><div class="ttdoc">Convert datum into a type.</div></div>
 <div class="ttc" id="astructcppgres_1_1datum_html"><div class="ttname"><a href="structcppgres_1_1datum.html">cppgres::datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:35</div></div>
 <div class="ttc" id="astructcppgres_1_1ffi__guard_html"><div class="ttname"><a href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a></div><div class="ttdef"><b>Definition:</b> guard.hpp:19</div></div>
+<div class="ttc" id="astructcppgres_1_1heap__tuple_html"><div class="ttname"><a href="structcppgres_1_1heap__tuple.html">cppgres::heap_tuple</a></div><div class="ttdoc">Heap tuple convenience wrapper.</div><div class="ttdef"><b>Definition:</b> heap_tuple.hpp:11</div></div>
 <div class="ttc" id="astructcppgres_1_1nullable__datum_html"><div class="ttname"><a href="structcppgres_1_1nullable__datum.html">cppgres::nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:56</div></div>
 <div class="ttc" id="astructcppgres_1_1oid_html"><div class="ttname"><a href="structcppgres_1_1oid.html">cppgres::oid</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:17</div></div>
-<div class="ttc" id="astructcppgres_1_1syscache__traits_html"><div class="ttname"><a href="structcppgres_1_1syscache__traits.html">cppgres::syscache_traits</a></div><div class="ttdef"><b>Definition:</b> syscache.hpp:9</div></div>
-<div class="ttc" id="astructcppgres_1_1syscache_html"><div class="ttname"><a href="structcppgres_1_1syscache.html">cppgres::syscache</a></div><div class="ttdef"><b>Definition:</b> syscache.hpp:26</div></div>
-<div class="ttc" id="astructcppgres_1_1syscache_html_a21fcf2326df6fd2be92b55a4665b5c5b"><div class="ttname"><a href="structcppgres_1_1syscache.html#a21fcf2326df6fd2be92b55a4665b5c5b">cppgres::syscache::get_attribute</a></div><div class="ttdeci">std::optional&lt; V &gt; get_attribute(int attr)</div><div class="ttdoc">Get an attribute by index.</div><div class="ttdef"><b>Definition:</b> syscache.hpp:53</div></div>
+<div class="ttc" id="astructcppgres_1_1syscache__traits_html"><div class="ttname"><a href="structcppgres_1_1syscache__traits.html">cppgres::syscache_traits</a></div><div class="ttdef"><b>Definition:</b> syscache.hpp:11</div></div>
+<div class="ttc" id="astructcppgres_1_1syscache_html"><div class="ttname"><a href="structcppgres_1_1syscache.html">cppgres::syscache</a></div><div class="ttdef"><b>Definition:</b> syscache.hpp:27</div></div>
+<div class="ttc" id="astructcppgres_1_1syscache_html_a21fcf2326df6fd2be92b55a4665b5c5b"><div class="ttname"><a href="structcppgres_1_1syscache.html#a21fcf2326df6fd2be92b55a4665b5c5b">cppgres::syscache::get_attribute</a></div><div class="ttdeci">std::optional&lt; V &gt; get_attribute(int attr)</div><div class="ttdoc">Get an attribute by index.</div><div class="ttdef"><b>Definition:</b> syscache.hpp:56</div></div>
+<div class="ttc" id="axact_8hpp_html"><div class="ttname"><a href="xact_8hpp.html">xact.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

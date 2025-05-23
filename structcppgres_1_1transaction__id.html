@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cppgres: src/cppgres/xact.hpp File Reference</title>
+<title>Cppgres: cppgres::transaction_id Struct Reference</title>
 <!--BEGIN PROJECT_ICON-->
 <link rel="icon" href="$projecticon" type="image/x-icon" />
 <!--END PROJECT_ICON-->
@@ -110,7 +110,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('xact_8hpp.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structcppgres_1_1transaction__id.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,37 +137,61 @@ $(document).ready(function(){initNavTree('xact_8hpp.html',''); initResizable(); 
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
-  <div class="headertitle"><div class="title">xact.hpp File Reference</div></div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="structcppgres_1_1transaction__id-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">cppgres::transaction_id Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;stack&gt;</code><br />
-<code>#include &lt;access/xact.h&gt;</code><br />
-</div>
-<p><a href="xact_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1transaction__id.html">cppgres::transaction_id</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1internal__subtransaction.html">cppgres::internal_subtransaction</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1transaction.html">cppgres::transaction</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a09e4ffea8943b0c8424d7857f1a00a37"><td class="memItemLeft" align="right" valign="top"><a id="a09e4ffea8943b0c8424d7857f1a00a37" name="a09e4ffea8943b0c8424d7857f1a00a37"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>transaction_id</b> (::TransactionId id)</td></tr>
+<tr class="separator:a09e4ffea8943b0c8424d7857f1a00a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a172de949ff6f8bff3c3df74f7ee098f1"><td class="memItemLeft" align="right" valign="top"><a id="a172de949ff6f8bff3c3df74f7ee098f1" name="a172de949ff6f8bff3c3df74f7ee098f1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>transaction_id</b> (const <a class="el" href="structcppgres_1_1transaction__id.html">transaction_id</a> &amp;id)</td></tr>
+<tr class="separator:a172de949ff6f8bff3c3df74f7ee098f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dd457bafc0eae5785974690aea57aac"><td class="memItemLeft" align="right" valign="top"><a id="a2dd457bafc0eae5785974690aea57aac" name="a2dd457bafc0eae5785974690aea57aac"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_valid</b> () const</td></tr>
+<tr class="separator:a2dd457bafc0eae5785974690aea57aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0bd3e44d49ae9ec23a314f1812a1cdb"><td class="memItemLeft" align="right" valign="top"><a id="aa0bd3e44d49ae9ec23a314f1812a1cdb" name="aa0bd3e44d49ae9ec23a314f1812a1cdb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="structcppgres_1_1transaction__id.html">transaction_id</a> &amp;other) const</td></tr>
+<tr class="separator:aa0bd3e44d49ae9ec23a314f1812a1cdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cd16aefe6d4fca0593e71d7d727b43b"><td class="memItemLeft" align="right" valign="top"><a id="a9cd16aefe6d4fca0593e71d7d727b43b" name="a9cd16aefe6d4fca0593e71d7d727b43b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator&gt;</b> (const <a class="el" href="structcppgres_1_1transaction__id.html">transaction_id</a> &amp;other) const</td></tr>
+<tr class="separator:a9cd16aefe6d4fca0593e71d7d727b43b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ba1f092552f3d22365cdff777475349"><td class="memItemLeft" align="right" valign="top"><a id="a1ba1f092552f3d22365cdff777475349" name="a1ba1f092552f3d22365cdff777475349"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator&gt;=</b> (const <a class="el" href="structcppgres_1_1transaction__id.html">transaction_id</a> &amp;other) const</td></tr>
+<tr class="separator:a1ba1f092552f3d22365cdff777475349"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a077d491d4374b4320911b926aef8d242"><td class="memItemLeft" align="right" valign="top"><a id="a077d491d4374b4320911b926aef8d242" name="a077d491d4374b4320911b926aef8d242"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;</b> (const <a class="el" href="structcppgres_1_1transaction__id.html">transaction_id</a> &amp;other) const</td></tr>
+<tr class="separator:a077d491d4374b4320911b926aef8d242"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a724c787460bac8adec5e59f23cbf66c0"><td class="memItemLeft" align="right" valign="top"><a id="a724c787460bac8adec5e59f23cbf66c0" name="a724c787460bac8adec5e59f23cbf66c0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;=</b> (const <a class="el" href="structcppgres_1_1transaction__id.html">transaction_id</a> &amp;other) const</td></tr>
+<tr class="separator:a724c787460bac8adec5e59f23cbf66c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a609ca071f7c0bfee69bbf0bd73ccb4c3"><td class="memItemLeft" align="right" valign="top"><a id="a609ca071f7c0bfee69bbf0bd73ccb4c3" name="a609ca071f7c0bfee69bbf0bd73ccb4c3"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>did_abort</b> () const</td></tr>
+<tr class="separator:a609ca071f7c0bfee69bbf0bd73ccb4c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29769ddb5ddbee7cd7363374653be995"><td class="memItemLeft" align="right" valign="top"><a id="a29769ddb5ddbee7cd7363374653be995" name="a29769ddb5ddbee7cd7363374653be995"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>did_commit</b> () const</td></tr>
+<tr class="separator:a29769ddb5ddbee7cd7363374653be995"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a2b444c17c5774c4bee2216a57d8a70ba"><td class="memItemLeft" align="right" valign="top"><a id="a2b444c17c5774c4bee2216a57d8a70ba" name="a2b444c17c5774c4bee2216a57d8a70ba"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>cppgres::command_id</b> = ::CommandId</td></tr>
-<tr class="separator:a2b444c17c5774c4bee2216a57d8a70ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa35493c0703730ed7a7441c06cb14d1f"><td class="memItemLeft" align="right" valign="top"><a id="aa35493c0703730ed7a7441c06cb14d1f" name="aa35493c0703730ed7a7441c06cb14d1f"></a>
+static <a class="el" href="structcppgres_1_1transaction__id.html">transaction_id</a>&#160;</td><td class="memItemRight" valign="bottom"><b>current</b> (bool acquire=true)</td></tr>
+<tr class="separator:aa35493c0703730ed7a7441c06cb14d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/cppgres/<a class="el" href="xact_8hpp_source.html">xact.hpp</a></li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_af1bb9dae411b5b1b5161db3c243cdc2.html">cppgres</a></li><li class="navelem"><a class="el" href="xact_8hpp.html">xact.hpp</a></li>
+    <li class="navelem"><b>cppgres</b></li><li class="navelem"><a class="el" href="structcppgres_1_1transaction__id.html">transaction_id</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>

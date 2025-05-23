@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cppgres: src/cppgres/xact.hpp File Reference</title>
+<title>Cppgres: cppgres::heap_tuple Struct Reference</title>
 <!--BEGIN PROJECT_ICON-->
 <link rel="icon" href="$projecticon" type="image/x-icon" />
 <!--END PROJECT_ICON-->
@@ -110,7 +110,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('xact_8hpp.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structcppgres_1_1heap__tuple.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,37 +137,52 @@ $(document).ready(function(){initNavTree('xact_8hpp.html',''); initResizable(); 
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
-  <div class="headertitle"><div class="title">xact.hpp File Reference</div></div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="structcppgres_1_1heap__tuple-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">cppgres::heap_tuple Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;stack&gt;</code><br />
-<code>#include &lt;access/xact.h&gt;</code><br />
-</div>
-<p><a href="xact_8hpp_source.html">Go to the source code of this file.</a></p>
+
+<p>Heap tuple convenience wrapper.  
+ <a href="structcppgres_1_1heap__tuple.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="heap__tuple_8hpp_source.html">heap_tuple.hpp</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1transaction__id.html">cppgres::transaction_id</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1internal__subtransaction.html">cppgres::internal_subtransaction</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1transaction.html">cppgres::transaction</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a2b444c17c5774c4bee2216a57d8a70ba"><td class="memItemLeft" align="right" valign="top"><a id="a2b444c17c5774c4bee2216a57d8a70ba" name="a2b444c17c5774c4bee2216a57d8a70ba"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>cppgres::command_id</b> = ::CommandId</td></tr>
-<tr class="separator:a2b444c17c5774c4bee2216a57d8a70ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a416fb6a0e499c8758c96fd50fee7438f"><td class="memItemLeft" align="right" valign="top"><a id="a416fb6a0e499c8758c96fd50fee7438f" name="a416fb6a0e499c8758c96fd50fee7438f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>heap_tuple</b> (::HeapTuple tuple)</td></tr>
+<tr class="separator:a416fb6a0e499c8758c96fd50fee7438f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa515f02834e86677f03749b999e9551e"><td class="memItemLeft" align="right" valign="top"><a id="aa515f02834e86677f03749b999e9551e" name="aa515f02834e86677f03749b999e9551e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator::HeapTuple</b> () const</td></tr>
+<tr class="separator:aa515f02834e86677f03749b999e9551e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3573324fe97d596da50ede27ee5b6f18"><td class="memItemLeft" align="right" valign="top"><a id="a3573324fe97d596da50ede27ee5b6f18" name="a3573324fe97d596da50ede27ee5b6f18"></a>
+<a class="el" href="structcppgres_1_1transaction__id.html">transaction_id</a>&#160;</td><td class="memItemRight" valign="bottom"><b>xmin</b> (bool raw=false) const</td></tr>
+<tr class="separator:a3573324fe97d596da50ede27ee5b6f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac400797ce8d3ed66454cb0ff0baae731"><td class="memItemLeft" align="right" valign="top"><a id="ac400797ce8d3ed66454cb0ff0baae731" name="ac400797ce8d3ed66454cb0ff0baae731"></a>
+<a class="el" href="structcppgres_1_1transaction__id.html">transaction_id</a>&#160;</td><td class="memItemRight" valign="bottom"><b>xmax</b> () const</td></tr>
+<tr class="separator:ac400797ce8d3ed66454cb0ff0baae731"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04d0ff73a6b6be81fdc92444092a21e4"><td class="memItemLeft" align="right" valign="top"><a id="a04d0ff73a6b6be81fdc92444092a21e4" name="a04d0ff73a6b6be81fdc92444092a21e4"></a>
+<a class="el" href="structcppgres_1_1transaction__id.html">transaction_id</a>&#160;</td><td class="memItemRight" valign="bottom"><b>update_xid</b> () const</td></tr>
+<tr class="separator:a04d0ff73a6b6be81fdc92444092a21e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa066271b297a7da5e73911c890cc10f5"><td class="memItemLeft" align="right" valign="top"><a id="aa066271b297a7da5e73911c890cc10f5" name="aa066271b297a7da5e73911c890cc10f5"></a>
+command_id&#160;</td><td class="memItemRight" valign="bottom"><b>cmin</b> () const</td></tr>
+<tr class="separator:aa066271b297a7da5e73911c890cc10f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0337e0f3ef7664376795e62c2854cf5c"><td class="memItemLeft" align="right" valign="top"><a id="a0337e0f3ef7664376795e62c2854cf5c" name="a0337e0f3ef7664376795e62c2854cf5c"></a>
+command_id&#160;</td><td class="memItemRight" valign="bottom"><b>cmax</b> () const</td></tr>
+<tr class="separator:a0337e0f3ef7664376795e62c2854cf5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Heap tuple convenience wrapper. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/cppgres/<a class="el" href="heap__tuple_8hpp_source.html">heap_tuple.hpp</a></li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_af1bb9dae411b5b1b5161db3c243cdc2.html">cppgres</a></li><li class="navelem"><a class="el" href="xact_8hpp.html">xact.hpp</a></li>
+    <li class="navelem"><b>cppgres</b></li><li class="navelem"><a class="el" href="structcppgres_1_1heap__tuple.html">heap_tuple</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>

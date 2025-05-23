@@ -65,6 +65,7 @@ var hierarchy =
     [ "cppgres::utils::function_traits::function_traits< R(Args...)>", "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07Args_8_8_8_08_4.html", null ],
     [ "cppgres::utils::function_traits::function_traits< R(C::*)(Args...) const >", "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07C_1_1_5_08_07Args_8_8_8_08_01const_01_4.html", null ],
     [ "cppgres::background_worker::handle", "structcppgres_1_1background__worker_1_1handle.html", null ],
+    [ "cppgres::heap_tuple", "structcppgres_1_1heap__tuple.html", null ],
     [ "cppgres::internal_subtransaction", "structcppgres_1_1internal__subtransaction.html", null ],
     [ "cppgres::utils::function_traits::invoke_result_from_tuple< Func, Tuple >", "structcppgres_1_1utils_1_1function__traits_1_1invoke__result__from__tuple.html", null ],
     [ "cppgres::utils::function_traits::invoke_result_from_tuple< Func, std::tuple< Args... > >", "structcppgres_1_1utils_1_1function__traits_1_1invoke__result__from__tuple_3_01Func_00_01std_1_1tuple_3_01Args_8_8_8_01_4_01_4.html", null ],
@@ -92,6 +93,7 @@ var hierarchy =
     [ "cppgres::syscache_traits< Form_pg_proc >", "structcppgres_1_1syscache__traits_3_01Form__pg__proc_01_4.html", null ],
     [ "cppgres::syscache_traits< Form_pg_type >", "structcppgres_1_1syscache__traits_3_01Form__pg__type_01_4.html", null ],
     [ "cppgres::transaction", "structcppgres_1_1transaction.html", null ],
+    [ "cppgres::transaction_id", "structcppgres_1_1transaction__id.html", null ],
     [ "std::true_type", null, [
       [ "cppgres::utils::is_std_tuple< std::tuple< Ts... > >", "structcppgres_1_1utils_1_1is__std__tuple_3_01std_1_1tuple_3_01Ts_8_8_8_01_4_01_4.html", null ]
     ] ],

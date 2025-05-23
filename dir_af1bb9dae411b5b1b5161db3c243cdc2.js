@@ -10,6 +10,7 @@ var dir_af1bb9dae411b5b1b5161db3c243cdc2 =
     [ "executor.hpp", "executor_8hpp.html", "executor_8hpp" ],
     [ "function.hpp", "function_8hpp.html", "function_8hpp" ],
     [ "guard.hpp", "guard_8hpp.html", "guard_8hpp" ],
+    [ "heap_tuple.hpp", "heap__tuple_8hpp_source.html", null ],
     [ "imports.h", "imports_8h.html", null ],
     [ "memory.hpp", "memory_8hpp.html", "memory_8hpp" ],
     [ "name.hpp", "name_8hpp_source.html", null ],
