@@ -1,7 +1,10 @@
 var types_8hpp =
 [
+    [ "cppgres::type_traits< void * >", "structcppgres_1_1type__traits_3_01void_01_5_01_4.html", null ],
     [ "cppgres::type_traits< void >", "structcppgres_1_1type__traits_3_01void_01_4.html", null ],
     [ "cppgres::type_traits< oid >", "structcppgres_1_1type__traits_3_01oid_01_4.html", null ],
+    [ "cppgres::type_traits< nullable_datum >", "structcppgres_1_1type__traits_3_01nullable__datum_01_4.html", null ],
+    [ "cppgres::type_traits< datum >", "structcppgres_1_1type__traits_3_01datum_01_4.html", null ],
     [ "cppgres::type_traits< S, std::enable_if_t< utils::is_std_tuple< S >::value > >", "structcppgres_1_1type__traits_3_01S_00_01std_1_1enable__if__t_3_01utils_1_1is__std__tuple_3_01S_01_4_1_1value_01_4_01_4.html", null ],
     [ "cppgres::type_traits< bool >", "structcppgres_1_1type__traits_3_01bool_01_4.html", null ],
     [ "cppgres::type_traits< int64_t >", "structcppgres_1_1type__traits_3_01int64__t_01_4.html", null ],
@@ -21,6 +24,7 @@ var types_8hpp =
     [ "cppgres::type_traits< expanded_varlena< F > >", "structcppgres_1_1type__traits_3_01expanded__varlena_3_01F_01_4_01_4.html", null ],
     [ "cppgres::datum_conversion< datum >", "structcppgres_1_1datum__conversion_3_01datum_01_4.html", null ],
     [ "cppgres::datum_conversion< nullable_datum >", "structcppgres_1_1datum__conversion_3_01nullable__datum_01_4.html", null ],
+    [ "cppgres::datum_conversion< void * >", "structcppgres_1_1datum__conversion_3_01void_01_5_01_4.html", null ],
     [ "cppgres::datum_conversion< oid >", "structcppgres_1_1datum__conversion_3_01oid_01_4.html", null ],
     [ "cppgres::datum_conversion< size_t >", "structcppgres_1_1datum__conversion_3_01size__t_01_4.html", null ],
     [ "cppgres::datum_conversion< int64_t >", "structcppgres_1_1datum__conversion_3_01int64__t_01_4.html", null ],
@@ -37,5 +41,6 @@ var types_8hpp =
     [ "cppgres::datum_conversion< const char * >", "structcppgres_1_1datum__conversion_3_01const_01char_01_5_01_4.html", null ],
     [ "cppgres::datum_conversion< char[N]>", "structcppgres_1_1datum__conversion_3_01char_0fN_0e_4.html", null ],
     [ "cppgres::datum_conversion< T, std::enable_if_t< expanded_varlena_type< T > > >", "structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01expanded__varlena__type_3_01T_01_4_01_4_01_4.html", null ],
+    [ "cppgres::datum_conversion< T, std::enable_if_t< utils::is_optional< T > > >", "structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01utils_1_1is__optional_3_01T_01_4_01_4_01_4.html", null ],
     [ "cppgres::named_type", "structcppgres_1_1named__type.html", "structcppgres_1_1named__type" ]
 ];

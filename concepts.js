@@ -9,6 +9,10 @@ var concepts =
         [ "is_optional", "conceptcppgres_1_1utils_1_1is__optional.html", null ],
         [ "std_tuple", "conceptcppgres_1_1utils_1_1std__tuple.html", null ]
       ] ],
+      [ "aggregate", "conceptcppgres_1_1aggregate.html", null ],
+      [ "finalizable_aggregate", "conceptcppgres_1_1finalizable__aggregate.html", null ],
+      [ "serializable_aggregate", "conceptcppgres_1_1serializable__aggregate.html", null ],
+      [ "combinable_aggregate", "conceptcppgres_1_1combinable__aggregate.html", null ],
       [ "convertible_into_datum", "conceptcppgres_1_1convertible__into__datum.html", null ],
       [ "convertible_from_datum", "conceptcppgres_1_1convertible__from__datum.html", null ],
       [ "convertible_from_nullable_datum", "conceptcppgres_1_1convertible__from__nullable__datum.html", null ],

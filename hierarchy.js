@@ -20,26 +20,68 @@ var hierarchy =
     [ "cppgres::current_postgres_function", "structcppgres_1_1current__postgres__function.html", null ],
     [ "cppgres::datum", "structcppgres_1_1datum.html", null ],
     [ "cppgres::datum_conversion< T, typename >", "structcppgres_1_1datum__conversion.html", null ],
-    [ "cppgres::datum_conversion< bool >", "structcppgres_1_1datum__conversion_3_01bool_01_4.html", null ],
-    [ "cppgres::datum_conversion< byte_array >", "structcppgres_1_1datum__conversion_3_01byte__array_01_4.html", null ],
-    [ "cppgres::datum_conversion< bytea >", "structcppgres_1_1datum__conversion_3_01bytea_01_4.html", null ],
-    [ "cppgres::datum_conversion< char[N]>", "structcppgres_1_1datum__conversion_3_01char_0fN_0e_4.html", null ],
-    [ "cppgres::datum_conversion< const char * >", "structcppgres_1_1datum__conversion_3_01const_01char_01_5_01_4.html", null ],
-    [ "cppgres::datum_conversion< datum >", "structcppgres_1_1datum__conversion_3_01datum_01_4.html", null ],
-    [ "cppgres::datum_conversion< double >", "structcppgres_1_1datum__conversion_3_01double_01_4.html", null ],
-    [ "cppgres::datum_conversion< float >", "structcppgres_1_1datum__conversion_3_01float_01_4.html", null ],
-    [ "cppgres::datum_conversion< int16_t >", "structcppgres_1_1datum__conversion_3_01int16__t_01_4.html", null ],
-    [ "cppgres::datum_conversion< int32_t >", "structcppgres_1_1datum__conversion_3_01int32__t_01_4.html", null ],
-    [ "cppgres::datum_conversion< int64_t >", "structcppgres_1_1datum__conversion_3_01int64__t_01_4.html", null ],
-    [ "cppgres::datum_conversion< nullable_datum >", "structcppgres_1_1datum__conversion_3_01nullable__datum_01_4.html", null ],
-    [ "cppgres::datum_conversion< oid >", "structcppgres_1_1datum__conversion_3_01oid_01_4.html", null ],
-    [ "cppgres::datum_conversion< record >", "structcppgres_1_1datum__conversion_3_01record_01_4.html", null ],
-    [ "cppgres::datum_conversion< size_t >", "structcppgres_1_1datum__conversion_3_01size__t_01_4.html", null ],
-    [ "cppgres::datum_conversion< std::string >", "structcppgres_1_1datum__conversion_3_01std_1_1string_01_4.html", null ],
-    [ "cppgres::datum_conversion< std::string_view >", "structcppgres_1_1datum__conversion_3_01std_1_1string__view_01_4.html", null ],
-    [ "cppgres::datum_conversion< T, std::enable_if_t< expanded_varlena_type< T > > >", "structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01expanded__varlena__type_3_01T_01_4_01_4_01_4.html", null ],
-    [ "cppgres::datum_conversion< text >", "structcppgres_1_1datum__conversion_3_01text_01_4.html", null ],
+    [ "cppgres::datum_conversion< T, std::enable_if_t< utils::is_optional< T > > >", "structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01utils_1_1is__optional_3_01T_01_4_01_4_01_4.html", null ],
     [ "cppgres::datum_conversion< value >", "structcppgres_1_1datum__conversion_3_01value_01_4.html", null ],
+    [ "cppgres::default_datum_conversion< T, R >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< T, std::enable_if_t< expanded_varlena_type< T > > >", "structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01expanded__varlena__type_3_01T_01_4_01_4_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< bool >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< bool >", "structcppgres_1_1datum__conversion_3_01bool_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< byte_array >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< byte_array >", "structcppgres_1_1datum__conversion_3_01byte__array_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< bytea >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< bytea >", "structcppgres_1_1datum__conversion_3_01bytea_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< char[N], const char * >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< char[N]>", "structcppgres_1_1datum__conversion_3_01char_0fN_0e_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< const char * >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< const char * >", "structcppgres_1_1datum__conversion_3_01const_01char_01_5_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< datum >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< datum >", "structcppgres_1_1datum__conversion_3_01datum_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< double >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< double >", "structcppgres_1_1datum__conversion_3_01double_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< float >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< float >", "structcppgres_1_1datum__conversion_3_01float_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< int16_t >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< int16_t >", "structcppgres_1_1datum__conversion_3_01int16__t_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< int32_t >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< int32_t >", "structcppgres_1_1datum__conversion_3_01int32__t_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< int64_t >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< int64_t >", "structcppgres_1_1datum__conversion_3_01int64__t_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< nullable_datum >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< nullable_datum >", "structcppgres_1_1datum__conversion_3_01nullable__datum_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< oid >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< oid >", "structcppgres_1_1datum__conversion_3_01oid_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< record >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< record >", "structcppgres_1_1datum__conversion_3_01record_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< size_t >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< size_t >", "structcppgres_1_1datum__conversion_3_01size__t_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< std::string >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< std::string >", "structcppgres_1_1datum__conversion_3_01std_1_1string_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< std::string_view >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< std::string_view >", "structcppgres_1_1datum__conversion_3_01std_1_1string__view_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< text >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< text >", "structcppgres_1_1datum__conversion_3_01text_01_4.html", null ]
+    ] ],
+    [ "cppgres::default_datum_conversion< void * >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< void * >", "structcppgres_1_1datum__conversion_3_01void_01_5_01_4.html", null ]
+    ] ],
     [ "std::exception", null, [
       [ "cppgres::background_worker::postmaster_died", "structcppgres_1_1background__worker_1_1postmaster__died.html", null ],
       [ "cppgres::background_worker::worker_not_yet_started", "structcppgres_1_1background__worker_1_1worker__not__yet__started.html", null ],
@@ -119,6 +161,7 @@ var hierarchy =
     [ "cppgres::type_traits< char * >", "structcppgres_1_1type__traits_3_01char_01_5_01_4.html", null ],
     [ "cppgres::type_traits< const char * >", "structcppgres_1_1type__traits_3_01const_01char_01_5_01_4.html", null ],
     [ "cppgres::type_traits< const char[N]>", "structcppgres_1_1type__traits_3_01const_01char_0fN_0e_4.html", null ],
+    [ "cppgres::type_traits< datum >", "structcppgres_1_1type__traits_3_01datum_01_4.html", null ],
     [ "cppgres::type_traits< double >", "structcppgres_1_1type__traits_3_01double_01_4.html", null ],
     [ "cppgres::type_traits< expanded_varlena< F > >", "structcppgres_1_1type__traits_3_01expanded__varlena_3_01F_01_4_01_4.html", null ],
     [ "cppgres::type_traits< float >", "structcppgres_1_1type__traits_3_01float_01_4.html", null ],
@@ -127,6 +170,7 @@ var hierarchy =
     [ "cppgres::type_traits< int32_t >", "structcppgres_1_1type__traits_3_01int32__t_01_4.html", null ],
     [ "cppgres::type_traits< int64_t >", "structcppgres_1_1type__traits_3_01int64__t_01_4.html", null ],
     [ "cppgres::type_traits< int8_t >", "structcppgres_1_1type__traits_3_01int8__t_01_4.html", null ],
+    [ "cppgres::type_traits< nullable_datum >", "structcppgres_1_1type__traits_3_01nullable__datum_01_4.html", null ],
     [ "cppgres::type_traits< oid >", "structcppgres_1_1type__traits_3_01oid_01_4.html", null ],
     [ "cppgres::type_traits< record >", "structcppgres_1_1type__traits_3_01record_01_4.html", null ],
     [ "cppgres::type_traits< S, std::enable_if_t< utils::is_std_tuple< S >::value > >", "structcppgres_1_1type__traits_3_01S_00_01std_1_1enable__if__t_3_01utils_1_1is__std__tuple_3_01S_01_4_1_1value_01_4_01_4.html", null ],
@@ -136,6 +180,7 @@ var hierarchy =
     [ "cppgres::type_traits< T >", "structcppgres_1_1type__traits_3_01T_01_4.html", null ],
     [ "cppgres::type_traits< text >", "structcppgres_1_1type__traits_3_01text_01_4.html", null ],
     [ "cppgres::type_traits< value >", "structcppgres_1_1type__traits_3_01value_01_4.html", null ],
+    [ "cppgres::type_traits< void * >", "structcppgres_1_1type__traits_3_01void_01_5_01_4.html", null ],
     [ "cppgres::type_traits< void >", "structcppgres_1_1type__traits_3_01void_01_4.html", null ],
     [ "cppgres::unsupported_type< T >", "structcppgres_1_1unsupported__type.html", null ],
     [ "cppgres::value", "structcppgres_1_1value.html", null ],

@@ -165,6 +165,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion.html">cppgres::datum_conversion&lt; T, typename &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A trait to convert from and into a <a class="el" href="structcppgres_1_1datum.html">cppgres::datum</a>.  <a href="structcppgres_1_1datum__conversion.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1default__datum__conversion.html">cppgres::default_datum_conversion&lt; T, R &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1unsupported__type.html">cppgres::unsupported_type&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1all__from__nullable__datum.html">cppgres::all_from_nullable_datum&lt; T &gt;</a></td></tr>
@@ -183,11 +185,11 @@ Concepts</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9439fdedf0246e41a47bcb1afa2a33a2"><td class="memTemplParams" colspan="2"><a id="a9439fdedf0246e41a47bcb1afa2a33a2" name="a9439fdedf0246e41a47bcb1afa2a33a2"></a>
+<tr class="memitem:a038a4b0b33dac0dc50e8e0e9507eb1d6"><td class="memTemplParams" colspan="2"><a id="a038a4b0b33dac0dc50e8e0e9507eb1d6" name="a038a4b0b33dac0dc50e8e0e9507eb1d6"></a>
 template&lt;typename T &gt; <br />
-requires convertible_from_datum&lt;T&gt; || (utils::is_optional&lt;T&gt; &amp;&amp; convertible_from_datum&lt;utils::remove_optional_t&lt;T&gt;&gt;)</td></tr>
-<tr class="memitem:a9439fdedf0246e41a47bcb1afa2a33a2"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::from_nullable_datum</b> (const nullable_datum &amp;d, const oid oid, std::optional&lt; memory_context &gt; context=std::nullopt)</td></tr>
-<tr class="separator:a9439fdedf0246e41a47bcb1afa2a33a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+requires convertible_from_datum&lt;std::remove_cv_t&lt;T&gt;&gt;</td></tr>
+<tr class="memitem:a038a4b0b33dac0dc50e8e0e9507eb1d6"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::from_nullable_datum</b> (const nullable_datum &amp;d, const oid oid, std::optional&lt; memory_context &gt; context=std::nullopt)</td></tr>
+<tr class="separator:a038a4b0b33dac0dc50e8e0e9507eb1d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1db0723cc9ac174ea6e54d93a8144165"><td class="memTemplParams" colspan="2"><a id="a1db0723cc9ac174ea6e54d93a8144165" name="a1db0723cc9ac174ea6e54d93a8144165"></a>
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a1db0723cc9ac174ea6e54d93a8144165"><td class="memTemplItemLeft" align="right" valign="top">nullable_datum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::into_nullable_datum</b> (const std::optional&lt; T &gt; &amp;v)</td></tr>

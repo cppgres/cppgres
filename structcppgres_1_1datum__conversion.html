@@ -150,6 +150,9 @@ $(document).ready(function(){initNavTree('structcppgres_1_1datum__conversion.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a3ee29d3c7be93d32b7b2129a7ca4dae6"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion.html#a3ee29d3c7be93d32b7b2129a7ca4dae6">from_nullable_datum</a> (const <a class="el" href="structcppgres_1_1nullable__datum.html">nullable_datum</a> &amp;d, const <a class="el" href="structcppgres_1_1oid.html">oid</a> <a class="el" href="structcppgres_1_1oid.html">oid</a>, std::optional&lt; <a class="el" href="structcppgres_1_1memory__context.html">memory_context</a> &gt; context=std::nullopt)=delete</td></tr>
+<tr class="memdesc:a3ee29d3c7be93d32b7b2129a7ca4dae6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from a nullable datum.  <br /></td></tr>
+<tr class="separator:a3ee29d3c7be93d32b7b2129a7ca4dae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31161ce8dfdaf241f1b33ea8382c1a2e"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion.html#a31161ce8dfdaf241f1b33ea8382c1a2e">from_datum</a> (const <a class="el" href="structcppgres_1_1datum.html">datum</a> &amp;, const <a class="el" href="structcppgres_1_1oid.html">oid</a>, std::optional&lt; <a class="el" href="structcppgres_1_1memory__context.html">memory_context</a> &gt; context=std::nullopt)=delete</td></tr>
 <tr class="memdesc:a31161ce8dfdaf241f1b33ea8382c1a2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from a datum.  <br /></td></tr>
 <tr class="separator:a31161ce8dfdaf241f1b33ea8382c1a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,6 +213,53 @@ template&lt;typename T , typename  = void&gt; </div>
 </div><div class="memdoc">
 
 <p>Convert from a datum. </p>
+<p>Gets an optional <a class="el" href="structcppgres_1_1memory__context.html">cppgres::memory_context</a> when available to be able to determine the source of the (pointer) datum. </p>
+
+</div>
+</div>
+<a id="a3ee29d3c7be93d32b7b2129a7ca4dae6" name="a3ee29d3c7be93d32b7b2129a7ca4dae6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ee29d3c7be93d32b7b2129a7ca4dae6">&#9670;&#160;</a></span>from_nullable_datum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename  = void&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static T <a class="el" href="structcppgres_1_1datum__conversion.html">cppgres::datum_conversion</a>&lt; T, typename &gt;::from_nullable_datum </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structcppgres_1_1nullable__datum.html">nullable_datum</a> &amp;&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structcppgres_1_1oid.html">oid</a>&#160;</td>
+          <td class="paramname"><em>oid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::optional&lt; <a class="el" href="structcppgres_1_1memory__context.html">memory_context</a> &gt;&#160;</td>
+          <td class="paramname"><em>context</em> = <code>std::nullopt</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert from a nullable datum. </p>
 <p>Gets an optional <a class="el" href="structcppgres_1_1memory__context.html">cppgres::memory_context</a> when available to be able to determine the source of the (pointer) datum. </p>
 
 </div>
