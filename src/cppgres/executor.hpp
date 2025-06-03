@@ -112,7 +112,7 @@ struct spi_executor : public executor {
 
     constexpr result_iterator &operator--() noexcept {
       index--;
-      return this;
+      return *this;
     }
     constexpr result_iterator operator--(int) noexcept {
       index--;
