@@ -553,4 +553,94 @@ add_test(spi_plan_string_length, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_result_iterator, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+
+           auto res = spi.query<std::tuple<int64_t, std::string>>(
+               "select i, 'row_' || i::text from generate_series(1,10) i");
+
+           auto it_begin = res.begin();
+           auto it_end = res.end();
+
+           result = result && _assert(it_begin != it_end);
+           result = result && _assert(std::get<0>(*it_begin) == 1);
+           result = result && _assert(std::get<1>(*it_begin) == "row_1");
+
+           auto it1 = it_begin;
+           ++it1;
+           result = result && _assert(std::get<0>(*it1) == 2);
+           result = result && _assert(std::get<1>(*it1) == "row_2");
+
+           auto it2 = it_begin;
+           auto it2_copy = it2++;
+           result = result && _assert(std::get<0>(*it2_copy) == 1);
+           result = result && _assert(std::get<0>(*it2) == 2);
+
+           for (std::size_t i = 0; i < 10; i++) {
+             result = result && _assert(std::get<0>(it_begin[i]) == i + 1);
+             result =
+                 result && _assert(std::get<1>(it_begin[i]) == "row_" + std::to_cstring(i + 1));
+           }
+
+           // Iterator arithmetic tests
+           auto it3 = it_begin + 3;
+           result = result && _assert(std::get<0>(*it3) == 4);
+
+           auto it4 = it3 - 2;
+           result = result && _assert(std::get<0>(*it4) == 2);
+
+           auto it5 = it_begin;
+           it5 += 5;
+           result = result && _assert(std::get<0>(*it5) == 6);
+
+           it5 -= 3;
+           result = result && _assert(std::get<0>(*it5) == 3);
+
+           auto it6 = it_begin + 7;
+           auto it7 = it_begin + 3;
+           result = result && _assert((it6 - it7) == 4);
+           result = result && _assert((it7 - it6) == -4);
+
+           result = result && _assert(it_begin < it1);
+           result = result && _assert(it1 > it_begin);
+           result = result && _assert(it_begin <= it1);
+           result = result && _assert(it1 >= it_begin);
+           result = result && _assert(it_begin == it_begin);
+           result = result && _assert(it_begin != it1);
+
+           // Vector results
+           {
+             auto res_vector =
+                 spi.query<std::vector<int64_t>>("select i, i*2 from generate_series(1,3) i");
+             auto it_vector = res_vector.begin();
+
+             result = result && _assert((*it_vector)[0] == 1);
+             result = result && _assert((*it_vector)[1] == 2);
+             result = result && _assert((it_vector[1])[0] == 2);
+             result = result && _assert((it_vector[1])[1] == 4);
+           }
+
+           // Test caching behavior
+           {
+             auto res_cache =
+                 spi.query<std::tuple<int64_t>>("select i from generate_series(1,3) i");
+             auto it_cache = res_cache.begin();
+
+             auto &first_access = it_cache[1];
+             auto &second_access = it_cache[1];
+             result = result && _assert(&first_access == &second_access);
+             result = result && _assert(std::get<0>(first_access) == 2);
+           }
+
+           result = result && _assert(it_begin == 0);
+           result = result && _assert(it_begin != res.count());
+
+           auto it_at_end = it_begin + res.count();
+           result = result && _assert(it_at_end == res.count());
+           result = result && _assert(it_at_end != 0);
+
+           return result;
+         }));
+
 } // namespace tests
