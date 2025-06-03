@@ -579,8 +579,7 @@ add_test(spi_result_iterator, ([](test_case &) {
 
            for (std::size_t i = 0; i < 10; i++) {
              result = result && _assert(std::get<0>(it_begin[i]) == i + 1);
-             result =
-                 result && _assert(std::get<1>(it_begin[i]) == "row_" + std::to_cstring(i + 1));
+             result = result && _assert(std::get<1>(it_begin[i]) == "row_" + std::to_string(i + 1));
            }
 
            // Iterator arithmetic tests
