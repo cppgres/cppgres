@@ -44,4 +44,44 @@ add_test(backend_atexit, [](test_case &) {
   return result;
 });
 
+add_test(backend_name_registry, [](test_case &) {
+  bool result = true;
+  struct test {
+    int v{2};
+  };
+  cppgres::backend_name_registry registry;
+  result = result && _assert(!registry.find<test>("test").has_value());
+  result = result && _assert(registry.find_or_create<test>("test").v == 2);
+
+  registry.clear();
+
+  return result;
+});
+
+add_test(backend_name_registry_initialization_ordering, [](test_case &) {
+  bool result = true;
+  struct test {
+    int v{2};
+  };
+  cppgres::backend_name_registry registry;
+  bool cb_initialized = false;
+  registry.on_initialized<test>("test", [&cb_initialized](test &t) {
+    cb_initialized = true;
+    t.v = 3;
+  });
+  result = result && _assert(!cb_initialized);
+  result = result && _assert(registry.find_or_create<test>("test").v == 3);
+  result = result && _assert(cb_initialized);
+
+  // Immediate call
+  cb_initialized = false;
+  result = result && _assert(!cb_initialized);
+  registry.on_initialized<test>("test", [&cb_initialized](test &t) { cb_initialized = true; });
+  result = result && _assert(cb_initialized);
+
+  registry.clear();
+
+  return result;
+});
+
 } // namespace tests
