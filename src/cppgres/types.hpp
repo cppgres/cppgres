@@ -232,18 +232,18 @@ template <> struct datum_conversion<bool> : default_datum_conversion<bool> {
 
 template <> struct datum_conversion<double> : default_datum_conversion<double> {
   static double from_datum(const datum &d, oid, std::optional<memory_context>) {
-    return static_cast<double>(d.operator const ::Datum &());
+    return DatumGetFloat8(d.operator const ::Datum &());
   }
 
-  static datum into_datum(const double &t) { return datum(static_cast<::Datum>(t)); }
+  static datum into_datum(const double &t) { return datum(Float8GetDatum(t)); }
 };
 
 template <> struct datum_conversion<float> : default_datum_conversion<float> {
   static float from_datum(const datum &d, oid, std::optional<memory_context>) {
-    return static_cast<float>(d.operator const ::Datum &());
+    return DatumGetFloat4(d.operator const ::Datum &());
   }
 
-  static datum into_datum(const float &t) { return datum(static_cast<::Datum>(t)); }
+  static datum into_datum(const float &t) { return datum(Float4GetDatum(t)); }
 };
 
 // Specializations for text and bytea:
