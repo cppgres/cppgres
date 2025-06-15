@@ -257,5 +257,44 @@ add_test(converting_null_nullable_datum_into_datum, ([](test_case &) {
                result && _assert(cppgres::into_nullable_datum(cppgres::nullable_datum()).is_null());
            return result;
          }));
+} // namespace tests
+
+struct myopt {
+  bool present;
+  int value;
+};
+
+namespace cppgres {
+template <> struct datum_conversion<myopt> {
+
+  static myopt from_nullable_datum(const nullable_datum &d, const oid oid,
+                                   std::optional<memory_context> context = std::nullopt) {
+    if (d.is_null()) {
+      return {false};
+    }
+    return from_datum(d, oid, context);
+  }
+
+  static myopt from_datum(const datum &d, oid oid, std::optional<memory_context> context) {
+    return {true, cppgres::from_nullable_datum<int>(nullable_datum(d), oid, context)};
+  }
+
+  static datum into_datum(const myopt &t) { return t.present ? datum(0) : datum(t.value); }
+
+  static nullable_datum into_nullable_datum(const myopt &t) {
+    std::cout << t.present << std::endl;
+    return !t.present ? nullable_datum() : nullable_datum(t.value);
+  }
+};
+} // namespace cppgres
+
+namespace tests {
+
+add_test(converting_into_nullable_datum, ([](test_case &) {
+           bool result = true;
+           result = result && _assert(cppgres::into_nullable_datum(myopt{false}).is_null());
+           result = result && _assert(!cppgres::into_nullable_datum(myopt{true}).is_null());
+           return result;
+         }));
 
 } // namespace tests

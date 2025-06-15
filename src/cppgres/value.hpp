@@ -30,6 +30,8 @@ template <> struct datum_conversion<value> {
   }
 
   static datum into_datum(const value &t) { return t.get_nullable_datum(); }
+
+  static nullable_datum into_nullable_datum(const value &t) { return t.get_nullable_datum(); }
 };
 
 template <> struct type_traits<value> {
