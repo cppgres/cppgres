@@ -38,6 +38,7 @@ PG_MODULE_MAGIC;
 #include "syscache.hpp"
 #include "threading.hpp"
 #include "type.hpp"
+#include "typeconv.hpp"
 #include "xact.hpp"
 
 test_case::test_case(std::string_view name, bool (*function)(test_case &c), bool is_atomic)
