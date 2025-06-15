@@ -132,6 +132,11 @@ template <typename T, typename = void> struct datum_conversion {
    * Unlike @ref from_datum, gets no memory context.
    */
   static datum into_datum(const T &d) = delete;
+
+  /**
+   * @brief Convert into a nullable datum
+   */
+  static nullable_datum into_nullable_datum(const T &d) = delete;
 };
 
 template <typename T, typename R = T> struct default_datum_conversion {
@@ -148,6 +153,13 @@ template <typename T, typename R = T> struct default_datum_conversion {
                                                     utils::type_name<T>()));
     }
     return datum_conversion<T>::from_datum(d, oid, context);
+  }
+
+  /**
+   * @brief Convert into a nullable datum
+   */
+  static nullable_datum into_nullable_datum(const T &d) {
+    return nullable_datum(datum_conversion<T>::into_datum(d));
   }
 };
 
@@ -182,7 +194,7 @@ template <typename T> nullable_datum into_nullable_datum(const T &v) {
   if constexpr (std::same_as<nullable_datum, T>) {
     return v;
   }
-  return nullable_datum(datum_conversion<T>::into_datum(v));
+  return datum_conversion<T>::into_nullable_datum(v);
 }
 
 template <typename T>
