@@ -1,5 +1,5 @@
 /**
-* \file
+ * \file
  */
 #pragma once
 
@@ -20,8 +20,12 @@ struct abstract_memory_context {
 
   void reset() { ffi_guard{::MemoryContextReset}(_memory_context()); }
 
-  bool operator==(abstract_memory_context &c) { return _memory_context() == c._memory_context(); }
-  bool operator!=(abstract_memory_context &c) { return _memory_context() != c._memory_context(); }
+  bool operator==(abstract_memory_context &c) noexcept {
+    return _memory_context() == c._memory_context();
+  }
+  bool operator!=(abstract_memory_context &c) noexcept {
+    return _memory_context() != c._memory_context();
+  }
 
   operator ::MemoryContext() { return _memory_context(); }
 
@@ -81,7 +85,7 @@ struct memory_context : public abstract_memory_context {
 protected:
   ::MemoryContext context;
 
-  ::MemoryContext _memory_context() override { return context; }
+  ::MemoryContext _memory_context() noexcept override { return context; }
 };
 
 struct always_current_memory_context : public abstract_memory_context {
