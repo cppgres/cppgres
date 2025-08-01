@@ -3,9 +3,13 @@
 #include "imports.h"
 #include "memory.hpp"
 
-namespace cppgres {
+#include <any>
+#include <concepts>
+#include <future>
+#include <map>
+#include <ranges>
 
-enum q { backend };
+namespace cppgres {
 
 namespace backend_type {
 
@@ -36,7 +40,7 @@ enum type {
   wal_writer = B_WAL_WRITER,
   logger = B_LOGGER
 };
-}
+} // namespace backend_type
 
 /**
  * @brief Backend management
@@ -68,6 +72,79 @@ struct backend {
         },
         PointerGetDatum(allocation));
   }
+};
+
+/**
+ * @brief Backend name registry
+ *
+ * Backend-local registration of variables that can be accessed by extensions. It builds on the
+ * concept of "rendezvous variables" in Postgres, bringing the following:
+ *
+ * * out-of-order initialization
+ * * uninitialized value avoidance
+ *
+ */
+struct backend_name_registry {
+
+private:
+  struct inner_t {
+    std::map<std::string, std::any> map;
+    std::map<std::string, std::vector<std::function<void(void *)>>> cbs;
+  };
+
+public:
+  backend_name_registry(const char *name = "cppgres::backend_name_registry") {
+    void **ptr = cppgres::ffi_guard{::find_rendezvous_variable}(name);
+    if (*ptr == nullptr) {
+      std::allocator<inner_t> alloc;
+      inner = alloc.allocate(1);
+      std::construct_at(inner);
+      // Only set the pointer when `inner` is constructed
+      *ptr = inner;
+    } else {
+      inner = reinterpret_cast<inner_t *>(*ptr);
+    }
+  }
+
+  template <typename T> void on_initialized(const char *name, std::function<void(T &)> &&func) {
+    auto val = inner->map.find(name);
+    if (val == inner->map.end()) {
+      auto &cbs = inner->cbs[name];
+      cbs.push_back([func = std::move(func)](void *t) { func(*static_cast<T *>(t)); });
+    } else {
+      func(reinterpret_cast<T &>(std::any_cast<T &>(val->second)));
+    }
+  }
+
+  template <typename T> std::optional<std::reference_wrapper<T>> find(const char *name) const {
+    auto val = inner->map.find(name);
+    if (val == inner->map.end()) {
+      return std::nullopt;
+    }
+    return std::any_cast<T &>(val->second);
+  }
+
+  template <typename T> requires(std::default_initializable<T> && noexcept(T{}))
+  T &find_or_create(const char *name) {
+    auto val = inner->map.find(name);
+    if (val == inner->map.end()) {
+      T t{};
+      for (auto &cb : inner->cbs[name]) {
+        cb(&t);
+      }
+      inner->cbs[name].clear();
+      val = inner->map.insert({name, t}).first;
+    }
+    return std::any_cast<T &>(val->second);
+  }
+
+  void clear() {
+    inner->map.clear();
+    inner->cbs.clear();
+  }
+
+private:
+  inner_t *inner;
 };
 
 } // namespace cppgres
