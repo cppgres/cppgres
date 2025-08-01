@@ -59,8 +59,13 @@ template <class Agg, typename... InTs> datum aggregate_sfunc(value state, InTs..
 template <class Agg, typename... InTs> nullable_datum aggregate_ffunc(value state) {
   if constexpr (finalizable_aggregate<Agg, InTs...>) {
     Agg *state0;
-    state0 = reinterpret_cast<Agg *>(
-        from_nullable_datum<void *>(state.get_nullable_datum(), state.get_type().oid));
+    if (state.get_nullable_datum().is_null()) {
+      state0 = memory_context(memory_context()).alloc<Agg>();
+      std::construct_at(state0);
+    } else {
+      state0 = reinterpret_cast<Agg *>(
+          from_nullable_datum<void *>(state.get_nullable_datum(), state.get_type().oid));
+    }
     return into_nullable_datum(state0->finalize());
   } else {
     report(ERROR, "this aggregate does not support final function");
