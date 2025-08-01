@@ -65,11 +65,11 @@ if(NOT DEFINED PG_CONFIG)
     endif()
 
     # If the version is not known, try resolving the alias
-    set(PGVER_ALIAS_17 17.4)
-    set(PGVER_ALIAS_16 16.8)
-    set(PGVER_ALIAS_15 15.12)
-    set(PGVER_ALIAS_14 14.17)
-    set(PGVER_ALIAS_13 13.20)
+    set(PGVER_ALIAS_17 17.5)
+    set(PGVER_ALIAS_16 16.9)
+    set(PGVER_ALIAS_15 15.13)
+    set(PGVER_ALIAS_14 14.18)
+    set(PGVER_ALIAS_13 13.21)
 
     # commit
     if ("${PGVER}" MATCHES "^${sha1re}$")
