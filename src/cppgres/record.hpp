@@ -56,7 +56,7 @@ struct tuple_descriptor {
   /**
    * @brief Move constructor
    */
-  tuple_descriptor(tuple_descriptor &&other)
+  tuple_descriptor(tuple_descriptor &&other) noexcept
       : tupdesc(other.tupdesc), blessed(other.blessed), owned(other.owned) {}
 
   /**
@@ -71,9 +71,21 @@ struct tuple_descriptor {
   }
 
   /**
+   * @brief Move assignment
+   */
+  tuple_descriptor &operator=(tuple_descriptor &&other) noexcept {
+    if (this != &other) {
+      tupdesc = other.tupdesc;
+      blessed = other.blessed;
+      owned = other.owned;
+    }
+    return *this;
+  }
+
+  /**
    * @brief Number of attributes
    */
-  int attributes() const { return tupdesc->natts; }
+  int attributes() const noexcept { return tupdesc->natts; }
 
   /**
    * @brief Get a reference to `Form_pg_attribute`
@@ -194,7 +206,7 @@ struct tuple_descriptor {
   /**
    * @brief Returns true if the tuple descriptor is blessed
    */
-  bool is_blessed() const { return blessed; }
+  bool is_blessed() const noexcept { return blessed; }
 
   operator TupleDesc() const { return tupdesc; }
 
@@ -352,18 +364,26 @@ struct record {
    */
   nullable_datum operator[](int n) { return get_attribute(n); }
 
-  operator HeapTuple() const { return tuple; }
+  operator HeapTuple() const noexcept { return tuple; }
 
   /**
    * @brief Returns tuple descriptor
    */
-  tuple_descriptor get_tuple_descriptor() const { return tupdesc; }
+  tuple_descriptor get_tuple_descriptor() const noexcept { return tupdesc; }
 
   record(const record &other) : tupdesc(other.tupdesc), tuple(other.tuple) {}
-  record(const record &&other) : tupdesc(std::move(other.tupdesc)), tuple(other.tuple) {}
+  record(record &&other) noexcept : tupdesc(std::move(other.tupdesc)), tuple(other.tuple) {}
   record &operator=(const record &other) {
     tupdesc = other.tupdesc;
     tuple = other.tuple;
+    return *this;
+  }
+
+  record &operator=(record &&other) noexcept {
+    if (this != &other) {
+      tupdesc = std::move(other.tupdesc);
+      tuple = other.tuple;
+    }
     return *this;
   }
 
