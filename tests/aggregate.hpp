@@ -59,6 +59,23 @@ add_test(aggregate_simple, [](test_case &) {
   return result;
 });
 
+add_test(aggregate_simple_empty, [](test_case &) {
+  bool result = true;
+  cppgres::spi_executor spi;
+  spi.execute(cppgres::fmt::format("create or replace function aggregate_sfunc(internal, int8) "
+                                   "returns internal language c as '{}'",
+                                   get_library_name()));
+  spi.execute(cppgres::fmt::format(
+      "create or replace function aggregate_ffunc(internal) returns int8 language c as '{}'",
+      get_library_name()));
+  spi.execute(
+      "create aggregate agg (int8) (sfunc = aggregate_sfunc, finalfunc = aggregate_ffunc, stype "
+      "= internal)");
+  auto res = spi.query<int64_t>("select agg(v) from (select 1 limit 0) as t(v)");
+  result = result && _assert(res.begin()[0] == 0);
+  return result;
+});
+
 add_test(aggregate_simple_2arg, [](test_case &) {
   bool result = true;
   cppgres::spi_executor spi;
