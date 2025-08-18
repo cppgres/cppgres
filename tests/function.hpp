@@ -119,6 +119,9 @@ add_test(current_postgres_function, ([](test_case &) {
            // return type
            result = result && _assert((*ci).return_type() == cppgres::type{.oid = BOOLOID});
 
+           // collation
+           result = result && _assert(cppgres::collation((*ci).collation()).name() == "default");
+
            return result;
          }));
 } // namespace tests
