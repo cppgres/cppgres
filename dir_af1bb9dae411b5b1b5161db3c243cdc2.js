@@ -4,6 +4,7 @@ var dir_af1bb9dae411b5b1b5161db3c243cdc2 =
     [ "aggregate.hpp", "aggregate_8hpp_source.html", null ],
     [ "backend.hpp", "backend_8hpp_source.html", null ],
     [ "bgw.hpp", "bgw_8hpp.html", "bgw_8hpp" ],
+    [ "collation.hpp", "collation_8hpp_source.html", null ],
     [ "datum.hpp", "datum_8hpp.html", "datum_8hpp" ],
     [ "error.hpp", "error_8hpp.html", "error_8hpp" ],
     [ "exception.hpp", "exception_8hpp.html", "exception_8hpp" ],

@@ -30,6 +30,7 @@ var annotated_dup =
       [ "background_worker_bypass_allow_connection", "structcppgres_1_1background__worker__bypass__allow__connection.html", null ],
       [ "background_worker_database_conection_flag", "structcppgres_1_1background__worker__database__conection__flag.html", null ],
       [ "bytea", "structcppgres_1_1bytea.html", null ],
+      [ "collation", "structcppgres_1_1collation.html", null ],
       [ "current_background_worker", "structcppgres_1_1current__background__worker.html", "structcppgres_1_1current__background__worker" ],
       [ "current_postgres_function", "structcppgres_1_1current__postgres__function.html", null ],
       [ "datum", "structcppgres_1_1datum.html", null ],

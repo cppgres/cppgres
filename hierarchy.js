@@ -17,6 +17,7 @@ var hierarchy =
     [ "cppgres::background_worker_database_conection_flag", "structcppgres_1_1background__worker__database__conection__flag.html", [
       [ "cppgres::background_worker_bypass_allow_connection", "structcppgres_1_1background__worker__bypass__allow__connection.html", null ]
     ] ],
+    [ "cppgres::collation", "structcppgres_1_1collation.html", null ],
     [ "cppgres::current_postgres_function", "structcppgres_1_1current__postgres__function.html", null ],
     [ "cppgres::datum", "structcppgres_1_1datum.html", null ],
     [ "cppgres::datum_conversion< T, typename >", "structcppgres_1_1datum__conversion.html", null ],
