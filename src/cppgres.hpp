@@ -65,6 +65,7 @@ using ::fmt::format;
 
 #include "cppgres/aggregate.hpp"
 #include "cppgres/bgw.hpp"
+#include "cppgres/collation.hpp"
 #include "cppgres/datum.hpp"
 #include "cppgres/error.hpp"
 #include "cppgres/exception_impl.hpp"

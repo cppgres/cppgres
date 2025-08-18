@@ -97,6 +97,8 @@ struct function_call_info {
    */
   type return_type() const { return {.oid = ffi_guard{::get_fn_expr_rettype}(info_->flinfo)}; }
 
+  oid collation() const { return info_->fncollation; }
+
 private:
   ::FunctionCallInfo info_;
 };
