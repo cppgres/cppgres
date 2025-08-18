@@ -4,6 +4,7 @@
 #pragma once
 
 #include <optional>
+#include <span>
 #include <string>
 #include <utility>
 
