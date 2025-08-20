@@ -5,6 +5,10 @@
 #include "imports.h"
 #include "utils/pfr.hpp"
 
+#if PG_MAJORVERSION_NUM < 16
+typedef bool (*tree_walker_callback)(Node *node, void *context);
+#endif
+
 namespace cppgres {
 
 using node_tag = ::NodeTag;
@@ -45,15 +49,18 @@ template <node_tag T> struct node_tag_traits;
   struct name {                                                                                    \
     using underlying_type = ::name;                                                                \
     static constexpr inline node_tag tag = T_##name;                                               \
-    name(::name v) : val(v) {}                                                                     \
+    name(underlying_type v) : val(v) {}                                                            \
     name() { reinterpret_cast<node_tag &>(val) = T_##name; }                                       \
-    ::name &operator*() { return val; }                                                            \
+    underlying_type &operator*() { return val; }                                                   \
+    underlying_type *as_ptr() { return &val; }                                                     \
                                                                                                    \
   private:                                                                                         \
-    [[maybe_unused]] ::name val{};                                                                                  \
+    [[maybe_unused]] underlying_type val{};                                                        \
   };                                                                                               \
   }                                                                                                \
   static_assert((sizeof(name) == sizeof(::name)) && (alignof(name) == alignof(::name)));           \
+  static_assert(std::is_standard_layout_v<name>);                                                  \
+  static_assert(std::is_aggregate_v<name>);                                                        \
   template <> struct node_tag_traits<node_tag::T_##name> {                                         \
     using type = nodes::name;                                                                      \
   };                                                                                               \
@@ -65,6 +72,10 @@ template <node_tag T> struct node_tag_traits;
     static inline bool is(::name *node) {                                                          \
       return *reinterpret_cast<node_tag *>(node) == node_tag::T_##name;                            \
     }                                                                                              \
+    static inline bool is(void *node) {                                                            \
+      return *reinterpret_cast<node_tag *>(node) == node_tag::T_##name;                            \
+    }                                                                                              \
+    static inline bool is(nodes::name *node) { return true; }                                      \
     static inline bool is(nodes::name &node) { return true; }                                      \
     static inline bool is(auto &node) { return false; }                                            \
     static inline nodes::name *allocate(abstract_memory_context &&ctx = memory_context()) {        \
@@ -643,9 +654,19 @@ node_mapping(ForeignKeyCacheInfo);
 
 #undef node_mapping
 
+namespace nodes {
+template <typename T> struct unknown_node {
+  T node;
+};
+}; // namespace nodes
+
 #define node_dispatch(name)                                                                        \
   if (node_traits<nodes::name>::is(node)) {                                                        \
-    visitor(reinterpret_cast<nodes::name &>(node));                                                \
+    if constexpr (std::is_pointer_v<decltype(node)>) {                                             \
+      visitor(*reinterpret_cast<nodes::name *>(node));                                             \
+    } else {                                                                                       \
+      visitor(reinterpret_cast<nodes::name &>(node));                                              \
+    }                                                                                              \
     return;                                                                                        \
   } else
 
@@ -1209,8 +1230,142 @@ node_dispatch(BitString)
 #endif
 node_dispatch(ForeignKeyCacheInfo)
       // clang-format on
-      throw std::runtime_error("unknown node tag");
+      if constexpr (requires {
+                      std::declval<Visitor>()(std::declval<nodes::unknown_node<decltype(node)>>());
+                    }) {
+    visitor(nodes::unknown_node<decltype(node)>{node});
+  }
+  else {
+    throw std::runtime_error("unknown node tag");
+  }
 }
+
+template <typename T>
+concept walker_implementation = requires(T t, ::Node *node, ::tree_walker_callback cb, void *ctx) {
+  { t(node, cb, ctx) } -> std::same_as<bool>;
+};
+
+template <typename T> struct node_walker {
+  void operator()(T &node, auto &&visitor, const walker_implementation auto &walker) {
+    /// In theory, this should have worked, but in practice some structures are
+    /// way too large. Also, makes the binary really large. TODO: wait for C++26/P3435?
+    //
+    //    typename T::underlying_type &t = *node;
+    //    boost::pfr::for_each_field(t, [visitor](const auto &field, const auto index) {
+    //      if constexpr (std::is_pointer_v<std::remove_cvref_t<decltype(visitor)>>) {
+    //        cppgres::visit_node(field, *visitor);
+    //      } else {
+    //        cppgres::visit_node(field, visitor);
+    //      }
+    //    });
+
+    if constexpr (requires { node.as_ptr(); }) {
+      auto *recasted_node = reinterpret_cast<::Node *>(node.as_ptr());
+
+      struct _ctx {
+        decltype(visitor) _visitor;
+      };
+      _ctx c{std::forward<decltype(visitor)>(visitor)};
+      ffi_guard{walker}(
+          recasted_node,
+          [](::Node *node, void *ctx) {
+            if (node == nullptr) {
+              return false;
+            }
+            _ctx *c = reinterpret_cast<_ctx *>(ctx);
+            if constexpr (std::is_pointer_v<std::remove_cvref_t<decltype(visitor)>>) {
+              cppgres::visit_node(node, *c->_visitor);
+            } else {
+              cppgres::visit_node(node, c->_visitor);
+            }
+            return false;
+          },
+          &c);
+    }
+  }
+};
+
+template <> struct node_walker<nodes::RawStmt> {
+  void operator()(nodes::RawStmt &node, auto &&visitor, const walker_implementation auto &walker) {
+    if constexpr (std::is_pointer_v<std::remove_cvref_t<decltype(visitor)>>) {
+      cppgres::visit_node(node.operator*().stmt, *visitor);
+    } else {
+      cppgres::visit_node(node.operator*().stmt, visitor);
+    }
+  }
+};
+
+template <> struct node_walker<nodes::List> {
+  void operator()(nodes::List &node, auto &&visitor, const walker_implementation auto &walker) {
+    ::ListCell *lc;
+    ::List *node_p = node.as_ptr();
+    if (nodeTag(node_p) == T_List) {
+      foreach (lc, node_p) {
+        void *node = lfirst(lc);
+        if constexpr (std::is_pointer_v<std::remove_cvref_t<decltype(visitor)>>) {
+          cppgres::visit_node(node, *visitor);
+        } else {
+          cppgres::visit_node(node, visitor);
+        }
+      }
+    }
+  }
+};
+
+template <typename T> struct raw_expr_node_walker {
+  void operator()(T &node, auto &&visitor) {
+    _walker(node, std::forward<decltype(visitor)>(visitor),
+#if PG_MAJORVERSION_NUM < 16
+            reinterpret_cast<bool (*)(::Node *, ::tree_walker_callback, void *)>(
+                raw_expression_tree_walker)
+#else
+            ::raw_expression_tree_walker_impl
+#endif
+    );
+  }
+
+private:
+  node_walker<T> _walker;
+};
+
+template <typename T> struct expr_node_walker {
+
+  void operator()(T &node, auto &&visitor) {
+    _walker(node, std::forward<decltype(visitor)>(visitor),
+#if PG_MAJORVERSION_NUM < 16
+            reinterpret_cast<bool (*)(::Node *, ::tree_walker_callback, void *)>(
+                ::expression_tree_walker)
+#else
+            ::expression_tree_walker_impl
+#endif
+    );
+  }
+
+private:
+  node_walker<T> _walker;
+};
+
+template <> struct expr_node_walker<nodes::Query> {
+  expr_node_walker() {}
+  explicit expr_node_walker(int flags) : _flags(flags) {}
+  void operator()(nodes::Query &node, auto &&visitor) {
+    _walker(node, std::forward<decltype(visitor)>(visitor),
+            [this](auto query, auto cb, auto ctx) -> bool {
+              return
+#if PG_MAJORVERSION_NUM < 16
+                  reinterpret_cast<bool (*)(::Query *, ::tree_walker_callback, void *, int)>(
+                      ::query_tree_walker)(reinterpret_cast<::Query *>(query), cb, ctx, _flags);
+#else
+                  ::query_tree_walker_impl
+                  (reinterpret_cast<::Query *>(query), cb, ctx, _flags);
+#endif
+            });
+  }
+
+private:
+  node_walker<nodes::Query> _walker;
+  int _flags = QTW_EXAMINE_SORTGROUP | QTW_EXAMINE_RTES_BEFORE;
+};
 
 #undef node_dispatch
 
