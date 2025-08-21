@@ -10,5 +10,5 @@ var searchData=
   ['atexit_7',['atexit',['../structcppgres_1_1backend.html#a37b7653b688b1ca96aeac6ad7472229f',1,'cppgres::backend']]],
   ['attribute_5fname_8',['attribute_name',['../structcppgres_1_1record.html#a8e2fc8d5e09524b1e094ee47c1997295',1,'cppgres::record']]],
   ['attribute_5ftype_9',['attribute_type',['../structcppgres_1_1record.html#ae951e1976f07a9f6e3de2f035bb04b35',1,'cppgres::record']]],
-  ['attributes_10',['attributes',['../structcppgres_1_1tuple__descriptor.html#a35dd1d6485a39d51acc1835c02da5a26',1,'cppgres::tuple_descriptor::attributes()'],['../structcppgres_1_1record.html#ac4cb9245dc50072185926b411057eac9',1,'cppgres::record::attributes()']]]
+  ['attributes_10',['attributes',['../structcppgres_1_1tuple__descriptor.html#abb019d46a7de6ca9c5e6c01df7f336d9',1,'cppgres::tuple_descriptor::attributes()'],['../structcppgres_1_1record.html#ac4cb9245dc50072185926b411057eac9',1,'cppgres::record::attributes()']]]
 ];

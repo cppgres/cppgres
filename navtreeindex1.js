@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"structcppgres_1_1value.html":[2,0,0,104],
 "structcppgres_1_1varlena.html":[2,0,0,105],
 "structcppgres_1_1worker.html":[2,0,0,106],
 "structcppgres_1_1worker.html#acc6a061aa2738d1ceee22275d7e7768c":[2,0,0,106,0],
