@@ -43,6 +43,7 @@ template <typename T> struct node_traits {
   static inline bool is(auto &node) { return false; }
 };
 template <node_tag T> struct node_tag_traits;
+template <typename T> struct node_coverage;
 
 #define node_mapping(name)                                                                         \
   namespace nodes {                                                                                \
@@ -51,7 +52,7 @@ template <node_tag T> struct node_tag_traits;
     static constexpr inline node_tag tag = T_##name;                                               \
     name(underlying_type v) : val(v) {}                                                            \
     name() { reinterpret_cast<node_tag &>(val) = T_##name; }                                       \
-    underlying_type &operator*() { return val; }                                                   \
+    underlying_type &as_ref() { return val; }                                                      \
     underlying_type *as_ptr() { return &val; }                                                     \
                                                                                                    \
   private:                                                                                         \
@@ -61,6 +62,9 @@ template <node_tag T> struct node_tag_traits;
   static_assert((sizeof(name) == sizeof(::name)) && (alignof(name) == alignof(::name)));           \
   static_assert(std::is_standard_layout_v<name>);                                                  \
   static_assert(std::is_aggregate_v<name>);                                                        \
+  template <> struct node_coverage<::name> {                                                       \
+    using type = nodes::name;                                                                      \
+  };                                                                                               \
   template <> struct node_tag_traits<node_tag::T_##name> {                                         \
     using type = nodes::name;                                                                      \
   };                                                                                               \
@@ -87,7 +91,7 @@ template <node_tag T> struct node_tag_traits;
 
 #define node_mapping_no_node_traits(name)                                                          \
   namespace nodes {                                                                                \
-  using name = ::name;                                                                             \
+  using name = node_coverage<::name>::type;                                                        \
   }                                                                                                \
   template <> struct node_tag_traits<node_tag::T_##name> {                                         \
     using type = nodes::name;                                                                      \
@@ -662,15 +666,29 @@ template <typename T> struct unknown_node {
 
 #define node_dispatch(name)                                                                        \
   if (node_traits<nodes::name>::is(node)) {                                                        \
-    if constexpr (std::is_pointer_v<decltype(node)>) {                                             \
-      visitor(*reinterpret_cast<nodes::name *>(node));                                             \
-    } else {                                                                                       \
-      visitor(reinterpret_cast<nodes::name &>(node));                                              \
-    }                                                                                              \
+    static_assert(                                                                                 \
+        covering_node<std::remove_pointer_t<decltype(reinterpret_cast<nodes::name *>(node))>>);    \
+    visitor(*reinterpret_cast<nodes::name *>(node));                                               \
     return;                                                                                        \
   } else
 
-template <typename Visitor> void visit_node(auto node, Visitor &&visitor) {
+template <typename T>
+concept covering_node =
+    std::is_class_v<node_traits<T>> && requires { typename T::underlying_type; };
+
+template <typename Visitor> void visit_node(covering_node auto node, Visitor &&visitor) {
+  visitor(node);
+}
+
+template <typename T>
+concept covered_node = std::is_class_v<node_coverage<T>> &&
+                       requires { typename node_coverage<T>::type::underlying_type; };
+
+template <typename Visitor> void visit_node(covered_node auto *node, Visitor &&visitor) {
+  visitor(*reinterpret_cast<node_coverage<std::remove_pointer_t<decltype(node)>>::type *>(node));
+}
+
+template <typename Visitor> void visit_node(void *node, Visitor &&visitor) {
   // clang-format off
 node_dispatch(List)
 node_dispatch(Alias)
@@ -1246,7 +1264,14 @@ concept walker_implementation = requires(T t, ::Node *node, ::tree_walker_callba
 };
 
 template <typename T> struct node_walker {
-  void operator()(T &node, auto &&visitor, const walker_implementation auto &walker) {
+  void operator()(T &node, auto &&visitor, const walker_implementation auto &walker)
+      requires covering_node<T>
+  {
+    auto *recasted_node = reinterpret_cast<::Node *>(node.as_ptr());
+    (*this)(recasted_node, visitor, walker);
+  }
+
+  void operator()(::Node *recasted_node, auto &&visitor, const walker_implementation auto &walker) {
     /// In theory, this should have worked, but in practice some structures are
     /// way too large. Also, makes the binary really large. TODO: wait for C++26/P3435?
     //
@@ -1259,8 +1284,6 @@ template <typename T> struct node_walker {
     //      }
     //    });
 
-    if constexpr (requires { node.as_ptr(); }) {
-      auto *recasted_node = reinterpret_cast<::Node *>(node.as_ptr());
 
       struct _ctx {
         decltype(visitor) _visitor;
@@ -1282,15 +1305,14 @@ template <typename T> struct node_walker {
           },
           &c);
     }
-  }
 };
 
 template <> struct node_walker<nodes::RawStmt> {
   void operator()(nodes::RawStmt &node, auto &&visitor, const walker_implementation auto &walker) {
     if constexpr (std::is_pointer_v<std::remove_cvref_t<decltype(visitor)>>) {
-      cppgres::visit_node(node.operator*().stmt, *visitor);
+      cppgres::visit_node(node.as_ref().stmt, *visitor);
     } else {
-      cppgres::visit_node(node.operator*().stmt, visitor);
+      cppgres::visit_node(node.as_ref().stmt, visitor);
     }
   }
 };
@@ -1312,7 +1334,7 @@ template <> struct node_walker<nodes::List> {
   }
 };
 
-template <typename T> struct raw_expr_node_walker {
+template <covering_node T> struct raw_expr_node_walker {
   void operator()(T &node, auto &&visitor) {
     _walker(node, std::forward<decltype(visitor)>(visitor),
 #if PG_MAJORVERSION_NUM < 16

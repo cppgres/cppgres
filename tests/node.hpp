@@ -12,7 +12,7 @@ template <typename... Ts> Overloaded(Ts...) -> Overloaded<Ts...>;
 add_test(node_init, ([](test_case &) {
            bool result = true;
            cppgres::nodes::PlannedStmt pstmt;
-           result = result && _assert((*pstmt).type == cppgres::nodes::PlannedStmt::tag);
+           result = result && _assert(pstmt.as_ref().type == cppgres::nodes::PlannedStmt::tag);
            return result;
          }));
 
@@ -20,7 +20,7 @@ add_test(node_convert, ([](test_case &) {
            bool result = true;
            ::PlannedStmt *stmt0 = makeNode(PlannedStmt);
            cppgres::nodes::PlannedStmt pstmt(*stmt0);
-           result = result && _assert((*pstmt).type == cppgres::nodes::PlannedStmt::tag);
+           result = result && _assert(pstmt.as_ref().type == cppgres::nodes::PlannedStmt::tag);
            return result;
          }));
 
@@ -98,17 +98,20 @@ static bool node_search_case(test_case &) {
   cppgres::visit_node(stmts, rv);
   result = result && _assert(rv.found_rangevar());
 
-  auto query = cppgres::ffi_guard{
-#if PG_MAJORVERSION_NUM < 15
-      ::parse_analyze
-#else
-      ::parse_analyze_fixedparams
-#endif
-  }(rv.getRawStmt(), qstr, nullptr, 0, nullptr);
+  if (result) {
 
-  visitor v;
-  cppgres::visit_node(query, v);
-  result = result && _assert(v.found_rangetblentry());
+    auto query = cppgres::ffi_guard{
+#if PG_MAJORVERSION_NUM < 15
+        ::parse_analyze
+#else
+        ::parse_analyze_fixedparams
+#endif
+    }(rv.getRawStmt(), qstr, nullptr, 0, nullptr);
+
+    visitor v;
+    cppgres::visit_node(query, v);
+    result = result && _assert(v.found_rangetblentry());
+  }
   return result;
 }
 
