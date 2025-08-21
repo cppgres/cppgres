@@ -437,7 +437,9 @@ node_mapping(ProjectSetPath);
 node_mapping(SortPath);
 node_mapping(IncrementalSortPath);
 node_mapping(GroupPath);
+#if PG_MAJORVERSION_NUM < 19
 node_mapping(UpperUniquePath);
+#endif
 node_mapping(AggPath);
 node_mapping(GroupingSetData);
 node_mapping(RollupData);
@@ -1003,7 +1005,9 @@ node_dispatch(ProjectSetPath)
 node_dispatch(SortPath)
 node_dispatch(IncrementalSortPath)
 node_dispatch(GroupPath)
+#if PG_MAJORVERSION_NUM < 19
 node_dispatch(UpperUniquePath)
+#endif
 node_dispatch(AggPath)
 node_dispatch(GroupingSetData)
 node_dispatch(RollupData)
