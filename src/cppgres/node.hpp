@@ -140,8 +140,7 @@ template <typename Visitor> void visit_node(void *node, Visitor &&visitor) {
                   std::declval<Visitor>()(std::declval<nodes::unknown_node<decltype(node)>>());
                 }) {
     visitor(nodes::unknown_node<decltype(node)>{node});
-  }
-  else {
+  } else {
     throw std::runtime_error("unknown node tag");
   }
 }
@@ -160,39 +159,31 @@ template <typename T> struct node_walker {
   }
 
   void operator()(::Node *recasted_node, auto &&visitor, const walker_implementation auto &walker) {
-    /// In theory, this should have worked, but in practice some structures are
-    /// way too large. Also, makes the binary really large. TODO: wait for C++26/P3435?
-    //
-    //    typename T::underlying_type &t = *node;
-    //    boost::pfr::for_each_field(t, [visitor](const auto &field, const auto index) {
-    //      if constexpr (std::is_pointer_v<std::remove_cvref_t<decltype(visitor)>>) {
-    //        cppgres::visit_node(field, *visitor);
-    //      } else {
-    //        cppgres::visit_node(field, visitor);
-    //      }
-    //    });
+    /// In theory, this Boost PFR could have worked, but in practice some structures are
+    /// way too large to introspect. Also, makes the binary really large.
+    /// TODO: wait for C++26/P3435 and see if that would be any better than hand-crafted walkers
+    /// from PG
 
-
-      struct _ctx {
-        decltype(visitor) _visitor;
-      };
-      _ctx c{std::forward<decltype(visitor)>(visitor)};
-      ffi_guard{walker}(
-          recasted_node,
-          [](::Node *node, void *ctx) {
-            if (node == nullptr) {
-              return false;
-            }
-            _ctx *c = reinterpret_cast<_ctx *>(ctx);
-            if constexpr (std::is_pointer_v<std::remove_cvref_t<decltype(visitor)>>) {
-              cppgres::visit_node(node, *c->_visitor);
-            } else {
-              cppgres::visit_node(node, c->_visitor);
-            }
+    struct _ctx {
+      decltype(visitor) _visitor;
+    };
+    _ctx c{std::forward<decltype(visitor)>(visitor)};
+    ffi_guard{walker}(
+        recasted_node,
+        [](::Node *node, void *ctx) {
+          if (node == nullptr) {
             return false;
-          },
-          &c);
-    }
+          }
+          _ctx *c = reinterpret_cast<_ctx *>(ctx);
+          if constexpr (std::is_pointer_v<std::remove_cvref_t<decltype(visitor)>>) {
+            cppgres::visit_node(node, *c->_visitor);
+          } else {
+            cppgres::visit_node(node, c->_visitor);
+          }
+          return false;
+        },
+        &c);
+  }
 };
 
 template <> struct node_walker<nodes::RawStmt> {
