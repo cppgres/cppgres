@@ -40,12 +40,15 @@ extern "C" {
 #if __has_include(<nodes/miscnodes.h>)
 #include <nodes/miscnodes.h>
 #endif
+#include <nodes/nodeFuncs.h>
 #include <nodes/nodes.h>
 #include <nodes/parsenodes.h>
 #include <nodes/pathnodes.h>
 #include <nodes/replnodes.h>
 #include <nodes/supportnodes.h>
 #include <nodes/tidbitmap.h>
+#include <parser/analyze.h>
+#include <parser/parser.h>
 #include <storage/ipc.h>
 #include <utils/builtins.h>
 #include <utils/expandeddatum.h>
