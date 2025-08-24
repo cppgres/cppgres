@@ -7,5 +7,7 @@ var searchData=
   ['exception_5fimpl_2ehpp_4',['exception_impl.hpp',['../exception__impl_8hpp.html',1,'']]],
   ['executor_5',['executor',['../structcppgres_1_1executor.html',1,'cppgres']]],
   ['executor_2ehpp_6',['executor.hpp',['../executor_8hpp.html',1,'']]],
-  ['expanded_5fvarlena_7',['expanded_varlena',['../structcppgres_1_1expanded__varlena.html',1,'cppgres']]]
+  ['expanded_5fvarlena_7',['expanded_varlena',['../structcppgres_1_1expanded__varlena.html',1,'cppgres']]],
+  ['expr_5fnode_5fwalker_8',['expr_node_walker',['../structcppgres_1_1expr__node__walker.html',1,'cppgres']]],
+  ['expr_5fnode_5fwalker_3c_20nodes_3a_3aquery_20_3e_9',['expr_node_walker&lt; nodes::Query &gt;',['../structcppgres_1_1expr__node__walker_3_01nodes_1_1Query_01_4.html',1,'cppgres']]]
 ];

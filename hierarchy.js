@@ -97,6 +97,8 @@ var hierarchy =
         [ "cppgres::spi_nonatomic_executor", "structcppgres_1_1spi__nonatomic__executor.html", null ]
       ] ]
     ] ],
+    [ "cppgres::expr_node_walker< T >", "structcppgres_1_1expr__node__walker.html", null ],
+    [ "cppgres::expr_node_walker< nodes::Query >", "structcppgres_1_1expr__node__walker_3_01nodes_1_1Query_01_4.html", null ],
     [ "std::false_type", null, [
       [ "cppgres::utils::is_std_tuple< T >", "structcppgres_1_1utils_1_1is__std__tuple.html", null ]
     ] ],
@@ -117,13 +119,19 @@ var hierarchy =
     [ "cppgres::memory_context_allocator< T, Context >", "structcppgres_1_1memory__context__allocator.html", null ],
     [ "cppgres::memory_context_scope< Context >", "structcppgres_1_1memory__context__scope.html", null ],
     [ "cppgres::name", "structcppgres_1_1name.html", null ],
+    [ "cppgres::node_coverage< T >", "structcppgres_1_1node__coverage.html", null ],
     [ "cppgres::node_tag_traits< T >", "structcppgres_1_1node__tag__traits.html", null ],
     [ "cppgres::node_traits< T >", "structcppgres_1_1node__traits.html", null ],
+    [ "cppgres::node_walker< T >", "structcppgres_1_1node__walker.html", null ],
+    [ "cppgres::node_walker< nodes::List >", "structcppgres_1_1node__walker_3_01nodes_1_1List_01_4.html", null ],
+    [ "cppgres::node_walker< nodes::Query >", "structcppgres_1_1node__walker.html", null ],
+    [ "cppgres::node_walker< nodes::RawStmt >", "structcppgres_1_1node__walker_3_01nodes_1_1RawStmt_01_4.html", null ],
     [ "cppgres::nullable_datum", "structcppgres_1_1nullable__datum.html", null ],
     [ "cppgres::oid", "structcppgres_1_1oid.html", null ],
     [ "cppgres::spi_executor::options", "structcppgres_1_1spi__executor_1_1options.html", null ],
     [ "cppgres::utils::owned_cstring", "structcppgres_1_1utils_1_1owned__cstring.html", null ],
     [ "cppgres::postgres_function< Func >", "structcppgres_1_1postgres__function.html", null ],
+    [ "cppgres::raw_expr_node_walker< T >", "structcppgres_1_1raw__expr__node__walker.html", null ],
     [ "cppgres::record", "structcppgres_1_1record.html", null ],
     [ "cppgres::utils::remove_optional< T >", "structcppgres_1_1utils_1_1remove__optional.html", null ],
     [ "cppgres::utils::remove_optional< std::optional< T > >", "structcppgres_1_1utils_1_1remove__optional_3_01std_1_1optional_3_01T_01_4_01_4.html", null ],
@@ -183,6 +191,7 @@ var hierarchy =
     [ "cppgres::type_traits< value >", "structcppgres_1_1type__traits_3_01value_01_4.html", null ],
     [ "cppgres::type_traits< void * >", "structcppgres_1_1type__traits_3_01void_01_5_01_4.html", null ],
     [ "cppgres::type_traits< void >", "structcppgres_1_1type__traits_3_01void_01_4.html", null ],
+    [ "cppgres::nodes::unknown_node< T >", "structcppgres_1_1nodes_1_1unknown__node.html", null ],
     [ "cppgres::unsupported_type< T >", "structcppgres_1_1unsupported__type.html", null ],
     [ "cppgres::value", "structcppgres_1_1value.html", null ],
     [ "cppgres::worker", "structcppgres_1_1worker.html", null ]

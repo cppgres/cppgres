@@ -1,6 +1,9 @@
 var annotated_dup =
 [
     [ "cppgres", null, [
+      [ "nodes", null, [
+        [ "unknown_node", "structcppgres_1_1nodes_1_1unknown__node.html", null ]
+      ] ],
       [ "utils", null, [
         [ "function_traits", null, [
           [ "function_traits", "structcppgres_1_1utils_1_1function__traits_1_1function__traits.html", null ],
@@ -61,6 +64,8 @@ var annotated_dup =
       [ "exception_guard", "structcppgres_1_1exception__guard.html", null ],
       [ "executor", "structcppgres_1_1executor.html", null ],
       [ "expanded_varlena", "structcppgres_1_1expanded__varlena.html", null ],
+      [ "expr_node_walker", "structcppgres_1_1expr__node__walker.html", null ],
+      [ "expr_node_walker< nodes::Query >", "structcppgres_1_1expr__node__walker_3_01nodes_1_1Query_01_4.html", null ],
       [ "ffi_guard", "structcppgres_1_1ffi__guard.html", null ],
       [ "function_call_info", "structcppgres_1_1function__call__info.html", "structcppgres_1_1function__call__info" ],
       [ "heap_tuple", "structcppgres_1_1heap__tuple.html", null ],
@@ -70,8 +75,12 @@ var annotated_dup =
       [ "memory_context_scope", "structcppgres_1_1memory__context__scope.html", null ],
       [ "name", "structcppgres_1_1name.html", null ],
       [ "named_type", "structcppgres_1_1named__type.html", "structcppgres_1_1named__type" ],
+      [ "node_coverage", "structcppgres_1_1node__coverage.html", null ],
       [ "node_tag_traits", "structcppgres_1_1node__tag__traits.html", null ],
       [ "node_traits", "structcppgres_1_1node__traits.html", null ],
+      [ "node_walker", "structcppgres_1_1node__walker.html", "structcppgres_1_1node__walker" ],
+      [ "node_walker< nodes::List >", "structcppgres_1_1node__walker_3_01nodes_1_1List_01_4.html", null ],
+      [ "node_walker< nodes::RawStmt >", "structcppgres_1_1node__walker_3_01nodes_1_1RawStmt_01_4.html", null ],
       [ "non_by_value_type", "structcppgres_1_1non__by__value__type.html", null ],
       [ "null_datum_exception", "classcppgres_1_1null__datum__exception.html", null ],
       [ "nullable_datum", "structcppgres_1_1nullable__datum.html", null ],
@@ -80,6 +89,7 @@ var annotated_dup =
       [ "pg_exception", "classcppgres_1_1pg__exception.html", null ],
       [ "pointer_gone_exception", "structcppgres_1_1pointer__gone__exception.html", null ],
       [ "postgres_function", "structcppgres_1_1postgres__function.html", "structcppgres_1_1postgres__function" ],
+      [ "raw_expr_node_walker", "structcppgres_1_1raw__expr__node__walker.html", null ],
       [ "record", "structcppgres_1_1record.html", "structcppgres_1_1record" ],
       [ "set_iterator_traits", "structcppgres_1_1set__iterator__traits.html", null ],
       [ "spi_executor", "structcppgres_1_1spi__executor.html", "structcppgres_1_1spi__executor" ],

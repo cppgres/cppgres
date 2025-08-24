@@ -17,6 +17,8 @@ var dir_af1bb9dae411b5b1b5161db3c243cdc2 =
     [ "memory.hpp", "memory_8hpp.html", "memory_8hpp" ],
     [ "name.hpp", "name_8hpp_source.html", null ],
     [ "node.hpp", "node_8hpp_source.html", null ],
+    [ "node_dispatch_table.hpp", "node__dispatch__table_8hpp_source.html", null ],
+    [ "node_mapping_table.hpp", "node__mapping__table_8hpp_source.html", null ],
     [ "record.hpp", "record_8hpp_source.html", null ],
     [ "set.hpp", "set_8hpp.html", "set_8hpp" ],
     [ "syscache.hpp", "syscache_8hpp_source.html", null ],
