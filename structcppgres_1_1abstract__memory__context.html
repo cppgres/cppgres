@@ -137,6 +137,7 @@ $(document).ready(function(){initNavTree('structcppgres_1_1abstract__memory__con
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structcppgres_1_1abstract__memory__context-members.html">List of all members</a>  </div>
@@ -158,6 +159,11 @@ Inheritance diagram for cppgres::abstract_memory_context:</div>
   </map>
 </div></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1abstract__memory__context_1_1memory__context__execution.html">memory_context_execution</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a709c91aa37042c79c03190385a643b28"><td class="memTemplParams" colspan="2"><a id="a709c91aa37042c79c03190385a643b28" name="a709c91aa37042c79c03190385a643b28"></a>
@@ -186,6 +192,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (<a cl
 <tr class="memitem:a53d4e66082641968eb431b2578f894c2"><td class="memItemLeft" align="right" valign="top"><a id="a53d4e66082641968eb431b2578f894c2" name="a53d4e66082641968eb431b2578f894c2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>delete_context</b> ()</td></tr>
 <tr class="separator:a53d4e66082641968eb431b2578f894c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f857d2bff4537e5ce5a0fe4c2428e22"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1abstract__memory__context.html#a9f857d2bff4537e5ce5a0fe4c2428e22">operator()</a> (auto thunk)</td></tr>
+<tr class="separator:a9f857d2bff4537e5ce5a0fe4c2428e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -193,6 +201,34 @@ Protected Member Functions</h2></td></tr>
 virtual ::MemoryContext&#160;</td><td class="memItemRight" valign="bottom"><b>_memory_context</b> ()=0</td></tr>
 <tr class="separator:a4c114566efba8cefbd2a40cb97446f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9f857d2bff4537e5ce5a0fe4c2428e22" name="a9f857d2bff4537e5ce5a0fe4c2428e22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f857d2bff4537e5ce5a0fe4c2428e22">&#9670;&#160;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto cppgres::abstract_memory_context::operator() </td>
+          <td>(</td>
+          <td class="paramtype">auto&#160;</td>
+          <td class="paramname"><em>thunk</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Execute a callable within this memory context, respecting exceptions </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cppgres/<a class="el" href="memory_8hpp_source.html">memory.hpp</a></li>
 </ul>

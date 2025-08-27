@@ -1,6 +1,7 @@
 var memory_8hpp =
 [
-    [ "cppgres::abstract_memory_context", "structcppgres_1_1abstract__memory__context.html", null ],
+    [ "cppgres::abstract_memory_context", "structcppgres_1_1abstract__memory__context.html", "structcppgres_1_1abstract__memory__context" ],
+    [ "cppgres::abstract_memory_context::memory_context_execution< T >", "structcppgres_1_1abstract__memory__context_1_1memory__context__execution.html", null ],
     [ "cppgres::owned_memory_context", "structcppgres_1_1owned__memory__context.html", null ],
     [ "cppgres::memory_context", "structcppgres_1_1memory__context.html", null ],
     [ "cppgres::always_current_memory_context", "structcppgres_1_1always__current__memory__context.html", null ],

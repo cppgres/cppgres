@@ -5,5 +5,6 @@ var searchData=
   ['memory_2ehpp_2',['memory.hpp',['../memory_8hpp.html',1,'']]],
   ['memory_5fcontext_3',['memory_context',['../structcppgres_1_1memory__context.html',1,'cppgres']]],
   ['memory_5fcontext_5fallocator_4',['memory_context_allocator',['../structcppgres_1_1memory__context__allocator.html',1,'cppgres']]],
-  ['memory_5fcontext_5fscope_5',['memory_context_scope',['../structcppgres_1_1memory__context__scope.html',1,'cppgres']]]
+  ['memory_5fcontext_5fexecution_5',['memory_context_execution',['../structcppgres_1_1abstract__memory__context_1_1memory__context__execution.html',1,'cppgres::abstract_memory_context']]],
+  ['memory_5fcontext_5fscope_6',['memory_context_scope',['../structcppgres_1_1memory__context__scope.html',1,'cppgres']]]
 ];

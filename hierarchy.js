@@ -117,6 +117,7 @@ var hierarchy =
     [ "cppgres::utils::maybe_ref< T >", "structcppgres_1_1utils_1_1maybe__ref.html", null ],
     [ "cppgres::utils::maybe_ref<::BackgroundWorker >", "structcppgres_1_1utils_1_1maybe__ref.html", null ],
     [ "cppgres::memory_context_allocator< T, Context >", "structcppgres_1_1memory__context__allocator.html", null ],
+    [ "cppgres::abstract_memory_context::memory_context_execution< T >", "structcppgres_1_1abstract__memory__context_1_1memory__context__execution.html", null ],
     [ "cppgres::memory_context_scope< Context >", "structcppgres_1_1memory__context__scope.html", null ],
     [ "cppgres::name", "structcppgres_1_1name.html", null ],
     [ "cppgres::node_coverage< T >", "structcppgres_1_1node__coverage.html", null ],
