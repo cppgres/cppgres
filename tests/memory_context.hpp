@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdexcept>
+
 #include "tests.hpp"
 
 namespace tests {
@@ -93,6 +95,26 @@ add_test(owned_memory_context, ([](test_case &) {
              cppgres::memory_context mctx(std::move(ctx));
            }
            result = result && _assert(!context_reset);
+
+           return result;
+         }));
+
+add_test(executing_within_memory_context, ([](test_case &) {
+           bool result = true;
+           cppgres::alloc_set_memory_context mctx;
+           result = result && _assert(mctx != cppgres::always_current_memory_context());
+
+           auto mctx_used =
+               mctx([&mctx]() { return mctx == cppgres::always_current_memory_context(); });
+           result = result && _assert(mctx_used);
+           result = result && _assert(mctx != cppgres::always_current_memory_context());
+
+           // exception should be handled and the memory context should revert
+           try {
+             mctx([]() { throw std::runtime_error("error"); });
+           } catch (std::runtime_error &e) {
+           }
+           result = result && _assert(mctx != cppgres::always_current_memory_context());
 
            return result;
          }));
