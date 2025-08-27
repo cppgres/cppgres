@@ -10,7 +10,7 @@ like GCC and Clang.
 * Compile and runtime safety checks
 * Automatic type mapping
 * Ergonomic executor API
-* Modern C+++20 interface & implementation
+* Modern C++20 interface & implementation
 * Direct integration with C
 
 ## Building
