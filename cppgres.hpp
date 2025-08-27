@@ -7679,8 +7679,28 @@ struct abstract_memory_context {
 
   void delete_context() { ffi_guard{::MemoryContextDelete}(_memory_context()); }
 
+  /**
+   * Execute a callable within this memory context, respecting exceptions
+   */
+  auto operator()(auto thunk) { return memory_context_execution(thunk, *this)(); }
+
 protected:
   virtual ::MemoryContext _memory_context() = 0;
+
+  template <typename T> requires requires(T t) { t(); }
+  struct memory_context_execution {
+    memory_context_execution(T thunk, abstract_memory_context &ctx)
+        : _ctx(::CurrentMemoryContext), _thunk(thunk) {
+      ::CurrentMemoryContext = ctx;
+    }
+    ~memory_context_execution() { ::CurrentMemoryContext = _ctx; }
+
+    auto operator()() { return _thunk(); }
+
+  private:
+    MemoryContext _ctx;
+    T _thunk;
+  };
 };
 
 struct owned_memory_context : public abstract_memory_context {
