@@ -45,6 +45,12 @@ template <typename T, typename = void> struct type_traits {
   type type_for() = delete;
 };
 
+template <typename T>
+concept has_type_traits = requires(const type &t) {
+  { type_traits<T>().type_for() } -> std::same_as<type>;
+  { type_traits<T>().is(t) } -> std::same_as<bool>;
+};
+
 template <typename T> requires std::is_reference_v<T>
 struct type_traits<T> {
   type_traits() {}

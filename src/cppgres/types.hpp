@@ -339,11 +339,21 @@ template <typename T> struct datum_conversion<T, std::enable_if_t<utils::is_opti
     return from_datum(d, oid, context);
   }
 
-  static T from_datum(const datum &d, oid oid, std::optional<memory_context> ctx) {
+  static T from_datum(const datum &d, oid oid, std::optional<memory_context> ctx = std::nullopt) {
     return datum_conversion<utils::remove_optional_t<T>>::from_datum(d, oid, ctx);
   }
 
-  static datum into_datum(const T &t) { return t.get_expanded_datum(); }
+  static datum into_datum(const T &t) {
+    return datum_conversion<utils::remove_optional_t<T>>::into_datum(t.value());
+  }
+
+  static nullable_datum into_nullable_datum(const T &d) {
+    if (d.has_value()) {
+      return nullable_datum(into_datum(d));
+    } else {
+      return nullable_datum();
+    }
+  }
 };
 
 /**

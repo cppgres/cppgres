@@ -124,4 +124,87 @@ add_test(current_postgres_function, ([](test_case &) {
 
            return result;
          }));
+
+add_test(function_call, ([](test_case &) {
+           bool result = true;
+
+           {
+             cppgres::function<std::string, int32_t> f("length");
+             result = result && _assert(f("test") == 4);
+           }
+
+           {
+             cppgres::function<std::optional<std::string>, std::optional<int32_t>> f("length");
+             result = result && _assert(f("test").value() == 4);
+             result = result && _assert(!f(std::nullopt).has_value());
+           }
+
+           {
+             cppgres::function<std::string, int32_t> f("pg_catalog", "length");
+             result = result && _assert(f("test") == 4);
+           }
+
+           /// Erroneous cases:
+
+           {
+             // Wrong arg
+             cppgres::internal_subtransaction sub;
+             bool exception_raised = false;
+             try {
+               cppgres::function<std::int32_t, int32_t> f("length");
+             } catch (std::exception &e) {
+               result =
+                   result &&
+                   _assert(std::string_view("function length(integer) does not exist") == e.what());
+               exception_raised = true;
+             }
+             result = result && _assert(exception_raised);
+           }
+
+           {
+             // Wrong arg count
+             cppgres::internal_subtransaction sub;
+             bool exception_raised = false;
+             try {
+               cppgres::function<std::string, std::string, int32_t> f("length");
+             } catch (std::exception &e) {
+               result = result &&
+                        _assert(std::string_view("function length(text, text) does not exist") ==
+                                e.what());
+               exception_raised = true;
+             }
+             result = result && _assert(exception_raised);
+           }
+
+           {
+             // Wrong return type
+             cppgres::internal_subtransaction sub;
+             bool exception_raised = false;
+             try {
+               cppgres::function<std::string, std::string> f("length");
+             } catch (std::exception &e) {
+               result =
+                   result &&
+                   _assert(std::string_view("expected return type text, got integer") == e.what());
+               exception_raised = true;
+             }
+             result = result && _assert(exception_raised);
+           }
+
+           {
+             // Wrong name
+             cppgres::internal_subtransaction sub;
+             bool exception_raised = false;
+             try {
+               cppgres::function<std::string, int32_t> f("lengt");
+             } catch (std::exception &e) {
+               result = result && _assert(std::string_view("function lengt(text) does not exist") ==
+                                          e.what());
+               exception_raised = true;
+             }
+             result = result && _assert(exception_raised);
+           }
+
+           return result;
+         }));
 } // namespace tests
