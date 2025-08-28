@@ -103,6 +103,7 @@ var hierarchy =
       [ "cppgres::utils::is_std_tuple< T >", "structcppgres_1_1utils_1_1is__std__tuple.html", null ]
     ] ],
     [ "cppgres::ffi_guard< Func >", "structcppgres_1_1ffi__guard.html", null ],
+    [ "cppgres::function< Arg >", "structcppgres_1_1function.html", null ],
     [ "cppgres::function_call_info", "structcppgres_1_1function__call__info.html", null ],
     [ "cppgres::utils::function_traits::function_traits< T >", "structcppgres_1_1utils_1_1function__traits_1_1function__traits.html", null ],
     [ "cppgres::utils::function_traits::function_traits< R(&)(Args...)>", "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07_6_08_07Args_8_8_8_08_4.html", null ],

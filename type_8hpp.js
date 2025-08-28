@@ -9,6 +9,7 @@ var type_8hpp =
     [ "cppgres::text", "structcppgres_1_1text.html", null ],
     [ "cppgres::bytea", "structcppgres_1_1bytea.html", null ],
     [ "cppgres::expanded_varlena< T >", "structcppgres_1_1expanded__varlena.html", null ],
+    [ "cppgres::has_type_traits", "conceptcppgres_1_1has__type__traits.html", null ],
     [ "cppgres::flattenable", "conceptcppgres_1_1flattenable.html", null ],
     [ "cppgres::expanded_varlena_type", "conceptcppgres_1_1expanded__varlena__type.html", null ],
     [ "cppgres::has_a_type", "conceptcppgres_1_1has__a__type.html", null ]

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cppgres: Member List</title>
+<title>Cppgres: cppgres::has_type_traits Concept Reference</title>
 <!--BEGIN PROJECT_ICON-->
 <link rel="icon" href="$projecticon" type="image/x-icon" />
 <!--END PROJECT_ICON-->
@@ -110,7 +110,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('structcppgres_1_1oid.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('conceptcppgres_1_1has__type__traits.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -136,26 +136,23 @@ $(document).ready(function(){initNavTree('structcppgres_1_1oid.html',''); initRe
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">cppgres::oid Member List</div></div>
+  <div class="headertitle"><div class="title">cppgres::has_type_traits Concept Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>This is the complete list of members for <a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a>, including all inherited members.</p>
-<table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>oid</b>() (defined in <a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>oid</b>(::Oid oid) (defined in <a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>oid</b>(oid &amp;oid) (defined in <a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>operator!=</b>(const oid &amp;rhs) const (defined in <a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator!=</b>(const ::Oid &amp;rhs) const (defined in <a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>operator::Oid</b>() const (defined in <a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator::Oid &amp;</b>() (defined in <a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>operator==</b>(const oid &amp;rhs) const (defined in <a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator==</b>(const ::Oid &amp;rhs) const (defined in <a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a>)</td><td class="entry"><a class="el" href="structcppgres_1_1oid.html">cppgres::oid</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-</table></div><!-- contents -->
+<h2 class="groupheader">Concept definition</h2>
+<div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptcppgres_1_1has__type__traits.html">cppgres::has_type_traits</a> =  <span class="keyword">requires</span>(<span class="keyword">const</span> type &amp;t) {</div>
+<div class="line">  { type_traits&lt;T&gt;().type_for() } -&gt; std::same_as&lt;type&gt;;</div>
+<div class="line">  { <a class="code hl_struct" href="structcppgres_1_1type__traits.html">type_traits&lt;T&gt;</a>().is(t) } -&gt; std::same_as&lt;bool&gt;;</div>
+<div class="line">}</div>
+<div class="ttc" id="aconceptcppgres_1_1has__type__traits_html"><div class="ttname"><a href="conceptcppgres_1_1has__type__traits.html">cppgres::has_type_traits</a></div><div class="ttdef"><b>Definition:</b> type.hpp:49</div></div>
+<div class="ttc" id="astructcppgres_1_1type__traits_html"><div class="ttname"><a href="structcppgres_1_1type__traits.html">cppgres::type_traits</a></div><div class="ttdef"><b>Definition:</b> type.hpp:41</div></div>
+</div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><b>cppgres</b></li><li class="navelem"><a class="el" href="conceptcppgres_1_1has__type__traits.html">has_type_traits</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>

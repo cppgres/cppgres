@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"structcppgres_1_1unsupported__type.html":[2,0,0,112],
+"structcppgres_1_1utils_1_1function__traits_1_1function__traits.html":[2,0,0,1,0,0],
 "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07Args_8_8_8_08_4.html":[2,0,0,1,0,3],
 "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07C_1_1_5_08_07Args_8_8_8_08_01const_01_4.html":[2,0,0,1,0,4],
 "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07_5_08_07Args_8_8_8_08_4.html":[2,0,0,1,0,2],
@@ -16,10 +18,10 @@ var NAVTREEINDEX1 =
 "structcppgres_1_1utils_1_1tuple__traits__impl_1_1tuple__element__t.html":[2,0,0,1,7,0],
 "structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__aggregate__v_3_01T_01_4_01_4_01_4.html":[2,0,0,1,8],
 "structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1void__t_3_01decltype_07std_1_1tuc17d0c8e371e8a53d2c38db131d82a30.html":[2,0,0,1,9],
-"structcppgres_1_1value.html":[2,0,0,112],
-"structcppgres_1_1varlena.html":[2,0,0,113],
-"structcppgres_1_1worker.html":[2,0,0,114],
-"structcppgres_1_1worker.html#acc6a061aa2738d1ceee22275d7e7768c":[2,0,0,114,0],
+"structcppgres_1_1value.html":[2,0,0,113],
+"structcppgres_1_1varlena.html":[2,0,0,114],
+"structcppgres_1_1worker.html":[2,0,0,115],
+"structcppgres_1_1worker.html#acc6a061aa2738d1ceee22275d7e7768c":[2,0,0,115,0],
 "syscache_8hpp_source.html":[3,0,0,0,21],
 "threading_8hpp_source.html":[3,0,0,0,22],
 "type_8hpp.html":[3,0,0,0,23],

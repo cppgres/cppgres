@@ -67,6 +67,7 @@ var annotated_dup =
       [ "expr_node_walker", "structcppgres_1_1expr__node__walker.html", null ],
       [ "expr_node_walker< nodes::Query >", "structcppgres_1_1expr__node__walker_3_01nodes_1_1Query_01_4.html", null ],
       [ "ffi_guard", "structcppgres_1_1ffi__guard.html", null ],
+      [ "function", "structcppgres_1_1function.html", null ],
       [ "function_call_info", "structcppgres_1_1function__call__info.html", "structcppgres_1_1function__call__info" ],
       [ "heap_tuple", "structcppgres_1_1heap__tuple.html", null ],
       [ "internal_subtransaction", "structcppgres_1_1internal__subtransaction.html", null ],

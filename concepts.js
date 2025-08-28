@@ -33,6 +33,7 @@ var concepts =
       [ "walker_implementation", "conceptcppgres_1_1walker__implementation.html", null ],
       [ "datumable_iterator", "conceptcppgres_1_1datumable__iterator.html", null ],
       [ "syscached", "conceptcppgres_1_1syscached.html", null ],
+      [ "has_type_traits", "conceptcppgres_1_1has__type__traits.html", null ],
       [ "flattenable", "conceptcppgres_1_1flattenable.html", null ],
       [ "expanded_varlena_type", "conceptcppgres_1_1expanded__varlena__type.html", null ],
       [ "has_a_type", "conceptcppgres_1_1has__a__type.html", null ]
