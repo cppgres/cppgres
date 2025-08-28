@@ -7418,6 +7418,7 @@ extern "C" {
 #include <nodes/supportnodes.h>
 #include <nodes/tidbitmap.h>
 #include <parser/analyze.h>
+#include <parser/parse_func.h>
 #include <parser/parser.h>
 #include <storage/ipc.h>
 #include <utils/builtins.h>
@@ -7918,6 +7919,7 @@ struct pointer_gone_exception : public std::exception {
 namespace cppgres {
 
 struct oid {
+  oid() : oid_(InvalidOid) {}
   oid(::Oid oid) : oid_(oid) {}
   oid(oid &oid) : oid_(oid.oid_) {}
 
@@ -8416,6 +8418,12 @@ template <typename T, typename = void> struct type_traits {
   type_traits(const T &) {}
   bool is(const type &t) { return false; }
   type type_for() = delete;
+};
+
+template <typename T>
+concept has_type_traits = requires(const type &t) {
+  { type_traits<T>().type_for() } -> std::same_as<type>;
+  { type_traits<T>().is(t) } -> std::same_as<bool>;
 };
 
 template <typename T> requires std::is_reference_v<T>
@@ -8949,11 +8957,21 @@ template <typename T> struct datum_conversion<T, std::enable_if_t<utils::is_opti
     return from_datum(d, oid, context);
   }
 
-  static T from_datum(const datum &d, oid oid, std::optional<memory_context> ctx) {
+  static T from_datum(const datum &d, oid oid, std::optional<memory_context> ctx = std::nullopt) {
     return datum_conversion<utils::remove_optional_t<T>>::from_datum(d, oid, ctx);
   }
 
-  static datum into_datum(const T &t) { return t.get_expanded_datum(); }
+  static datum into_datum(const T &t) {
+    return datum_conversion<utils::remove_optional_t<T>>::into_datum(t.value());
+  }
+
+  static nullable_datum into_nullable_datum(const T &d) {
+    if (d.has_value()) {
+      return nullable_datum(into_datum(d));
+    } else {
+      return nullable_datum();
+    }
+  }
 };
 
 /**
@@ -9824,6 +9842,120 @@ template <datumable_function Func> struct postgres_function {
     })();
     __builtin_unreachable();
   }
+};
+
+template <has_type_traits... Arg> struct function {
+
+  template <std::size_t N, typename... Args>
+  using take_n_types = decltype([]<std::size_t... I>(std::index_sequence<I...>) {
+    return std::tuple<std::tuple_element_t<I, std::tuple<Args...>>...>{};
+  }(std::make_index_sequence<N>{}));
+
+  using arg_types = take_n_types<sizeof...(Arg) - 1, Arg...>;
+  using ret_type = std::tuple_element_t<sizeof...(Arg) - 1, std::tuple<Arg...>>;
+
+  function(const char *schema, const char *name)
+      : function([schema, name]() -> oid {
+          return alloc_set_memory_context()([&schema, &name]() {
+            ::List *fname = list_make2(::makeString(const_cast<char *>(schema)),
+                                       ::makeString(const_cast<char *>(name)));
+            std::array<::Oid, sizeof...(Arg)> argtypes = {type_traits<Arg>().type_for().oid...};
+            return ffi_guard{::LookupFuncName}(fname, static_cast<int>(sizeof...(Arg) - 1),
+                                               argtypes.data(), false);
+          });
+        }()) {}
+  function(std::string &schema, std::string &name) : function(schema.c_str(), name.c_str()) {}
+  explicit function(const char *name)
+      : function([name]() -> oid {
+          return alloc_set_memory_context()([&name]() {
+            ::List *fname = list_make1(::makeString(const_cast<char *>(name)));
+            std::array<::Oid, sizeof...(Arg)> argtypes = {type_traits<Arg>().type_for().oid...};
+            return ffi_guard{::LookupFuncName}(fname, static_cast<int>(sizeof...(Arg) - 1),
+                                               argtypes.data(), false);
+          });
+        }()) {}
+  function(std::string &name) : function(name.c_str()) {}
+  function(oid oid) : oid_(oid) {
+    syscache<Form_pg_proc, decltype(oid)> p(oid_);
+    rettype_ = (*p).prorettype;
+    if (rettype_ != type_traits<ret_type>().type_for().oid) {
+      throw std::runtime_error(cppgres::fmt::format("expected return type {}, got {}",
+                                                    type_traits<ret_type>().type_for().name(),
+                                                    type{.oid = rettype_}.name()));
+    }
+    strict_ = (*p).proisstrict;
+  }
+
+  using self = function<Arg...>;
+  template <typename... Args> static constexpr bool convertible_args() {
+    if constexpr (sizeof...(Args) != sizeof...(Arg) - 1) {
+      return false;
+    } else {
+      return []<std::size_t... I>(std::index_sequence<I...>) {
+        return (
+            std::convertible_to<std::decay_t<Args>, std::tuple_element_t<I, std::tuple<Arg...>>> &&
+            ...);
+      }(std::make_index_sequence<sizeof...(Args)>{});
+    }
+  }
+  ret_type operator()(auto... args) requires(self::convertible_args<decltype(args)...>())
+  {
+    bool any_nulls = false;
+    auto optval = []<std::size_t I>(auto arg) -> ::Datum {
+      using nth_type = std::tuple_element_t<I, std::tuple<Arg...>>;
+      if constexpr (std::same_as<std::nullopt_t, decltype(arg)>) {
+        return datum(0);
+      } else if constexpr (!utils::is_optional<decltype(arg)>) {
+        return datum_conversion<nth_type>().into_datum(arg);
+      } else {
+        return arg.has_value() ? datum_conversion<nth_type>().into_datum(arg.value()) : datum(0);
+      }
+      return datum(0);
+    };
+    auto isnull = [&any_nulls](auto arg) {
+      if constexpr (std::same_as<std::nullopt_t, decltype(arg)>) {
+        any_nulls = true;
+        return true;
+      } else if constexpr (!utils::is_optional<decltype(arg)>) {
+        return false;
+      } else {
+        any_nulls = !arg.has_value();
+        return !arg.has_value();
+      }
+      return false;
+    };
+    return [&]<std::size_t... I>(std::index_sequence<I...>) -> ret_type {
+      LOCAL_FCINFO(fcinfo, sizeof...(args));
+      ::FmgrInfo flinfo;
+
+      ffi_guard{::fmgr_info}(oid_, &flinfo);
+
+      InitFunctionCallInfoData(*fcinfo, &flinfo, sizeof...(args), InvalidOid, NULL, NULL);
+
+      ((fcinfo->args[I].value = optval.template operator()<I>(args)), ...);
+      ((fcinfo->args[I].isnull = isnull(args)), ...);
+
+      if (any_nulls && strict_) {
+        if constexpr (utils::is_optional<ret_type>) {
+          return std::nullopt;
+        } else {
+          throw null_datum_exception();
+        }
+      }
+
+      nullable_datum result(ffi_guard{[&fcinfo]() { return FunctionCallInvoke(fcinfo); }}());
+      if (fcinfo->isnull) {
+        result = nullable_datum();
+      }
+
+      return datum_conversion<ret_type>().from_nullable_datum(result, rettype_);
+    }(std::make_index_sequence<sizeof...(Arg) - 1>{});
+  }
+
+private:
+  oid oid_;
+  oid rettype_;
+  bool strict_;
 };
 
 } // namespace cppgres
