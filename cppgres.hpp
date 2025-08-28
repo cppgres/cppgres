@@ -10875,11 +10875,17 @@ struct spi_executor : public executor {
     auto rc = ffi_guard{::SPI_execute_with_args}(utils::to_cstring(query), nargs, types.data(),
                                                  datums.data(), nulls.data(), opts.read_only(),
                                                  opts.count());
-    if (rc > 0) {
+    if (rc == SPI_OK_SELECT || rc == SPI_OK_INSERT_RETURNING || rc == SPI_OK_UPDATE_RETURNING ||
+        rc == SPI_OK_DELETE_RETURNING || (rc == SPI_OK_UTILITY && SPI_tuptable != nullptr)
+#if PG_MAJORVERSION_NUM >= 17
+        || rc == SPI_OK_MERGE_RETURNING
+#endif
+    ) {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
       return results<Ret>(SPI_tuptable);
     } else {
-      throw std::runtime_error("spi error");
+      throw std::runtime_error(
+          fmt::format("spi error in `{}`", std::string_view(utils::to_cstring(query))));
     }
   }
 
@@ -10913,7 +10919,7 @@ struct spi_executor : public executor {
       //      static_assert(std::random_access_iterator<result_iterator<Ret>>);
       return results<Ret>(SPI_tuptable);
     } else {
-      throw std::runtime_error("spi error");
+      throw std::runtime_error("spi error in a query plan");
     }
   }
 
@@ -10936,7 +10942,7 @@ struct spi_executor : public executor {
     if (rc >= 0) {
       return SPI_processed;
     } else {
-      throw std::runtime_error(cppgres::fmt::format("spi error"));
+      throw std::runtime_error(cppgres::fmt::format("spi error in `{}`", query));
     }
   }
 
