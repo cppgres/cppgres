@@ -553,4 +553,17 @@ add_test(spi_plan_string_length, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_query_dml, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           bool exception_raised = false;
+           try {
+             spi.query<int>("create table spi_query_dml ()");
+           } catch (std::exception &e) {
+             exception_raised = true;
+           }
+           result = result && _assert(exception_raised);
+           return result;
+         }));
+
 } // namespace tests
