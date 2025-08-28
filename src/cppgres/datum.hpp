@@ -15,6 +15,7 @@
 namespace cppgres {
 
 struct oid {
+  oid() : oid_(InvalidOid) {}
   oid(::Oid oid) : oid_(oid) {}
   oid(oid &oid) : oid_(oid.oid_) {}
 
