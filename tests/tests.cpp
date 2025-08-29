@@ -29,6 +29,7 @@ PG_MODULE_MAGIC;
 #include "datum.hpp"
 #include "errors.hpp"
 #include "function.hpp"
+#include "guard.hpp"
 #include "heap_tuple.hpp"
 #include "memory_context.hpp"
 #include "node.hpp"
