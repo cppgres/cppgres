@@ -50,6 +50,9 @@ var hierarchy =
     [ "cppgres::default_datum_conversion< float >", "structcppgres_1_1default__datum__conversion.html", [
       [ "cppgres::datum_conversion< float >", "structcppgres_1_1datum__conversion_3_01float_01_4.html", null ]
     ] ],
+    [ "cppgres::default_datum_conversion< function< Args... > >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< function< Args... > >", "structcppgres_1_1datum__conversion_3_01function_3_01Args_8_8_8_01_4_01_4.html", null ]
+    ] ],
     [ "cppgres::default_datum_conversion< int16_t >", "structcppgres_1_1default__datum__conversion.html", [
       [ "cppgres::datum_conversion< int16_t >", "structcppgres_1_1datum__conversion_3_01int16__t_01_4.html", null ]
     ] ],
@@ -176,6 +179,7 @@ var hierarchy =
     [ "cppgres::type_traits< double >", "structcppgres_1_1type__traits_3_01double_01_4.html", null ],
     [ "cppgres::type_traits< expanded_varlena< F > >", "structcppgres_1_1type__traits_3_01expanded__varlena_3_01F_01_4_01_4.html", null ],
     [ "cppgres::type_traits< float >", "structcppgres_1_1type__traits_3_01float_01_4.html", null ],
+    [ "cppgres::type_traits< function< Args... > >", "structcppgres_1_1type__traits_3_01function_3_01Args_8_8_8_01_4_01_4.html", null ],
     [ "cppgres::type_traits< I >", "structcppgres_1_1type__traits_3_01I_01_4.html", null ],
     [ "cppgres::type_traits< int16_t >", "structcppgres_1_1type__traits_3_01int16__t_01_4.html", null ],
     [ "cppgres::type_traits< int32_t >", "structcppgres_1_1type__traits_3_01int32__t_01_4.html", null ],

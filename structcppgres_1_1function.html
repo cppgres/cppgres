@@ -147,13 +147,9 @@ $(document).ready(function(){initNavTree('structcppgres_1_1function.html',''); i
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a3608af7508bdb552de4c056f6aaa8c09"><td class="memTemplParams" colspan="2"><a id="a3608af7508bdb552de4c056f6aaa8c09" name="a3608af7508bdb552de4c056f6aaa8c09"></a>
-template&lt;std::size_t N, typename... Args&gt; </td></tr>
-<tr class="memitem:a3608af7508bdb552de4c056f6aaa8c09"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>take_n_types</b> = decltype([]&lt; std::size_t... I &gt;(std::index_sequence&lt; I... &gt;) { return std::tuple&lt; std::tuple_element_t&lt; I, std::tuple&lt; Args... &gt; &gt;... &gt;{}</td></tr>
-<tr class="separator:a3608af7508bdb552de4c056f6aaa8c09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a121e4d7eda67003b07c165950bb1027d"><td class="memItemLeft" align="right" valign="top"><a id="a121e4d7eda67003b07c165950bb1027d" name="a121e4d7eda67003b07c165950bb1027d"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>arg_types</b> = take_n_types&lt; sizeof...(Arg) - 1, Arg... &gt;</td></tr>
-<tr class="separator:a121e4d7eda67003b07c165950bb1027d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fa0264ab587d45ce582eb3236121e2c"><td class="memItemLeft" align="right" valign="top"><a id="a6fa0264ab587d45ce582eb3236121e2c" name="a6fa0264ab587d45ce582eb3236121e2c"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>arg_types</b> = decltype(make_arg_tuple(std::make_index_sequence&lt; sizeof...(Arg) - 1 &gt;{}))</td></tr>
+<tr class="separator:a6fa0264ab587d45ce582eb3236121e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1ab2ccfbea3d7501d3519b52c70bd42"><td class="memItemLeft" align="right" valign="top"><a id="aa1ab2ccfbea3d7501d3519b52c70bd42" name="aa1ab2ccfbea3d7501d3519b52c70bd42"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>ret_type</b> = std::tuple_element_t&lt; sizeof...(Arg) - 1, std::tuple&lt; Arg... &gt; &gt;</td></tr>
 <tr class="separator:aa1ab2ccfbea3d7501d3519b52c70bd42"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,9 +177,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa281a4c05f6047b268d9bb663bb87d25"><td class="memItemLeft" align="right" valign="top"><a id="aa281a4c05f6047b268d9bb663bb87d25" name="aa281a4c05f6047b268d9bb663bb87d25"></a>
 ret_type&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (auto... args)</td></tr>
 <tr class="separator:aa281a4c05f6047b268d9bb663bb87d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a9fd78a83313fd2aa719f9cdc520c5a"><td class="memItemLeft" align="right" valign="top"><a id="a5a9fd78a83313fd2aa719f9cdc520c5a" name="a5a9fd78a83313fd2aa719f9cdc520c5a"></a>
+const <a class="el" href="structcppgres_1_1oid.html">oid</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>function_oid</b> () const</td></tr>
+<tr class="separator:a5a9fd78a83313fd2aa719f9cdc520c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a108d6e2ccc9a3e7f0dbd3a5f7d8cfc70"><td class="memTemplParams" colspan="2"><a id="a108d6e2ccc9a3e7f0dbd3a5f7d8cfc70" name="a108d6e2ccc9a3e7f0dbd3a5f7d8cfc70"></a>
+template&lt;std::size_t... I&gt; </td></tr>
+<tr class="memitem:a108d6e2ccc9a3e7f0dbd3a5f7d8cfc70"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>make_arg_tuple</b> (std::index_sequence&lt; I... &gt;) -&gt; std::tuple&lt; std::tuple_element_t&lt; I, std::tuple&lt; Arg... &gt; &gt;... &gt;</td></tr>
+<tr class="separator:a108d6e2ccc9a3e7f0dbd3a5f7d8cfc70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7558d154c8ee8f11fa17f27f53195b8"><td class="memTemplParams" colspan="2"><a id="ab7558d154c8ee8f11fa17f27f53195b8" name="ab7558d154c8ee8f11fa17f27f53195b8"></a>
 template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:ab7558d154c8ee8f11fa17f27f53195b8"><td class="memTemplItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>convertible_args</b> ()</td></tr>
