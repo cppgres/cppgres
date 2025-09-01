@@ -129,18 +129,18 @@ add_test(function_call, ([](test_case &) {
            bool result = true;
 
            {
-             cppgres::function<std::string, int32_t> f("length");
+             cppgres::function<int32_t, std::string> f("length");
              result = result && _assert(f("test") == 4);
            }
 
            {
-             cppgres::function<std::optional<std::string>, std::optional<int32_t>> f("length");
+             cppgres::function<std::optional<int32_t>, std::optional<std::string>> f("length");
              result = result && _assert(f("test").value() == 4);
              result = result && _assert(!f(std::nullopt).has_value());
            }
 
            {
-             cppgres::function<std::string, int32_t> f("pg_catalog", "length");
+             cppgres::function<int32_t, std::string> f("pg_catalog", "length");
              result = result && _assert(f("test") == 4);
            }
 
@@ -151,7 +151,7 @@ add_test(function_call, ([](test_case &) {
              cppgres::internal_subtransaction sub;
              bool exception_raised = false;
              try {
-               cppgres::function<std::int32_t, int32_t> f("length");
+               cppgres::function<int32_t, std::int32_t> f("length");
              } catch (std::exception &e) {
                result =
                    result &&
@@ -166,7 +166,7 @@ add_test(function_call, ([](test_case &) {
              cppgres::internal_subtransaction sub;
              bool exception_raised = false;
              try {
-               cppgres::function<std::string, std::string, int32_t> f("length");
+               cppgres::function<int32_t, std::string, std::string> f("length");
              } catch (std::exception &e) {
                result = result &&
                         _assert(std::string_view("function length(text, text) does not exist") ==
@@ -196,7 +196,7 @@ add_test(function_call, ([](test_case &) {
              cppgres::internal_subtransaction sub;
              bool exception_raised = false;
              try {
-               cppgres::function<std::string, int32_t> f("lengt");
+               cppgres::function<int32_t, std::string> f("lengt");
              } catch (std::exception &e) {
                result = result && _assert(std::string_view("function lengt(text) does not exist") ==
                                           e.what());
@@ -209,7 +209,7 @@ add_test(function_call, ([](test_case &) {
          }));
 
 // Function that takes a function
-postgres_function(function_arg, ([](cppgres::function<std::string_view, std::int32_t> f,
+postgres_function(function_arg, ([](cppgres::function<std::int32_t, std::string_view> f,
                                     std::string_view s) { return f(s); }));
 
 add_test(function_takes_a_function, ([](test_case &) {
