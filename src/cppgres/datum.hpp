@@ -18,6 +18,7 @@ struct oid {
   oid() : oid_(InvalidOid) {}
   oid(::Oid oid) : oid_(oid) {}
   oid(oid &oid) : oid_(oid.oid_) {}
+  oid(const oid &oid) : oid_(oid.oid_) {}
 
   bool operator==(const oid &rhs) const { return oid_ == rhs.oid_; }
   bool operator!=(const oid &rhs) const { return !(rhs == *this); }

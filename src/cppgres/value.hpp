@@ -21,7 +21,7 @@ private:
 template <> struct datum_conversion<value> {
 
   static value from_nullable_datum(const nullable_datum &d, oid oid,
-                                   std::optional<memory_context>) {
+                                   std::optional<memory_context> = std::nullopt) {
     return {nullable_datum(d), type{.oid = oid}};
   }
 
@@ -42,7 +42,7 @@ template <> struct type_traits<value> {
     if (value_.has_value()) {
       return (*value_).get().get_type();
     }
-    throw std::runtime_error("can't determine type for an uninitialized value");
+    return {UNKNOWNOID};
   }
 
 private:
