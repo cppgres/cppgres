@@ -163,18 +163,17 @@ template <flattenable T> struct expanded_varlena : public varlena {
   using varlena::varlena;
 
   expanded_varlena()
-      : varlena(([]() {
-          auto ctx = memory_context(std::move(alloc_set_memory_context()));
-          auto *e = new (ctx.alloc<expanded>()) expanded(T());
-          ctx.register_reset_callback(
-              [](void *arg) {
-                auto v = reinterpret_cast<expanded *>(arg);
-                v->inner.~T();
-              },
-              e);
-          init(&e->hdr, ctx);
-          return std::make_pair(datum(PointerGetDatum(e)), ctx);
-        })()),
+      : varlena(allocate_expanded()),
+        detoasted_value(reinterpret_cast<expanded *>(DatumGetPointer(value_datum))) {}
+
+  template <typename... Args>
+  explicit expanded_varlena(Args &&...args)
+      // avoid being copy/move constructor
+      requires(sizeof...(Args) > 0 &&
+               !(sizeof...(Args) == 1 &&
+                 std::is_same_v<std::decay_t<std::tuple_element_t<0, std::tuple<Args...>>>,
+                                expanded_varlena>))
+      : varlena(allocate_expanded(args...)),
         detoasted_value(reinterpret_cast<expanded *>(DatumGetPointer(value_datum))) {}
 
   operator T &() {
@@ -210,6 +209,20 @@ private:
     ::ExpandedObjectHeader hdr;
     T inner;
   };
+
+  template <typename... Args> static auto allocate_expanded(Args &&...args) {
+    auto ctx = memory_context(std::move(alloc_set_memory_context()));
+    auto *e = new (ctx.alloc<expanded>()) expanded(T(std::forward<Args...>(args)...));
+    ctx.register_reset_callback(
+        [](void *arg) {
+          auto v = reinterpret_cast<expanded *>(arg);
+          v->inner.~T();
+        },
+        e);
+    init(&e->hdr, ctx);
+    return std::make_pair(datum(PointerGetDatum(e)), ctx);
+  }
+
   std::optional<expanded *> detoasted_value = std::nullopt;
 
   static void init(ExpandedObjectHeader *hdr, memory_context &ctx) {
