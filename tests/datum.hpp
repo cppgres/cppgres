@@ -241,6 +241,13 @@ add_test(eoh_smoke, ([](test_case &e) {
            // Ensure destructor gets called on `d`
            result = result && _assert(val == 650);
 
+           // Also, try to pass args into it
+           // (we just check this compiles)
+           auto d = cppgres::expanded_varlena<my_eoh>(1);
+           my_eoh &dv = d;
+           // and the value gets passed
+           result = result && _assert(dv.a == 1);
+
            return result;
          }));
 
