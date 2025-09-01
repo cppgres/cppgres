@@ -207,4 +207,105 @@ add_test(function_call, ([](test_case &) {
 
            return result;
          }));
+
+// Function that takes a function
+postgres_function(function_arg, ([](cppgres::function<std::string_view, std::int32_t> f,
+                                    std::string_view s) { return f(s); }));
+
+add_test(function_takes_a_function, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           spi.execute(cppgres::fmt::format(
+               "create function function_arg(regprocedure, text) returns int language c as '{}'",
+               get_library_name()));
+           auto val = spi.query<std::int32_t>("select function_arg('length(text)', 'hello')");
+           result = result && _assert(val.begin()[0] == std::string("hello").length());
+
+           {
+             // Wrong return type
+             cppgres::internal_subtransaction tx(false);
+             bool exception_raised = false;
+             try {
+               spi.query<std::int32_t>("select function_arg('lower(text)', 'hello')");
+             } catch (std::exception &e) {
+               exception_raised =
+                   _assert(std::string_view("exception: expected return type integer, got text") ==
+                           e.what());
+             }
+             result = result && _assert(exception_raised);
+           }
+
+           {
+             // Wrong argument type
+             cppgres::internal_subtransaction tx(false);
+             bool exception_raised = false;
+             try {
+               spi.query<std::int32_t>("select function_arg('abs(integer)', 'hello')");
+             } catch (std::exception &e) {
+               exception_raised = _assert(
+                   std::string_view("exception: expected type text for argument 0, got integer") ==
+                   e.what());
+             }
+             result = result && _assert(exception_raised);
+           }
+
+           return result;
+         }));
+
+// Function that takes a function with "any"
+postgres_function(function_arg_value, ([](cppgres::function<cppgres::value, cppgres::value> f,
+                                          cppgres::value v) { return f(v); }));
+
+add_test(function_takes_a_function_with_value, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           spi.execute(cppgres::fmt::format("create function function_arg_value(regprocedure, "
+                                            "anyelement) returns anyelement language c as '{}'",
+                                            get_library_name()));
+           auto val = spi.query<std::int32_t>("select function_arg_value('abs(int)', -3)");
+           result = result && _assert(val.begin()[0] == 3);
+
+           return result;
+         }));
+
+// Function that returns a function
+postgres_function(function_ret,
+                  ([](std::string s) { return cppgres::function<int32_t, int32_t>(s); }));
+
+add_test(function_returns_function, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           spi.execute(cppgres::fmt::format(
+               "create function function_ret(text) returns regprocedure language c as '{}'",
+               get_library_name()));
+           auto val = spi.query<bool>("select function_ret('abs') = 'abs(int)'::regprocedure");
+           result = result && _assert(val.begin()[0]);
+
+           {
+             // Missing function
+             cppgres::internal_subtransaction tx(false);
+             bool exception_raised = false;
+             try {
+               spi.query<bool>("select function_ret('absolute') = 'abs(int)'::regprocedure");
+             } catch (std::exception &e) {
+               exception_raised = true;
+             }
+             result = result && _assert(exception_raised);
+           }
+
+           {
+             // Wrong args function
+             cppgres::internal_subtransaction tx(false);
+             bool exception_raised = false;
+             try {
+               spi.query<bool>(
+                   "select function_ret('length(text)') = 'length(text)'::regprocedure");
+             } catch (std::exception &e) {
+               exception_raised = true;
+             }
+             result = result && _assert(exception_raised);
+           }
+           return result;
+         }));
+
 } // namespace tests
