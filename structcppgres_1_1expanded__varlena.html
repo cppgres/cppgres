@@ -164,6 +164,11 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>flattenable_type</b>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a04e272f30469f97cd6dae41cfc6f9c7d"><td class="memTemplParams" colspan="2"><a id="a04e272f30469f97cd6dae41cfc6f9c7d" name="a04e272f30469f97cd6dae41cfc6f9c7d"></a>
+template&lt;typename... Args&gt; <br />
+requires (sizeof...(Args) &gt; 0 &amp;&amp; !(sizeof...(Args) == 1 &amp;&amp; std::is_same_v&lt;std::decay_t&lt;std::tuple_element_t&lt;0, std::tuple&lt;Args...&gt;&gt;&gt;, <a class="el" href="structcppgres_1_1expanded__varlena.html">expanded_varlena</a>&gt;))</td></tr>
+<tr class="memitem:a04e272f30469f97cd6dae41cfc6f9c7d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>expanded_varlena</b> (Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a04e272f30469f97cd6dae41cfc6f9c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99ecf87e2a5bda4d1e679b54173954da"><td class="memItemLeft" align="right" valign="top"><a id="a99ecf87e2a5bda4d1e679b54173954da" name="a99ecf87e2a5bda4d1e679b54173954da"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator T&amp;</b> ()</td></tr>
 <tr class="separator:a99ecf87e2a5bda4d1e679b54173954da"><td class="memSeparator" colspan="2">&#160;</td></tr>
