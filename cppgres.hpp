@@ -7922,6 +7922,7 @@ struct oid {
   oid() : oid_(InvalidOid) {}
   oid(::Oid oid) : oid_(oid) {}
   oid(oid &oid) : oid_(oid.oid_) {}
+  oid(const oid &oid) : oid_(oid.oid_) {}
 
   bool operator==(const oid &rhs) const { return oid_ == rhs.oid_; }
   bool operator!=(const oid &rhs) const { return !(rhs == *this); }
@@ -9487,7 +9488,7 @@ private:
 template <> struct datum_conversion<value> {
 
   static value from_nullable_datum(const nullable_datum &d, oid oid,
-                                   std::optional<memory_context>) {
+                                   std::optional<memory_context> = std::nullopt) {
     return {nullable_datum(d), type{.oid = oid}};
   }
 
@@ -9508,7 +9509,7 @@ template <> struct type_traits<value> {
     if (value_.has_value()) {
       return (*value_).get().get_type();
     }
-    throw std::runtime_error("can't determine type for an uninitialized value");
+    return {UNKNOWNOID};
   }
 
 private:
@@ -9543,12 +9544,8 @@ concept datumable_function =
     requires { typename utils::function_traits::function_traits<Func>::argument_types; } &&
     all_from_nullable_datum<
         typename utils::function_traits::function_traits<Func>::argument_types>::value &&
-    requires(Func f) {
-      {
-        std::apply(
-            f,
-            std::declval<typename utils::function_traits::function_traits<Func>::argument_types>())
-      } -> convertible_into_nullable_datum_or_set_iterator_or_void;
+    requires(Func f, utils::function_traits::function_traits<Func>::argument_types &&args) {
+      { std::apply(f, args) } -> convertible_into_nullable_datum_or_set_iterator_or_void;
     };
 
 struct function_call_info {
@@ -9859,13 +9856,14 @@ template <datumable_function Func> struct postgres_function {
 
 template <has_type_traits... Arg> struct function {
 
-  template <std::size_t N, typename... Args>
-  using take_n_types = decltype([]<std::size_t... I>(std::index_sequence<I...>) {
-    return std::tuple<std::tuple_element_t<I, std::tuple<Args...>>...>{};
-  }(std::make_index_sequence<N>{}));
+  template <std::size_t... I>
+  static auto make_arg_tuple(std::index_sequence<I...>)
+      -> std::tuple<std::tuple_element_t<I, std::tuple<Arg...>>...>;
 
-  using arg_types = take_n_types<sizeof...(Arg) - 1, Arg...>;
+  using arg_types = decltype(make_arg_tuple(std::make_index_sequence<sizeof...(Arg) - 1>{}));
   using ret_type = std::tuple_element_t<sizeof...(Arg) - 1, std::tuple<Arg...>>;
+
+  function() = delete;
 
   function(const char *schema, const char *name)
       : function([schema, name]() -> oid {
@@ -9890,8 +9888,22 @@ template <has_type_traits... Arg> struct function {
   function(std::string &name) : function(name.c_str()) {}
   function(oid oid) : oid_(oid) {
     syscache<Form_pg_proc, decltype(oid)> p(oid_);
+    // Check arguments
+    auto &argtypes = (*p).proargtypes;
+    std::array<type, sizeof...(Arg)> types = {type_traits<Arg>().type_for()...};
+    for (int i = 0; i < argtypes.dim1; i++) {
+      cppgres::oid arg(argtypes.values[i]);
+      if (types[i] != type{UNKNOWNOID} /* FIXME: figure out how to avoid this special case */ &&
+          arg != types[i].oid) {
+        throw std::runtime_error(cppgres::fmt::format("expected type {} for argument {}, got {}",
+                                                      types[i].name(), i, type{.oid = arg}.name()));
+      }
+    }
+    // Check return type
     rettype_ = (*p).prorettype;
-    if (rettype_ != type_traits<ret_type>().type_for().oid) {
+    if (type_traits<ret_type>().type_for().oid !=
+            UNKNOWNOID /* FIXME: figure out how to avoid this special case */
+        && rettype_ != type_traits<ret_type>().type_for().oid) {
       throw std::runtime_error(cppgres::fmt::format("expected return type {}, got {}",
                                                     type_traits<ret_type>().type_for().name(),
                                                     type{.oid = rettype_}.name()));
@@ -9965,10 +9977,30 @@ template <has_type_traits... Arg> struct function {
     }(std::make_index_sequence<sizeof...(Arg) - 1>{});
   }
 
+  const oid &function_oid() const { return oid_; }
+
 private:
   oid oid_;
   oid rettype_;
   bool strict_;
+};
+
+template <has_type_traits... Args>
+struct datum_conversion<function<Args...>> : default_datum_conversion<function<Args...>> {
+  static function<Args...> from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
+    return {oid(d)};
+  }
+
+  static datum into_datum(const function<Args...> &t) {
+    return datum_conversion<oid>::into_datum(t.function_oid());
+  }
+};
+
+template <has_type_traits... Args> struct type_traits<function<Args...>> {
+  static bool is(const type &t) {
+    return t.oid == REGPROCEDUREOID || t.oid == OIDOID || t.oid == REGPROCOID;
+  }
+  static constexpr type type_for() { return type{.oid = REGPROCEDUREOID}; }
 };
 
 } // namespace cppgres
