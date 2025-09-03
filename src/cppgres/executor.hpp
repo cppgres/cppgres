@@ -146,8 +146,18 @@ struct spi_executor : public executor {
         return tuples.at(n).value();
       }
       if constexpr (convertible_from_datum<T>) {
-        if (tuptable->tupdesc->natts == 1) {
-          // if a special case of a directly convertible type
+        // if a special case of a directly convertible type
+        if constexpr (composite_type<T>) {
+          bool isnull;
+          ::Datum value =
+              ffi_guard{::SPI_getbinval}(tuptable->vals[n], tuptable->tupdesc, 1, &isnull);
+          ::NullableDatum datum = {.value = value, .isnull = isnull};
+          auto ret = from_nullable_datum<T>(nullable_datum(datum),
+                                            ffi_guard{::SPI_gettypeid}(tuptable->tupdesc, 1),
+                                            memory_context(tuptable->tuptabcxt));
+          tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);
+          return tuples.at(n).value();
+        } else if (tuptable->tupdesc->natts == 1) {
           bool isnull;
           ::Datum value =
               ffi_guard{::SPI_getbinval}(tuptable->vals[n], tuptable->tupdesc, 1, &isnull);
