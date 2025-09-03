@@ -45,6 +45,18 @@ struct tuple_descriptor {
       : tupdesc(tupdesc), blessed(blessed), owned(false) {}
 
   /**
+   * @brief Create a tuple description for a given composite type
+   */
+  tuple_descriptor(type t)
+      : tuple_descriptor([&]() {
+          syscache<Form_pg_type, oid> syscache(t.oid);
+          if ((*syscache).typtype != TYPTYPE_COMPOSITE) {
+            throw std::invalid_argument("not a composite type");
+          }
+          return ffi_guard{::lookup_rowtype_tupdesc_copy}(t.oid, (*syscache).typtypmod);
+        }()) {}
+
+  /**
    * @brief Copy constructor
    *
    * Creates a copy instance of the tuple descriptor in the current memory contet
@@ -365,6 +377,7 @@ struct record {
   nullable_datum operator[](int n) { return get_attribute(n); }
 
   operator HeapTuple() const noexcept { return tuple; }
+  operator TupleDesc() const noexcept { return tupdesc; }
 
   /**
    * @brief Returns tuple descriptor
@@ -421,6 +434,49 @@ template <> struct type_traits<record> {
     return (*cache).typtype == 'c';
   }
   constexpr type type_for() { return {.oid = RECORDOID}; }
+};
+
+template <typename T>
+concept composite_type = requires {
+  { T::composite_type() } -> std::same_as<type>;
+};
+
+template <composite_type T> struct datum_conversion<T> : default_datum_conversion<T> {
+  static T from_datum(const datum &d, oid oid_, std::optional<memory_context> ctx) {
+    if (oid_ != T::composite_type().oid) {
+      throw std::runtime_error(fmt::format("invalid type: expected composite type {} got {}",
+                                           T::composite_type().name(), type{.oid = oid_}.name()));
+    }
+    auto mctx = ctx.has_value() ? ctx.value() : memory_context();
+    record rec{reinterpret_cast<HeapTupleHeader>(ffi_guard{::pg_detoast_datum}(
+                   reinterpret_cast<struct ::varlena *>(d.operator const ::Datum &()))),
+               mctx};
+    return [&]<std::size_t... Is>(std::index_sequence<Is...>) {
+      return T{([&] {
+        return from_nullable_datum<utils::tuple_element_t<Is, T>>(rec.get_attribute(Is),
+                                                                  rec.attribute_type(Is).oid, mctx);
+      }())...};
+    }(std::make_index_sequence<utils::tuple_size_v<T>>{});
+  }
+
+  static datum into_datum(const T &t) {
+    auto res = [&]<std::size_t... Is>(std::index_sequence<Is...>) {
+      tuple_descriptor td(T::composite_type());
+      record rec{td, utils::get<Is>(t)...};
+      return datum(ffi_guard{::heap_copy_tuple_as_datum}(rec, rec));
+    }(std::make_index_sequence<utils::tuple_size_v<T>>{});
+    return res;
+  }
+};
+template <composite_type T> struct type_traits<T> {
+  bool is(const type &t) {
+    if (t == T::composite_type())
+      return true;
+    // Check if it is a composite type and therefore can be coerced to a record
+    syscache<Form_pg_type, oid> cache(t.oid);
+    return (*cache).typtype == 'c';
+  }
+  constexpr type type_for() { return T::composite_type(); }
 };
 
 } // namespace cppgres

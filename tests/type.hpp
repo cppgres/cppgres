@@ -5,24 +5,8 @@
 struct my_custom_type {
   std::string s;
   int reserved;
+  static cppgres::type composite_type() { return cppgres::named_type("custom_type"); }
 };
-
-namespace cppgres {
-template <> struct type_traits<::my_custom_type> {
-  bool is(type &t) { return t == type_for(); }
-  type type_for() { return cppgres::named_type("custom_type"); }
-};
-template <> struct datum_conversion<::my_custom_type> : default_datum_conversion<::my_custom_type> {
-  static ::my_custom_type from_datum(const datum &d, oid oid, std::optional<memory_context> ctx) {
-    std::string s(datum_conversion<text>::from_datum(d, oid, ctx).operator std::string_view());
-    return {.s = s};
-  }
-  static datum into_datum(const ::my_custom_type &t) {
-    return cppgres::datum_conversion<std::string_view>::into_datum(t.s);
-  }
-};
-
-} // namespace cppgres
 
 namespace tests {
 
@@ -47,32 +31,38 @@ postgres_function(custom_type_fun, ([](my_custom_type t) {
                   }));
 
 add_test(
-    custom_type, ([](test_case &) {
+    a_custom_type, ([](test_case &) {
       bool result = true;
 
       cppgres::spi_executor spi;
-      spi.execute("create domain custom_type as text");
+      spi.execute("create type custom_type as (s text, i int);");
       spi.execute(cppgres::fmt::format(
           "create function custom_type_fun(custom_type) returns custom_type language c as '{}'",
           get_library_name()));
 
       {
-        auto val = spi.query<my_custom_type>("select custom_type_fun('test')");
+        // Ensure the type comes returns well
+        auto val = spi.query<my_custom_type>("select row('test',1)::custom_type");
+        result = result && _assert(val.begin()[0].s == "test");
+      }
+      {
+        // Ensure the type is passed to the executor well
+        my_custom_type v{.s = "test"};
+        auto val = spi.query<my_custom_type>("select $1", v);
+        result = result && _assert(val.begin()[0].s == "test");
+      }
+      {
+        // After processing
+        auto val = spi.query<my_custom_type>("select custom_type_fun(row('test',1))");
         result = result && _assert(val.begin()[0].s == "tset");
       }
 
       {
-        auto val = spi.query<std::tuple<my_custom_type>>("select custom_type_fun('test')");
-        result = result && _assert(std::get<0>(val.begin()[0]).s == "tset");
-      }
-
-      {
         auto val = spi.query<std::tuple<my_custom_type, my_custom_type>>(
-            "select custom_type_fun('test'), custom_type_fun('hi')");
+            "select custom_type_fun(row('test', 1)), custom_type_fun(row('hi', 1))");
         result = result && _assert(std::get<0>(val.begin()[0]).s == "tset");
         result = result && _assert(std::get<1>(val.begin()[0]).s == "ih");
       }
-
       return result;
     }));
 
