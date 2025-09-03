@@ -31,7 +31,7 @@ postgres_function(custom_type_fun, ([](my_custom_type t) {
                   }));
 
 add_test(
-    a_custom_type, ([](test_case &) {
+    custom_type, ([](test_case &) {
       bool result = true;
 
       cppgres::spi_executor spi;
