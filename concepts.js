@@ -31,6 +31,7 @@ var concepts =
       [ "covering_node", "conceptcppgres_1_1covering__node.html", null ],
       [ "covered_node", "conceptcppgres_1_1covered__node.html", null ],
       [ "walker_implementation", "conceptcppgres_1_1walker__implementation.html", null ],
+      [ "composite_type", "conceptcppgres_1_1composite__type.html", null ],
       [ "datumable_iterator", "conceptcppgres_1_1datumable__iterator.html", null ],
       [ "syscached", "conceptcppgres_1_1syscached.html", null ],
       [ "has_type_traits", "conceptcppgres_1_1has__type__traits.html", null ],

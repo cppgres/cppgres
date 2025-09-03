@@ -24,6 +24,7 @@ var hierarchy =
     [ "cppgres::datum_conversion< T, std::enable_if_t< utils::is_optional< T > > >", "structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01utils_1_1is__optional_3_01T_01_4_01_4_01_4.html", null ],
     [ "cppgres::datum_conversion< value >", "structcppgres_1_1datum__conversion_3_01value_01_4.html", null ],
     [ "cppgres::default_datum_conversion< T, R >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< T >", "structcppgres_1_1datum__conversion_3_01T_01_4.html", null ],
       [ "cppgres::datum_conversion< T, std::enable_if_t< expanded_varlena_type< T > > >", "structcppgres_1_1datum__conversion_3_01T_00_01std_1_1enable__if__t_3_01expanded__varlena__type_3_01T_01_4_01_4_01_4.html", null ]
     ] ],
     [ "cppgres::default_datum_conversion< bool >", "structcppgres_1_1default__datum__conversion.html", [
