@@ -8,7 +8,8 @@ def parse_clang_layout(file_path):
     structs = {}
     current_struct = None
     field_pattern = re.compile(r"^\s*(\d+)\s*\|\s\s\s([^\s].+)")
-    size_pattern = re.compile(r"^\s*\[\s*sizeof=(\d+),\s*align=(\d+)\s*\]")
+    size_pattern = re.compile(r"^\s*\|?\s*\[\s*sizeof=(\d+),(?:\s*dsize=\d+,)?\s*align=(\d+)\s*")
+
 
     previous_line_was_marker = False
 
