@@ -31,7 +31,7 @@ struct abstract_memory_context {
 
   ::MemoryContextCallback *register_reset_callback(::MemoryContextCallbackFunction func,
                                                    void *arg) {
-    auto cb = alloc<::MemoryContextCallback>(sizeof(::MemoryContextCallback));
+    auto cb = alloc<::MemoryContextCallback>();
     cb->func = func;
     cb->arg = arg;
     ffi_guard{::MemoryContextRegisterResetCallback}(_memory_context(), cb);

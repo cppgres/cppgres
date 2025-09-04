@@ -251,6 +251,112 @@ add_test(eoh_smoke, ([](test_case &e) {
            return result;
          }));
 
+struct flattening_tracker {
+  int flattened;
+  char hello[sizeof("this is so much fun")] = "this is so much fun";
+  std::size_t flat_size() { return sizeof(int); }
+
+  flattening_tracker() : flattened(false) {}
+  flattening_tracker(int f) : flattened(f) {}
+
+  void flatten_into(std::span<std::byte> buffer) {
+    flattened = 1;
+    if (buffer.size_bytes() == flat_size()) {
+      int *to_ptr = reinterpret_cast<int *>(buffer.data());
+      std::span tbuffer(to_ptr, 1);
+      tbuffer[0] = flattened;
+    } else {
+      cppgres::report(ERROR, "wrong buffer size");
+    }
+  }
+
+  static cppgres::type type() { return cppgres::named_type("flattening_tracker"); }
+
+  static flattening_tracker restore_from(std::span<std::byte> buffer) {
+    int *to_ptr = reinterpret_cast<int *>(buffer.data());
+    std::span tbuffer(to_ptr, 1);
+    auto res = flattening_tracker(tbuffer[0]);
+    if (res.flat_size() != buffer.size_bytes()) {
+      throw std::runtime_error("mismatch in size");
+    }
+    return res;
+  }
+};
+
+postgres_function(flattening_tracker_new,
+                  ([]() { return cppgres::expanded_varlena<flattening_tracker>(); }));
+
+postgres_function(flattening_tracker_fun, ([](cppgres::expanded_varlena<flattening_tracker> f) {
+                    return (f.operator flattening_tracker &().flattened) != 0;
+                  }));
+
+postgres_function(flattening_tracker_out,
+                  ([](cppgres::expanded_varlena<flattening_tracker> f) -> const char * {
+                    return ((f.operator flattening_tracker &().flattened) == 1 ? "f" : "n");
+                  }));
+
+postgres_function(flattening_tracker_in, ([](const char *v) {
+                    return cppgres::expanded_varlena<flattening_tracker>(v[0] == 'f' ? 1 : 0);
+                  }));
+
+add_test(a_eoh_flattening, ([](test_case &e) {
+           bool result = true;
+
+           static_assert(cppgres::flattenable<flattening_tracker>);
+
+           { // Establish the type
+             cppgres::spi_executor spi;
+             spi.execute("create type flattening_tracker");
+             spi.execute(cppgres::fmt::format("    create function flattening_tracker_in(cstring)\n"
+                                              "        returns flattening_tracker\n"
+                                              "    as\n"
+                                              "    '{}',\n"
+                                              "    'flattening_tracker_in'\n"
+                                              "        language c immutable\n"
+                                              "                   strict\n",
+                                              get_library_name()));
+             spi.execute(cppgres::fmt::format(
+                 "    create function flattening_tracker_out(flattening_tracker)\n"
+                 "        returns cstring\n"
+                 "    as\n"
+                 "    '{}',\n"
+                 "    'flattening_tracker_out'\n"
+                 "        language c immutable\n"
+                 "                   strict\n",
+                 get_library_name()));
+             spi.execute(cppgres::fmt::format("    create type flattening_tracker\n"
+                                              "    (\n"
+                                              "        input = flattening_tracker_in,\n"
+                                              "        output = flattening_tracker_out,\n"
+                                              "        alignment = int4,\n"
+                                              "        storage = 'extended',\n"
+                                              "        internallength = variable\n"
+                                              "    )"));
+             spi.execute(cppgres::fmt::format("    create function flattening_tracker_new()\n"
+                                              "        returns flattening_tracker\n"
+                                              "    as\n"
+                                              "    '{}'\n"
+                                              "        language c\n",
+                                              get_library_name()));
+             spi.execute(cppgres::fmt::format(
+                 "    create function flattening_tracker_fun(flattening_tracker)\n"
+                 "        returns bool\n"
+                 "    as\n"
+                 "    '{}'\n"
+                 "        language c\n",
+                 get_library_name()));
+           }
+
+           {
+             cppgres::spi_executor spi;
+             auto res = spi.query<bool>("select flattening_tracker_fun(flattening_tracker_new())");
+             auto flattened = res.begin()[0];
+             result = result && _assert(!flattened);
+           }
+
+           return result;
+         }));
+
 static_assert(cppgres::convertible_from_nullable_datum<cppgres::datum>);
 static_assert(cppgres::convertible_from_nullable_datum<cppgres::nullable_datum>);
 static_assert(cppgres::convertible_into_nullable_datum<cppgres::datum>);
