@@ -132,6 +132,13 @@ var hierarchy =
     [ "cppgres::node_walker< nodes::List >", "structcppgres_1_1node__walker_3_01nodes_1_1List_01_4.html", null ],
     [ "cppgres::node_walker< nodes::Query >", "structcppgres_1_1node__walker.html", null ],
     [ "cppgres::node_walker< nodes::RawStmt >", "structcppgres_1_1node__walker_3_01nodes_1_1RawStmt_01_4.html", null ],
+    [ "cppgres::non_by_value_type", "structcppgres_1_1non__by__value__type.html", [
+      [ "cppgres::varlena", "structcppgres_1_1varlena.html", [
+        [ "cppgres::bytea", "structcppgres_1_1bytea.html", null ],
+        [ "cppgres::expanded_varlena< T >", "structcppgres_1_1expanded__varlena.html", null ],
+        [ "cppgres::text", "structcppgres_1_1text.html", null ]
+      ] ]
+    ] ],
     [ "cppgres::nullable_datum", "structcppgres_1_1nullable__datum.html", null ],
     [ "cppgres::oid", "structcppgres_1_1oid.html", null ],
     [ "cppgres::spi_executor::options", "structcppgres_1_1spi__executor_1_1options.html", null ],
@@ -160,14 +167,7 @@ var hierarchy =
     [ "cppgres::utils::tuple_traits_impl< T, std::enable_if_t< std::is_aggregate_v< T > > >", "structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__aggregate__v_3_01T_01_4_01_4_01_4.html", null ],
     [ "cppgres::utils::tuple_traits_impl< T, std::void_t< decltype(std::tuple_size< T >::value)> >", "structcppgres_1_1utils_1_1tuple__traits__impl_3_01T_00_01std_1_1void__t_3_01decltype_07std_1_1tuc17d0c8e371e8a53d2c38db131d82a30.html", null ],
     [ "cppgres::type", "structcppgres_1_1type.html", [
-      [ "cppgres::named_type", "structcppgres_1_1named__type.html", null ],
-      [ "cppgres::non_by_value_type", "structcppgres_1_1non__by__value__type.html", [
-        [ "cppgres::varlena", "structcppgres_1_1varlena.html", [
-          [ "cppgres::bytea", "structcppgres_1_1bytea.html", null ],
-          [ "cppgres::expanded_varlena< T >", "structcppgres_1_1expanded__varlena.html", null ],
-          [ "cppgres::text", "structcppgres_1_1text.html", null ]
-        ] ]
-      ] ]
+      [ "cppgres::named_type", "structcppgres_1_1named__type.html", null ]
     ] ],
     [ "cppgres::type_traits< T, typename >", "structcppgres_1_1type__traits.html", null ],
     [ "cppgres::type_traits< bool >", "structcppgres_1_1type__traits_3_01bool_01_4.html", null ],
