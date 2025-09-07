@@ -7671,7 +7671,7 @@ struct abstract_memory_context {
 
   ::MemoryContextCallback *register_reset_callback(::MemoryContextCallbackFunction func,
                                                    void *arg) {
-    auto cb = alloc<::MemoryContextCallback>(sizeof(::MemoryContextCallback));
+    auto cb = alloc<::MemoryContextCallback>();
     cb->func = func;
     cb->arg = arg;
     ffi_guard{::MemoryContextRegisterResetCallback}(_memory_context(), cb);
@@ -8441,7 +8441,7 @@ template <typename T> struct type_traits<std::optional<T>> {
   constexpr type type_for() { return type_traits<T>().type_for(); }
 };
 
-struct non_by_value_type : public type {
+struct non_by_value_type {
   friend struct datum;
 
   non_by_value_type(std::pair<const struct datum &, std::optional<memory_context>> init)
@@ -8556,6 +8556,10 @@ template <flattenable T> struct expanded_varlena : public varlena {
     if (detoasted_value.has_value()) {
       return detoasted_value.value()->inner;
     } else {
+      if (VARATT_IS_EXTERNAL_EXPANDED(ptr())) {
+        detoasted_value = reinterpret_cast<expanded *>(DatumGetEOHP(value_datum));
+        return detoasted_value.value()->inner;
+      }
       auto *ptr1 = reinterpret_cast<std::byte *>(varlena::operator void *());
       auto ctx = memory_context(std::move(alloc_set_memory_context()));
       auto *value = new (ctx.alloc<expanded>())
@@ -8581,22 +8585,25 @@ template <flattenable T> struct expanded_varlena : public varlena {
 
 private:
   struct expanded {
-    expanded(T &&t) : inner(std::move(t)) {}
+    expanded(auto &&...args) : inner(std::forward<decltype(args)...>(args)...) {}
     ::ExpandedObjectHeader hdr;
     T inner;
   };
 
   template <typename... Args> static auto allocate_expanded(Args &&...args) {
     auto ctx = memory_context(std::move(alloc_set_memory_context()));
-    auto *e = new (ctx.alloc<expanded>()) expanded(T(std::forward<Args...>(args)...));
-    ctx.register_reset_callback(
-        [](void *arg) {
-          auto v = reinterpret_cast<expanded *>(arg);
-          v->inner.~T();
-        },
-        e);
-    init(&e->hdr, ctx);
-    return std::make_pair(datum(PointerGetDatum(e)), ctx);
+    return ctx([&]() {
+      auto *e = ctx.alloc<expanded>();
+      std::construct_at(e, args...);
+      init(&e->hdr, ctx);
+      ctx.register_reset_callback(
+          [](void *arg) {
+            auto v = reinterpret_cast<expanded *>(arg);
+            v->inner.~T();
+          },
+          e);
+      return std::make_pair(datum(PointerGetDatum(e)), ctx);
+    });
   }
 
   std::optional<expanded *> detoasted_value = std::nullopt;
