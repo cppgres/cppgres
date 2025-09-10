@@ -76,4 +76,25 @@ add_test(tuples_are_records, ([](test_case &) {
            return result;
          }));
 
+add_test(value_output, ([](test_case &) {
+           bool result = true;
+           result = result &&
+                    _assert(std::string(cppgres::output_function<std::int64_t>()(123)) == "123");
+           {
+             // Value
+             cppgres::spi_executor spi;
+             auto results = spi.query<cppgres::value>("select true");
+             auto res = results.begin()[0];
+             result = result && _assert(std::string(cppgres::output_function(res)(res)) == "t");
+           }
+           {
+             // By type
+             cppgres::spi_executor spi;
+             auto results = spi.query<cppgres::value>("select 'test'");
+             auto f = cppgres::output_function(results.get_tuple_descriptor().get_type(0));
+             result = result && _assert(std::string(f(results.begin()[0])) == "test");
+           }
+           return result;
+         }));
+
 } // namespace tests

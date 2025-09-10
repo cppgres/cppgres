@@ -40,7 +40,7 @@ struct type {
 
 template <typename T, typename = void> struct type_traits {
   type_traits() {}
-  type_traits(const T &) {}
+  type_traits(T &) {}
   bool is(const type &t) { return false; }
   type type_for() = delete;
 };
