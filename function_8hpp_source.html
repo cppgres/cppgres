@@ -597,7 +597,35 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <a class="code hl_struct" href="structcppgres_1_1type.html">type</a> type_for() { <span class="keywordflow">return</span> <a class="code hl_struct" href="structcppgres_1_1type.html">type</a>{.oid = REGPROCEDUREOID}; }</div>
 <div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>};</div>
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span> </div>
-<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>} <span class="comment">// namespace cppgres</span></div>
+<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span><span class="keyword">template</span> &lt;has_type_traits T&gt; <a class="code hl_struct" href="structcppgres_1_1function.html">function&lt;T, const char *&gt;</a> output_function() {</div>
+<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>  ::Oid foutoid;</div>
+<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>  <span class="keywordtype">bool</span> typisvarlena;</div>
+<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>  <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::getTypeOutputInfo}(type_traits&lt;T&gt;().type_for().oid, &amp;foutoid, &amp;typisvarlena);</div>
+<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>  <span class="keywordflow">return</span> function&lt;T, const char *&gt;(foutoid);</div>
+<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>}</div>
+<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span> </div>
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span><span class="keyword">template</span> &lt;has_type_traits T&gt; function&lt;T, const char *&gt; output_function(T &amp;&amp;v) {</div>
+<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>  ::Oid foutoid;</div>
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>  <span class="keywordtype">bool</span> typisvarlena;</div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>  ffi_guard{::getTypeOutputInfo}(type_traits&lt;T&gt;(v).type_for().oid, &amp;foutoid, &amp;typisvarlena);</div>
+<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>  <span class="keywordflow">return</span> function&lt;T, const char *&gt;(foutoid);</div>
+<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>}</div>
+<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span> </div>
+<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span><span class="keyword">template</span> &lt;has_type_traits T&gt; function&lt;T, const char *&gt; output_function(T &amp;v) {</div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>  ::Oid foutoid;</div>
+<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>  <span class="keywordtype">bool</span> typisvarlena;</div>
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>  ffi_guard{::getTypeOutputInfo}(type_traits&lt;T&gt;(v).type_for().oid, &amp;foutoid, &amp;typisvarlena);</div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>  <span class="keywordflow">return</span> function&lt;T, const char *&gt;(foutoid);</div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>}</div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span> </div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span><span class="keyword">static</span> function&lt;cppgres::value, const char *&gt; output_function(<span class="keyword">const</span> type &amp;t) {</div>
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>  ::Oid foutoid;</div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>  <span class="keywordtype">bool</span> typisvarlena;</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>  ffi_guard{::getTypeOutputInfo}(t.oid, &amp;foutoid, &amp;typisvarlena);</div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>  <span class="keywordflow">return</span> function&lt;cppgres::value, const char *&gt;(foutoid);</div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>}</div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span> </div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>} <span class="comment">// namespace cppgres</span></div>
 <div class="ttc" id="aclasscppgres_1_1null__datum__exception_html"><div class="ttname"><a href="classcppgres_1_1null__datum__exception.html">cppgres::null_datum_exception</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:54</div></div>
 <div class="ttc" id="aconceptcppgres_1_1convertible__into__nullable__datum__or__set__iterator__or__void_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__into__nullable__datum__or__set__iterator__or__void.html">cppgres::convertible_into_nullable_datum_or_set_iterator_or_void</a></div><div class="ttdef"><b>Definition:</b> function.hpp:27</div></div>
 <div class="ttc" id="aconceptcppgres_1_1convertible__into__nullable__datum_html"><div class="ttname"><a href="conceptcppgres_1_1convertible__into__nullable__datum.html">cppgres::convertible_into_nullable_datum</a></div><div class="ttdef"><b>Definition:</b> datum.hpp:211</div></div>
