@@ -8416,7 +8416,7 @@ struct type {
 
 template <typename T, typename = void> struct type_traits {
   type_traits() {}
-  type_traits(const T &) {}
+  type_traits(T &) {}
   bool is(const type &t) { return false; }
   type type_for() = delete;
 };
@@ -10065,6 +10065,34 @@ template <has_type_traits... Args> struct type_traits<function<Args...>> {
   }
   static constexpr type type_for() { return type{.oid = REGPROCEDUREOID}; }
 };
+
+template <has_type_traits T> function<T, const char *> output_function() {
+  ::Oid foutoid;
+  bool typisvarlena;
+  ffi_guard{::getTypeOutputInfo}(type_traits<T>().type_for().oid, &foutoid, &typisvarlena);
+  return function<T, const char *>(foutoid);
+}
+
+template <has_type_traits T> function<T, const char *> output_function(T &&v) {
+  ::Oid foutoid;
+  bool typisvarlena;
+  ffi_guard{::getTypeOutputInfo}(type_traits<T>(v).type_for().oid, &foutoid, &typisvarlena);
+  return function<T, const char *>(foutoid);
+}
+
+template <has_type_traits T> function<T, const char *> output_function(T &v) {
+  ::Oid foutoid;
+  bool typisvarlena;
+  ffi_guard{::getTypeOutputInfo}(type_traits<T>(v).type_for().oid, &foutoid, &typisvarlena);
+  return function<T, const char *>(foutoid);
+}
+
+static function<cppgres::value, const char *> output_function(const type &t) {
+  ::Oid foutoid;
+  bool typisvarlena;
+  ffi_guard{::getTypeOutputInfo}(t.oid, &foutoid, &typisvarlena);
+  return function<cppgres::value, const char *>(foutoid);
+}
 
 } // namespace cppgres
 
