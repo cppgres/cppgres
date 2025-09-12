@@ -29,6 +29,8 @@ struct oid {
   operator ::Oid() const { return oid_; }
   operator ::Oid &() { return oid_; }
 
+  bool is_valid() const { return oid_ != InvalidOid; }
+
 private:
   ::Oid oid_;
 };

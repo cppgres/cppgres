@@ -51,6 +51,7 @@ extern "C" {
 #include <parser/parse_func.h>
 #include <parser/parser.h>
 #include <storage/ipc.h>
+#include <utils/acl.h>
 #include <utils/builtins.h>
 #include <utils/expandeddatum.h>
 #include <utils/lsyscache.h>

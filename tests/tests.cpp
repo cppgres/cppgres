@@ -33,6 +33,7 @@ PG_MODULE_MAGIC;
 #include "memory_context.hpp"
 #include "node.hpp"
 #include "record.hpp"
+#include "role.hpp"
 #include "spi.hpp"
 #include "srf.hpp"
 #include "syscache.hpp"

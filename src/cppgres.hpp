@@ -76,6 +76,7 @@ using ::fmt::format;
 #include "cppgres/memory.hpp"
 #include "cppgres/node.hpp"
 #include "cppgres/record.hpp"
+#include "cppgres/role.hpp"
 #include "cppgres/set.hpp"
 #include "cppgres/threading.hpp"
 #include "cppgres/types.hpp"
