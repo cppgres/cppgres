@@ -185,19 +185,20 @@ $(document).ready(function(){initNavTree('cppgres_8hpp_source.html',''); initRes
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#include &quot;<a class="code" href="memory_8hpp.html">cppgres/memory.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#include &quot;cppgres/node.hpp&quot;</span></div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#include &quot;cppgres/record.hpp&quot;</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">#include &quot;<a class="code" href="set_8hpp.html">cppgres/set.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">#include &quot;cppgres/threading.hpp&quot;</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#include &quot;<a class="code" href="types_8hpp.html">cppgres/types.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#include &quot;cppgres/value.hpp&quot;</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#include &quot;<a class="code" href="xact_8hpp.html">cppgres/xact.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="cppgres_8hpp.html#a37c77119ae05c0662ba21ee00d28c843">   99</a></span><span class="preprocessor">#define postgres_function(name, function)                                                          \</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="preprocessor">  extern &quot;C&quot;</span> {                                                                                     \</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  PG_FUNCTION_INFO_V1(name);                                                                       \</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  Datum name(PG_FUNCTION_ARGS) { return cppgres::postgres_function(function)(fcinfo); }            \</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  }</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="preprocessor">#endif </span><span class="comment">// cppgres_hpp</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">#include &quot;<a class="code" href="role_8hpp.html">cppgres/role.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">#include &quot;<a class="code" href="set_8hpp.html">cppgres/set.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#include &quot;cppgres/threading.hpp&quot;</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#include &quot;<a class="code" href="types_8hpp.html">cppgres/types.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#include &quot;cppgres/value.hpp&quot;</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#include &quot;<a class="code" href="xact_8hpp.html">cppgres/xact.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="cppgres_8hpp.html#a37c77119ae05c0662ba21ee00d28c843">  100</a></span><span class="preprocessor">#define postgres_function(name, function)                                                          \</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">  extern &quot;C&quot;</span> {                                                                                     \</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  PG_FUNCTION_INFO_V1(name);                                                                       \</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  Datum name(PG_FUNCTION_ARGS) { return cppgres::postgres_function(function)(fcinfo); }            \</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="preprocessor">#endif </span><span class="comment">// cppgres_hpp</span></div>
 <div class="ttc" id="abgw_8hpp_html"><div class="ttname"><a href="bgw_8hpp.html">bgw.hpp</a></div></div>
 <div class="ttc" id="adatum_8hpp_html"><div class="ttname"><a href="datum_8hpp.html">datum.hpp</a></div></div>
 <div class="ttc" id="aerror_8hpp_html"><div class="ttname"><a href="error_8hpp.html">error.hpp</a></div></div>
@@ -207,6 +208,7 @@ $(document).ready(function(){initNavTree('cppgres_8hpp_source.html',''); initRes
 <div class="ttc" id="aguard_8hpp_html"><div class="ttname"><a href="guard_8hpp.html">guard.hpp</a></div></div>
 <div class="ttc" id="aimports_8h_html"><div class="ttname"><a href="imports_8h.html">imports.h</a></div></div>
 <div class="ttc" id="amemory_8hpp_html"><div class="ttname"><a href="memory_8hpp.html">memory.hpp</a></div></div>
+<div class="ttc" id="arole_8hpp_html"><div class="ttname"><a href="role_8hpp.html">role.hpp</a></div></div>
 <div class="ttc" id="aset_8hpp_html"><div class="ttname"><a href="set_8hpp.html">set.hpp</a></div></div>
 <div class="ttc" id="atypes_8hpp_html"><div class="ttname"><a href="types_8hpp.html">types.hpp</a></div></div>
 <div class="ttc" id="axact_8hpp_html"><div class="ttname"><a href="xact_8hpp.html">xact.hpp</a></div></div>

@@ -72,6 +72,9 @@ var hierarchy =
     [ "cppgres::default_datum_conversion< record >", "structcppgres_1_1default__datum__conversion.html", [
       [ "cppgres::datum_conversion< record >", "structcppgres_1_1datum__conversion_3_01record_01_4.html", null ]
     ] ],
+    [ "cppgres::default_datum_conversion< role >", "structcppgres_1_1default__datum__conversion.html", [
+      [ "cppgres::datum_conversion< role >", "structcppgres_1_1datum__conversion_3_01role_01_4.html", null ]
+    ] ],
     [ "cppgres::default_datum_conversion< size_t >", "structcppgres_1_1default__datum__conversion.html", [
       [ "cppgres::datum_conversion< size_t >", "structcppgres_1_1datum__conversion_3_01size__t_01_4.html", null ]
     ] ],
@@ -140,7 +143,9 @@ var hierarchy =
       ] ]
     ] ],
     [ "cppgres::nullable_datum", "structcppgres_1_1nullable__datum.html", null ],
-    [ "cppgres::oid", "structcppgres_1_1oid.html", null ],
+    [ "cppgres::oid", "structcppgres_1_1oid.html", [
+      [ "cppgres::role", "structcppgres_1_1role.html", null ]
+    ] ],
     [ "cppgres::spi_executor::options", "structcppgres_1_1spi__executor_1_1options.html", null ],
     [ "cppgres::utils::owned_cstring", "structcppgres_1_1utils_1_1owned__cstring.html", null ],
     [ "cppgres::postgres_function< Func >", "structcppgres_1_1postgres__function.html", null ],
@@ -150,6 +155,7 @@ var hierarchy =
     [ "cppgres::utils::remove_optional< std::optional< T > >", "structcppgres_1_1utils_1_1remove__optional_3_01std_1_1optional_3_01T_01_4_01_4.html", null ],
     [ "cppgres::spi_executor::result_iterator< T >", "structcppgres_1_1spi__executor_1_1result__iterator.html", null ],
     [ "cppgres::spi_executor::results< Ret >", "structcppgres_1_1spi__executor_1_1results.html", null ],
+    [ "cppgres::security_context", "structcppgres_1_1security__context.html", null ],
     [ "cppgres::set_iterator_traits< I >", "structcppgres_1_1set__iterator__traits.html", null ],
     [ "cppgres::spi_plan< Args >", "structcppgres_1_1spi__plan.html", null ],
     [ "cppgres::syscache< T, D >", "structcppgres_1_1syscache.html", null ],
@@ -189,6 +195,7 @@ var hierarchy =
     [ "cppgres::type_traits< nullable_datum >", "structcppgres_1_1type__traits_3_01nullable__datum_01_4.html", null ],
     [ "cppgres::type_traits< oid >", "structcppgres_1_1type__traits_3_01oid_01_4.html", null ],
     [ "cppgres::type_traits< record >", "structcppgres_1_1type__traits_3_01record_01_4.html", null ],
+    [ "cppgres::type_traits< role >", "structcppgres_1_1type__traits_3_01role_01_4.html", null ],
     [ "cppgres::type_traits< S, std::enable_if_t< utils::is_std_tuple< S >::value > >", "structcppgres_1_1type__traits_3_01S_00_01std_1_1enable__if__t_3_01utils_1_1is__std__tuple_3_01S_01_4_1_1value_01_4_01_4.html", null ],
     [ "cppgres::type_traits< std::optional< T > >", "structcppgres_1_1type__traits_3_01std_1_1optional_3_01T_01_4_01_4.html", null ],
     [ "cppgres::type_traits< std::string >", "structcppgres_1_1type__traits_3_01std_1_1string_01_4.html", null ],

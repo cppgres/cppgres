@@ -7,5 +7,7 @@ var searchData=
   ['result_5fiterator_4',['result_iterator',['../structcppgres_1_1spi__executor_1_1result__iterator.html',1,'cppgres::spi_executor']]],
   ['results_5',['results',['../structcppgres_1_1spi__executor_1_1results.html',1,'cppgres::spi_executor']]],
   ['return_5ftype_6',['return_type',['../structcppgres_1_1function__call__info.html#a89b216048464974f421690df76edd123',1,'cppgres::function_call_info']]],
-  ['run_7',['run',['../structcppgres_1_1worker.html#acc6a061aa2738d1ceee22275d7e7768c',1,'cppgres::worker']]]
+  ['role_7',['role',['../structcppgres_1_1role.html',1,'cppgres']]],
+  ['role_2ehpp_8',['role.hpp',['../role_8hpp.html',1,'']]],
+  ['run_9',['run',['../structcppgres_1_1worker.html#acc6a061aa2738d1ceee22275d7e7768c',1,'cppgres::worker']]]
 ];
