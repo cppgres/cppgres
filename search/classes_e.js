@@ -22,7 +22,7 @@ var searchData=
   ['type_5ftraits_3c_20double_20_3e_19',['type_traits&lt; double &gt;',['../structcppgres_1_1type__traits_3_01double_01_4.html',1,'cppgres']]],
   ['type_5ftraits_3c_20expanded_5fvarlena_3c_20f_20_3e_20_3e_20',['type_traits&lt; expanded_varlena&lt; F &gt; &gt;',['../structcppgres_1_1type__traits_3_01expanded__varlena_3_01F_01_4_01_4.html',1,'cppgres']]],
   ['type_5ftraits_3c_20float_20_3e_21',['type_traits&lt; float &gt;',['../structcppgres_1_1type__traits_3_01float_01_4.html',1,'cppgres']]],
-  ['type_5ftraits_3c_20function_3c_20args_2e_2e_2e_20_3e_20_3e_22',['type_traits&lt; function&lt; Args... &gt; &gt;',['../structcppgres_1_1type__traits_3_01function_3_01Args_8_8_8_01_4_01_4.html',1,'cppgres']]],
+  ['type_5ftraits_3c_20function_3c_20ret_2c_20args_2e_2e_2e_20_3e_20_3e_22',['type_traits&lt; function&lt; ret, Args... &gt; &gt;',['../structcppgres_1_1type__traits_3_01function_3_01ret_00_01Args_8_8_8_01_4_01_4.html',1,'cppgres']]],
   ['type_5ftraits_3c_20i_20_3e_23',['type_traits&lt; I &gt;',['../structcppgres_1_1type__traits_3_01I_01_4.html',1,'cppgres']]],
   ['type_5ftraits_3c_20int16_5ft_20_3e_24',['type_traits&lt; int16_t &gt;',['../structcppgres_1_1type__traits_3_01int16__t_01_4.html',1,'cppgres']]],
   ['type_5ftraits_3c_20int32_5ft_20_3e_25',['type_traits&lt; int32_t &gt;',['../structcppgres_1_1type__traits_3_01int32__t_01_4.html',1,'cppgres']]],

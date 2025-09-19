@@ -171,11 +171,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1postgres__function.html">cppgres::postgres_function&lt; Func &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postgres function implemented in C++.  <a href="structcppgres_1_1postgres__function.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1function.html">cppgres::function&lt; Arg &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1function.html">cppgres::function&lt; ret_type, arg_types &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion_3_01function_3_01Args_8_8_8_01_4_01_4.html">cppgres::datum_conversion&lt; function&lt; Args... &gt; &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1datum__conversion_3_01function_3_01ret_00_01Args_8_8_8_01_4_01_4.html">cppgres::datum_conversion&lt; function&lt; ret, Args... &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1type__traits_3_01function_3_01Args_8_8_8_01_4_01_4.html">cppgres::type_traits&lt; function&lt; Args... &gt; &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1type__traits_3_01function_3_01ret_00_01Args_8_8_8_01_4_01_4.html">cppgres::type_traits&lt; function&lt; ret, Args... &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
@@ -188,18 +188,18 @@ Concepts</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aae1b9d359275dfbaa0245d40aa70d14a"><td class="memTemplParams" colspan="2"><a id="aae1b9d359275dfbaa0245d40aa70d14a" name="aae1b9d359275dfbaa0245d40aa70d14a"></a>
+<tr class="memitem:ad24273a297f248ab1c2ee4e0a507f381"><td class="memTemplParams" colspan="2"><a id="ad24273a297f248ab1c2ee4e0a507f381" name="ad24273a297f248ab1c2ee4e0a507f381"></a>
 template&lt;has_type_traits T&gt; </td></tr>
-<tr class="memitem:aae1b9d359275dfbaa0245d40aa70d14a"><td class="memTemplItemLeft" align="right" valign="top">function&lt; T, const char * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::output_function</b> ()</td></tr>
-<tr class="separator:aae1b9d359275dfbaa0245d40aa70d14a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46d70e0b2548d23d07d0c508b9b1fe69"><td class="memTemplParams" colspan="2"><a id="a46d70e0b2548d23d07d0c508b9b1fe69" name="a46d70e0b2548d23d07d0c508b9b1fe69"></a>
+<tr class="memitem:ad24273a297f248ab1c2ee4e0a507f381"><td class="memTemplItemLeft" align="right" valign="top">function&lt; const char *, T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::output_function</b> ()</td></tr>
+<tr class="separator:ad24273a297f248ab1c2ee4e0a507f381"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4280c9d079a38f315cdae0a5715da22b"><td class="memTemplParams" colspan="2"><a id="a4280c9d079a38f315cdae0a5715da22b" name="a4280c9d079a38f315cdae0a5715da22b"></a>
 template&lt;has_type_traits T&gt; </td></tr>
-<tr class="memitem:a46d70e0b2548d23d07d0c508b9b1fe69"><td class="memTemplItemLeft" align="right" valign="top">function&lt; T, const char * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::output_function</b> (T &amp;&amp;v)</td></tr>
-<tr class="separator:a46d70e0b2548d23d07d0c508b9b1fe69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0171af17cd26837f1623490e93792ba"><td class="memTemplParams" colspan="2"><a id="af0171af17cd26837f1623490e93792ba" name="af0171af17cd26837f1623490e93792ba"></a>
+<tr class="memitem:a4280c9d079a38f315cdae0a5715da22b"><td class="memTemplItemLeft" align="right" valign="top">function&lt; const char *, T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::output_function</b> (T &amp;&amp;v)</td></tr>
+<tr class="separator:a4280c9d079a38f315cdae0a5715da22b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0d1e190d2e165d37aeef4cb8176d76f"><td class="memTemplParams" colspan="2"><a id="ac0d1e190d2e165d37aeef4cb8176d76f" name="ac0d1e190d2e165d37aeef4cb8176d76f"></a>
 template&lt;has_type_traits T&gt; </td></tr>
-<tr class="memitem:af0171af17cd26837f1623490e93792ba"><td class="memTemplItemLeft" align="right" valign="top">function&lt; T, const char * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::output_function</b> (T &amp;v)</td></tr>
-<tr class="separator:af0171af17cd26837f1623490e93792ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0d1e190d2e165d37aeef4cb8176d76f"><td class="memTemplItemLeft" align="right" valign="top">function&lt; const char *, T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::output_function</b> (T &amp;v)</td></tr>
+<tr class="separator:ac0d1e190d2e165d37aeef4cb8176d76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
