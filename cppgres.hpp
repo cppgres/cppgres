@@ -9920,14 +9920,7 @@ template <datumable_function Func> struct postgres_function {
   }
 };
 
-template <has_type_traits... Arg> struct function {
-
-  template <std::size_t... I>
-  static auto make_arg_tuple(std::index_sequence<I...>)
-      -> std::tuple<std::tuple_element_t<I, std::tuple<Arg...>>...>;
-
-  using arg_types = decltype(make_arg_tuple(std::make_index_sequence<sizeof...(Arg) - 1>{}));
-  using ret_type = std::tuple_element_t<sizeof...(Arg) - 1, std::tuple<Arg...>>;
+template <has_type_traits ret_type, has_type_traits... arg_types> struct function {
 
   function() = delete;
 
@@ -9936,8 +9929,9 @@ template <has_type_traits... Arg> struct function {
           return alloc_set_memory_context()([&schema, &name]() {
             ::List *fname = list_make2(::makeString(const_cast<char *>(schema)),
                                        ::makeString(const_cast<char *>(name)));
-            std::array<::Oid, sizeof...(Arg)> argtypes = {type_traits<Arg>().type_for().oid...};
-            return ffi_guard{::LookupFuncName}(fname, static_cast<int>(sizeof...(Arg) - 1),
+            std::array<::Oid, sizeof...(arg_types)> argtypes = {
+                type_traits<arg_types>().type_for().oid...};
+            return ffi_guard{::LookupFuncName}(fname, static_cast<int>(sizeof...(arg_types)),
                                                argtypes.data(), false);
           });
         }()) {}
@@ -9946,8 +9940,9 @@ template <has_type_traits... Arg> struct function {
       : function([name]() -> oid {
           return alloc_set_memory_context()([&name]() {
             ::List *fname = list_make1(::makeString(const_cast<char *>(name)));
-            std::array<::Oid, sizeof...(Arg)> argtypes = {type_traits<Arg>().type_for().oid...};
-            return ffi_guard{::LookupFuncName}(fname, static_cast<int>(sizeof...(Arg) - 1),
+            std::array<::Oid, sizeof...(arg_types)> argtypes = {
+                type_traits<arg_types>().type_for().oid...};
+            return ffi_guard{::LookupFuncName}(fname, static_cast<int>(sizeof...(arg_types)),
                                                argtypes.data(), false);
           });
         }()) {}
@@ -9956,7 +9951,7 @@ template <has_type_traits... Arg> struct function {
     syscache<Form_pg_proc, decltype(oid)> p(oid_);
     // Check arguments
     auto &argtypes = (*p).proargtypes;
-    std::array<type, sizeof...(Arg)> types = {type_traits<Arg>().type_for()...};
+    std::array<type, sizeof...(arg_types)> types = {type_traits<arg_types>().type_for()...};
     for (int i = 0; i < argtypes.dim1; i++) {
       cppgres::oid arg(argtypes.values[i]);
       if (types[i] != type{UNKNOWNOID} /* FIXME: figure out how to avoid this special case */ &&
@@ -9977,15 +9972,15 @@ template <has_type_traits... Arg> struct function {
     strict_ = (*p).proisstrict;
   }
 
-  using self = function<Arg...>;
+  using self = function<ret_type, arg_types...>;
   template <typename... Args> static constexpr bool convertible_args() {
-    if constexpr (sizeof...(Args) != sizeof...(Arg) - 1) {
+    if constexpr (sizeof...(Args) != sizeof...(arg_types)) {
       return false;
     } else {
       return []<std::size_t... I>(std::index_sequence<I...>) {
-        return (
-            std::convertible_to<std::decay_t<Args>, std::tuple_element_t<I, std::tuple<Arg...>>> &&
-            ...);
+        return (std::convertible_to<std::decay_t<Args>,
+                                    std::tuple_element_t<I, std::tuple<arg_types...>>> &&
+                ...);
       }(std::make_index_sequence<sizeof...(Args)>{});
     }
   }
@@ -9993,7 +9988,7 @@ template <has_type_traits... Arg> struct function {
   {
     bool any_nulls = false;
     auto optval = []<std::size_t I>(auto arg) -> ::Datum {
-      using nth_type = std::tuple_element_t<I, std::tuple<Arg...>>;
+      using nth_type = std::tuple_element_t<I, std::tuple<arg_types...>>;
       if constexpr (std::same_as<std::nullopt_t, decltype(arg)>) {
         return datum(0);
       } else if constexpr (!utils::is_optional<decltype(arg)>) {
@@ -10021,7 +10016,7 @@ template <has_type_traits... Arg> struct function {
 
       ffi_guard{::fmgr_info}(oid_, &flinfo);
 
-      InitFunctionCallInfoData(*fcinfo, &flinfo, sizeof...(args), InvalidOid, NULL, NULL);
+      InitFunctionCallInfoData(*fcinfo, &flinfo, sizeof...(args), InvalidOid, nullptr, nullptr);
 
       ((fcinfo->args[I].value = optval.template operator()<I>(args)), ...);
       ((fcinfo->args[I].isnull = isnull(args)), ...);
@@ -10040,7 +10035,7 @@ template <has_type_traits... Arg> struct function {
       }
 
       return datum_conversion<ret_type>().from_nullable_datum(result, rettype_);
-    }(std::make_index_sequence<sizeof...(Arg) - 1>{});
+    }(std::make_index_sequence<sizeof...(args)>{});
   }
 
   const oid &function_oid() const { return oid_; }
@@ -10051,50 +10046,50 @@ private:
   bool strict_;
 };
 
-template <has_type_traits... Args>
-struct datum_conversion<function<Args...>> : default_datum_conversion<function<Args...>> {
-  static function<Args...> from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
+template <has_type_traits ret, has_type_traits... Args>
+struct datum_conversion<function<ret, Args...>> : default_datum_conversion<function<ret, Args...>> {
+  static function<ret, Args...> from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
     return {oid(d)};
   }
 
-  static datum into_datum(const function<Args...> &t) {
+  static datum into_datum(const function<ret, Args...> &t) {
     return datum_conversion<oid>::into_datum(t.function_oid());
   }
 };
 
-template <has_type_traits... Args> struct type_traits<function<Args...>> {
+template <has_type_traits ret, has_type_traits... Args> struct type_traits<function<ret, Args...>> {
   static bool is(const type &t) {
     return t.oid == REGPROCEDUREOID || t.oid == OIDOID || t.oid == REGPROCOID;
   }
   static constexpr type type_for() { return type{.oid = REGPROCEDUREOID}; }
 };
 
-template <has_type_traits T> function<T, const char *> output_function() {
+template <has_type_traits T> function<const char *, T> output_function() {
   ::Oid foutoid;
   bool typisvarlena;
   ffi_guard{::getTypeOutputInfo}(type_traits<T>().type_for().oid, &foutoid, &typisvarlena);
-  return function<T, const char *>(foutoid);
+  return function<const char *, T>(foutoid);
 }
 
-template <has_type_traits T> function<T, const char *> output_function(T &&v) {
+template <has_type_traits T> function<const char *, T> output_function(T &&v) {
   ::Oid foutoid;
   bool typisvarlena;
   ffi_guard{::getTypeOutputInfo}(type_traits<T>(v).type_for().oid, &foutoid, &typisvarlena);
-  return function<T, const char *>(foutoid);
+  return function<const char *, T>(foutoid);
 }
 
-template <has_type_traits T> function<T, const char *> output_function(T &v) {
+template <has_type_traits T> function<const char *, T> output_function(T &v) {
   ::Oid foutoid;
   bool typisvarlena;
   ffi_guard{::getTypeOutputInfo}(type_traits<T>(v).type_for().oid, &foutoid, &typisvarlena);
-  return function<T, const char *>(foutoid);
+  return function<const char *, T>(foutoid);
 }
 
-static function<cppgres::value, const char *> output_function(const type &t) {
+static function<const char *, cppgres::value> output_function(const type &t) {
   ::Oid foutoid;
   bool typisvarlena;
   ffi_guard{::getTypeOutputInfo}(t.oid, &foutoid, &typisvarlena);
-  return function<cppgres::value, const char *>(foutoid);
+  return function<const char *, cppgres::value>(foutoid);
 }
 
 } // namespace cppgres
