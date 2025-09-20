@@ -23,6 +23,21 @@ add_test(spi, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_multiparam, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto res = spi.query<std::tuple<std::optional<int64_t>>>(
+               "select $1 + $2 + i from generate_series(1,100) i", static_cast<int64_t>(1LL),
+               static_cast<int64_t>(1LL));
+
+           int i = 0;
+           for (auto &re : res) {
+             i++;
+             result = result && _assert(std::get<0>(re) == i + 2);
+           }
+           return result;
+         }));
+
 add_test(spi_single, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
