@@ -12595,6 +12595,7 @@ private:
 
 #ifdef __linux__
 #include <sys/syscall.h>
+#define _GNU_SOURCE
 #include <unistd.h>
 #elif __APPLE__
 #include <pthread.h>
