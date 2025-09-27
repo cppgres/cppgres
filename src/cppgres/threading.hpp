@@ -12,6 +12,10 @@
 #define _GNU_SOURCE 1
 #endif
 #include <unistd.h>
+#if defined(__GLIBC__) && (__GLIBC__ < 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ < 30))
+#include <sys/syscall.h>
+static inline pid_t gettid() { return static_cast<pid_t>(syscall(SYS_gettid)); }
+#endif
 #elif __APPLE__
 #include <pthread.h>
 #endif
