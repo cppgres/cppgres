@@ -8,7 +8,9 @@
 
 #ifdef __linux__
 #include <sys/syscall.h>
-#define _GNU_SOURCE
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE 1
+#endif
 #include <unistd.h>
 #elif __APPLE__
 #include <pthread.h>
