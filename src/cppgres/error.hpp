@@ -12,21 +12,6 @@
 
 namespace cppgres {
 
-inline void error(pg_exception e);
-inline void error(pg_exception e) {
-  ::errstart(ERROR, TEXTDOMAIN);
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-security"
-#endif
-  ::errmsg("%s", e.message());
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
-  ::errfinish(__FILE__, __LINE__, __func__);
-  __builtin_unreachable();
-}
-
 template <typename T>
 concept error_formattable =
     std::integral<std::decay_t<T>> ||
