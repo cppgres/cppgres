@@ -80,6 +80,9 @@ template <typename Func> struct exception_guard {
     } catch (...) {
       other_error = true;
     }
+    if (pg_exception || str_err || other_error) {
+      func.~Func();
+    }
     if (pg_exception) {
       PG_RE_THROW();
     }
