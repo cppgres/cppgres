@@ -288,7 +288,7 @@ $(document).ready(function(){initNavTree('executor_8hpp_source.html',''); initRe
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>          <span class="keyword">auto</span> ret = from_nullable_datum&lt;T&gt;(<a class="code hl_struct" href="structcppgres_1_1nullable__datum.html">nullable_datum</a>(<a class="code hl_struct" href="structcppgres_1_1datum.html">datum</a>),</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                                            <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SPI_gettypeid}(tuptable-&gt;tupdesc, 1),</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>                                            <a class="code hl_struct" href="structcppgres_1_1memory__context.html">memory_context</a>(tuptable-&gt;tuptabcxt));</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>          tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>          tuples.at(n).emplace(ret);</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>          <span class="keywordflow">return</span> tuples.at(n).value();</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tuptable-&gt;tupdesc-&gt;natts == 1) {</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>          <span class="keywordtype">bool</span> isnull;</div>
@@ -298,7 +298,7 @@ $(document).ready(function(){initNavTree('executor_8hpp_source.html',''); initRe
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>          <span class="keyword">auto</span> ret = from_nullable_datum&lt;T&gt;(<a class="code hl_struct" href="structcppgres_1_1nullable__datum.html">nullable_datum</a>(<a class="code hl_struct" href="structcppgres_1_1datum.html">datum</a>),</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                                            <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SPI_gettypeid}(tuptable-&gt;tupdesc, 1),</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                                            <a class="code hl_struct" href="structcppgres_1_1memory__context.html">memory_context</a>(tuptable-&gt;tuptabcxt));</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>          tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>          tuples.at(n).emplace(ret);</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>          <span class="keywordflow">return</span> tuples.at(n).value();</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        }</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>      }</div>
@@ -314,7 +314,7 @@ $(document).ready(function(){initNavTree('executor_8hpp_source.html',''); initRe
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>              nd, <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::SPI_gettypeid}(tuptable-&gt;tupdesc, i + 1),</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>              <a class="code hl_struct" href="structcppgres_1_1memory__context.html">memory_context</a>(tuptable-&gt;tuptabcxt)));</div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        }</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        tuples.at(n).emplace(ret);</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>      } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="keyword">auto</span> ret = [&amp;]&lt;std::size_t... Is&gt;(std::index_sequence&lt;Is...&gt;) {</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>          <span class="keywordflow">return</span> T{([&amp;] {</div>
@@ -328,7 +328,7 @@ $(document).ready(function(){initNavTree('executor_8hpp_source.html',''); initRe
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                <a class="code hl_struct" href="structcppgres_1_1memory__context.html">memory_context</a>(tuptable-&gt;tuptabcxt));</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>          }())...};</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        }(std::make_index_sequence&lt;utils::tuple_size_v&lt;T&gt;&gt;{});</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        tuples.at(n).emplace(ret);</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>      }</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>      <span class="keywordflow">return</span> tuples.at(n).value();</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    }</div>
