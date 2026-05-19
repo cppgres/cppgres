@@ -8144,7 +8144,7 @@ struct name {
   template <int N> requires(N < NAMEDATALEN)
   name(const char name[N]) : _name({.data = name}) {}
 
-  name(const char *name) { strncpy(NameStr(_name), name, NAMEDATALEN - 1); }
+  name(const char *name) : _name{} { strncpy(NameStr(_name), name, NAMEDATALEN - 1); }
 
   operator NameData &() const { return _name; }
 
@@ -9010,7 +9010,11 @@ struct named_type : public type {
    *
    * @param name unqualified type name
    */
-  named_type(const std::string_view name) : type(type{.oid = ::TypenameGetTypid(name.data())}) {}
+  named_type(const std::string_view name)
+      : type(type{.oid = ([&]() {
+                std::string type_name(name);
+                return ::TypenameGetTypid(type_name.c_str());
+              })()}) {}
   /**
    * @brief Type identified by a qualified name
    *
@@ -9019,11 +9023,14 @@ struct named_type : public type {
    */
   named_type(const std::string_view schema, const std::string_view name)
       : type({.oid = ([&]() {
-                cppgres::oid nsoid = ffi_guard{::LookupExplicitNamespace}(schema.data(), false);
+                std::string schema_name(schema);
+                std::string type_name(name);
+                cppgres::oid nsoid =
+                    ffi_guard{::LookupExplicitNamespace}(schema_name.c_str(), false);
                 cppgres::oid oid = InvalidOid;
                 if (OidIsValid(nsoid)) {
                   oid = (*syscache<Form_pg_type, const char *, cppgres::oid>(
-                             TYPENAMENSP, std::string(name).c_str(), nsoid))
+                             TYPENAMENSP, type_name.c_str(), nsoid))
                             .oid;
                 }
                 return oid;
@@ -9779,6 +9786,9 @@ template <datumable_function Func> struct postgres_function {
       }
 
       // arguments
+      if (fc->nargs < arity) {
+        report(ERROR, "expected %d arguments, got %d instead", arity, fc->nargs);
+      }
       short accounted_for_args = 0;
       auto t = [&]<std::size_t... Is>(std::index_sequence<Is...>) {
         return argument_types{([&]() -> utils::tuple_element_t<Is, argument_types> {
@@ -9952,6 +9962,12 @@ template <has_type_traits ret_type, has_type_traits... arg_types> struct functio
     // Check arguments
     auto &argtypes = (*p).proargtypes;
     std::array<type, sizeof...(arg_types)> types = {type_traits<arg_types>().type_for()...};
+    if (argtypes.dim1 != sizeof...(arg_types)) {
+      throw std::runtime_error(cppgres::fmt::format("expected {} argument{}, got {} instead",
+                                                    sizeof...(arg_types),
+                                                    sizeof...(arg_types) == 1 ? "" : "s",
+                                                    argtypes.dim1));
+    }
     for (int i = 0; i < argtypes.dim1; i++) {
       cppgres::oid arg(argtypes.values[i]);
       if (types[i] != type{UNKNOWNOID} /* FIXME: figure out how to avoid this special case */ &&
@@ -10005,7 +10021,7 @@ template <has_type_traits ret_type, has_type_traits... arg_types> struct functio
       } else if constexpr (!utils::is_optional<decltype(arg)>) {
         return false;
       } else {
-        any_nulls = !arg.has_value();
+        any_nulls = any_nulls || !arg.has_value();
         return !arg.has_value();
       }
       return false;
@@ -10225,7 +10241,7 @@ template <class Agg, typename... InTs> datum aggregate_combine(value state, valu
       return datum_conversion<void *>::into_datum(reinterpret_cast<void *>(newstate));
     } else if constexpr (convertible_into_datum<Agg>) {
       Agg state0 = datum_conversion<Agg>::from_nullable_datum(state.get_nullable_datum(), ANYOID);
-      Agg state1 = datum_conversion<Agg>::from_nullable_datum(state.get_nullable_datum(), ANYOID);
+      Agg state1 = datum_conversion<Agg>::from_nullable_datum(other.get_nullable_datum(), ANYOID);
       return datum_conversion<Agg>::into_datum(Agg(state0, state1));
     }
   }
@@ -11081,8 +11097,9 @@ struct spi_executor : public executor {
     std::array<::Oid, nargs> types = {type_traits<Args>(args).type_for().oid...};
     std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
     std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
-    auto rc = ffi_guard{::SPI_execute_with_args}(query.data(), nargs, types.data(), datums.data(),
-                                                 nulls.data(), opts.read_only(), opts.count());
+    auto rc = ffi_guard{::SPI_execute_with_args}(utils::to_cstring(query), nargs, types.data(),
+                                                 datums.data(), nulls.data(), opts.read_only(),
+                                                 opts.count());
     if (rc >= 0) {
       return SPI_processed;
     } else {
