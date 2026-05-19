@@ -10,6 +10,7 @@ postgres_function(_sig2, ([](std::optional<bool> v) { return v; }));
 postgres_function(_sig3, ([](bool v) { return v; }));
 postgres_function(_sig4, ([](bool v, std::optional<int64_t> n) { return v && n.has_value(); }));
 postgres_function(_void_sig_fun, ([] {}));
+postgres_function(strict_add_c, ([](int32_t a, int32_t b) { return a + b; }));
 
 postgres_function(cstring_fun, ([](const char *s) { return std::string_view(s); }));
 postgres_function(to_cstring_fun, ([](std::string_view s) { return s.data(); }));
@@ -221,6 +222,29 @@ add_test(function_oid_rejects_extra_args, ([](test_case &) {
              exception_raised = true;
            }
            result = result && _assert(exception_raised);
+           return result;
+         }));
+
+add_test(function_strict_null_short_circuit, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           spi.execute(cppgres::fmt::format("create function strict_add_c(int, int) returns int "
+                                            "language c strict as '{}'",
+                                            get_library_name()));
+           cppgres::function<std::optional<int32_t>, std::optional<int32_t>,
+                             std::optional<int32_t>>
+               f("strict_add_c");
+           {
+             cppgres::internal_subtransaction tx(false);
+             bool exception_raised = false;
+             try {
+               result =
+                   result && _assert(!f(std::nullopt, std::optional<int32_t>(1)).has_value());
+             } catch (std::exception &e) {
+               exception_raised = true;
+             }
+             result = result && _assert(!exception_raised);
+           }
            return result;
          }));
 

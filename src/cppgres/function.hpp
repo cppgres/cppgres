@@ -441,7 +441,7 @@ template <has_type_traits ret_type, has_type_traits... arg_types> struct functio
       } else if constexpr (!utils::is_optional<decltype(arg)>) {
         return false;
       } else {
-        any_nulls = !arg.has_value();
+        any_nulls = any_nulls || !arg.has_value();
         return !arg.has_value();
       }
       return false;
