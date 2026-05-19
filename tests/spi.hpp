@@ -91,6 +91,28 @@ add_test(spi_result_iterator_sparse_cache, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_result_iterator_random_access_operations, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto res = spi.query<int64_t>("select i from generate_series(1,3) i");
+           auto it = res.begin();
+
+           auto old = it++;
+           result = result && _assert(*old == 1);
+           result = result && _assert(*it == 2);
+           auto prev = it--;
+           result = result && _assert(*prev == 2);
+           result = result && _assert(*it == 1);
+           it += 2;
+           result = result && _assert(*it == 3);
+           --it;
+           result = result && _assert(*it == 2);
+           it -= 1;
+           result = result && _assert(*it == 1);
+
+           return result;
+         }));
+
 add_test(spi_empty, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
