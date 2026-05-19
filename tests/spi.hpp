@@ -11,6 +11,11 @@ struct spi_counted_int {
   static inline int conversions = 0;
 };
 
+struct spi_counted_arg {
+  int32_t value;
+  static inline int conversions = 0;
+};
+
 namespace cppgres {
 template <> struct datum_conversion<spi_counted_int> : default_datum_conversion<spi_counted_int> {
   static spi_counted_int from_datum(const datum &d, oid oid,
@@ -20,7 +25,21 @@ template <> struct datum_conversion<spi_counted_int> : default_datum_conversion<
   }
 };
 
+template <> struct datum_conversion<spi_counted_arg> : default_datum_conversion<spi_counted_arg> {
+  static datum into_datum(const spi_counted_arg &arg) {
+    spi_counted_arg::conversions++;
+    return datum_conversion<int32_t>::into_datum(arg.value);
+  }
+};
+
 template <> struct type_traits<spi_counted_int> {
+  bool is(const type &t) { return type_traits<int32_t>().is(t); }
+  type type_for() { return type_traits<int32_t>().type_for(); }
+};
+
+template <> struct type_traits<spi_counted_arg> {
+  type_traits() {}
+  type_traits(const spi_counted_arg &) {}
   bool is(const type &t) { return type_traits<int32_t>().is(t); }
   type type_for() { return type_traits<int32_t>().type_for(); }
 };
@@ -109,6 +128,19 @@ add_test(spi_result_iterator_random_access_operations, ([](test_case &) {
            result = result && _assert(*it == 2);
            it -= 1;
            result = result && _assert(*it == 1);
+
+           return result;
+         }));
+
+add_test(spi_args_convert_once, ([](test_case &) {
+           bool result = true;
+           spi_counted_arg::conversions = 0;
+
+           cppgres::spi_executor spi;
+           auto res = spi.query<int32_t>("select $1::int4", spi_counted_arg{42});
+
+           result = result && _assert(res.begin()[0] == 42);
+           result = result && _assert(spi_counted_arg::conversions == 1);
 
            return result;
          }));
