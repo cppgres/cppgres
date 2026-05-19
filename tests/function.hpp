@@ -208,6 +208,22 @@ add_test(function_call, ([](test_case &) {
            return result;
          }));
 
+add_test(function_oid_rejects_extra_args, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           auto func_oid =
+               spi.query<cppgres::oid>("select 'pg_catalog.length(text)'::regprocedure::oid")
+                   .begin()[0];
+           bool exception_raised = false;
+           try {
+             cppgres::function<int32_t, std::string, std::string> f(func_oid);
+           } catch (std::exception &e) {
+             exception_raised = true;
+           }
+           result = result && _assert(exception_raised);
+           return result;
+         }));
+
 // Function that takes a function
 postgres_function(function_arg, ([](cppgres::function<std::int32_t, std::string_view> f,
                                     std::string_view s) { return f(s); }));

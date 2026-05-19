@@ -382,6 +382,12 @@ template <has_type_traits ret_type, has_type_traits... arg_types> struct functio
     // Check arguments
     auto &argtypes = (*p).proargtypes;
     std::array<type, sizeof...(arg_types)> types = {type_traits<arg_types>().type_for()...};
+    if (argtypes.dim1 != sizeof...(arg_types)) {
+      throw std::runtime_error(cppgres::fmt::format("expected {} argument{}, got {} instead",
+                                                    sizeof...(arg_types),
+                                                    sizeof...(arg_types) == 1 ? "" : "s",
+                                                    argtypes.dim1));
+    }
     for (int i = 0; i < argtypes.dim1; i++) {
       cppgres::oid arg(argtypes.values[i]);
       if (types[i] != type{UNKNOWNOID} /* FIXME: figure out how to avoid this special case */ &&
