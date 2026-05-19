@@ -6,6 +6,26 @@ extern "C" {
 #include <executor/spi_priv.h>
 }
 
+struct spi_counted_int {
+  int32_t value;
+  static inline int conversions = 0;
+};
+
+namespace cppgres {
+template <> struct datum_conversion<spi_counted_int> : default_datum_conversion<spi_counted_int> {
+  static spi_counted_int from_datum(const datum &d, oid oid,
+                                    std::optional<memory_context> context) {
+    spi_counted_int::conversions++;
+    return {from_nullable_datum<int32_t>(nullable_datum(d), oid, context)};
+  }
+};
+
+template <> struct type_traits<spi_counted_int> {
+  bool is(const type &t) { return type_traits<int32_t>().is(t); }
+  type type_for() { return type_traits<int32_t>().type_for(); }
+};
+} // namespace cppgres
+
 namespace tests {
 
 add_test(spi, ([](test_case &) {
@@ -50,6 +70,24 @@ add_test(spi_single, ([](test_case &) {
              result = result && _assert(re == i + 1);
            }
            result = result && _assert(res.begin()[0] == 2);
+           return result;
+         }));
+
+add_test(spi_result_iterator_sparse_cache, ([](test_case &) {
+           bool result = true;
+           spi_counted_int::conversions = 0;
+
+           cppgres::spi_executor spi;
+           auto res = spi.query<spi_counted_int>("select i::int4 from generate_series(1,3) i");
+           auto it = res.begin();
+
+           result = result && _assert(it[2].value == 3);
+           result = result && _assert(spi_counted_int::conversions == 1);
+           result = result && _assert(it[0].value == 1);
+           result = result && _assert(spi_counted_int::conversions == 2);
+           result = result && _assert(it[2].value == 3);
+           result = result && _assert(spi_counted_int::conversions == 2);
+
            return result;
          }));
 

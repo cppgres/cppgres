@@ -155,7 +155,7 @@ struct spi_executor : public executor {
           auto ret = from_nullable_datum<T>(nullable_datum(datum),
                                             ffi_guard{::SPI_gettypeid}(tuptable->tupdesc, 1),
                                             memory_context(tuptable->tuptabcxt));
-          tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);
+          tuples.at(n).emplace(ret);
           return tuples.at(n).value();
         } else if (tuptable->tupdesc->natts == 1) {
           bool isnull;
@@ -165,7 +165,7 @@ struct spi_executor : public executor {
           auto ret = from_nullable_datum<T>(nullable_datum(datum),
                                             ffi_guard{::SPI_gettypeid}(tuptable->tupdesc, 1),
                                             memory_context(tuptable->tuptabcxt));
-          tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);
+          tuples.at(n).emplace(ret);
           return tuples.at(n).value();
         }
       }
@@ -181,7 +181,7 @@ struct spi_executor : public executor {
               nd, ffi_guard{::SPI_gettypeid}(tuptable->tupdesc, i + 1),
               memory_context(tuptable->tuptabcxt)));
         }
-        tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);
+        tuples.at(n).emplace(ret);
       } else {
         auto ret = [&]<std::size_t... Is>(std::index_sequence<Is...>) {
           return T{([&] {
@@ -195,7 +195,7 @@ struct spi_executor : public executor {
                 memory_context(tuptable->tuptabcxt));
           }())...};
         }(std::make_index_sequence<utils::tuple_size_v<T>>{});
-        tuples.emplace(std::next(tuples.begin(), n), std::in_place, ret);
+        tuples.at(n).emplace(ret);
       }
       return tuples.at(n).value();
     }
