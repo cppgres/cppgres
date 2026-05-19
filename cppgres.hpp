@@ -10812,17 +10812,19 @@ struct spi_executor : public executor {
       return *this;
     }
     constexpr result_iterator operator++(int) noexcept {
+      auto ret = *this;
       index++;
-      return this;
+      return ret;
     }
 
     constexpr result_iterator &operator--() noexcept {
       index--;
-      return this;
+      return *this;
     }
     constexpr result_iterator operator--(int) noexcept {
+      auto ret = *this;
       index--;
-      return this;
+      return ret;
     }
 
     constexpr result_iterator operator+(const difference_type n) const noexcept {
@@ -10831,7 +10833,7 @@ struct spi_executor : public executor {
 
     result_iterator &operator+=(difference_type n) noexcept {
       index += n;
-      return this;
+      return *this;
     }
 
     constexpr result_iterator operator-(difference_type n) const noexcept {
@@ -10840,7 +10842,7 @@ struct spi_executor : public executor {
 
     result_iterator &operator-=(difference_type n) noexcept {
       index -= n;
-      return this;
+      return *this;
     }
 
     constexpr difference_type operator-(const result_iterator &other) const noexcept {
