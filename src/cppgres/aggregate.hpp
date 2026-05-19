@@ -136,7 +136,7 @@ template <class Agg, typename... InTs> datum aggregate_combine(value state, valu
       return datum_conversion<void *>::into_datum(reinterpret_cast<void *>(newstate));
     } else if constexpr (convertible_into_datum<Agg>) {
       Agg state0 = datum_conversion<Agg>::from_nullable_datum(state.get_nullable_datum(), ANYOID);
-      Agg state1 = datum_conversion<Agg>::from_nullable_datum(state.get_nullable_datum(), ANYOID);
+      Agg state1 = datum_conversion<Agg>::from_nullable_datum(other.get_nullable_datum(), ANYOID);
       return datum_conversion<Agg>::into_datum(Agg(state0, state1));
     }
   }

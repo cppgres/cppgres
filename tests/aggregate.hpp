@@ -40,6 +40,9 @@ struct aggregate_convertible_test {
   aggregate_convertible_test() : x(0) {}
   aggregate_convertible_test(int64_t x_) : x(x_) {}
   void update(int64_t v) { x += v; }
+  aggregate_convertible_test(aggregate_convertible_test &self,
+                             aggregate_convertible_test &other)
+      : x(self.x + other.x) {}
 };
 
 add_test(aggregate_simple, [](test_case &) {
@@ -151,6 +154,46 @@ add_test(aggregate_convertible, [](test_case &) {
   spi.execute("create aggregate agg (int8) (sfunc = aggregate_convertible_sfunc, stype = int8)");
   auto res = spi.query<int64_t>("select agg(v) from (values (1), (2), (3)) as t(v)");
   result = result && _assert(res.begin()[0] == 6);
+  return result;
+});
+
+add_test(aggregate_convertible_combine, [](test_case &) {
+  bool result = true;
+  cppgres::spi_executor spi;
+  spi.execute(
+      cppgres::fmt::format("create or replace function aggregate_convertible_sfunc(int8, int8) "
+                           "returns int8 language c as '{}'",
+                           get_library_name()));
+  spi.execute(
+      cppgres::fmt::format("create or replace function aggregate_convertible_combine(int8, int8) "
+                           "returns int8 language c as '{}'",
+                           get_library_name()));
+  spi.execute("create aggregate agg (int8) (sfunc = aggregate_convertible_sfunc, "
+              "stype = int8, combinefunc = aggregate_convertible_combine, parallel = safe)");
+
+  spi.execute("set max_parallel_workers_per_gather = 4");
+  spi.execute("set min_parallel_table_scan_size = 0");
+  spi.execute("set parallel_setup_cost = 0");
+  spi.execute("set parallel_tuple_cost = 0");
+  spi.execute("create table aggregate_convertible_combine_values as "
+              "select v::int8 from generate_series(1, 1000000) v");
+  spi.execute("analyze aggregate_convertible_combine_values");
+
+  {
+    auto res0 = spi.query<std::string>(
+        "explain select agg(v) from aggregate_convertible_combine_values");
+
+    std::ostringstream oss;
+    for (auto s : res0) {
+      oss << s << "\n";
+    }
+    auto plan = oss.str();
+
+    result = result && _assert(plan.find("Partial Aggregate") != std::string::npos);
+  }
+
+  auto res = spi.query<int64_t>("select agg(v) from aggregate_convertible_combine_values");
+  result = result && _assert(res.begin()[0] == 500000500000);
   return result;
 });
 
