@@ -248,6 +248,35 @@ add_test(function_strict_null_short_circuit, ([](test_case &) {
            return result;
          }));
 
+add_test(postgres_function_rejects_too_few_fmgr_args, ([](test_case &) {
+           bool result = true;
+           cppgres::spi_executor spi;
+           spi.execute(cppgres::fmt::format("create function strict_add_c_arity(int, int) "
+                                            "returns int language c strict as '{}', "
+                                            "'strict_add_c'",
+                                            get_library_name()));
+           auto func_oid =
+               spi.query<cppgres::oid>("select 'strict_add_c_arity(int, int)'::regprocedure::oid")
+                   .begin()[0];
+
+           bool expected_exception_raised = false;
+           {
+             cppgres::internal_subtransaction tx(false);
+             try {
+               cppgres::ffi_guard{::OidFunctionCall1Coll}(func_oid, InvalidOid,
+                                                           Int32GetDatum(1));
+             } catch (cppgres::pg_exception &e) {
+               expected_exception_raised =
+                   std::string_view(e.message()).find("expected 2 arguments") !=
+                   std::string_view::npos;
+             } catch (std::exception &e) {
+             }
+           }
+
+           result = result && _assert(expected_exception_raised);
+           return result;
+         }));
+
 // Function that takes a function
 postgres_function(function_arg, ([](cppgres::function<std::int32_t, std::string_view> f,
                                     std::string_view s) { return f(s); }));

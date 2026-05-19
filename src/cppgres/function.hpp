@@ -209,6 +209,9 @@ template <datumable_function Func> struct postgres_function {
       }
 
       // arguments
+      if (fc->nargs < arity) {
+        report(ERROR, "expected %d arguments, got %d instead", arity, fc->nargs);
+      }
       short accounted_for_args = 0;
       auto t = [&]<std::size_t... Is>(std::index_sequence<Is...>) {
         return argument_types{([&]() -> utils::tuple_element_t<Is, argument_types> {

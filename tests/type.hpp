@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cstring>
+#include <new>
+
 #include "tests.hpp"
 
 struct my_custom_type {
@@ -35,6 +38,21 @@ add_test(named_type_string_view_bounds, [](test_case &) {
     exception_raised = true;
   }
   result = result && _assert(!exception_raised);
+  return result;
+});
+
+add_test(name_long_input_is_terminated, [](test_case &) {
+  bool result = true;
+
+  alignas(cppgres::name) std::byte storage[sizeof(cppgres::name)];
+  std::memset(storage, 'x', sizeof(storage));
+  std::string long_name(NAMEDATALEN * 2, 'a');
+  auto *name = new (storage) cppgres::name(long_name.c_str());
+  NameData &raw = *name;
+
+  result = result && _assert(NameStr(raw)[NAMEDATALEN - 1] == '\0');
+
+  name->~name();
   return result;
 });
 

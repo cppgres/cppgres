@@ -568,6 +568,23 @@ add_test(spi_plan_string_length, ([](test_case &) {
            return result;
          }));
 
+add_test(spi_execute_string_length, ([](test_case &) {
+           bool result = true;
+
+           cppgres::spi_executor spi;
+           std::string query = "create table spi_execute_string_length ()GARBAGEHERE";
+           bool exception_raised = false;
+           try {
+             spi.execute(
+                 std::string_view(query.c_str(), query.find_first_of("GARBAGEHERE")));
+           } catch (std::exception &e) {
+             exception_raised = true;
+           }
+           result = result && _assert(!exception_raised);
+
+           return result;
+         }));
+
 add_test(spi_query_dml, ([](test_case &) {
            bool result = true;
            cppgres::spi_executor spi;
