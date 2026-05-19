@@ -24,6 +24,20 @@ add_test(named_type, [](test_case &) {
   return result;
 });
 
+add_test(named_type_string_view_bounds, [](test_case &) {
+  bool result = true;
+  std::string storage = "text_suffix";
+  bool exception_raised = false;
+  try {
+    auto ty = cppgres::named_type(std::string_view(storage.data(), 4));
+    result = result && _assert(ty.name(true) == "pg_catalog.text");
+  } catch (std::exception &e) {
+    exception_raised = true;
+  }
+  result = result && _assert(!exception_raised);
+  return result;
+});
+
 postgres_function(custom_type_fun, ([](my_custom_type t) {
                     my_custom_type t1 = t;
                     std::reverse(t1.s.begin(), t1.s.end());
