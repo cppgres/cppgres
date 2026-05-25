@@ -6,7 +6,10 @@
 #include "type.hpp"
 #include "types.hpp"
 
+#include <algorithm>
+#include <memory>
 #include <ranges>
+#include <vector>
 
 namespace cppgres {
 
@@ -283,14 +286,15 @@ struct record {
   record(tuple_descriptor &tupdesc, Iter begin, Iter end)
       : tupdesc(tupdesc), tuple([&]() {
           std::vector<::Datum> values;
-          std::vector<uint8_t> nulls;
+          std::vector<bool> null_flags;
           for (auto it = begin; it != end; ++it) {
             auto nd = into_nullable_datum(*it);
             values.push_back(nd.is_null() ? ::Datum(0) : nd);
-            nulls.push_back(nd.is_null() ? 1 : 0);
+            null_flags.push_back(nd.is_null());
           }
-          return ffi_guard{::heap_form_tuple}(this->tupdesc, values.data(),
-                                              reinterpret_cast<bool *>(nulls.data()));
+          auto nulls = std::make_unique<bool[]>(null_flags.size());
+          std::ranges::copy(null_flags, nulls.get());
+          return ffi_guard{::heap_form_tuple}(this->tupdesc, values.data(), nulls.get());
         }()) {}
 
   template <convertible_into_nullable_datum... D>

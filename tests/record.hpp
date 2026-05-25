@@ -1,6 +1,8 @@
 #pragma once
 
+#include <optional>
 #include <ranges>
+#include <vector>
 
 #include "tests.hpp"
 
@@ -79,6 +81,26 @@ postgres_function(record_defining_fun, ([]() {
                     cppgres::record rec(td, std::string("hello"), 1, false);
                     return std::array<cppgres::record, 1>{rec};
                   }));
+
+add_test(record_iterator_constructor_nulls, ([](test_case &) {
+           bool result = true;
+           cppgres::tuple_descriptor td(4);
+           td.set_type(0, cppgres::type{.oid = INT8OID});
+           td.set_type(1, cppgres::type{.oid = INT8OID});
+           td.set_type(2, cppgres::type{.oid = INT8OID});
+           td.set_type(3, cppgres::type{.oid = INT8OID});
+
+           std::vector<std::optional<std::int64_t>> values = {1, std::nullopt, 3, std::nullopt};
+           cppgres::record rec(td, values.begin(), values.end());
+
+           result = result && _assert(cppgres::from_nullable_datum<std::int64_t>(
+                                          rec.get_attribute(0), INT8OID) == 1);
+           result = result && _assert(rec.get_attribute(1).is_null());
+           result = result && _assert(cppgres::from_nullable_datum<std::int64_t>(
+                                          rec.get_attribute(2), INT8OID) == 3);
+           result = result && _assert(rec.get_attribute(3).is_null());
+           return result;
+         }));
 
 add_test(record_defining, ([](test_case &) {
            bool result = true;
