@@ -35,6 +35,18 @@ struct aggregate_test {
 declare_aggregate(aggregate, aggregate_test, int64_t);
 declare_aggregate(aggregate2, aggregate_test, int64_t, int64_t);
 
+struct aggregate_destructor_test {
+  static inline int destructions = 0;
+  int64_t x = 0;
+
+  void update(int64_t v) { x += v; }
+  int64_t finalize() const { return x; }
+
+  ~aggregate_destructor_test() { destructions++; }
+};
+
+declare_aggregate(aggregate_destructor, aggregate_destructor_test, int64_t);
+
 struct aggregate_convertible_test {
   int64_t x;
   aggregate_convertible_test() : x(0) {}
@@ -59,6 +71,27 @@ add_test(aggregate_simple, [](test_case &) {
       "= internal)");
   auto res = spi.query<int64_t>("select agg(v) from (values (1), (2), (3)) as t(v)");
   result = result && _assert(res.begin()[0] == 6);
+  return result;
+});
+
+add_test(aggregate_destructor, [](test_case &) {
+  bool result = true;
+  cppgres::spi_executor spi;
+  spi.execute(
+      cppgres::fmt::format("create or replace function aggregate_destructor_sfunc(internal, int8) "
+                           "returns internal language c as '{}'",
+                           get_library_name()));
+  spi.execute(cppgres::fmt::format(
+      "create or replace function aggregate_destructor_ffunc(internal) returns int8 language c "
+      "as '{}'",
+      get_library_name()));
+  spi.execute("create aggregate agg_destructor (int8) (sfunc = aggregate_destructor_sfunc, "
+              "finalfunc = aggregate_destructor_ffunc, stype = internal)");
+
+  auto before = aggregate_destructor_test::destructions;
+  auto res = spi.query<int64_t>("select agg_destructor(v) from (values (1), (2), (3)) as t(v)");
+  result = result && _assert(res.begin()[0] == 6);
+  result = result && _assert(aggregate_destructor_test::destructions > before);
   return result;
 });
 
