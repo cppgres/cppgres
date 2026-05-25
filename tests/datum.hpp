@@ -128,6 +128,18 @@ add_test(varlena_text_from_strings, ([](test_case &) {
            return result;
          }));
 
+add_test(cstring_into_datum_copies_input, ([](test_case &) {
+           char storage[] = "first";
+           auto d = cppgres::datum_conversion<const char *>::into_datum(
+               static_cast<const char *>(storage));
+
+           storage[0] = 'x';
+
+           auto str =
+               cppgres::datum_conversion<const char *>::from_datum(d, CSTRINGOID, std::nullopt);
+           return _assert(std::string_view(str) == "first");
+         }));
+
 // Ensure arbitrary types are not automatically deducted
 // to be convertible from into datums.
 struct some_type {};
