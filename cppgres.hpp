@@ -64,6 +64,8 @@ using ::fmt::format;
 
 
 #include <memory>
+#include <type_traits>
+#include <utility>
 
 /**
  * \file
@@ -7653,6 +7655,7 @@ template <typename Func> struct exception_guard {
 namespace cppgres {
 
 struct abstract_memory_context {
+  virtual ~abstract_memory_context() = default;
 
   template <typename T = std::byte> T *alloc(size_t n = 1) {
     return static_cast<T *>(ffi_guard{::MemoryContextAlloc}(_memory_context(), sizeof(T) * n));
@@ -8409,6 +8412,7 @@ private:
  */
 
 #include <cstddef>
+#include <optional>
 #include <span>
 #include <string>
 
@@ -8513,11 +8517,21 @@ struct varlena : public non_by_value_type {
 
 protected:
   void *detoasted = nullptr;
+  std::optional<tracking_memory_context<memory_context>> detoasted_ctx;
   void *detoasted_ptr() {
     if (detoasted != nullptr) {
+      if (detoasted_ctx.has_value() && detoasted_ctx->resets() > 0) {
+        throw pointer_gone_exception();
+      }
       return detoasted;
     }
-    detoasted = ffi_guard{::pg_detoast_datum}(reinterpret_cast<::varlena *>(ptr()));
+    auto *source = reinterpret_cast<::varlena *>(ptr());
+    detoasted = ffi_guard{::pg_detoast_datum}(source);
+    if (detoasted == source) {
+      detoasted_ctx = ctx;
+    } else {
+      detoasted_ctx.emplace(memory_context());
+    }
     return detoasted;
   }
 };
@@ -9065,7 +9079,10 @@ struct named_type : public type {
 
 } // namespace cppgres
 
+#include <algorithm>
+#include <memory>
 #include <ranges>
+#include <vector>
 
 namespace cppgres {
 
@@ -9342,14 +9359,15 @@ struct record {
   record(tuple_descriptor &tupdesc, Iter begin, Iter end)
       : tupdesc(tupdesc), tuple([&]() {
           std::vector<::Datum> values;
-          std::vector<uint8_t> nulls;
+          std::vector<bool> null_flags;
           for (auto it = begin; it != end; ++it) {
             auto nd = into_nullable_datum(*it);
             values.push_back(nd.is_null() ? ::Datum(0) : nd);
-            nulls.push_back(nd.is_null() ? 1 : 0);
+            null_flags.push_back(nd.is_null());
           }
-          return ffi_guard{::heap_form_tuple}(this->tupdesc, values.data(),
-                                              reinterpret_cast<bool *>(nulls.data()));
+          auto nulls = std::make_unique<bool[]>(null_flags.size());
+          std::ranges::copy(null_flags, nulls.get());
+          return ffi_guard{::heap_form_tuple}(this->tupdesc, values.data(), nulls.get());
         }()) {}
 
   template <convertible_into_nullable_datum... D>
@@ -10159,6 +10177,21 @@ concept combinable_aggregate = aggregate<T, Args...> && requires(T &&t, T &&t1) 
   { T(t, t1) } -> std::same_as<T>;
 };
 
+template <class Agg, typename... Args>
+Agg *construct_aggregate_state(abstract_memory_context &ctx, Args &&...args) {
+  auto *state = ctx.template alloc<Agg>();
+  std::construct_at(state, std::forward<Args>(args)...);
+  if constexpr (!std::is_trivially_destructible_v<Agg>) {
+    ctx.register_reset_callback([](void *arg) { std::destroy_at(static_cast<Agg *>(arg)); }, state);
+  }
+  return state;
+}
+
+template <class Agg, typename... Args>
+Agg *construct_aggregate_state(abstract_memory_context &&ctx, Args &&...args) {
+  return construct_aggregate_state<Agg>(ctx, std::forward<Args>(args)...);
+}
+
 template <class Agg, typename... InTs> datum aggregate_sfunc(value state, InTs... args) {
 
   MemoryContext aggctx;
@@ -10170,8 +10203,7 @@ template <class Agg, typename... InTs> datum aggregate_sfunc(value state, InTs..
   if constexpr (!convertible_into_datum<Agg> && finalizable_aggregate<Agg, InTs...>) {
     Agg *state0;
     if (state.get_nullable_datum().is_null()) {
-      state0 = memory_context(aggctx).alloc<Agg>();
-      std::construct_at(state0);
+      state0 = construct_aggregate_state<Agg>(memory_context(aggctx));
     } else {
       state0 = reinterpret_cast<Agg *>(
           from_nullable_datum<void *>(state.get_nullable_datum(), state.get_type().oid));
@@ -10193,8 +10225,7 @@ template <class Agg, typename... InTs> nullable_datum aggregate_ffunc(value stat
   if constexpr (finalizable_aggregate<Agg, InTs...>) {
     Agg *state0;
     if (state.get_nullable_datum().is_null()) {
-      state0 = memory_context(memory_context()).alloc<Agg>();
-      std::construct_at(state0);
+      state0 = construct_aggregate_state<Agg>(memory_context());
     } else {
       state0 = reinterpret_cast<Agg *>(
           from_nullable_datum<void *>(state.get_nullable_datum(), state.get_type().oid));
@@ -10227,8 +10258,7 @@ template <class Agg, typename... InTs> datum aggregate_deserial(bytea ba, value)
                                           &aggctx)) {
       report(ERROR, "not aggregate context");
     }
-    Agg *state0 = memory_context(aggctx).alloc<Agg>();
-    std::construct_at(state0, ba);
+    Agg *state0 = construct_aggregate_state<Agg>(memory_context(aggctx), ba);
     return datum_conversion<void *>::into_datum(reinterpret_cast<void *>(state0));
   }
   report(ERROR, "this aggregate does not support serialize");
@@ -10245,8 +10275,7 @@ template <class Agg, typename... InTs> datum aggregate_combine(value state, valu
     if constexpr (!convertible_into_datum<Agg> && finalizable_aggregate<Agg, InTs...>) {
       Agg *state0;
       if (state.get_nullable_datum().is_null()) {
-        state0 = memory_context(aggctx).alloc<Agg>();
-        std::construct_at(state0);
+        state0 = construct_aggregate_state<Agg>(memory_context(aggctx));
       } else {
         state0 = reinterpret_cast<Agg *>(
             from_nullable_datum<void *>(state.get_nullable_datum(), state.get_type().oid));
@@ -10254,15 +10283,13 @@ template <class Agg, typename... InTs> datum aggregate_combine(value state, valu
 
       Agg *state1;
       if (other.get_nullable_datum().is_null()) {
-        state1 = memory_context(aggctx).alloc<Agg>();
-        std::construct_at(state1);
+        state1 = construct_aggregate_state<Agg>(memory_context(aggctx));
       } else {
         state1 = reinterpret_cast<Agg *>(
             from_nullable_datum<void *>(other.get_nullable_datum(), other.get_type().oid));
       }
 
-      Agg *newstate = memory_context(aggctx).alloc<Agg>();
-      std::construct_at(newstate, *state0, *state1);
+      Agg *newstate = construct_aggregate_state<Agg>(memory_context(aggctx), *state0, *state1);
 
       return datum_conversion<void *>::into_datum(reinterpret_cast<void *>(newstate));
     } else if constexpr (convertible_into_datum<Agg>) {
