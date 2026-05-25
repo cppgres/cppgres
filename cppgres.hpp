@@ -7710,6 +7710,23 @@ struct owned_memory_context : public abstract_memory_context {
 
 protected:
   owned_memory_context(::MemoryContext context) : context(context), moved(false) {}
+  owned_memory_context(const owned_memory_context &) = delete;
+  owned_memory_context &operator=(const owned_memory_context &) = delete;
+  owned_memory_context(owned_memory_context &&other) noexcept
+      : context(other.context), moved(other.moved) {
+    other.moved = true;
+  }
+  owned_memory_context &operator=(owned_memory_context &&other) {
+    if (this != &other) {
+      if (!moved) {
+        delete_context();
+      }
+      context = other.context;
+      moved = other.moved;
+      other.moved = true;
+    }
+    return *this;
+  }
 
   ~owned_memory_context() {
     if (!moved) {
@@ -7774,51 +7791,6 @@ inline memory_context top_memory_context() { return memory_context(TopMemoryCont
 
 template <typename C> requires std::derived_from<C, abstract_memory_context>
 struct tracking_memory_context : public abstract_memory_context {
-  explicit tracking_memory_context(tracking_memory_context<C> const &context)
-      : ctx(context.ctx), counter(context.counter), cb(context.cb) {
-    cb->arg = this;
-  }
-
-  explicit tracking_memory_context(C ctx)
-      : ctx(ctx), counter(0),
-        cb(std::shared_ptr<::MemoryContextCallback>(
-            this->register_reset_callback(
-                [](void *i) { static_cast<struct tracking_memory_context<C> *>(i)->counter++; },
-                this),
-            /* custom deleter */
-            [](auto) {})) {}
-
-  tracking_memory_context(tracking_memory_context &&other) noexcept
-      : ctx(std::move(other.ctx)), counter(std::move(other.counter)), cb(std::move(other.cb)) {
-    other.cb = nullptr;
-    cb->arg = this;
-  }
-
-  tracking_memory_context(tracking_memory_context &other) noexcept
-      : ctx(std::move(other.ctx)), counter(std::move(other.counter)), cb(std::move(other.cb)) {
-    cb->arg = this;
-    other.cb = nullptr;
-  }
-
-  tracking_memory_context &operator=(tracking_memory_context &&other) noexcept {
-    ctx = other.ctx;
-    cb = other.cb;
-    counter = other.counter;
-    cb->arg = this;
-    return *this;
-  }
-
-  ~tracking_memory_context() {
-    if (cb != nullptr) {
-      if (cb.use_count() == 1) {
-        cb->func = [](void *) {};
-      }
-    }
-  }
-
-  uint64_t resets() const { return counter; }
-  C &get_memory_context() { return ctx; }
-
 private:
   template <typename T> requires std::integral<T>
   struct shared_counter {
@@ -7843,9 +7815,59 @@ private:
 
     constexpr operator T() const noexcept { return value; }
   };
+
+  struct callback_state {
+    shared_counter<uint64_t> counter;
+    ::MemoryContextCallback *callback = nullptr;
+  };
+
+  static void track_reset(void *arg) {
+    auto *state = static_cast<callback_state *>(arg);
+    state->counter++;
+    state->callback = nullptr;
+  }
+
+public:
+  tracking_memory_context(const tracking_memory_context<C> &other) noexcept
+      : ctx(other.ctx), state(other.state) {}
+
+  explicit tracking_memory_context(C ctx) : ctx(ctx), state(std::make_shared<callback_state>()) {
+    state->callback = this->register_reset_callback(track_reset, state.get());
+  }
+
+  tracking_memory_context(tracking_memory_context &&other) noexcept
+      : ctx(std::move(other.ctx)), state(std::move(other.state)) {}
+
+  tracking_memory_context &operator=(const tracking_memory_context &other) noexcept {
+    if (this != &other) {
+      ctx = other.ctx;
+      state = other.state;
+    }
+    return *this;
+  }
+
+  tracking_memory_context &operator=(tracking_memory_context &&other) noexcept {
+    if (this != &other) {
+      ctx = std::move(other.ctx);
+      state = std::move(other.state);
+    }
+    return *this;
+  }
+
+  ~tracking_memory_context() {
+    if (state != nullptr && state.use_count() == 1 && state->callback != nullptr) {
+      state->callback->func = [](void *) {};
+      state->callback->arg = nullptr;
+      state->callback = nullptr;
+    }
+  }
+
+  uint64_t resets() const { return state == nullptr ? 0 : state->counter; }
+  C &get_memory_context() { return ctx; }
+
+private:
   C ctx;
-  shared_counter<uint64_t> counter;
-  std::shared_ptr<::MemoryContextCallback> cb;
+  std::shared_ptr<callback_state> state;
 
 protected:
   ::MemoryContext _memory_context() override { return ctx._memory_context(); }
