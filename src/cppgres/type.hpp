@@ -4,6 +4,7 @@
 #pragma once
 
 #include <cstddef>
+#include <optional>
 #include <span>
 #include <string>
 
@@ -112,11 +113,21 @@ struct varlena : public non_by_value_type {
 
 protected:
   void *detoasted = nullptr;
+  std::optional<tracking_memory_context<memory_context>> detoasted_ctx;
   void *detoasted_ptr() {
     if (detoasted != nullptr) {
+      if (detoasted_ctx.has_value() && detoasted_ctx->resets() > 0) {
+        throw pointer_gone_exception();
+      }
       return detoasted;
     }
-    detoasted = ffi_guard{::pg_detoast_datum}(reinterpret_cast<::varlena *>(ptr()));
+    auto *source = reinterpret_cast<::varlena *>(ptr());
+    detoasted = ffi_guard{::pg_detoast_datum}(source);
+    if (detoasted == source) {
+      detoasted_ctx = ctx;
+    } else {
+      detoasted_ctx.emplace(memory_context());
+    }
     return detoasted;
   }
 };

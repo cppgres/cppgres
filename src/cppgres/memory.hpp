@@ -12,6 +12,7 @@
 namespace cppgres {
 
 struct abstract_memory_context {
+  virtual ~abstract_memory_context() = default;
 
   template <typename T = std::byte> T *alloc(size_t n = 1) {
     return static_cast<T *>(ffi_guard{::MemoryContextAlloc}(_memory_context(), sizeof(T) * n));

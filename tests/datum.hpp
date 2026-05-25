@@ -163,6 +163,43 @@ add_test(lazy_detoast, ([](test_case &) {
            return result;
          }));
 
+add_test(detoasted_varlena_tracks_detoast_context, ([](test_case &) {
+           bool result = true;
+           bool saw_row = false;
+           cppgres::spi_executor spi;
+
+           spi.execute("create table detoast_context_test (v text)");
+           spi.execute("alter table detoast_context_test alter column v set storage external");
+           spi.execute("insert into detoast_context_test "
+                       "select string_agg(md5(i::text), '') from generate_series(1, 10000) i");
+
+           for (auto text_value : spi.query<cppgres::text>("select v from detoast_context_test")) {
+             saw_row = true;
+             result = result && _assert(VARATT_IS_EXTENDED(reinterpret_cast<::varlena *>(
+                                    DatumGetPointer(text_value.get_datum()))));
+
+             auto temp = cppgres::memory_context(std::move(cppgres::alloc_set_memory_context()));
+             {
+               cppgres::memory_context_scope scope(temp);
+               std::string_view view = text_value;
+               result = result && _assert(text_value.is_detoasted());
+               result = result && _assert(view.size() > 100000);
+             }
+
+             temp.reset();
+
+             bool exception_raised = false;
+             try {
+               [[maybe_unused]] std::string_view view = text_value;
+             } catch (cppgres::pointer_gone_exception &) {
+               exception_raised = true;
+             }
+             result = result && _assert(exception_raised);
+           }
+
+           return result && _assert(saw_row);
+         }));
+
 add_test(eoh_smoke, ([](test_case &e) {
            bool result = true;
 
