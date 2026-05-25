@@ -99,6 +99,36 @@ add_test(owned_memory_context, ([](test_case &) {
            return result;
          }));
 
+add_test(tracking_memory_context_copy_keeps_original_valid, ([](test_case &) {
+           bool result = true;
+           cppgres::alloc_set_memory_context ctx;
+           cppgres::tracking_memory_context<cppgres::memory_context> tracked{cppgres::memory_context(ctx)};
+
+           {
+             auto copy = tracked;
+             result = result && _assert(tracked.resets() == 0);
+             result = result && _assert(copy.resets() == 0);
+           }
+
+           ctx.reset();
+           result = result && _assert(tracked.resets() == 1);
+
+           return result;
+         }));
+
+add_test(tracking_memory_context_copy_shares_reset_state, ([](test_case &) {
+           bool result = true;
+           cppgres::alloc_set_memory_context ctx;
+           cppgres::tracking_memory_context<cppgres::memory_context> tracked{cppgres::memory_context(ctx)};
+           auto copy = tracked;
+
+           ctx.reset();
+           result = result && _assert(tracked.resets() == 1);
+           result = result && _assert(copy.resets() == 1);
+
+           return result;
+         }));
+
 add_test(executing_within_memory_context, ([](test_case &) {
            bool result = true;
            cppgres::alloc_set_memory_context mctx;
