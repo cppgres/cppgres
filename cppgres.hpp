@@ -8973,7 +8973,9 @@ template <> struct datum_conversion<const char *> : default_datum_conversion<con
     return DatumGetPointer(d);
   }
 
-  static datum into_datum(const char *const &t) { return datum(PointerGetDatum(t)); }
+  static datum into_datum(const char *const &t) {
+    return datum(PointerGetDatum(ffi_guard{::pstrdup}(t)));
+  }
 };
 
 template <std::size_t N>
@@ -8982,7 +8984,9 @@ struct datum_conversion<char[N]> : default_datum_conversion<char[N], const char 
     return DatumGetPointer(d);
   }
 
-  static datum into_datum(const char (&t)[N]) { return datum(PointerGetDatum(t)); }
+  static datum into_datum(const char (&t)[N]) {
+    return datum(PointerGetDatum(ffi_guard{::pstrdup}(t)));
+  }
 };
 
 template <typename T>
