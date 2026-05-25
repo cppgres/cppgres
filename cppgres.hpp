@@ -11032,8 +11032,9 @@ struct spi_executor : public executor {
     }
     constexpr size_t nargs = sizeof...(Args);
     std::array<::Oid, nargs> types = {type_traits<Args>(args).type_for().oid...};
-    std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
-    std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
+    auto nullable_datums = make_nullable_datums(std::forward<Args>(args)...);
+    auto datums = make_datums(nullable_datums);
+    auto nulls = make_nulls(nullable_datums);
     auto rc = ffi_guard{::SPI_execute_with_args}(utils::to_cstring(query), nargs, types.data(),
                                                  datums.data(), nulls.data(), opts.read_only(),
                                                  opts.count());
@@ -11072,9 +11073,9 @@ struct spi_executor : public executor {
     if (executors.top() != this) {
       throw std::runtime_error("not a current SPI executor");
     }
-    constexpr size_t nargs = sizeof...(Args);
-    std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
-    std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
+    auto nullable_datums = make_nullable_datums(std::forward<Args>(args)...);
+    auto datums = make_datums(nullable_datums);
+    auto nulls = make_nulls(nullable_datums);
     auto rc = ffi_guard{::SPI_execute_plan}(query, datums.data(), nulls.data(), opts.read_only(),
                                             opts.count());
     if (rc > 0) {
@@ -11097,8 +11098,9 @@ struct spi_executor : public executor {
     }
     constexpr size_t nargs = sizeof...(Args);
     std::array<::Oid, nargs> types = {type_traits<Args>(args).type_for().oid...};
-    std::array<::Datum, nargs> datums = {into_nullable_datum(args)...};
-    std::array<const char, nargs> nulls = {into_nullable_datum(args).is_null() ? 'n' : ' ' ...};
+    auto nullable_datums = make_nullable_datums(std::forward<Args>(args)...);
+    auto datums = make_datums(nullable_datums);
+    auto nulls = make_nulls(nullable_datums);
     auto rc = ffi_guard{::SPI_execute_with_args}(utils::to_cstring(query), nargs, types.data(),
                                                  datums.data(), nulls.data(), opts.read_only(),
                                                  opts.count());
@@ -11110,6 +11112,33 @@ struct spi_executor : public executor {
   }
 
 private:
+  template <convertible_into_nullable_datum... Args>
+  static auto make_nullable_datums(Args &&...args) {
+    return std::array<nullable_datum, sizeof...(Args)>{
+        into_nullable_datum(std::forward<Args>(args))...};
+  }
+
+  template <std::size_t nargs>
+  static std::array<::Datum, nargs> make_datums(const std::array<nullable_datum, nargs> &values) {
+    std::array<::Datum, nargs> datums{};
+    for (std::size_t i = 0; i < nargs; i++) {
+      datums[i] = values[i].is_null()
+                      ? ::Datum(0)
+                      : static_cast<const ::Datum &>(static_cast<const datum &>(values[i]));
+    }
+    return datums;
+  }
+
+  template <std::size_t nargs>
+  static std::array<char, nargs> make_nulls(
+      const std::array<nullable_datum, nargs> &values) {
+    std::array<char, nargs> nulls{};
+    for (std::size_t i = 0; i < nargs; i++) {
+      nulls[i] = values[i].is_null() ? 'n' : ' ';
+    }
+    return nulls;
+  }
+
   ::MemoryContext before_spi;
   ::MemoryContext spi;
 
