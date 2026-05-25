@@ -1,10 +1,16 @@
 #pragma once
 
 #include <stdexcept>
+#include <type_traits>
 
 #include "tests.hpp"
 
 namespace tests {
+
+static_assert(!std::copy_constructible<cppgres::alloc_set_memory_context>);
+static_assert(!std::is_copy_assignable_v<cppgres::alloc_set_memory_context>);
+static_assert(std::move_constructible<cppgres::alloc_set_memory_context>);
+static_assert(std::is_move_assignable_v<cppgres::alloc_set_memory_context>);
 
 add_test(alloc_set_context, ([](test_case &) {
            bool result = true;
@@ -99,10 +105,35 @@ add_test(owned_memory_context, ([](test_case &) {
            return result;
          }));
 
+add_test(owned_memory_context_move_transfers_ownership, ([](test_case &) {
+           bool result = true;
+           bool context_reset = false;
+
+           {
+             cppgres::alloc_set_memory_context ctx;
+             ctx.register_reset_callback(
+                 [](void *v) {
+                   bool *val = reinterpret_cast<bool *>(v);
+                   *val = true;
+                 },
+                 &context_reset);
+
+             {
+               [[maybe_unused]] cppgres::alloc_set_memory_context moved(std::move(ctx));
+               result = result && _assert(!context_reset);
+             }
+
+             result = result && _assert(context_reset);
+           }
+
+           return result;
+         }));
+
 add_test(tracking_memory_context_copy_keeps_original_valid, ([](test_case &) {
            bool result = true;
            cppgres::alloc_set_memory_context ctx;
-           cppgres::tracking_memory_context<cppgres::memory_context> tracked{cppgres::memory_context(ctx)};
+           cppgres::tracking_memory_context<cppgres::memory_context> tracked{
+               cppgres::memory_context(ctx)};
 
            {
              auto copy = tracked;
@@ -119,7 +150,8 @@ add_test(tracking_memory_context_copy_keeps_original_valid, ([](test_case &) {
 add_test(tracking_memory_context_copy_shares_reset_state, ([](test_case &) {
            bool result = true;
            cppgres::alloc_set_memory_context ctx;
-           cppgres::tracking_memory_context<cppgres::memory_context> tracked{cppgres::memory_context(ctx)};
+           cppgres::tracking_memory_context<cppgres::memory_context> tracked{
+               cppgres::memory_context(ctx)};
            auto copy = tracked;
 
            ctx.reset();

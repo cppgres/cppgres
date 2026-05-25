@@ -69,6 +69,23 @@ struct owned_memory_context : public abstract_memory_context {
 
 protected:
   owned_memory_context(::MemoryContext context) : context(context), moved(false) {}
+  owned_memory_context(const owned_memory_context &) = delete;
+  owned_memory_context &operator=(const owned_memory_context &) = delete;
+  owned_memory_context(owned_memory_context &&other) noexcept
+      : context(other.context), moved(other.moved) {
+    other.moved = true;
+  }
+  owned_memory_context &operator=(owned_memory_context &&other) {
+    if (this != &other) {
+      if (!moved) {
+        delete_context();
+      }
+      context = other.context;
+      moved = other.moved;
+      other.moved = true;
+    }
+    return *this;
+  }
 
   ~owned_memory_context() {
     if (!moved) {
@@ -173,8 +190,7 @@ public:
   tracking_memory_context(const tracking_memory_context<C> &other) noexcept
       : ctx(other.ctx), state(other.state) {}
 
-  explicit tracking_memory_context(C ctx)
-      : ctx(ctx), state(std::make_shared<callback_state>()) {
+  explicit tracking_memory_context(C ctx) : ctx(ctx), state(std::make_shared<callback_state>()) {
     state->callback = this->register_reset_callback(track_reset, state.get());
   }
 
