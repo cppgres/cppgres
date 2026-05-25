@@ -78,7 +78,11 @@ target_compile_features(cppgres_tests PUBLIC cxx_std_20)
 
 enable_testing()
 
-add_test(NAME cppgres_tests COMMAND env PG_CONFIG=${PG_CONFIG} BUILD_DIR=${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_LIST_DIR}/test.sh WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+add_test(
+        NAME cppgres_tests
+        COMMAND env PG_CONFIG=${PG_CONFIG} TEST_MODULE_PATH=$<TARGET_FILE:cppgres_tests>
+        ${CMAKE_CURRENT_LIST_DIR}/test.sh
+        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 
 ##### ABI check
 
