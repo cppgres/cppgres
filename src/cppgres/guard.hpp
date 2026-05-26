@@ -44,7 +44,7 @@ template <typename Func> struct ffi_guard {
     if (state == 0) {
       return func(std::forward<Args>(args)...);
     } else if (state == 1) {
-      throw pg_exception(mcxt);
+      throw pg_exception();
     }
     __builtin_unreachable();
   }
@@ -68,14 +68,29 @@ template <typename Func> struct exception_guard {
 
   template <typename... Args>
   auto operator()(Args &&...args) -> decltype(func(std::forward<Args>(args)...)) {
+    bool pg_exception = false;
+    char *str_err = nullptr;
+    bool other_error = false;
     try {
       return func(std::forward<Args>(args)...);
     } catch (const pg_exception &e) {
-      error(e);
+      pg_exception = true;
     } catch (const std::exception &e) {
-      report(ERROR, "exception: %s", e.what());
+      str_err = pstrdup(e.what());
     } catch (...) {
-      report(ERROR, "some exception occurred");
+      other_error = true;
+    }
+    if (pg_exception || str_err || other_error) {
+      func.~Func();
+    }
+    if (pg_exception) {
+      PG_RE_THROW();
+    }
+    if (str_err) {
+      report(ERROR, "exception: %s", str_err);
+    }
+    if (other_error) {
+      report(ERROR, "some exception occured");
     }
     __builtin_unreachable();
   }
