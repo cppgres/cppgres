@@ -28,7 +28,7 @@ struct aggregate_test {
   }
 
   // Combination
-  aggregate_test(aggregate_test &self, aggregate_test &other) : x(self.x + other.x) {
+  aggregate_test(const aggregate_test &self, const aggregate_test &other) : x(self.x + other.x) {
   }
 };
 
@@ -39,8 +39,23 @@ struct aggregate_destructor_test {
   static inline int destructions = 0;
   int64_t x = 0;
 
+  aggregate_destructor_test() = default;
+
   void update(int64_t v) { x += v; }
   int64_t finalize() const { return x; }
+
+  cppgres::bytea serialize() const {
+    std::array<std::byte, 8> bytes;
+    std::memcpy(bytes.data(), &x, sizeof(x));
+    return {bytes, cppgres::memory_context()};
+  }
+  aggregate_destructor_test(cppgres::bytea &a) {
+    std::memcpy(&x, a.operator cppgres::byte_array().data(), sizeof(x));
+  }
+
+  aggregate_destructor_test(const aggregate_destructor_test &self,
+                            const aggregate_destructor_test &other)
+      : x(self.x + other.x) {}
 
   ~aggregate_destructor_test() { destructions++; }
 };
@@ -86,8 +101,8 @@ struct aggregate_convertible_test {
   aggregate_convertible_test() : x(0) {}
   aggregate_convertible_test(int64_t x_) : x(x_) {}
   void update(int64_t v) { x += v; }
-  aggregate_convertible_test(aggregate_convertible_test &self,
-                             aggregate_convertible_test &other)
+  aggregate_convertible_test(const aggregate_convertible_test &self,
+                             const aggregate_convertible_test &other)
       : x(self.x + other.x) {}
 };
 
@@ -125,6 +140,65 @@ add_test(aggregate_destructor, [](test_case &) {
   auto before = aggregate_destructor_test::destructions;
   auto res = spi.query<int64_t>("select agg_destructor(v) from (values (1), (2), (3)) as t(v)");
   result = result && _assert(res.begin()[0] == 6);
+  result = result && _assert(aggregate_destructor_test::destructions > before);
+  return result;
+});
+
+add_test(aggregate_destructor_parallel, [](test_case &) {
+  bool result = true;
+  cppgres::spi_executor spi;
+  spi.execute(
+      cppgres::fmt::format("create or replace function aggregate_destructor_sfunc(internal, int8) "
+                           "returns internal language c as '{}'",
+                           get_library_name()));
+  spi.execute(cppgres::fmt::format(
+      "create or replace function aggregate_destructor_ffunc(internal) returns int8 language c "
+      "as '{}'",
+      get_library_name()));
+  spi.execute(cppgres::fmt::format(
+      "create or replace function aggregate_destructor_serial(internal) returns bytea language c "
+      "as '{}'",
+      get_library_name()));
+  spi.execute(
+      cppgres::fmt::format("create or replace function aggregate_destructor_deserial(bytea, "
+                           "internal) returns internal language c as '{}'",
+                           get_library_name()));
+  spi.execute(
+      cppgres::fmt::format("create or replace function aggregate_destructor_combine(internal, "
+                           "internal) returns internal language c as '{}'",
+                           get_library_name()));
+  spi.execute("create aggregate agg_destructor_par (int8) (sfunc = aggregate_destructor_sfunc, "
+              "finalfunc = aggregate_destructor_ffunc, stype = internal, serialfunc = "
+              "aggregate_destructor_serial, deserialfunc = aggregate_destructor_deserial, "
+              "combinefunc = aggregate_destructor_combine, parallel = safe)");
+
+  spi.execute("set max_parallel_workers_per_gather = 4");
+  spi.execute("set parallel_setup_cost = 1");
+  spi.execute("set parallel_tuple_cost = 0.01");
+  // ensure the leader never runs sfunc, so leader-side destructions can only
+  // come from deserial- and combine-constructed states
+  spi.execute("set parallel_leader_participation = off");
+
+  spi.execute("create table aggregate_destructor_parallel_values as "
+              "select v from generate_series(1, 1000000) v");
+
+  {
+    auto res0 = spi.query<std::string>(
+        "explain select agg_destructor_par(v) from aggregate_destructor_parallel_values");
+
+    std::ostringstream oss;
+    for (auto s : res0) {
+      oss << s << "\n";
+    }
+    auto plan = oss.str();
+
+    result = result && _assert(plan.find("Partial Aggregate") != std::string::npos);
+  }
+
+  auto before = aggregate_destructor_test::destructions;
+  auto res = spi.query<int64_t>(
+      "select agg_destructor_par(v) from aggregate_destructor_parallel_values");
+  result = result && _assert(res.begin()[0] == 500000500000);
   result = result && _assert(aggregate_destructor_test::destructions > before);
   return result;
 });

@@ -25,8 +25,16 @@ concept serializable_aggregate = aggregate<T, Args...> && requires(T t, bytea &b
   { T(ba) } -> std::same_as<T>;
 };
 
+/**
+ * @brief Aggregate state that can be combined with another instance (parallel aggregation)
+ *
+ * The combining constructor `T(const T &, const T &)` receives both operands as const
+ * references. Both operands remain owned by the aggregate memory context and their destructors
+ * still run when it is reset, so the constructor must not take ownership of (or alias) resources
+ * held by either operand: deep-copy them or share them through reference-counted handles.
+ */
 template <class T, class... Args>
-concept combinable_aggregate = aggregate<T, Args...> && requires(T &&t, T &&t1) {
+concept combinable_aggregate = aggregate<T, Args...> && requires(const T &t, const T &t1) {
   { T(t, t1) } -> std::same_as<T>;
 };
 
@@ -104,6 +112,10 @@ template <class Agg, typename... InTs> datum aggregate_deserial(bytea ba, value)
 }
 
 template <class Agg, typename... InTs> datum aggregate_combine(value state, value other) {
+  static_assert(!(std::is_constructible_v<Agg, Agg &, Agg &> &&
+                  !std::is_constructible_v<Agg, const Agg &, const Agg &>),
+                "combining constructor must take const references: both operands remain owned by "
+                "the aggregate memory context and are destroyed when it is reset");
   MemoryContext aggctx;
   if (!ffi_guard{::AggCheckCallContext}(current_postgres_function::call_info().operator*(),
                                         &aggctx)) {
@@ -127,7 +139,8 @@ template <class Agg, typename... InTs> datum aggregate_combine(value state, valu
             from_nullable_datum<void *>(other.get_nullable_datum(), other.get_type().oid));
       }
 
-      Agg *newstate = memory_context(aggctx).construct<Agg>(*state0, *state1);
+      Agg *newstate =
+          memory_context(aggctx).construct<Agg>(std::as_const(*state0), std::as_const(*state1));
 
       return datum_conversion<void *>::into_datum(reinterpret_cast<void *>(newstate));
     } else if constexpr (convertible_into_datum<Agg>) {
