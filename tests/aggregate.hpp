@@ -47,6 +47,40 @@ struct aggregate_destructor_test {
 
 declare_aggregate(aggregate_destructor, aggregate_destructor_test, int64_t);
 
+#if PG_VERSION_NUM >= 160000
+struct aggregate_aligned_test {
+  alignas(32) int64_t x = 0;
+
+  void update(int64_t v) {
+    if (reinterpret_cast<uintptr_t>(this) % 32 != 0) {
+      cppgres::report(ERROR, "aggregate state is misaligned");
+    }
+    x += v;
+  }
+  int64_t finalize() const { return x; }
+};
+
+declare_aggregate(aggregate_aligned, aggregate_aligned_test, int64_t);
+
+add_test(aggregate_aligned_state, [](test_case &) {
+  bool result = true;
+  cppgres::spi_executor spi;
+  spi.execute(
+      cppgres::fmt::format("create or replace function aggregate_aligned_sfunc(internal, int8) "
+                           "returns internal language c as '{}'",
+                           get_library_name()));
+  spi.execute(cppgres::fmt::format(
+      "create or replace function aggregate_aligned_ffunc(internal) returns int8 language c "
+      "as '{}'",
+      get_library_name()));
+  spi.execute("create aggregate agg_aligned (int8) (sfunc = aggregate_aligned_sfunc, "
+              "finalfunc = aggregate_aligned_ffunc, stype = internal)");
+  auto res = spi.query<int64_t>("select agg_aligned(v) from (values (1), (2), (3)) as t(v)");
+  result = result && _assert(res.begin()[0] == 6);
+  return result;
+});
+#endif
+
 struct aggregate_convertible_test {
   int64_t x;
   aggregate_convertible_test() : x(0) {}

@@ -15,7 +15,17 @@ struct abstract_memory_context {
   virtual ~abstract_memory_context() = default;
 
   template <typename T = std::byte> T *alloc(size_t n = 1) {
-    return static_cast<T *>(ffi_guard{::MemoryContextAlloc}(_memory_context(), sizeof(T) * n));
+    if constexpr (alignof(T) > MAXIMUM_ALIGNOF) {
+#if PG_VERSION_NUM >= 160000
+      return static_cast<T *>(
+          ffi_guard{::MemoryContextAllocAligned}(_memory_context(), sizeof(T) * n, alignof(T), 0));
+#else
+      static_assert(alignof(T) <= MAXIMUM_ALIGNOF,
+                    "types over-aligned beyond MAXIMUM_ALIGNOF require PostgreSQL 16 or later");
+#endif
+    } else {
+      return static_cast<T *>(ffi_guard{::MemoryContextAlloc}(_memory_context(), sizeof(T) * n));
+    }
   }
   template <typename T = void> void free(T *ptr) { ffi_guard{::pfree}(ptr); }
 
