@@ -30,24 +30,6 @@ concept combinable_aggregate = aggregate<T, Args...> && requires(T &&t, T &&t1) 
   { T(t, t1) } -> std::same_as<T>;
 };
 
-template <class Agg, typename... Args>
-Agg *construct_aggregate_state(abstract_memory_context &ctx, Args &&...args) {
-  static_assert(std::is_nothrow_destructible_v<Agg>,
-                "aggregate state must be nothrow-destructible: its destructor runs from a "
-                "PostgreSQL memory context reset callback where exceptions cannot propagate");
-  auto *state = ctx.template alloc<Agg>();
-  std::construct_at(state, std::forward<Args>(args)...);
-  if constexpr (!std::is_trivially_destructible_v<Agg>) {
-    ctx.register_reset_callback([](void *arg) { std::destroy_at(static_cast<Agg *>(arg)); }, state);
-  }
-  return state;
-}
-
-template <class Agg, typename... Args>
-Agg *construct_aggregate_state(abstract_memory_context &&ctx, Args &&...args) {
-  return construct_aggregate_state<Agg>(ctx, std::forward<Args>(args)...);
-}
-
 template <class Agg, typename... InTs> datum aggregate_sfunc(value state, InTs... args) {
 
   MemoryContext aggctx;
@@ -59,7 +41,7 @@ template <class Agg, typename... InTs> datum aggregate_sfunc(value state, InTs..
   if constexpr (!convertible_into_datum<Agg> && finalizable_aggregate<Agg, InTs...>) {
     Agg *state0;
     if (state.get_nullable_datum().is_null()) {
-      state0 = construct_aggregate_state<Agg>(memory_context(aggctx));
+      state0 = memory_context(aggctx).construct<Agg>();
     } else {
       state0 = reinterpret_cast<Agg *>(
           from_nullable_datum<void *>(state.get_nullable_datum(), state.get_type().oid));
@@ -81,7 +63,7 @@ template <class Agg, typename... InTs> nullable_datum aggregate_ffunc(value stat
   if constexpr (finalizable_aggregate<Agg, InTs...>) {
     Agg *state0;
     if (state.get_nullable_datum().is_null()) {
-      state0 = construct_aggregate_state<Agg>(memory_context());
+      state0 = memory_context().construct<Agg>();
     } else {
       state0 = reinterpret_cast<Agg *>(
           from_nullable_datum<void *>(state.get_nullable_datum(), state.get_type().oid));
@@ -114,7 +96,7 @@ template <class Agg, typename... InTs> datum aggregate_deserial(bytea ba, value)
                                           &aggctx)) {
       report(ERROR, "not aggregate context");
     }
-    Agg *state0 = construct_aggregate_state<Agg>(memory_context(aggctx), ba);
+    Agg *state0 = memory_context(aggctx).construct<Agg>(ba);
     return datum_conversion<void *>::into_datum(reinterpret_cast<void *>(state0));
   }
   report(ERROR, "this aggregate does not support serialize");
@@ -131,7 +113,7 @@ template <class Agg, typename... InTs> datum aggregate_combine(value state, valu
     if constexpr (!convertible_into_datum<Agg> && finalizable_aggregate<Agg, InTs...>) {
       Agg *state0;
       if (state.get_nullable_datum().is_null()) {
-        state0 = construct_aggregate_state<Agg>(memory_context(aggctx));
+        state0 = memory_context(aggctx).construct<Agg>();
       } else {
         state0 = reinterpret_cast<Agg *>(
             from_nullable_datum<void *>(state.get_nullable_datum(), state.get_type().oid));
@@ -139,13 +121,13 @@ template <class Agg, typename... InTs> datum aggregate_combine(value state, valu
 
       Agg *state1;
       if (other.get_nullable_datum().is_null()) {
-        state1 = construct_aggregate_state<Agg>(memory_context(aggctx));
+        state1 = memory_context(aggctx).construct<Agg>();
       } else {
         state1 = reinterpret_cast<Agg *>(
             from_nullable_datum<void *>(other.get_nullable_datum(), other.get_type().oid));
       }
 
-      Agg *newstate = construct_aggregate_state<Agg>(memory_context(aggctx), *state0, *state1);
+      Agg *newstate = memory_context(aggctx).construct<Agg>(*state0, *state1);
 
       return datum_conversion<void *>::into_datum(reinterpret_cast<void *>(newstate));
     } else if constexpr (convertible_into_datum<Agg>) {

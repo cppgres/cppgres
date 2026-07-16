@@ -227,20 +227,10 @@ private:
   };
 
   template <typename... Args> static auto allocate_expanded(Args &&...args) {
-    static_assert(std::is_nothrow_destructible_v<T>,
-                  "expanded type must be nothrow-destructible: its destructor runs from a "
-                  "PostgreSQL memory context reset callback where exceptions cannot propagate");
     auto ctx = memory_context(std::move(alloc_set_memory_context()));
     return ctx([&]() {
-      auto *e = ctx.alloc<expanded>();
-      std::construct_at(e, args...);
+      auto *e = ctx.construct<expanded>(args...);
       init(&e->hdr, ctx);
-      ctx.register_reset_callback(
-          [](void *arg) {
-            auto v = reinterpret_cast<expanded *>(arg);
-            v->inner.~T();
-          },
-          e);
       return std::make_pair(datum(PointerGetDatum(e)), ctx);
     });
   }

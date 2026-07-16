@@ -5,6 +5,7 @@
 
 #include <concepts>
 #include <memory>
+#include <type_traits>
 
 #include "guard.hpp"
 #include "imports.h"
@@ -47,6 +48,31 @@ struct abstract_memory_context {
     cb->arg = arg;
     ffi_guard{::MemoryContextRegisterResetCallback}(_memory_context(), cb);
     return cb;
+  }
+
+  /**
+   * Allocate and construct an object of type `T` in this memory context, registering a reset
+   * callback that runs its destructor when the context is reset or deleted.
+   *
+   * Exception-safe: everything that can throw (allocation, construction) happens before the
+   * callback is registered, and registration itself cannot fail.
+   */
+  template <typename T, typename... Args> T *construct(Args &&...args) {
+    static_assert(std::is_nothrow_destructible_v<T>,
+                  "type constructed in a memory context must be nothrow-destructible: its "
+                  "destructor runs from a memory context reset callback where exceptions cannot "
+                  "propagate");
+    auto *ptr = alloc<T>();
+    if constexpr (!std::is_trivially_destructible_v<T>) {
+      auto *cb = alloc<::MemoryContextCallback>();
+      std::construct_at(ptr, std::forward<Args>(args)...);
+      cb->func = [](void *arg) { std::destroy_at(static_cast<T *>(arg)); };
+      cb->arg = ptr;
+      ffi_guard{::MemoryContextRegisterResetCallback}(_memory_context(), cb);
+    } else {
+      std::construct_at(ptr, std::forward<Args>(args)...);
+    }
+    return ptr;
   }
 
   void delete_context() { ffi_guard{::MemoryContextDelete}(_memory_context()); }
