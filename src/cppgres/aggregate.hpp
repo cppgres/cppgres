@@ -32,6 +32,9 @@ concept combinable_aggregate = aggregate<T, Args...> && requires(T &&t, T &&t1) 
 
 template <class Agg, typename... Args>
 Agg *construct_aggregate_state(abstract_memory_context &ctx, Args &&...args) {
+  static_assert(std::is_nothrow_destructible_v<Agg>,
+                "aggregate state must be nothrow-destructible: its destructor runs from a "
+                "PostgreSQL memory context reset callback where exceptions cannot propagate");
   auto *state = ctx.template alloc<Agg>();
   std::construct_at(state, std::forward<Args>(args)...);
   if constexpr (!std::is_trivially_destructible_v<Agg>) {

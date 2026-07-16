@@ -7,6 +7,7 @@
 #include <optional>
 #include <span>
 #include <string>
+#include <type_traits>
 
 #include "datum.hpp"
 #include "guard.hpp"
@@ -226,6 +227,9 @@ private:
   };
 
   template <typename... Args> static auto allocate_expanded(Args &&...args) {
+    static_assert(std::is_nothrow_destructible_v<T>,
+                  "expanded type must be nothrow-destructible: its destructor runs from a "
+                  "PostgreSQL memory context reset callback where exceptions cannot propagate");
     auto ctx = memory_context(std::move(alloc_set_memory_context()));
     return ctx([&]() {
       auto *e = ctx.alloc<expanded>();
