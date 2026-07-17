@@ -38,6 +38,18 @@ template <convertible_from_nullable_datum... Args> struct spi_plan {
     kept = true;
   }
 
+  /**
+   * @brief Releases ownership of the plan to the caller.
+   *
+   * Returns the raw plan pointer and disarms this object's destructor.
+   * Typically used after @ref keep() when the plan's lifetime is managed
+   * elsewhere (for example, stored in a procedural language's function AST).
+   */
+  ::SPIPlanPtr release() noexcept {
+    kept = false;
+    return plan;
+  }
+
   ~spi_plan() {
     if (kept) {
       ffi_guard{::SPI_freeplan}(*this);
@@ -355,6 +367,35 @@ struct spi_executor : public executor {
     std::array<::Oid, nargs> types = {type_traits<Args>().type_for().oid...};
     return spi_plan<Args...>(
         ffi_guard{::SPI_prepare}(utils::to_cstring(query), nargs, types.data()));
+  }
+
+  /**
+   * @brief Prepares a plan with full ::SPIPrepareOptions.
+   *
+   * This is the preparation entry point procedural language implementations
+   * need: parameter types are resolved through the options' parser hooks
+   * (`parserSetup`/`parserSetupArg`) rather than a static argument list, and
+   * the options carry the raw parse mode and cursor options.
+   */
+  spi_plan<> plan(utils::convertible_to_cstring auto query,
+                  const ::SPIPrepareOptions &opts) {
+    if (executors.top() != this) {
+      throw std::runtime_error("not a current SPI executor");
+    }
+    ::SPIPrepareOptions options = opts;
+    return spi_plan<>(ffi_guard{::SPI_prepare_extended}(utils::to_cstring(query), &options));
+  }
+
+  /**
+   * @brief The innermost live SPI executor.
+   *
+   * @throws std::runtime_error if no SPI executor is in scope
+   */
+  static spi_executor &current() {
+    if (executors.empty()) {
+      throw std::runtime_error("no SPI executor in scope");
+    }
+    return *executors.top();
   }
 
   template <typename Ret, convertible_into_nullable_datum... Args>
