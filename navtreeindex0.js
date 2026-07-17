@@ -202,10 +202,9 @@ var NAVTREEINDEX0 =
 "structcppgres_1_1security__context.html":[2,0,0,75],
 "structcppgres_1_1set__iterator__traits.html":[2,0,0,76],
 "structcppgres_1_1spi__executor.html":[2,0,0,77],
-"structcppgres_1_1spi__executor.html#a1a6443d5aa50601c86bc74251b5f0b4b":[2,0,0,77,6],
-"structcppgres_1_1spi__executor.html#a1bccebef7075d04fb8d36ea30bed5750":[2,0,0,77,4],
+"structcppgres_1_1spi__executor.html#a1a6443d5aa50601c86bc74251b5f0b4b":[2,0,0,77,5],
 "structcppgres_1_1spi__executor.html#a726d3a8355cbd06be5aec2b252c6d9b9":[2,0,0,77,3],
-"structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578":[2,0,0,77,5],
+"structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578":[2,0,0,77,4],
 "structcppgres_1_1spi__executor_1_1options.html":[2,0,0,77,0],
 "structcppgres_1_1spi__executor_1_1result__iterator.html":[2,0,0,77,1],
 "structcppgres_1_1spi__executor_1_1results.html":[2,0,0,77,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "structcppgres_1_1type__traits_3_01bytea_01_4.html":[2,0,0,93],
 "structcppgres_1_1type__traits_3_01char_01_5_01_4.html":[2,0,0,94],
 "structcppgres_1_1type__traits_3_01const_01char_01_5_01_4.html":[2,0,0,95],
-"structcppgres_1_1type__traits_3_01const_01char_0fN_0e_4.html":[2,0,0,96]
+"structcppgres_1_1type__traits_3_01const_01char_0fN_0e_4.html":[2,0,0,96],
+"structcppgres_1_1type__traits_3_01datum_01_4.html":[2,0,0,97]
 };

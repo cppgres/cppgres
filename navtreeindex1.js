@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"structcppgres_1_1type__traits_3_01datum_01_4.html":[2,0,0,97],
 "structcppgres_1_1type__traits_3_01double_01_4.html":[2,0,0,98],
 "structcppgres_1_1type__traits_3_01expanded__varlena_3_01F_01_4_01_4.html":[2,0,0,99],
 "structcppgres_1_1type__traits_3_01float_01_4.html":[2,0,0,100],
