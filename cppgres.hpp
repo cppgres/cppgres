@@ -7487,6 +7487,27 @@ class pg_exception : public std::exception {
 
 public:
   const char *message() const noexcept { return error->message; }
+
+  /**
+   * @brief The complete error record captured from Postgres.
+   *
+   * Valid for the lifetime of the exception object.
+   */
+  const ::ErrorData *error_data() const noexcept { return error; }
+
+  /**
+   * @brief Re-throws the captured error as a Postgres error, with every
+   *        field (SQLSTATE, detail, hint, context, ...) intact.
+   *
+   * Intended to be called from a `catch` block once cleanup is done and the
+   * error should continue propagating to Postgres.  Never returns.
+   *
+   * The longjmp does not run this object's destructor, so the exception's
+   * backing storage is handed to Postgres to be released when ErrorContext
+   * is reset — that is, once the error has been fully handled.
+   */
+  [[noreturn]] void rethrow();
+
   ~pg_exception();
 };
 } // namespace cppgres
@@ -10175,7 +10196,7 @@ template <has_type_traits T> function<const char *, T> output_function(T &v) {
   return function<const char *, T>(foutoid);
 }
 
-static function<const char *, cppgres::value> output_function(const type &t) {
+inline function<const char *, cppgres::value> output_function(const type &t) {
   ::Oid foutoid;
   bool typisvarlena;
   ffi_guard{::getTypeOutputInfo}(t.oid, &foutoid, &typisvarlena);
@@ -10749,6 +10770,20 @@ inline pg_exception::pg_exception(::MemoryContext mcxt) : mcxt(mcxt) {
 
 inline pg_exception::~pg_exception() { memory_context(error_cxt).delete_context(); }
 
+[[noreturn]] inline void pg_exception::rethrow() {
+  // ReThrowError copies the record into Postgres' error stack (strings into
+  // ErrorContext) and then longjmps, which skips ~pg_exception.  Register a
+  // reset callback on ErrorContext so our backing context is freed once the
+  // error has been fully handled (FlushErrorState resets ErrorContext).
+  auto *cb = static_cast<::MemoryContextCallback *>(
+      ffi_guard{::MemoryContextAlloc}(::ErrorContext, sizeof(::MemoryContextCallback)));
+  cb->func = [](void *arg) { ::MemoryContextDelete(static_cast<::MemoryContext>(arg)); };
+  cb->arg = error_cxt;
+  ::MemoryContextRegisterResetCallback(::ErrorContext, cb);
+  ::ReThrowError(error);
+  __builtin_unreachable();
+}
+
 } // namespace cppgres
 /**
  * \file
@@ -10823,6 +10858,18 @@ template <convertible_from_nullable_datum... Args> struct spi_plan {
   void keep() {
     ffi_guard{::SPI_keepplan}(*this);
     kept = true;
+  }
+
+  /**
+   * @brief Releases ownership of the plan to the caller.
+   *
+   * Returns the raw plan pointer and disarms this object's destructor.
+   * Typically used after @ref keep() when the plan's lifetime is managed
+   * elsewhere (for example, stored in a procedural language's function AST).
+   */
+  ::SPIPlanPtr release() noexcept {
+    kept = false;
+    return plan;
   }
 
   ~spi_plan() {
@@ -11144,6 +11191,35 @@ struct spi_executor : public executor {
         ffi_guard{::SPI_prepare}(utils::to_cstring(query), nargs, types.data()));
   }
 
+  /**
+   * @brief Prepares a plan with full ::SPIPrepareOptions.
+   *
+   * This is the preparation entry point procedural language implementations
+   * need: parameter types are resolved through the options' parser hooks
+   * (`parserSetup`/`parserSetupArg`) rather than a static argument list, and
+   * the options carry the raw parse mode and cursor options.
+   */
+  spi_plan<> plan(utils::convertible_to_cstring auto query,
+                  const ::SPIPrepareOptions &opts) {
+    if (executors.top() != this) {
+      throw std::runtime_error("not a current SPI executor");
+    }
+    ::SPIPrepareOptions options = opts;
+    return spi_plan<>(ffi_guard{::SPI_prepare_extended}(utils::to_cstring(query), &options));
+  }
+
+  /**
+   * @brief The innermost live SPI executor.
+   *
+   * @throws std::runtime_error if no SPI executor is in scope
+   */
+  static spi_executor &current() {
+    if (executors.empty()) {
+      throw std::runtime_error("no SPI executor in scope");
+    }
+    return *executors.top();
+  }
+
   template <typename Ret, convertible_into_nullable_datum... Args>
   results<Ret> query(spi_plan<Args...> &query, Args &&...args) {
     return this->query<Ret, Args...>(query, options(), std::forward<Args>(args)...);
@@ -11256,6 +11332,74 @@ struct spi_nonatomic_executor : public spi_executor {
     }
     ffi_guard(chain ? ::SPI_rollback_and_chain : ::SPI_rollback)();
   }
+};
+
+} // namespace cppgres
+/**
+ * \file
+ */
+
+
+#include <iterator>
+#include <type_traits>
+
+namespace cppgres {
+
+/**
+ * @brief Typed, range-for-iterable view over a PostgreSQL ::List.
+ *
+ * The element type selects the cell accessor: pointer types read `lfirst`,
+ * `int` reads `lfirst_int`, ::Oid reads `lfirst_oid`.
+ *
+ * A NIL (null) list is an empty range.
+ *
+ * ```
+ * for (auto *tle : cppgres::list<TargetEntry *>(query->targetList)) { ... }
+ * ```
+ */
+template <typename T = void *> struct list {
+  explicit list(::List *l) : list_(l) {}
+
+  struct iterator {
+    using iterator_category = std::forward_iterator_tag;
+    using value_type = T;
+    using difference_type = std::ptrdiff_t;
+
+    ::ListCell *cell = nullptr;
+
+    T operator*() const {
+      if constexpr (std::is_pointer_v<T>) {
+        return static_cast<T>(lfirst(cell));
+      } else if constexpr (std::is_same_v<T, ::Oid>) {
+        return lfirst_oid(cell);
+      } else {
+        static_assert(std::is_same_v<T, int>, "unsupported list element type");
+        return lfirst_int(cell);
+      }
+    }
+
+    iterator &operator++() {
+      ++cell;
+      return *this;
+    }
+    iterator operator++(int) {
+      auto ret = *this;
+      ++cell;
+      return ret;
+    }
+    bool operator==(const iterator &) const = default;
+  };
+
+  iterator begin() const { return {list_ == NIL ? nullptr : &list_->elements[0]}; }
+  iterator end() const { return {list_ == NIL ? nullptr : &list_->elements[list_->length]}; }
+
+  size_t size() const { return list_ == NIL ? 0 : static_cast<size_t>(list_->length); }
+  bool empty() const { return list_ == NIL; }
+
+  operator ::List *() const { return list_; }
+
+private:
+  ::List *list_;
 };
 
 } // namespace cppgres
