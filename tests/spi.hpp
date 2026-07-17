@@ -21,7 +21,7 @@ template <> struct datum_conversion<spi_counted_int> : default_datum_conversion<
   static spi_counted_int from_datum(const datum &d, oid oid,
                                     std::optional<memory_context> context) {
     spi_counted_int::conversions++;
-    return {from_nullable_datum<int32_t>(nullable_datum(d), oid, context)};
+    return {cppgres::from_nullable_datum<int32_t>(nullable_datum(d), oid, context)};
   }
 };
 
