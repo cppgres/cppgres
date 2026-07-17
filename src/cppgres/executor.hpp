@@ -74,6 +74,15 @@ concept a_vector = requires {
 } && std::same_as<T, std::vector<typename T::value_type, typename T::allocator_type>>;
 
 /**
+ * @brief SPI connection options
+ */
+enum class spi_opt : int { none = 0, nonatomic = SPI_OPT_NONATOMIC };
+
+constexpr spi_opt operator|(spi_opt lhs, spi_opt rhs) {
+  return static_cast<spi_opt>(static_cast<int>(lhs) | static_cast<int>(rhs));
+}
+
+/**
  * @brief [SPI](https://www.postgresql.org/docs/current/spi.html) executor API
  */
 struct spi_executor : public executor {
@@ -81,6 +90,16 @@ struct spi_executor : public executor {
    * @brief Creates an SPI executor
    */
   spi_executor() : spi_executor(0) {}
+
+  /**
+   * @brief Creates an SPI executor with explicitly chosen options
+   *
+   * This is meant for code running outside of the cppgres function-call
+   * context (such as raw language handlers) that determines atomicity by
+   * itself and therefore can't rely on @ref cppgres::spi_nonatomic_executor's
+   * context inference.
+   */
+  explicit spi_executor(spi_opt opts) : spi_executor(static_cast<int>(opts)) {}
   ~spi_executor() {
     ffi_guard{::SPI_finish}();
     executors.pop();
