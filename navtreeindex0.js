@@ -94,7 +94,8 @@ var NAVTREEINDEX0 =
 "set_8hpp.html":[3,0,0,0,21],
 "set_8hpp_source.html":[3,0,0,0,21],
 "structcppgres_1_1abstract__memory__context.html":[2,0,0,2],
-"structcppgres_1_1abstract__memory__context.html#a9f857d2bff4537e5ce5a0fe4c2428e22":[2,0,0,2,1],
+"structcppgres_1_1abstract__memory__context.html#a0391cde27ea7309cfbcfbbd1889d982c":[2,0,0,2,1],
+"structcppgres_1_1abstract__memory__context.html#a9f857d2bff4537e5ce5a0fe4c2428e22":[2,0,0,2,2],
 "structcppgres_1_1abstract__memory__context_1_1memory__context__execution.html":[2,0,0,2,0],
 "structcppgres_1_1all__from__nullable__datum.html":[2,0,0,3],
 "structcppgres_1_1alloc__set__memory__context.html":[2,0,0,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "structcppgres_1_1type__traits_3_01function_3_01ret_00_01Args_8_8_8_01_4_01_4.html":[2,0,0,100],
 "structcppgres_1_1type__traits_3_01int16__t_01_4.html":[2,0,0,102],
 "structcppgres_1_1type__traits_3_01int32__t_01_4.html":[2,0,0,103],
-"structcppgres_1_1type__traits_3_01int64__t_01_4.html":[2,0,0,104],
-"structcppgres_1_1type__traits_3_01int8__t_01_4.html":[2,0,0,105]
+"structcppgres_1_1type__traits_3_01int64__t_01_4.html":[2,0,0,104]
 };

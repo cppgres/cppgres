@@ -139,14 +139,22 @@ $(document).ready(function(){initNavTree('conceptcppgres_1_1combinable__aggregat
   <div class="headertitle"><div class="title">cppgres::combinable_aggregate Concept Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Aggregate state that can be combined with another instance (parallel aggregation)  
+<a href="conceptcppgres_1_1combinable__aggregate.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="aggregate_8hpp_source.html">aggregate.hpp</a>&gt;</code></p>
 <h2 class="groupheader">Concept definition</h2>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class </span>T, <span class="keyword">class</span>... Args&gt;</div>
-<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptcppgres_1_1combinable__aggregate.html">cppgres::combinable_aggregate</a> =  <a class="code hl_concept" href="conceptcppgres_1_1aggregate.html">aggregate</a>&lt;T, Args...&gt; &amp;&amp; <span class="keyword">requires</span>(T &amp;&amp;t, T &amp;&amp;t1) {</div>
+<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptcppgres_1_1combinable__aggregate.html">cppgres::combinable_aggregate</a> =  <a class="code hl_concept" href="conceptcppgres_1_1aggregate.html">aggregate</a>&lt;T, Args...&gt; &amp;&amp; <span class="keyword">requires</span>(<span class="keyword">const</span> T &amp;t, <span class="keyword">const</span> T &amp;t1) {</div>
 <div class="line">  { T(t, t1) } -&gt; std::same_as&lt;T&gt;;</div>
 <div class="line">}</div>
 <div class="ttc" id="aconceptcppgres_1_1aggregate_html"><div class="ttname"><a href="conceptcppgres_1_1aggregate.html">cppgres::aggregate</a></div><div class="ttdef"><b>Definition:</b> aggregate.hpp:13</div></div>
-<div class="ttc" id="aconceptcppgres_1_1combinable__aggregate_html"><div class="ttname"><a href="conceptcppgres_1_1combinable__aggregate.html">cppgres::combinable_aggregate</a></div><div class="ttdef"><b>Definition:</b> aggregate.hpp:29</div></div>
-</div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="aconceptcppgres_1_1combinable__aggregate_html"><div class="ttname"><a href="conceptcppgres_1_1combinable__aggregate.html">cppgres::combinable_aggregate</a></div><div class="ttdoc">Aggregate state that can be combined with another instance (parallel aggregation)</div><div class="ttdef"><b>Definition:</b> aggregate.hpp:37</div></div>
+</div><!-- fragment --><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Aggregate state that can be combined with another instance (parallel aggregation) </p>
+<p>The combining constructor <code>T(const T &amp;, const T &amp;)</code> receives both operands as const references. Both operands remain owned by the aggregate memory context and their destructors still run when it is reset, so the constructor must not take ownership of (or alias) resources held by either operand: deep-copy them or share them through reference-counted handles. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

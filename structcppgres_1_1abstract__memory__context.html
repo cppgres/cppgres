@@ -189,6 +189,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (<a cl
 <tr class="memitem:a5018ad1d3c0aa284c3e952b5086ae4f5"><td class="memItemLeft" align="right" valign="top"><a id="a5018ad1d3c0aa284c3e952b5086ae4f5" name="a5018ad1d3c0aa284c3e952b5086ae4f5"></a>
 ::MemoryContextCallback *&#160;</td><td class="memItemRight" valign="bottom"><b>register_reset_callback</b> (::MemoryContextCallbackFunction func, void *arg)</td></tr>
 <tr class="separator:a5018ad1d3c0aa284c3e952b5086ae4f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0391cde27ea7309cfbcfbbd1889d982c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:a0391cde27ea7309cfbcfbbd1889d982c"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structcppgres_1_1abstract__memory__context.html#a0391cde27ea7309cfbcfbbd1889d982c">construct</a> (Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a0391cde27ea7309cfbcfbbd1889d982c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53d4e66082641968eb431b2578f894c2"><td class="memItemLeft" align="right" valign="top"><a id="a53d4e66082641968eb431b2578f894c2" name="a53d4e66082641968eb431b2578f894c2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>delete_context</b> ()</td></tr>
 <tr class="separator:a53d4e66082641968eb431b2578f894c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +205,36 @@ virtual ::MemoryContext&#160;</td><td class="memItemRight" valign="bottom"><b>_m
 <tr class="separator:a4c114566efba8cefbd2a40cb97446f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0391cde27ea7309cfbcfbbd1889d982c" name="a0391cde27ea7309cfbcfbbd1889d982c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0391cde27ea7309cfbcfbbd1889d982c">&#9670;&#160;</a></span>construct()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T * cppgres::abstract_memory_context::construct </td>
+          <td>(</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allocate and construct an object of type <code>T</code> in this memory context, registering a reset callback that runs its destructor when the context is reset or deleted.</p>
+<p>Exception-safe: everything that can throw (allocation, construction) happens before the callback is registered, and registration itself cannot fail. </p>
+
+</div>
+</div>
 <a id="a9f857d2bff4537e5ce5a0fe4c2428e22" name="a9f857d2bff4537e5ce5a0fe4c2428e22"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9f857d2bff4537e5ce5a0fe4c2428e22">&#9670;&#160;</a></span>operator()()</h2>
 
