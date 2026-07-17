@@ -61,15 +61,16 @@ if(NOT DEFINED PG_CONFIG)
 
     # Use latest known version if PGVER is not set
     if(NOT PGVER)
-        set(PGVER 17)
+        set(PGVER 18)
     endif()
 
     # If the version is not known, try resolving the alias
-    set(PGVER_ALIAS_18 18beta3)
-    set(PGVER_ALIAS_17 17.6)
-    set(PGVER_ALIAS_16 16.10)
-    set(PGVER_ALIAS_15 15.14)
-    set(PGVER_ALIAS_14 14.19)
+    set(PGVER_ALIAS_19 19beta2)
+    set(PGVER_ALIAS_18 18.4)
+    set(PGVER_ALIAS_17 17.10)
+    set(PGVER_ALIAS_16 16.14)
+    set(PGVER_ALIAS_15 15.18)
+    set(PGVER_ALIAS_14 14.23)
     set(PGVER_ALIAS_13 13.22)
 
     # commit

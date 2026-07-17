@@ -306,7 +306,7 @@ template <> struct datum_conversion<std::string> : default_datum_conversion<std:
 
 template <> struct datum_conversion<const char *> : default_datum_conversion<const char *> {
   static const char *from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
-    return DatumGetPointer(d);
+    return static_cast<const char *>(DatumGetPointer(d));
   }
 
   static datum into_datum(const char *const &t) {
@@ -317,7 +317,7 @@ template <> struct datum_conversion<const char *> : default_datum_conversion<con
 template <std::size_t N>
 struct datum_conversion<char[N]> : default_datum_conversion<char[N], const char *> {
   static const char *from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
-    return DatumGetPointer(d);
+    return static_cast<const char *>(DatumGetPointer(d));
   }
 
   static datum into_datum(const char (&t)[N]) {
