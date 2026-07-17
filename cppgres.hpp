@@ -8319,11 +8319,14 @@ private:
  * \file
  */
 
-#include <stack>
+#include <exception>
+#include <string>
+#include <string_view>
 
 extern "C" {
 #include <access/xact.h>
 }
+
 
 namespace cppgres {
 
@@ -8363,42 +8366,86 @@ private:
 
 static_assert(sizeof(transaction_id) == sizeof(::TransactionId));
 
+/**
+ * @brief Internal subtransaction guard
+ *
+ * Begins an internal subtransaction on construction and finishes it exactly
+ * once. Subtransactions nest (as PL exception blocks do).
+ *
+ * If the scope is left because an exception is propagating, the
+ * subtransaction is rolled back; otherwise, at scope exit it is committed
+ * (default) or rolled back per the flag given at construction. Alternatively,
+ * it can be finished early by calling commit() or rollback() explicitly.
+ *
+ * `CurrentMemoryContext` and `CurrentResourceOwner` observed at construction
+ * are restored on every path.
+ */
 struct internal_subtransaction {
   internal_subtransaction(bool commit = true)
-      : owner(::CurrentResourceOwner), commit(commit), name("") {
-    if (txns.empty()) {
-      ffi_guard{::BeginInternalSubTransaction}(nullptr);
-      txns.push(this);
-    } else {
-      throw std::runtime_error("internal subtransaction already started");
-    }
+      : ctx(::CurrentMemoryContext), owner(::CurrentResourceOwner), should_commit(commit),
+        uncaught(std::uncaught_exceptions()), finished(false), name("") {
+    ffi_guard{::BeginInternalSubTransaction}(nullptr);
+    ::CurrentMemoryContext = ctx;
   }
 
   internal_subtransaction(std::string_view name, bool commit = true)
-      : owner(::CurrentResourceOwner), commit(commit), name(name) {
-    if (txns.empty()) {
-      ffi_guard{::BeginInternalSubTransaction}(this->name.c_str());
-      txns.push(this);
-    } else {
-      throw std::runtime_error("internal subtransaction already started");
-    }
+      : ctx(::CurrentMemoryContext), owner(::CurrentResourceOwner), should_commit(commit),
+        uncaught(std::uncaught_exceptions()), finished(false), name(name) {
+    ffi_guard{::BeginInternalSubTransaction}(this->name.c_str());
+    ::CurrentMemoryContext = ctx;
   }
 
-  ~internal_subtransaction() {
-    txns.pop();
-    if (commit) {
-      ffi_guard{::ReleaseCurrentSubTransaction}();
-    } else {
-      ffi_guard{::RollbackAndReleaseCurrentSubTransaction}();
+  internal_subtransaction(const internal_subtransaction &) = delete;
+  internal_subtransaction &operator=(const internal_subtransaction &) = delete;
+  internal_subtransaction(internal_subtransaction &&) = delete;
+  internal_subtransaction &operator=(internal_subtransaction &&) = delete;
+
+  /**
+   * @brief Commit the subtransaction now
+   */
+  void commit() {
+    ffi_guard{::ReleaseCurrentSubTransaction}();
+    restore();
+    finished = true;
+  }
+
+  /**
+   * @brief Roll the subtransaction back now
+   */
+  void rollback() {
+    ffi_guard{::RollbackAndReleaseCurrentSubTransaction}();
+    restore();
+    finished = true;
+  }
+
+  ~internal_subtransaction() noexcept {
+    if (finished) {
+      return;
     }
-    ::CurrentResourceOwner = owner;
+    ffi_guard_noexcept(
+        [this] {
+          if (std::uncaught_exceptions() > uncaught || !should_commit) {
+            ::RollbackAndReleaseCurrentSubTransaction();
+          } else {
+            ::ReleaseCurrentSubTransaction();
+          }
+        },
+        "cppgres: finishing internal subtransaction failed");
+    restore();
   }
 
 private:
+  void restore() noexcept {
+    ::CurrentMemoryContext = ctx;
+    ::CurrentResourceOwner = owner;
+  }
+
+  ::MemoryContext ctx;
   ::ResourceOwner owner;
-  bool commit;
+  bool should_commit;
+  int uncaught;
+  bool finished;
   std::string name;
-  static inline std::stack<internal_subtransaction *> txns;
 };
 
 struct transaction {
