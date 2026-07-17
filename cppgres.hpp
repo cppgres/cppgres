@@ -9160,6 +9160,13 @@ struct tuple_descriptor {
     for (int i = 0; i < nattrs; i++) {
       operator[](i).attcollation = InvalidOid;
       operator[](i).attisdropped = false;
+#if PG_MAJORVERSION_NUM < 18
+      // The template descriptor is zero-filled, and an attcacheoff of 0 means
+      // "cached at offset 0" — every attribute after the first then reads the
+      // first attribute's bytes (or worse). -1 is "not computed"; Postgres 18
+      // removed the field.
+      operator[](i).attcacheoff = -1;
+#endif
     }
   }
   /**
