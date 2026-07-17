@@ -524,7 +524,7 @@ template <has_type_traits T> function<const char *, T> output_function(T &v) {
   return function<const char *, T>(foutoid);
 }
 
-static function<const char *, cppgres::value> output_function(const type &t) {
+inline function<const char *, cppgres::value> output_function(const type &t) {
   ::Oid foutoid;
   bool typisvarlena;
   ffi_guard{::getTypeOutputInfo}(t.oid, &foutoid, &typisvarlena);
