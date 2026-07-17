@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"structcppgres_1_1tuple__descriptor.html#a1f95a8438537115de925dfcf239e0014":[2,0,0,95,13],
+"structcppgres_1_1tuple__descriptor.html#a53dcf0ee8edf3cd32ab853c9a556ab9c":[2,0,0,95,3],
 "structcppgres_1_1tuple__descriptor.html#a6ee700f0172147ff2f7388c9febe4932":[2,0,0,95,12],
 "structcppgres_1_1tuple__descriptor.html#a95aeffac616d0bbba9347d95f4c1910b":[2,0,0,95,10],
 "structcppgres_1_1tuple__descriptor.html#a9d06b002b3e2d96c6836009618652b53":[2,0,0,95,1],

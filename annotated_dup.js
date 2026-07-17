@@ -77,7 +77,7 @@ var annotated_dup =
       [ "guc_enum_options", "structcppgres_1_1guc__enum__options.html", null ],
       [ "guc_string_options", "structcppgres_1_1guc__string__options.html", null ],
       [ "heap_tuple", "structcppgres_1_1heap__tuple.html", null ],
-      [ "internal_subtransaction", "structcppgres_1_1internal__subtransaction.html", null ],
+      [ "internal_subtransaction", "structcppgres_1_1internal__subtransaction.html", "structcppgres_1_1internal__subtransaction" ],
       [ "list", "structcppgres_1_1list.html", "structcppgres_1_1list" ],
       [ "memory_context", "structcppgres_1_1memory__context.html", null ],
       [ "memory_context_allocator", "structcppgres_1_1memory__context__allocator.html", null ],

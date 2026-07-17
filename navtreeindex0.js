@@ -182,6 +182,8 @@ var NAVTREEINDEX0 =
 "structcppgres_1_1guc__string__options.html":[2,0,0,53],
 "structcppgres_1_1heap__tuple.html":[2,0,0,54],
 "structcppgres_1_1internal__subtransaction.html":[2,0,0,55],
+"structcppgres_1_1internal__subtransaction.html#a08deda7b47d9d7a2a1a4c3032986c0b8":[2,0,0,55,1],
+"structcppgres_1_1internal__subtransaction.html#ae32b0139f956738e68d0266860860efb":[2,0,0,55,0],
 "structcppgres_1_1list.html":[2,0,0,56],
 "structcppgres_1_1list_1_1iterator.html":[2,0,0,56,0],
 "structcppgres_1_1memory__context.html":[2,0,0,57],
@@ -247,7 +249,5 @@ var NAVTREEINDEX0 =
 "structcppgres_1_1tuple__descriptor.html":[2,0,0,95],
 "structcppgres_1_1tuple__descriptor.html#a073f384375f107202be3393f6aeb6c34":[2,0,0,95,8],
 "structcppgres_1_1tuple__descriptor.html#a1891629ee7934ee1b7060dccc72705d8":[2,0,0,95,4],
-"structcppgres_1_1tuple__descriptor.html#a1abaf536248e05b8875332f418c601ab":[2,0,0,95,6],
-"structcppgres_1_1tuple__descriptor.html#a1f95a8438537115de925dfcf239e0014":[2,0,0,95,13],
-"structcppgres_1_1tuple__descriptor.html#a53dcf0ee8edf3cd32ab853c9a556ab9c":[2,0,0,95,3]
+"structcppgres_1_1tuple__descriptor.html#a1abaf536248e05b8875332f418c601ab":[2,0,0,95,6]
 };

@@ -4,5 +4,6 @@ var searchData=
   ['reserve_5fguc_5fprefix_1',['reserve_guc_prefix',['../guc_8hpp.html#a7b0b839f7637b44f446f7d0cf4c97f68',1,'cppgres']]],
   ['rethrow_2',['rethrow',['../classcppgres_1_1pg__exception.html#acb5917c5476c4d611548fdfba0679ccc',1,'cppgres::pg_exception']]],
   ['return_5ftype_3',['return_type',['../structcppgres_1_1function__call__info.html#a89b216048464974f421690df76edd123',1,'cppgres::function_call_info']]],
-  ['run_4',['run',['../structcppgres_1_1worker.html#acc6a061aa2738d1ceee22275d7e7768c',1,'cppgres::worker']]]
+  ['rollback_4',['rollback',['../structcppgres_1_1internal__subtransaction.html#a08deda7b47d9d7a2a1a4c3032986c0b8',1,'cppgres::internal_subtransaction']]],
+  ['run_5',['run',['../structcppgres_1_1worker.html#acc6a061aa2738d1ceee22275d7e7768c',1,'cppgres::worker']]]
 ];

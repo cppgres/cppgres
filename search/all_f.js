@@ -14,5 +14,6 @@ var searchData=
   ['return_5ftype_11',['return_type',['../structcppgres_1_1function__call__info.html#a89b216048464974f421690df76edd123',1,'cppgres::function_call_info']]],
   ['role_12',['role',['../structcppgres_1_1role.html',1,'cppgres']]],
   ['role_2ehpp_13',['role.hpp',['../role_8hpp.html',1,'']]],
-  ['run_14',['run',['../structcppgres_1_1worker.html#acc6a061aa2738d1ceee22275d7e7768c',1,'cppgres::worker']]]
+  ['rollback_14',['rollback',['../structcppgres_1_1internal__subtransaction.html#a08deda7b47d9d7a2a1a4c3032986c0b8',1,'cppgres::internal_subtransaction']]],
+  ['run_15',['run',['../structcppgres_1_1worker.html#acc6a061aa2738d1ceee22275d7e7768c',1,'cppgres::worker']]]
 ];
