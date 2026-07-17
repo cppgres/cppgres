@@ -369,6 +369,7 @@ struct spi_executor : public executor {
         ffi_guard{::SPI_prepare}(utils::to_cstring(query), nargs, types.data()));
   }
 
+#if PG_MAJORVERSION_NUM >= 14
   /**
    * @brief Prepares a plan with full ::SPIPrepareOptions.
    *
@@ -376,6 +377,8 @@ struct spi_executor : public executor {
    * need: parameter types are resolved through the options' parser hooks
    * (`parserSetup`/`parserSetupArg`) rather than a static argument list, and
    * the options carry the raw parse mode and cursor options.
+   *
+   * @note Postgres 14 and later (SPI_prepare_extended).
    */
   spi_plan<> plan(utils::convertible_to_cstring auto query,
                   const ::SPIPrepareOptions &opts) {
@@ -385,6 +388,7 @@ struct spi_executor : public executor {
     ::SPIPrepareOptions options = opts;
     return spi_plan<>(ffi_guard{::SPI_prepare_extended}(utils::to_cstring(query), &options));
   }
+#endif
 
   /**
    * @brief The innermost live SPI executor.
