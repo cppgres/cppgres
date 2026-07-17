@@ -7447,6 +7447,7 @@ extern "C" {
 
 #include <concepts>
 #include <memory>
+#include <type_traits>
 
 /**
 * \file
@@ -7658,7 +7659,17 @@ struct abstract_memory_context {
   virtual ~abstract_memory_context() = default;
 
   template <typename T = std::byte> T *alloc(size_t n = 1) {
-    return static_cast<T *>(ffi_guard{::MemoryContextAlloc}(_memory_context(), sizeof(T) * n));
+    if constexpr (alignof(T) > MAXIMUM_ALIGNOF) {
+#if PG_VERSION_NUM >= 160000
+      return static_cast<T *>(
+          ffi_guard{::MemoryContextAllocAligned}(_memory_context(), sizeof(T) * n, alignof(T), 0));
+#else
+      static_assert(alignof(T) <= MAXIMUM_ALIGNOF,
+                    "types over-aligned beyond MAXIMUM_ALIGNOF require PostgreSQL 16 or later");
+#endif
+    } else {
+      return static_cast<T *>(ffi_guard{::MemoryContextAlloc}(_memory_context(), sizeof(T) * n));
+    }
   }
   template <typename T = void> void free(T *ptr) { ffi_guard{::pfree}(ptr); }
 
@@ -7680,6 +7691,31 @@ struct abstract_memory_context {
     cb->arg = arg;
     ffi_guard{::MemoryContextRegisterResetCallback}(_memory_context(), cb);
     return cb;
+  }
+
+  /**
+   * Allocate and construct an object of type `T` in this memory context, registering a reset
+   * callback that runs its destructor when the context is reset or deleted.
+   *
+   * Exception-safe: everything that can throw (allocation, construction) happens before the
+   * callback is registered, and registration itself cannot fail.
+   */
+  template <typename T, typename... Args> T *construct(Args &&...args) {
+    static_assert(std::is_nothrow_destructible_v<T>,
+                  "type constructed in a memory context must be nothrow-destructible: its "
+                  "destructor runs from a memory context reset callback where exceptions cannot "
+                  "propagate");
+    auto *ptr = alloc<T>();
+    if constexpr (!std::is_trivially_destructible_v<T>) {
+      auto *cb = alloc<::MemoryContextCallback>();
+      std::construct_at(ptr, std::forward<Args>(args)...);
+      cb->func = [](void *arg) { std::destroy_at(static_cast<T *>(arg)); };
+      cb->arg = ptr;
+      ffi_guard{::MemoryContextRegisterResetCallback}(_memory_context(), cb);
+    } else {
+      std::construct_at(ptr, std::forward<Args>(args)...);
+    }
+    return ptr;
   }
 
   void delete_context() { ffi_guard{::MemoryContextDelete}(_memory_context()); }
@@ -8415,6 +8451,7 @@ private:
 #include <optional>
 #include <span>
 #include <string>
+#include <type_traits>
 
 
 namespace cppgres {
@@ -8632,15 +8669,8 @@ private:
   template <typename... Args> static auto allocate_expanded(Args &&...args) {
     auto ctx = memory_context(std::move(alloc_set_memory_context()));
     return ctx([&]() {
-      auto *e = ctx.alloc<expanded>();
-      std::construct_at(e, args...);
+      auto *e = ctx.construct<expanded>(args...);
       init(&e->hdr, ctx);
-      ctx.register_reset_callback(
-          [](void *arg) {
-            auto v = reinterpret_cast<expanded *>(arg);
-            v->inner.~T();
-          },
-          e);
       return std::make_pair(datum(PointerGetDatum(e)), ctx);
     });
   }
@@ -10172,25 +10202,18 @@ concept serializable_aggregate = aggregate<T, Args...> && requires(T t, bytea &b
   { T(ba) } -> std::same_as<T>;
 };
 
+/**
+ * @brief Aggregate state that can be combined with another instance (parallel aggregation)
+ *
+ * The combining constructor `T(const T &, const T &)` receives both operands as const
+ * references. Both operands remain owned by the aggregate memory context and their destructors
+ * still run when it is reset, so the constructor must not take ownership of (or alias) resources
+ * held by either operand: deep-copy them or share them through reference-counted handles.
+ */
 template <class T, class... Args>
-concept combinable_aggregate = aggregate<T, Args...> && requires(T &&t, T &&t1) {
+concept combinable_aggregate = aggregate<T, Args...> && requires(const T &t, const T &t1) {
   { T(t, t1) } -> std::same_as<T>;
 };
-
-template <class Agg, typename... Args>
-Agg *construct_aggregate_state(abstract_memory_context &ctx, Args &&...args) {
-  auto *state = ctx.template alloc<Agg>();
-  std::construct_at(state, std::forward<Args>(args)...);
-  if constexpr (!std::is_trivially_destructible_v<Agg>) {
-    ctx.register_reset_callback([](void *arg) { std::destroy_at(static_cast<Agg *>(arg)); }, state);
-  }
-  return state;
-}
-
-template <class Agg, typename... Args>
-Agg *construct_aggregate_state(abstract_memory_context &&ctx, Args &&...args) {
-  return construct_aggregate_state<Agg>(ctx, std::forward<Args>(args)...);
-}
 
 template <class Agg, typename... InTs> datum aggregate_sfunc(value state, InTs... args) {
 
@@ -10203,7 +10226,7 @@ template <class Agg, typename... InTs> datum aggregate_sfunc(value state, InTs..
   if constexpr (!convertible_into_datum<Agg> && finalizable_aggregate<Agg, InTs...>) {
     Agg *state0;
     if (state.get_nullable_datum().is_null()) {
-      state0 = construct_aggregate_state<Agg>(memory_context(aggctx));
+      state0 = memory_context(aggctx).construct<Agg>();
     } else {
       state0 = reinterpret_cast<Agg *>(
           from_nullable_datum<void *>(state.get_nullable_datum(), state.get_type().oid));
@@ -10225,7 +10248,7 @@ template <class Agg, typename... InTs> nullable_datum aggregate_ffunc(value stat
   if constexpr (finalizable_aggregate<Agg, InTs...>) {
     Agg *state0;
     if (state.get_nullable_datum().is_null()) {
-      state0 = construct_aggregate_state<Agg>(memory_context());
+      state0 = memory_context().construct<Agg>();
     } else {
       state0 = reinterpret_cast<Agg *>(
           from_nullable_datum<void *>(state.get_nullable_datum(), state.get_type().oid));
@@ -10258,7 +10281,7 @@ template <class Agg, typename... InTs> datum aggregate_deserial(bytea ba, value)
                                           &aggctx)) {
       report(ERROR, "not aggregate context");
     }
-    Agg *state0 = construct_aggregate_state<Agg>(memory_context(aggctx), ba);
+    Agg *state0 = memory_context(aggctx).construct<Agg>(ba);
     return datum_conversion<void *>::into_datum(reinterpret_cast<void *>(state0));
   }
   report(ERROR, "this aggregate does not support serialize");
@@ -10266,6 +10289,10 @@ template <class Agg, typename... InTs> datum aggregate_deserial(bytea ba, value)
 }
 
 template <class Agg, typename... InTs> datum aggregate_combine(value state, value other) {
+  static_assert(!(std::is_constructible_v<Agg, Agg &, Agg &> &&
+                  !std::is_constructible_v<Agg, const Agg &, const Agg &>),
+                "combining constructor must take const references: both operands remain owned by "
+                "the aggregate memory context and are destroyed when it is reset");
   MemoryContext aggctx;
   if (!ffi_guard{::AggCheckCallContext}(current_postgres_function::call_info().operator*(),
                                         &aggctx)) {
@@ -10275,7 +10302,7 @@ template <class Agg, typename... InTs> datum aggregate_combine(value state, valu
     if constexpr (!convertible_into_datum<Agg> && finalizable_aggregate<Agg, InTs...>) {
       Agg *state0;
       if (state.get_nullable_datum().is_null()) {
-        state0 = construct_aggregate_state<Agg>(memory_context(aggctx));
+        state0 = memory_context(aggctx).construct<Agg>();
       } else {
         state0 = reinterpret_cast<Agg *>(
             from_nullable_datum<void *>(state.get_nullable_datum(), state.get_type().oid));
@@ -10283,13 +10310,14 @@ template <class Agg, typename... InTs> datum aggregate_combine(value state, valu
 
       Agg *state1;
       if (other.get_nullable_datum().is_null()) {
-        state1 = construct_aggregate_state<Agg>(memory_context(aggctx));
+        state1 = memory_context(aggctx).construct<Agg>();
       } else {
         state1 = reinterpret_cast<Agg *>(
             from_nullable_datum<void *>(other.get_nullable_datum(), other.get_type().oid));
       }
 
-      Agg *newstate = construct_aggregate_state<Agg>(memory_context(aggctx), *state0, *state1);
+      Agg *newstate =
+          memory_context(aggctx).construct<Agg>(std::as_const(*state0), std::as_const(*state1));
 
       return datum_conversion<void *>::into_datum(reinterpret_cast<void *>(newstate));
     } else if constexpr (convertible_into_datum<Agg>) {
