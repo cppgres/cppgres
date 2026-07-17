@@ -56,4 +56,26 @@ add_test(internal_subtransaction_rollback, ([](test_case &) {
            result = result && _assert(std::get<0>(res.begin()[0]) == 0);
            return result;
          }));
+
+add_test(internal_subtransaction_exception_rolls_back, ([](test_case &) {
+           bool result = true;
+           {
+             cppgres::spi_executor spi;
+             spi.execute("create table internal_subtransaction_exception ()");
+           }
+           try {
+             // Constructed to commit at scope exit — but the scope is left
+             // via an exception, so it must roll back instead.
+             cppgres::internal_subtransaction sub;
+             cppgres::spi_executor spi;
+             spi.execute("insert into internal_subtransaction_exception default values");
+             throw std::runtime_error("unwind");
+           } catch (std::runtime_error &) {
+           }
+           cppgres::spi_executor spi;
+           auto res = spi.query<std::tuple<int64_t>>(
+               "select count(*) from internal_subtransaction_exception");
+           result = result && _assert(std::get<0>(res.begin()[0]) == 0);
+           return result;
+         }));
 } // namespace tests
