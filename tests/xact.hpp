@@ -8,13 +8,11 @@ add_test(internal_subtransaction_one, ([](test_case &) {
            bool result = true;
            {
              cppgres::internal_subtransaction sub;
-             bool exception_raised = false;
-             try {
-               cppgres::internal_subtransaction sub;
-             } catch (std::runtime_error &e) {
-               exception_raised = true;
+             {
+               // subtransactions nest, as procedural-language exception
+               // blocks do
+               cppgres::internal_subtransaction inner;
              }
-             result = result && _assert(exception_raised);
            }
            {
              // doing it again is fine
