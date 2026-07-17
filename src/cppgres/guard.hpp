@@ -7,6 +7,7 @@ extern "C" {
 #include <setjmp.h>
 }
 
+#include <exception>
 #include <iostream>
 #include <utility>
 
@@ -49,6 +50,81 @@ template <typename Func> struct ffi_guard {
     __builtin_unreachable();
   }
 };
+
+/**
+ * @brief Runs a callable under @ref cppgres::ffi_guard, degrading any failure to a warning
+ *
+ * Catches every exception — including Postgres errors surfaced as
+ * @ref cppgres::pg_exception — and reports the given message with `elog(WARNING)` instead of
+ * propagating. Intended for destructors and other cleanup paths where failure must degrade
+ * to a WARNING instead of propagating.
+ *
+ * @param f callable to run
+ * @param warning_message message to report at WARNING level if the callable fails
+ */
+template <typename Func> void ffi_guard_noexcept(Func f, const char *warning_message) noexcept {
+  try {
+    ffi_guard{std::move(f)}();
+  } catch (...) {
+    elog(WARNING, "%s", warning_message);
+  }
+}
+
+/**
+ * @brief Scope guard that runs the callable only when the scope is left via an exception
+ *
+ * A scope-fail guard (per `std::uncaught_exceptions`): the destructor compares the number of
+ * in-flight exceptions against the count captured at construction and, only when the scope is
+ * being unwound by an exception, runs the callable through @ref cppgres::ffi_guard_noexcept —
+ * so the cleanup itself never throws, degrading any failure to a WARNING with the given
+ * message.
+ */
+template <typename Func> struct scope_fail {
+  Func func;
+  const char *warning_message;
+  int uncaught = std::uncaught_exceptions();
+
+  scope_fail(Func f, const char *warning_message)
+      : func(std::move(f)), warning_message(warning_message) {}
+
+  ~scope_fail() {
+    if (std::uncaught_exceptions() > uncaught) {
+      ffi_guard_noexcept(func, warning_message);
+    }
+  }
+
+  scope_fail(const scope_fail &) = delete;
+  scope_fail &operator=(const scope_fail &) = delete;
+  scope_fail(scope_fail &&) = delete;
+  scope_fail &operator=(scope_fail &&) = delete;
+};
+
+template <typename Func> scope_fail(Func, const char *) -> scope_fail<Func>;
+
+/**
+ * @brief Scope guard that always runs the callable on scope exit
+ *
+ * Unlike @ref cppgres::scope_fail, the destructor runs the callable
+ * unconditionally — on normal exit and during unwinding alike — through
+ * @ref cppgres::ffi_guard_noexcept, so the cleanup itself never throws,
+ * degrading any failure to a WARNING with the given message.
+ */
+template <typename Func> struct scope_exit {
+  Func func;
+  const char *warning_message;
+
+  scope_exit(Func f, const char *warning_message)
+      : func(std::move(f)), warning_message(warning_message) {}
+
+  ~scope_exit() { ffi_guard_noexcept(func, warning_message); }
+
+  scope_exit(const scope_exit &) = delete;
+  scope_exit &operator=(const scope_exit &) = delete;
+  scope_exit(scope_exit &&) = delete;
+  scope_exit &operator=(scope_exit &&) = delete;
+};
+
+template <typename Func> scope_exit(Func, const char *) -> scope_exit<Func>;
 
 /**
  * @brief Wraps a C++ function to catch exceptions and report them as Postgres errors
