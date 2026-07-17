@@ -11549,7 +11549,13 @@ inline void define_guc(const char *name, const char *short_desc, int *var, int d
  * @ref cppgres::pg_exception.
  */
 inline void reserve_guc_prefix(const char *prefix) {
+#if PG_MAJORVERSION_NUM >= 15
   ffi_guard{::MarkGUCPrefixReserved}(prefix);
+#else
+  // Postgres 14 and older have no reservation; warning on mistyped
+  // placeholders is the closest equivalent.
+  ffi_guard{::EmitWarningsOnPlaceholders}(prefix);
+#endif
 }
 
 } // namespace cppgres
@@ -13175,8 +13181,12 @@ private:
     }
     try {
       // Releasing plan cache references when there are none is harmless,
-      // so always do both.
+      // so always do both.  (Renamed in Postgres 17.)
+#if PG_MAJORVERSION_NUM >= 17
       ffi_guard{::ReleaseAllPlanCacheRefsInOwner}(owner);
+#else
+      ffi_guard{::ResourceOwnerReleaseAllPlanCacheRefs}(owner);
+#endif
       ffi_guard{::ResourceOwnerDelete}(owner);
     } catch (...) {
       elog(WARNING, "cppgres: deleting resource owner failed");
