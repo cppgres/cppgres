@@ -7457,6 +7457,7 @@ extern "C" {
 #include <setjmp.h>
 }
 
+#include <exception>
 #include <iostream>
 #include <utility>
 
@@ -7642,13 +7643,90 @@ template <typename Func> struct ffi_guard {
 };
 
 /**
+ * @brief Runs a callable under @ref cppgres::ffi_guard, degrading any failure to a warning
+ *
+ * Catches every exception — including Postgres errors surfaced as
+ * @ref cppgres::pg_exception — and reports the given message with `elog(WARNING)` instead of
+ * propagating. Intended for destructors and other cleanup paths where failure must degrade
+ * to a WARNING instead of propagating.
+ *
+ * @param f callable to run
+ * @param warning_message message to report at WARNING level if the callable fails
+ */
+template <typename Func> void ffi_guard_noexcept(Func f, const char *warning_message) noexcept {
+  try {
+    ffi_guard{std::move(f)}();
+  } catch (...) {
+    elog(WARNING, "%s", warning_message);
+  }
+}
+
+/**
+ * @brief Scope guard that runs the callable only when the scope is left via an exception
+ *
+ * A scope-fail guard (per `std::uncaught_exceptions`): the destructor compares the number of
+ * in-flight exceptions against the count captured at construction and, only when the scope is
+ * being unwound by an exception, runs the callable through @ref cppgres::ffi_guard_noexcept —
+ * so the cleanup itself never throws, degrading any failure to a WARNING with the given
+ * message.
+ */
+template <typename Func> struct scope_fail {
+  Func func;
+  const char *warning_message;
+  int uncaught = std::uncaught_exceptions();
+
+  scope_fail(Func f, const char *warning_message)
+      : func(std::move(f)), warning_message(warning_message) {}
+
+  ~scope_fail() {
+    if (std::uncaught_exceptions() > uncaught) {
+      ffi_guard_noexcept(func, warning_message);
+    }
+  }
+
+  scope_fail(const scope_fail &) = delete;
+  scope_fail &operator=(const scope_fail &) = delete;
+  scope_fail(scope_fail &&) = delete;
+  scope_fail &operator=(scope_fail &&) = delete;
+};
+
+template <typename Func> scope_fail(Func, const char *) -> scope_fail<Func>;
+
+/**
+ * @brief Scope guard that always runs the callable on scope exit
+ *
+ * Unlike @ref cppgres::scope_fail, the destructor runs the callable
+ * unconditionally — on normal exit and during unwinding alike — through
+ * @ref cppgres::ffi_guard_noexcept, so the cleanup itself never throws,
+ * degrading any failure to a WARNING with the given message.
+ */
+template <typename Func> struct scope_exit {
+  Func func;
+  const char *warning_message;
+
+  scope_exit(Func f, const char *warning_message)
+      : func(std::move(f)), warning_message(warning_message) {}
+
+  ~scope_exit() { ffi_guard_noexcept(func, warning_message); }
+
+  scope_exit(const scope_exit &) = delete;
+  scope_exit &operator=(const scope_exit &) = delete;
+  scope_exit(scope_exit &&) = delete;
+  scope_exit &operator=(scope_exit &&) = delete;
+};
+
+template <typename Func> scope_exit(Func, const char *) -> scope_exit<Func>;
+
+/**
  * @brief Wraps a C++ function to catch exceptions and report them as Postgres errors
  *
  * It ensures that if the C++ exception throws an error, it'll be caught and transformed into
  * a Postgres error report.
  *
- * @note It will also handle Postgres errors caught during the call that were automatically transformed
- *       into @ref cppgres::pg_exception by @ref cppgres::ffi_guard and report them as errors.
+ * @note Postgres errors caught during the call that were automatically transformed into
+ *       @ref cppgres::pg_exception by @ref cppgres::ffi_guard are rethrown to Postgres with
+ *       full fidelity (SQLSTATE, detail, hint, context preserved) via
+ *       @ref cppgres::pg_exception::rethrow.
  *
  * @tparam Func C++ function to call
  */
@@ -7661,8 +7739,8 @@ template <typename Func> struct exception_guard {
   auto operator()(Args &&...args) -> decltype(func(std::forward<Args>(args)...)) {
     try {
       return func(std::forward<Args>(args)...);
-    } catch (const pg_exception &e) {
-      error(e);
+    } catch (pg_exception &e) {
+      e.rethrow();
     } catch (const std::exception &e) {
       report(ERROR, "exception: %s", e.what());
     } catch (...) {
@@ -10903,6 +10981,15 @@ concept a_vector = requires {
 } && std::same_as<T, std::vector<typename T::value_type, typename T::allocator_type>>;
 
 /**
+ * @brief SPI connection options
+ */
+enum class spi_opt : int { none = 0, nonatomic = SPI_OPT_NONATOMIC };
+
+constexpr spi_opt operator|(spi_opt lhs, spi_opt rhs) {
+  return static_cast<spi_opt>(static_cast<int>(lhs) | static_cast<int>(rhs));
+}
+
+/**
  * @brief [SPI](https://www.postgresql.org/docs/current/spi.html) executor API
  */
 struct spi_executor : public executor {
@@ -10910,6 +10997,16 @@ struct spi_executor : public executor {
    * @brief Creates an SPI executor
    */
   spi_executor() : spi_executor(0) {}
+
+  /**
+   * @brief Creates an SPI executor with explicitly chosen options
+   *
+   * This is meant for code running outside of the cppgres function-call
+   * context (such as raw language handlers) that determines atomicity by
+   * itself and therefore can't rely on @ref cppgres::spi_nonatomic_executor's
+   * context inference.
+   */
+  explicit spi_executor(spi_opt opts) : spi_executor(static_cast<int>(opts)) {}
   ~spi_executor() {
     ffi_guard{::SPI_finish}();
     executors.pop();
@@ -11344,6 +11441,116 @@ struct spi_nonatomic_executor : public spi_executor {
     ffi_guard(chain ? ::SPI_rollback_and_chain : ::SPI_rollback)();
   }
 };
+
+} // namespace cppgres
+/**
+ * \file
+ */
+
+
+extern "C" {
+#include <utils/guc.h>
+}
+
+namespace cppgres {
+
+/**
+ * @brief Optional settings for a boolean GUC definition
+ *
+ * All members default to the values Postgres extensions most commonly pass, so
+ * call sites only need to designated-initialize the ones they care about.
+ */
+struct guc_bool_options {
+  const char *long_desc = nullptr;
+  ::GucContext context = PGC_USERSET;
+  int flags = 0;
+  ::GucBoolCheckHook check_hook = nullptr;
+  ::GucBoolAssignHook assign_hook = nullptr;
+  ::GucShowHook show_hook = nullptr;
+};
+
+/**
+ * @brief Optional settings for a string GUC definition
+ *
+ * All members default to the values Postgres extensions most commonly pass, so
+ * call sites only need to designated-initialize the ones they care about.
+ */
+struct guc_string_options {
+  const char *long_desc = nullptr;
+  ::GucContext context = PGC_USERSET;
+  int flags = 0;
+  ::GucStringCheckHook check_hook = nullptr;
+  ::GucStringAssignHook assign_hook = nullptr;
+  ::GucShowHook show_hook = nullptr;
+};
+
+/**
+ * @brief Optional settings for an enum GUC definition
+ *
+ * All members default to the values Postgres extensions most commonly pass, so
+ * call sites only need to designated-initialize the ones they care about.
+ */
+struct guc_enum_options {
+  const char *long_desc = nullptr;
+  ::GucContext context = PGC_USERSET;
+  int flags = 0;
+  ::GucEnumCheckHook check_hook = nullptr;
+  ::GucEnumAssignHook assign_hook = nullptr;
+  ::GucShowHook show_hook = nullptr;
+};
+
+/**
+ * @brief Define a custom boolean GUC (`DefineCustomBoolVariable`)
+ *
+ * Runs under @ref cppgres::ffi_guard, so a Postgres error surfaces as
+ * @ref cppgres::pg_exception.
+ */
+inline void define_guc(const char *name, const char *short_desc, bool *var, bool default_value,
+                       const guc_bool_options &opts = {}) {
+  ffi_guard{::DefineCustomBoolVariable}(name, short_desc, opts.long_desc, var, default_value,
+                                        opts.context, opts.flags, opts.check_hook,
+                                        opts.assign_hook, opts.show_hook);
+}
+
+/**
+ * @brief Define a custom string GUC (`DefineCustomStringVariable`)
+ *
+ * Runs under @ref cppgres::ffi_guard, so a Postgres error surfaces as
+ * @ref cppgres::pg_exception.
+ */
+inline void define_guc(const char *name, const char *short_desc, char **var,
+                       const char *default_value, const guc_string_options &opts = {}) {
+  ffi_guard{::DefineCustomStringVariable}(name, short_desc, opts.long_desc, var, default_value,
+                                          opts.context, opts.flags, opts.check_hook,
+                                          opts.assign_hook, opts.show_hook);
+}
+
+/**
+ * @brief Define a custom enum GUC (`DefineCustomEnumVariable`)
+ *
+ * Runs under @ref cppgres::ffi_guard, so a Postgres error surfaces as
+ * @ref cppgres::pg_exception.
+ */
+inline void define_guc(const char *name, const char *short_desc, int *var, int default_value,
+                       const ::config_enum_entry *entries, const guc_enum_options &opts = {}) {
+  ffi_guard{::DefineCustomEnumVariable}(name, short_desc, opts.long_desc, var, default_value,
+                                        entries, opts.context, opts.flags, opts.check_hook,
+                                        opts.assign_hook, opts.show_hook);
+}
+
+/**
+ * @brief Reserve a GUC prefix for this extension (`MarkGUCPrefixReserved`)
+ *
+ * Reserve the prefix only after every GUC under it has been defined:
+ * reserving earlier discards the placeholders for GUCs defined later, so
+ * values SET before the module was loaded would be thrown away.
+ *
+ * Runs under @ref cppgres::ffi_guard, so a Postgres error surfaces as
+ * @ref cppgres::pg_exception.
+ */
+inline void reserve_guc_prefix(const char *prefix) {
+  ffi_guard{::MarkGUCPrefixReserved}(prefix);
+}
 
 } // namespace cppgres
 /**
@@ -12908,6 +13115,132 @@ private:
 };
 
 #undef node_dispatch
+
+} // namespace cppgres
+/**
+ * \file
+ */
+
+
+extern "C" {
+#include <executor/executor.h>
+#include <utils/plancache.h>
+#include <utils/resowner.h>
+}
+
+namespace cppgres {
+
+/**
+ * @brief RAII-managed resource owner
+ *
+ * Creates a resource owner (`ResourceOwnerCreate`) on construction and, if
+ * still owning at destruction, releases the plan cache references it holds
+ * and deletes it. Ownership can be relinquished with release().
+ */
+struct resource_owner {
+  explicit resource_owner(const char *name, ::ResourceOwner parent = nullptr)
+      : owner(ffi_guard{::ResourceOwnerCreate}(parent, name)) {}
+
+  resource_owner(const resource_owner &) = delete;
+  resource_owner &operator=(const resource_owner &) = delete;
+
+  resource_owner(resource_owner &&other) noexcept : owner(other.owner) { other.owner = nullptr; }
+
+  resource_owner &operator=(resource_owner &&other) noexcept {
+    if (this != &other) {
+      dispose();
+      owner = other.owner;
+      other.owner = nullptr;
+    }
+    return *this;
+  }
+
+  operator ::ResourceOwner() const { return owner; }
+
+  /**
+   * @brief Disown the resource owner and return it
+   */
+  ::ResourceOwner release() noexcept {
+    ::ResourceOwner o = owner;
+    owner = nullptr;
+    return o;
+  }
+
+  ~resource_owner() noexcept { dispose(); }
+
+private:
+  void dispose() noexcept {
+    if (owner == nullptr) {
+      return;
+    }
+    try {
+      // Releasing plan cache references when there are none is harmless,
+      // so always do both.
+      ffi_guard{::ReleaseAllPlanCacheRefsInOwner}(owner);
+      ffi_guard{::ResourceOwnerDelete}(owner);
+    } catch (...) {
+      elog(WARNING, "cppgres: deleting resource owner failed");
+    }
+    owner = nullptr;
+  }
+
+  ::ResourceOwner owner;
+};
+
+/**
+ * @brief RAII-managed executor state (`EState`)
+ *
+ * Creates an executor state (`CreateExecutorState`) on construction and, if
+ * still owning at destruction, frees it. Ownership can be relinquished with
+ * release().
+ */
+struct executor_state {
+  executor_state() : estate(ffi_guard{::CreateExecutorState}()) {}
+
+  executor_state(const executor_state &) = delete;
+  executor_state &operator=(const executor_state &) = delete;
+
+  executor_state(executor_state &&other) noexcept : estate(other.estate) {
+    other.estate = nullptr;
+  }
+
+  executor_state &operator=(executor_state &&other) noexcept {
+    if (this != &other) {
+      dispose();
+      estate = other.estate;
+      other.estate = nullptr;
+    }
+    return *this;
+  }
+
+  operator ::EState *() const { return estate; }
+
+  /**
+   * @brief Disown the executor state and return it
+   */
+  ::EState *release() noexcept {
+    ::EState *e = estate;
+    estate = nullptr;
+    return e;
+  }
+
+  ~executor_state() noexcept { dispose(); }
+
+private:
+  void dispose() noexcept {
+    if (estate == nullptr) {
+      return;
+    }
+    try {
+      ffi_guard{::FreeExecutorState}(estate);
+    } catch (...) {
+      elog(WARNING, "cppgres: freeing executor state failed");
+    }
+    estate = nullptr;
+  }
+
+  ::EState *estate;
+};
 
 } // namespace cppgres
 /**
