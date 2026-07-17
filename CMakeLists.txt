@@ -86,8 +86,10 @@ add_test(
 
 ##### ABI check
 
-find_program(_clang clang)
-find_program(_clangxx clang++)
+# Prefer newer clangs: clang 18 crashes (SIGSEGV) dumping complete record
+# layouts of Postgres 19+ headers; clang 19 handles them.
+find_program(_clang NAMES clang-20 clang-19 clang)
+find_program(_clangxx NAMES clang++-20 clang++-19 clang++)
 
 find_package(Python COMPONENTS Interpreter)
 
