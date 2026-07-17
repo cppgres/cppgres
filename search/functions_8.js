@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['operator_20tupledesc_0',['operator TupleDesc',['../structcppgres_1_1tuple__descriptor.html#a073f384375f107202be3393f6aeb6c34',1,'cppgres::tuple_descriptor']]],
-  ['operator_28_29_1',['operator()',['../structcppgres_1_1postgres__function.html#a3f1e16b082548865d63063fd27a8c759',1,'cppgres::postgres_function::operator()()'],['../structcppgres_1_1abstract__memory__context.html#a9f857d2bff4537e5ce5a0fe4c2428e22',1,'cppgres::abstract_memory_context::operator()()'],['../structcppgres_1_1node__walker.html#ae1636c032bebd997f4f6da6d0b6d0de0',1,'cppgres::node_walker::operator()()']]],
-  ['operator_3d_2',['operator=',['../structcppgres_1_1tuple__descriptor.html#afd4654c937e15d53866cd3176d308c94',1,'cppgres::tuple_descriptor::operator=(const tuple_descriptor &amp;other)'],['../structcppgres_1_1tuple__descriptor.html#a95aeffac616d0bbba9347d95f4c1910b',1,'cppgres::tuple_descriptor::operator=(tuple_descriptor &amp;&amp;other) noexcept']]],
-  ['operator_3d_3d_3',['operator==',['../structcppgres_1_1tuple__descriptor.html#ab00fa97a429a29a21cf21531c6efd858',1,'cppgres::tuple_descriptor']]],
-  ['operator_5b_5d_4',['operator[]',['../structcppgres_1_1tuple__descriptor.html#a6ee700f0172147ff2f7388c9febe4932',1,'cppgres::tuple_descriptor::operator[]()'],['../structcppgres_1_1record.html#a4dca730bad191c5697a8863bb474cc12',1,'cppgres::record::operator[](std::string_view name)'],['../structcppgres_1_1record.html#ac381737091bbd5f09a15544d70043a26',1,'cppgres::record::operator[](int n)']]]
+  ['name_0',['name',['../structcppgres_1_1type.html#aa8e44205d8ca27137acb86a74830f2ad',1,'cppgres::type']]],
+  ['named_5ftype_1',['named_type',['../structcppgres_1_1named__type.html#aea5469c05cdd8aaba9d215b2fa6e33df',1,'cppgres::named_type::named_type(const std::string_view name)'],['../structcppgres_1_1named__type.html#a0085edaedc5891411cb275b0feeaf8a8',1,'cppgres::named_type::named_type(const std::string_view schema, const std::string_view name)']]],
+  ['nargs_2',['nargs',['../structcppgres_1_1function__call__info.html#a8fb11c69768071663f2bfcf4d8900d7b',1,'cppgres::function_call_info']]]
 ];

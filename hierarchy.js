@@ -104,6 +104,7 @@ var hierarchy =
         [ "cppgres::spi_nonatomic_executor", "structcppgres_1_1spi__nonatomic__executor.html", null ]
       ] ]
     ] ],
+    [ "cppgres::executor_state", "structcppgres_1_1executor__state.html", null ],
     [ "cppgres::expr_node_walker< T >", "structcppgres_1_1expr__node__walker.html", null ],
     [ "cppgres::expr_node_walker< nodes::Query >", "structcppgres_1_1expr__node__walker_3_01nodes_1_1Query_01_4.html", null ],
     [ "std::false_type", null, [
@@ -117,6 +118,9 @@ var hierarchy =
     [ "cppgres::utils::function_traits::function_traits< R(*)(Args...)>", "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07_5_08_07Args_8_8_8_08_4.html", null ],
     [ "cppgres::utils::function_traits::function_traits< R(Args...)>", "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07Args_8_8_8_08_4.html", null ],
     [ "cppgres::utils::function_traits::function_traits< R(C::*)(Args...) const >", "structcppgres_1_1utils_1_1function__traits_1_1function__traits_3_01R_07C_1_1_5_08_07Args_8_8_8_08_01const_01_4.html", null ],
+    [ "cppgres::guc_bool_options", "structcppgres_1_1guc__bool__options.html", null ],
+    [ "cppgres::guc_enum_options", "structcppgres_1_1guc__enum__options.html", null ],
+    [ "cppgres::guc_string_options", "structcppgres_1_1guc__string__options.html", null ],
     [ "cppgres::background_worker::handle", "structcppgres_1_1background__worker_1_1handle.html", null ],
     [ "cppgres::heap_tuple", "structcppgres_1_1heap__tuple.html", null ],
     [ "cppgres::internal_subtransaction", "structcppgres_1_1internal__subtransaction.html", null ],
@@ -155,8 +159,11 @@ var hierarchy =
     [ "cppgres::record", "structcppgres_1_1record.html", null ],
     [ "cppgres::utils::remove_optional< T >", "structcppgres_1_1utils_1_1remove__optional.html", null ],
     [ "cppgres::utils::remove_optional< std::optional< T > >", "structcppgres_1_1utils_1_1remove__optional_3_01std_1_1optional_3_01T_01_4_01_4.html", null ],
+    [ "cppgres::resource_owner", "structcppgres_1_1resource__owner.html", null ],
     [ "cppgres::spi_executor::result_iterator< T >", "structcppgres_1_1spi__executor_1_1result__iterator.html", null ],
     [ "cppgres::spi_executor::results< Ret >", "structcppgres_1_1spi__executor_1_1results.html", null ],
+    [ "cppgres::scope_exit< Func >", "structcppgres_1_1scope__exit.html", null ],
+    [ "cppgres::scope_fail< Func >", "structcppgres_1_1scope__fail.html", null ],
     [ "cppgres::security_context", "structcppgres_1_1security__context.html", null ],
     [ "cppgres::set_iterator_traits< I >", "structcppgres_1_1set__iterator__traits.html", null ],
     [ "cppgres::spi_plan< Args >", "structcppgres_1_1spi__plan.html", null ],

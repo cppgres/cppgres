@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['get_5fattribute_0',['get_attribute',['../structcppgres_1_1record.html#aa91a3ce5246d1da28337e8f80661a3fe',1,'cppgres::record::get_attribute()'],['../structcppgres_1_1syscache.html#a21fcf2326df6fd2be92b55a4665b5c5b',1,'cppgres::syscache::get_attribute()']]],
-  ['get_5ftuple_5fdescriptor_1',['get_tuple_descriptor',['../structcppgres_1_1record.html#a61afc51f1c779ff74b4f05dab5f33662',1,'cppgres::record']]]
+  ['ffi_5fguard_5fnoexcept_0',['ffi_guard_noexcept',['../guard_8hpp.html#aee27925731cfbca51bae25a353339c33',1,'cppgres']]],
+  ['from_5fdatum_1',['from_datum',['../structcppgres_1_1datum__conversion.html#a31161ce8dfdaf241f1b33ea8382c1a2e',1,'cppgres::datum_conversion']]],
+  ['from_5fnullable_5fdatum_2',['from_nullable_datum',['../structcppgres_1_1datum__conversion.html#a3ee29d3c7be93d32b7b2129a7ca4dae6',1,'cppgres::datum_conversion::from_nullable_datum()'],['../structcppgres_1_1default__datum__conversion.html#ad176cb5efe007d185b2f4daff88d7d83',1,'cppgres::default_datum_conversion::from_nullable_datum()']]]
 ];

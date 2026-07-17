@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['equal_5ftypes_0',['equal_types',['../structcppgres_1_1tuple__descriptor.html#a1abaf536248e05b8875332f418c601ab',1,'cppgres::tuple_descriptor']]],
-  ['error_5fdata_1',['error_data',['../classcppgres_1_1pg__exception.html#afdc61f380d7bdd39f7db96e95d6c2b96',1,'cppgres::pg_exception']]]
+  ['define_5fguc_0',['define_guc',['../guc_8hpp.html#aab9b278d38e0ad72d59adff231205a82',1,'cppgres::define_guc(const char *name, const char *short_desc, bool *var, bool default_value, const guc_bool_options &amp;opts={})'],['../guc_8hpp.html#a249a402ce0dc8f94cd0bb75bd34eed76',1,'cppgres::define_guc(const char *name, const char *short_desc, char **var, const char *default_value, const guc_string_options &amp;opts={})'],['../guc_8hpp.html#a72f645f20d92df07e3cd8251abd46581',1,'cppgres::define_guc(const char *name, const char *short_desc, int *var, int default_value, const ::config_enum_entry *entries, const guc_enum_options &amp;opts={})']]]
 ];

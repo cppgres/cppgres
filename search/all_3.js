@@ -49,5 +49,6 @@ var searchData=
   ['default_5fdatum_5fconversion_3c_20std_3a_3astring_20_3e_46',['default_datum_conversion&lt; std::string &gt;',['../structcppgres_1_1default__datum__conversion.html',1,'cppgres']]],
   ['default_5fdatum_5fconversion_3c_20std_3a_3astring_5fview_20_3e_47',['default_datum_conversion&lt; std::string_view &gt;',['../structcppgres_1_1default__datum__conversion.html',1,'cppgres']]],
   ['default_5fdatum_5fconversion_3c_20text_20_3e_48',['default_datum_conversion&lt; text &gt;',['../structcppgres_1_1default__datum__conversion.html',1,'cppgres']]],
-  ['default_5fdatum_5fconversion_3c_20void_20_2a_20_3e_49',['default_datum_conversion&lt; void * &gt;',['../structcppgres_1_1default__datum__conversion.html',1,'cppgres']]]
+  ['default_5fdatum_5fconversion_3c_20void_20_2a_20_3e_49',['default_datum_conversion&lt; void * &gt;',['../structcppgres_1_1default__datum__conversion.html',1,'cppgres']]],
+  ['define_5fguc_50',['define_guc',['../guc_8hpp.html#aab9b278d38e0ad72d59adff231205a82',1,'cppgres::define_guc(const char *name, const char *short_desc, bool *var, bool default_value, const guc_bool_options &amp;opts={})'],['../guc_8hpp.html#a249a402ce0dc8f94cd0bb75bd34eed76',1,'cppgres::define_guc(const char *name, const char *short_desc, char **var, const char *default_value, const guc_string_options &amp;opts={})'],['../guc_8hpp.html#a72f645f20d92df07e3cd8251abd46581',1,'cppgres::define_guc(const char *name, const char *short_desc, int *var, int default_value, const ::config_enum_entry *entries, const guc_enum_options &amp;opts={})']]]
 ];

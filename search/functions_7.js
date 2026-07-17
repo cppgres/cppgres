@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['name_0',['name',['../structcppgres_1_1type.html#aa8e44205d8ca27137acb86a74830f2ad',1,'cppgres::type']]],
-  ['named_5ftype_1',['named_type',['../structcppgres_1_1named__type.html#aea5469c05cdd8aaba9d215b2fa6e33df',1,'cppgres::named_type::named_type(const std::string_view name)'],['../structcppgres_1_1named__type.html#a0085edaedc5891411cb275b0feeaf8a8',1,'cppgres::named_type::named_type(const std::string_view schema, const std::string_view name)']]],
-  ['nargs_2',['nargs',['../structcppgres_1_1function__call__info.html#a8fb11c69768071663f2bfcf4d8900d7b',1,'cppgres::function_call_info']]]
+  ['into_5fdatum_0',['into_datum',['../structcppgres_1_1datum__conversion.html#aa4b972f2d5fc81c1eef91f479a2a8264',1,'cppgres::datum_conversion']]],
+  ['into_5fnullable_5fdatum_1',['into_nullable_datum',['../structcppgres_1_1datum__conversion.html#acc177add212b00a09f136bd244f02144',1,'cppgres::datum_conversion::into_nullable_datum()'],['../structcppgres_1_1default__datum__conversion.html#ae4e0f3408909317d317d125771ad9f7e',1,'cppgres::default_datum_conversion::into_nullable_datum()']]],
+  ['is_5fblessed_2',['is_blessed',['../structcppgres_1_1tuple__descriptor.html#ae4896f77859165ccd3b1bcb653693941',1,'cppgres::tuple_descriptor']]]
 ];

@@ -165,6 +165,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>rollback</b> (bool ch
 &#160;</td><td class="memItemRight" valign="bottom"><b>spi_executor</b> ()</td></tr>
 <tr class="memdesc:a726d3a8355cbd06be5aec2b252c6d9b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an SPI executor. <br /></td></tr>
 <tr class="separator:a726d3a8355cbd06be5aec2b252c6d9b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adee7bfcfa67bc26a89928ac9e50ab17c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1spi__nonatomic__executor.html#adee7bfcfa67bc26a89928ac9e50ab17c">spi_executor</a> (<a class="el" href="executor_8hpp.html#a2090c621231152a5054b5f25a463a2e0">spi_opt</a> opts)</td></tr>
+<tr class="memdesc:adee7bfcfa67bc26a89928ac9e50ab17c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an SPI executor with explicitly chosen options.  <br /></td></tr>
+<tr class="separator:adee7bfcfa67bc26a89928ac9e50ab17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89cd080750b7aebc0ecc0c9dd2494fa8"><td class="memItemLeft" align="right" valign="top"><a id="a89cd080750b7aebc0ecc0c9dd2494fa8" name="a89cd080750b7aebc0ecc0c9dd2494fa8"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>spi_executor</b> (int flags)</td></tr>
 <tr class="separator:a89cd080750b7aebc0ecc0c9dd2494fa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,6 +176,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>rollback</b> (bool ch
 &#160;</td><td class="memItemRight" valign="bottom"><b>spi_executor</b> ()</td></tr>
 <tr class="memdesc:a726d3a8355cbd06be5aec2b252c6d9b9 inherit pub_methods_structcppgres_1_1spi__executor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an SPI executor. <br /></td></tr>
 <tr class="separator:a726d3a8355cbd06be5aec2b252c6d9b9 inherit pub_methods_structcppgres_1_1spi__executor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adee7bfcfa67bc26a89928ac9e50ab17c inherit pub_methods_structcppgres_1_1spi__executor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1spi__executor.html#adee7bfcfa67bc26a89928ac9e50ab17c">spi_executor</a> (<a class="el" href="executor_8hpp.html#a2090c621231152a5054b5f25a463a2e0">spi_opt</a> opts)</td></tr>
+<tr class="memdesc:adee7bfcfa67bc26a89928ac9e50ab17c inherit pub_methods_structcppgres_1_1spi__executor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an SPI executor with explicitly chosen options.  <br /></td></tr>
+<tr class="separator:adee7bfcfa67bc26a89928ac9e50ab17c inherit pub_methods_structcppgres_1_1spi__executor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8359eb7667f973a7370981baa0b2b578 inherit pub_methods_structcppgres_1_1spi__executor"><td class="memTemplParams" colspan="2">template&lt;typename Ret , convertible_into_nullable_datum_and_has_a_type... Args&gt; </td></tr>
 <tr class="memitem:a8359eb7667f973a7370981baa0b2b578 inherit pub_methods_structcppgres_1_1spi__executor"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1spi__executor_1_1results.html">results</a>&lt; Ret &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578">query</a> (utils::convertible_to_cstring auto query, Args &amp;&amp;...args)</td></tr>
 <tr class="memdesc:a8359eb7667f973a7370981baa0b2b578 inherit pub_methods_structcppgres_1_1spi__executor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries using a string view.  <br /></td></tr>
@@ -217,6 +223,36 @@ Additional Inherited Members</h2></td></tr>
 static std::stack&lt; <a class="el" href="structcppgres_1_1spi__executor.html">spi_executor</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>executors</b></td></tr>
 <tr class="separator:a562e7b16d2a0d3c49ac1f5cb145a6e4b inherit pro_static_attribs_structcppgres_1_1spi__executor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="adee7bfcfa67bc26a89928ac9e50ab17c" name="adee7bfcfa67bc26a89928ac9e50ab17c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adee7bfcfa67bc26a89928ac9e50ab17c">&#9670;&#160;</a></span>spi_executor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">cppgres::spi_executor::spi_executor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="executor_8hpp.html#a2090c621231152a5054b5f25a463a2e0">spi_opt</a>&#160;</td>
+          <td class="paramname"><em>opts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates an SPI executor with explicitly chosen options. </p>
+<p>This is meant for code running outside of the cppgres function-call context (such as raw language handlers) that determines atomicity by itself and therefore can't rely on <a class="el" href="structcppgres_1_1spi__nonatomic__executor.html">cppgres::spi_nonatomic_executor</a>'s context inference. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cppgres/<a class="el" href="executor_8hpp_source.html">executor.hpp</a></li>
 </ul>

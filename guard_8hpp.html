@@ -137,11 +137,13 @@ $(document).ready(function(){initNavTree('guard_8hpp.html',''); initResizable();
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">guard.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;setjmp.h&gt;</code><br />
+<code>#include &lt;exception&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 <code>#include &quot;<a class="el" href="error_8hpp_source.html">error.hpp</a>&quot;</code><br />
@@ -154,10 +156,80 @@ $(document).ready(function(){initNavTree('guard_8hpp.html',''); initResizable();
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard&lt; Func &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1scope__fail.html">cppgres::scope_fail&lt; Func &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scope guard that runs the callable only when the scope is left via an exception.  <a href="structcppgres_1_1scope__fail.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1scope__exit.html">cppgres::scope_exit&lt; Func &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scope guard that always runs the callable on scope exit.  <a href="structcppgres_1_1scope__exit.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1exception__guard.html">cppgres::exception_guard&lt; Func &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps a C++ function to catch exceptions and report them as Postgres errors.  <a href="structcppgres_1_1exception__guard.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aee27925731cfbca51bae25a353339c33"><td class="memTemplParams" colspan="2">template&lt;typename Func &gt; </td></tr>
+<tr class="memitem:aee27925731cfbca51bae25a353339c33"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="guard_8hpp.html#aee27925731cfbca51bae25a353339c33">cppgres::ffi_guard_noexcept</a> (Func f, const char *warning_message) noexcept</td></tr>
+<tr class="memdesc:aee27925731cfbca51bae25a353339c33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs a callable under <a class="el" href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a>, degrading any failure to a warning.  <br /></td></tr>
+<tr class="separator:aee27925731cfbca51bae25a353339c33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99f6fa028bff30760b3b6a87e951dfab"><td class="memTemplParams" colspan="2"><a id="a99f6fa028bff30760b3b6a87e951dfab" name="a99f6fa028bff30760b3b6a87e951dfab"></a>
+template&lt;typename Func &gt; </td></tr>
+<tr class="memitem:a99f6fa028bff30760b3b6a87e951dfab"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::scope_fail</b> (Func, const char *) -&gt; scope_fail&lt; Func &gt;</td></tr>
+<tr class="separator:a99f6fa028bff30760b3b6a87e951dfab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4178cb8758d66879ebb7cd022f94151b"><td class="memTemplParams" colspan="2"><a id="a4178cb8758d66879ebb7cd022f94151b" name="a4178cb8758d66879ebb7cd022f94151b"></a>
+template&lt;typename Func &gt; </td></tr>
+<tr class="memitem:a4178cb8758d66879ebb7cd022f94151b"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>cppgres::scope_exit</b> (Func, const char *) -&gt; scope_exit&lt; Func &gt;</td></tr>
+<tr class="separator:a4178cb8758d66879ebb7cd022f94151b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="aee27925731cfbca51bae25a353339c33" name="aee27925731cfbca51bae25a353339c33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee27925731cfbca51bae25a353339c33">&#9670;&#160;</a></span>ffi_guard_noexcept()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Func &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cppgres::ffi_guard_noexcept </td>
+          <td>(</td>
+          <td class="paramtype">Func&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>warning_message</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Runs a callable under <a class="el" href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a>, degrading any failure to a warning. </p>
+<p>Catches every exception — including Postgres errors surfaced as <a class="el" href="classcppgres_1_1pg__exception.html">cppgres::pg_exception</a> — and reports the given message with <code>elog(WARNING)</code> instead of propagating. Intended for destructors and other cleanup paths where failure must degrade to a WARNING instead of propagating.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>callable to run </td></tr>
+    <tr><td class="paramname">warning_message</td><td>message to report at WARNING level if the callable fails </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

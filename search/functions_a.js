@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['release_0',['release',['../structcppgres_1_1spi__plan.html#a16542ea405274a009e0c37cea7c77bd8',1,'cppgres::spi_plan']]],
-  ['rethrow_1',['rethrow',['../classcppgres_1_1pg__exception.html#acb5917c5476c4d611548fdfba0679ccc',1,'cppgres::pg_exception']]],
-  ['return_5ftype_2',['return_type',['../structcppgres_1_1function__call__info.html#a89b216048464974f421690df76edd123',1,'cppgres::function_call_info']]],
-  ['run_3',['run',['../structcppgres_1_1worker.html#acc6a061aa2738d1ceee22275d7e7768c',1,'cppgres::worker']]]
+  ['query_0',['query',['../structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578',1,'cppgres::spi_executor::query(utils::convertible_to_cstring auto query, Args &amp;&amp;...args)'],['../structcppgres_1_1spi__executor.html#a1a6443d5aa50601c86bc74251b5f0b4b',1,'cppgres::spi_executor::query(utils::convertible_to_cstring auto query, options &amp;&amp;opts, Args &amp;&amp;...args)']]]
 ];

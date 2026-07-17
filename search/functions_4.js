@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['from_5fdatum_0',['from_datum',['../structcppgres_1_1datum__conversion.html#a31161ce8dfdaf241f1b33ea8382c1a2e',1,'cppgres::datum_conversion']]],
-  ['from_5fnullable_5fdatum_1',['from_nullable_datum',['../structcppgres_1_1datum__conversion.html#a3ee29d3c7be93d32b7b2129a7ca4dae6',1,'cppgres::datum_conversion::from_nullable_datum()'],['../structcppgres_1_1default__datum__conversion.html#ad176cb5efe007d185b2f4daff88d7d83',1,'cppgres::default_datum_conversion::from_nullable_datum()']]]
+  ['equal_5ftypes_0',['equal_types',['../structcppgres_1_1tuple__descriptor.html#a1abaf536248e05b8875332f418c601ab',1,'cppgres::tuple_descriptor']]],
+  ['error_5fdata_1',['error_data',['../classcppgres_1_1pg__exception.html#afdc61f380d7bdd39f7db96e95d6c2b96',1,'cppgres::pg_exception']]]
 ];
