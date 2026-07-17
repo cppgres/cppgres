@@ -9014,7 +9014,7 @@ template <> struct datum_conversion<std::string> : default_datum_conversion<std:
 
 template <> struct datum_conversion<const char *> : default_datum_conversion<const char *> {
   static const char *from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
-    return DatumGetPointer(d);
+    return static_cast<const char *>(DatumGetPointer(d));
   }
 
   static datum into_datum(const char *const &t) {
@@ -9025,7 +9025,7 @@ template <> struct datum_conversion<const char *> : default_datum_conversion<con
 template <std::size_t N>
 struct datum_conversion<char[N]> : default_datum_conversion<char[N], const char *> {
   static const char *from_datum(const datum &d, oid, std::optional<memory_context> ctx) {
-    return DatumGetPointer(d);
+    return static_cast<const char *>(DatumGetPointer(d));
   }
 
   static datum into_datum(const char (&t)[N]) {
@@ -11427,11 +11427,18 @@ node_mapping(InferenceElem);
 #if PG_MAJORVERSION_NUM >= 18
 node_mapping(ReturningExpr);
 #endif
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(GraphLabelRef);
+node_mapping(GraphPropertyRef);
+#endif
 node_mapping(TargetEntry);
 node_mapping(RangeTblRef);
 node_mapping(JoinExpr);
 node_mapping(FromExpr);
 node_mapping(OnConflictExpr);
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(ForPortionOfExpr);
+#endif
 node_mapping(Query);
 node_mapping(TypeName);
 node_mapping(ColumnRef);
@@ -11454,6 +11461,9 @@ node_mapping(RangeSubselect);
 node_mapping(RangeFunction);
 node_mapping(RangeTableFunc);
 node_mapping(RangeTableFuncCol);
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(RangeGraphTable);
+#endif
 node_mapping(RangeTableSample);
 node_mapping(ColumnDef);
 node_mapping(TableLikeClause);
@@ -11462,13 +11472,17 @@ node_mapping(DefElem);
 node_mapping(LockingClause);
 node_mapping(XmlSerialize);
 node_mapping(PartitionElem);
-#if PG_MAJORVERSION_NUM == 17
+#if PG_MAJORVERSION_NUM == 17 || PG_MAJORVERSION_NUM >= 19
 node_mapping(SinglePartitionSpec);
 #endif
 node_mapping(PartitionSpec);
 node_mapping(PartitionBoundSpec);
 node_mapping(PartitionRangeDatum);
 node_mapping(PartitionCmd);
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(GraphPattern);
+node_mapping(GraphElementPattern);
+#endif
 node_mapping(RangeTblEntry);
 #if PG_MAJORVERSION_NUM >= 16
 node_mapping(RTEPermissionInfo);
@@ -11480,6 +11494,9 @@ node_mapping(SortGroupClause);
 node_mapping(GroupingSet);
 node_mapping(WindowClause);
 node_mapping(RowMarkClause);
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(ForPortionOfClause);
+#endif
 node_mapping(WithClause);
 node_mapping(InferClause);
 node_mapping(OnConflictClause);
@@ -11632,7 +11649,11 @@ node_mapping(AlterDatabaseRefreshCollStmt);
 node_mapping(AlterDatabaseSetStmt);
 node_mapping(DropdbStmt);
 node_mapping(AlterSystemStmt);
+#if PG_MAJORVERSION_NUM < 19
 node_mapping(ClusterStmt);
+#else
+node_mapping(RepackStmt);
+#endif
 node_mapping(VacuumStmt);
 node_mapping(VacuumRelation);
 node_mapping(ExplainStmt);
@@ -11645,6 +11666,14 @@ node_mapping(ConstraintsSetStmt);
 node_mapping(ReindexStmt);
 node_mapping(CreateConversionStmt);
 node_mapping(CreateCastStmt);
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(CreatePropGraphStmt);
+node_mapping(PropGraphVertex);
+node_mapping(PropGraphEdge);
+node_mapping(PropGraphLabelAndProperties);
+node_mapping(PropGraphProperties);
+node_mapping(AlterPropGraphStmt);
+#endif
 node_mapping(CreateTransformStmt);
 node_mapping(PrepareStmt);
 node_mapping(ExecuteStmt);
@@ -11657,14 +11686,23 @@ node_mapping(AlterTSConfigurationStmt);
 node_mapping(PublicationTable);
 node_mapping(PublicationObjSpec);
 #endif
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(PublicationAllObjSpec);
+#endif
 node_mapping(CreatePublicationStmt);
 node_mapping(AlterPublicationStmt);
 node_mapping(CreateSubscriptionStmt);
 node_mapping(AlterSubscriptionStmt);
 node_mapping(DropSubscriptionStmt);
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(WaitStmt);
+#endif
 node_mapping(PlannerGlobal);
 node_mapping(PlannerInfo);
 node_mapping(RelOptInfo);
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(RelAggInfo);
+#endif
 node_mapping(IndexOptInfo);
 node_mapping(ForeignKeyOptInfo);
 node_mapping(StatisticExtInfo);
@@ -11736,6 +11774,10 @@ node_mapping(RowIdentityVarInfo);
 #endif
 node_mapping(PlaceHolderInfo);
 node_mapping(MinMaxAggInfo);
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(AggClauseInfo);
+node_mapping(GroupingExprInfo);
+#endif
 node_mapping(PlannerParamItem);
 #if PG_MAJORVERSION_NUM >= 16
 node_mapping(AggInfo);
@@ -11798,15 +11840,26 @@ node_mapping(PartitionedRelPruneInfo);
 node_mapping(PartitionPruneStepOp);
 node_mapping(PartitionPruneStepCombine);
 node_mapping(PlanInvalItem);
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(SubPlanRTInfo);
+node_mapping(ElidedNode);
+#endif
 node_mapping(ExprState);
 node_mapping(IndexInfo);
 node_mapping(ExprContext);
 node_mapping(ReturnSetInfo);
 node_mapping(ProjectionInfo);
 node_mapping(JunkFilter);
+#if PG_MAJORVERSION_NUM < 19
 node_mapping(OnConflictSetState);
+#else
+node_mapping(OnConflictActionState);
+#endif
 #if PG_MAJORVERSION_NUM >= 15
 node_mapping(MergeActionState);
+#endif
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(ForPortionOfState);
 #endif
 node_mapping(ResultRelInfo);
 node_mapping(EState);
@@ -11892,6 +11945,10 @@ node_mapping(TimeLineHistoryCmd);
 node_mapping(UploadManifestCmd);
 #endif
 node_mapping(SupportRequestSimplify);
+#if PG_MAJORVERSION_NUM >= 19
+node_mapping(SupportRequestSimplifyAggref);
+node_mapping(SupportRequestInlineInFrom);
+#endif
 node_mapping(SupportRequestSelectivity);
 node_mapping(SupportRequestCost);
 node_mapping(SupportRequestRows);
@@ -12017,11 +12074,18 @@ node_dispatch(InferenceElem);
 #if PG_MAJORVERSION_NUM >= 18
 node_dispatch(ReturningExpr);
 #endif
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(GraphLabelRef);
+node_dispatch(GraphPropertyRef);
+#endif
 node_dispatch(TargetEntry);
 node_dispatch(RangeTblRef);
 node_dispatch(JoinExpr);
 node_dispatch(FromExpr);
 node_dispatch(OnConflictExpr);
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(ForPortionOfExpr);
+#endif
 node_dispatch(Query);
 node_dispatch(TypeName);
 node_dispatch(ColumnRef);
@@ -12044,6 +12108,9 @@ node_dispatch(RangeSubselect);
 node_dispatch(RangeFunction);
 node_dispatch(RangeTableFunc);
 node_dispatch(RangeTableFuncCol);
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(RangeGraphTable);
+#endif
 node_dispatch(RangeTableSample);
 node_dispatch(ColumnDef);
 node_dispatch(TableLikeClause);
@@ -12052,13 +12119,17 @@ node_dispatch(DefElem);
 node_dispatch(LockingClause);
 node_dispatch(XmlSerialize);
 node_dispatch(PartitionElem);
-#if PG_MAJORVERSION_NUM == 17
+#if PG_MAJORVERSION_NUM == 17 || PG_MAJORVERSION_NUM >= 19
 node_dispatch(SinglePartitionSpec);
 #endif
 node_dispatch(PartitionSpec);
 node_dispatch(PartitionBoundSpec);
 node_dispatch(PartitionRangeDatum);
 node_dispatch(PartitionCmd);
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(GraphPattern);
+node_dispatch(GraphElementPattern);
+#endif
 node_dispatch(RangeTblEntry);
 #if PG_MAJORVERSION_NUM >= 16
 node_dispatch(RTEPermissionInfo);
@@ -12070,6 +12141,9 @@ node_dispatch(SortGroupClause);
 node_dispatch(GroupingSet);
 node_dispatch(WindowClause);
 node_dispatch(RowMarkClause);
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(ForPortionOfClause);
+#endif
 node_dispatch(WithClause);
 node_dispatch(InferClause);
 node_dispatch(OnConflictClause);
@@ -12222,7 +12296,11 @@ node_dispatch(AlterDatabaseRefreshCollStmt);
 node_dispatch(AlterDatabaseSetStmt);
 node_dispatch(DropdbStmt);
 node_dispatch(AlterSystemStmt);
+#if PG_MAJORVERSION_NUM < 19
 node_dispatch(ClusterStmt);
+#else
+node_dispatch(RepackStmt);
+#endif
 node_dispatch(VacuumStmt);
 node_dispatch(VacuumRelation);
 node_dispatch(ExplainStmt);
@@ -12235,6 +12313,14 @@ node_dispatch(ConstraintsSetStmt);
 node_dispatch(ReindexStmt);
 node_dispatch(CreateConversionStmt);
 node_dispatch(CreateCastStmt);
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(CreatePropGraphStmt);
+node_dispatch(PropGraphVertex);
+node_dispatch(PropGraphEdge);
+node_dispatch(PropGraphLabelAndProperties);
+node_dispatch(PropGraphProperties);
+node_dispatch(AlterPropGraphStmt);
+#endif
 node_dispatch(CreateTransformStmt);
 node_dispatch(PrepareStmt);
 node_dispatch(ExecuteStmt);
@@ -12247,14 +12333,23 @@ node_dispatch(AlterTSConfigurationStmt);
 node_dispatch(PublicationTable);
 node_dispatch(PublicationObjSpec);
 #endif
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(PublicationAllObjSpec);
+#endif
 node_dispatch(CreatePublicationStmt);
 node_dispatch(AlterPublicationStmt);
 node_dispatch(CreateSubscriptionStmt);
 node_dispatch(AlterSubscriptionStmt);
 node_dispatch(DropSubscriptionStmt);
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(WaitStmt);
+#endif
 node_dispatch(PlannerGlobal);
 node_dispatch(PlannerInfo);
 node_dispatch(RelOptInfo);
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(RelAggInfo);
+#endif
 node_dispatch(IndexOptInfo);
 node_dispatch(ForeignKeyOptInfo);
 node_dispatch(StatisticExtInfo);
@@ -12326,6 +12421,10 @@ node_dispatch(RowIdentityVarInfo);
 #endif
 node_dispatch(PlaceHolderInfo);
 node_dispatch(MinMaxAggInfo);
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(AggClauseInfo);
+node_dispatch(GroupingExprInfo);
+#endif
 node_dispatch(PlannerParamItem);
 #if PG_MAJORVERSION_NUM >= 16
 node_dispatch(AggInfo);
@@ -12388,15 +12487,26 @@ node_dispatch(PartitionedRelPruneInfo);
 node_dispatch(PartitionPruneStepOp);
 node_dispatch(PartitionPruneStepCombine);
 node_dispatch(PlanInvalItem);
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(SubPlanRTInfo);
+node_dispatch(ElidedNode);
+#endif
 node_dispatch(ExprState);
 node_dispatch(IndexInfo);
 node_dispatch(ExprContext);
 node_dispatch(ReturnSetInfo);
 node_dispatch(ProjectionInfo);
 node_dispatch(JunkFilter);
+#if PG_MAJORVERSION_NUM < 19
 node_dispatch(OnConflictSetState);
+#else
+node_dispatch(OnConflictActionState);
+#endif
 #if PG_MAJORVERSION_NUM >= 15
 node_dispatch(MergeActionState);
+#endif
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(ForPortionOfState);
 #endif
 node_dispatch(ResultRelInfo);
 node_dispatch(EState);
@@ -12482,6 +12592,10 @@ node_dispatch(TimeLineHistoryCmd);
 node_dispatch(UploadManifestCmd);
 #endif
 node_dispatch(SupportRequestSimplify);
+#if PG_MAJORVERSION_NUM >= 19
+node_dispatch(SupportRequestSimplifyAggref);
+node_dispatch(SupportRequestInlineInFrom);
+#endif
 node_dispatch(SupportRequestSelectivity);
 node_dispatch(SupportRequestCost);
 node_dispatch(SupportRequestRows);
