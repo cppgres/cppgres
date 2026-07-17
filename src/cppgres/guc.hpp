@@ -107,7 +107,13 @@ inline void define_guc(const char *name, const char *short_desc, int *var, int d
  * @ref cppgres::pg_exception.
  */
 inline void reserve_guc_prefix(const char *prefix) {
+#if PG_MAJORVERSION_NUM >= 15
   ffi_guard{::MarkGUCPrefixReserved}(prefix);
+#else
+  // Postgres 14 and older have no reservation; warning on mistyped
+  // placeholders is the closest equivalent.
+  ffi_guard{::EmitWarningsOnPlaceholders}(prefix);
+#endif
 }
 
 } // namespace cppgres
