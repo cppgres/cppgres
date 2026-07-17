@@ -56,8 +56,10 @@ template <typename Func> struct ffi_guard {
  * It ensures that if the C++ exception throws an error, it'll be caught and transformed into
  * a Postgres error report.
  *
- * @note It will also handle Postgres errors caught during the call that were automatically transformed
- *       into @ref cppgres::pg_exception by @ref cppgres::ffi_guard and report them as errors.
+ * @note Postgres errors caught during the call that were automatically transformed into
+ *       @ref cppgres::pg_exception by @ref cppgres::ffi_guard are rethrown to Postgres with
+ *       full fidelity (SQLSTATE, detail, hint, context preserved) via
+ *       @ref cppgres::pg_exception::rethrow.
  *
  * @tparam Func C++ function to call
  */
@@ -70,8 +72,8 @@ template <typename Func> struct exception_guard {
   auto operator()(Args &&...args) -> decltype(func(std::forward<Args>(args)...)) {
     try {
       return func(std::forward<Args>(args)...);
-    } catch (const pg_exception &e) {
-      error(e);
+    } catch (pg_exception &e) {
+      e.rethrow();
     } catch (const std::exception &e) {
       report(ERROR, "exception: %s", e.what());
     } catch (...) {
