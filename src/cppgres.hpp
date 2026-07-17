@@ -73,6 +73,7 @@ using ::fmt::format;
 #include "cppgres/function.hpp"
 #include "cppgres/guard.hpp"
 #include "cppgres/imports.h"
+#include "cppgres/list.hpp"
 #include "cppgres/memory.hpp"
 #include "cppgres/node.hpp"
 #include "cppgres/record.hpp"
