@@ -59,8 +59,12 @@ private:
     }
     try {
       // Releasing plan cache references when there are none is harmless,
-      // so always do both.
+      // so always do both.  (Renamed in Postgres 17.)
+#if PG_MAJORVERSION_NUM >= 17
       ffi_guard{::ReleaseAllPlanCacheRefsInOwner}(owner);
+#else
+      ffi_guard{::ResourceOwnerReleaseAllPlanCacheRefs}(owner);
+#endif
       ffi_guard{::ResourceOwnerDelete}(owner);
     } catch (...) {
       elog(WARNING, "cppgres: deleting resource owner failed");
