@@ -1,6 +1,6 @@
 var executor_8hpp =
 [
-    [ "cppgres::spi_plan< Args >", "structcppgres_1_1spi__plan.html", null ],
+    [ "cppgres::spi_plan< Args >", "structcppgres_1_1spi__plan.html", "structcppgres_1_1spi__plan" ],
     [ "cppgres::executor", "structcppgres_1_1executor.html", null ],
     [ "cppgres::spi_executor", "structcppgres_1_1spi__executor.html", "structcppgres_1_1spi__executor" ],
     [ "cppgres::spi_executor::result_iterator< T >", "structcppgres_1_1spi__executor_1_1result__iterator.html", null ],

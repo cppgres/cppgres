@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['query_0',['query',['../structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578',1,'cppgres::spi_executor::query(utils::convertible_to_cstring auto query, Args &amp;&amp;...args)'],['../structcppgres_1_1spi__executor.html#a1a6443d5aa50601c86bc74251b5f0b4b',1,'cppgres::spi_executor::query(utils::convertible_to_cstring auto query, options &amp;&amp;opts, Args &amp;&amp;...args)']]]
+  ['pg_5fexception_0',['pg_exception',['../classcppgres_1_1pg__exception.html',1,'cppgres']]],
+  ['plan_1',['plan',['../structcppgres_1_1spi__executor.html#a1bccebef7075d04fb8d36ea30bed5750',1,'cppgres::spi_executor']]],
+  ['pointer_5fgone_5fexception_2',['pointer_gone_exception',['../structcppgres_1_1pointer__gone__exception.html',1,'cppgres']]],
+  ['postgres_5ffunction_3',['postgres_function',['../structcppgres_1_1postgres__function.html',1,'cppgres::postgres_function&lt; Func &gt;'],['../cppgres_8hpp.html#a37c77119ae05c0662ba21ee00d28c843',1,'postgres_function():&#160;cppgres.hpp']]],
+  ['postmaster_5fdied_4',['postmaster_died',['../structcppgres_1_1background__worker_1_1postmaster__died.html',1,'cppgres::background_worker']]]
 ];

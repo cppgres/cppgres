@@ -155,6 +155,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a289abcb169c93fd37325a9dfa2f4bc76"><td class="memItemLeft" align="right" valign="top"><a id="a289abcb169c93fd37325a9dfa2f4bc76" name="a289abcb169c93fd37325a9dfa2f4bc76"></a>
 const char *&#160;</td><td class="memItemRight" valign="bottom"><b>message</b> () const noexcept</td></tr>
 <tr class="separator:a289abcb169c93fd37325a9dfa2f4bc76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdc61f380d7bdd39f7db96e95d6c2b96"><td class="memItemLeft" align="right" valign="top">const ::ErrorData *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcppgres_1_1pg__exception.html#afdc61f380d7bdd39f7db96e95d6c2b96">error_data</a> () const noexcept</td></tr>
+<tr class="memdesc:afdc61f380d7bdd39f7db96e95d6c2b96"><td class="mdescLeft">&#160;</td><td class="mdescRight">The complete error record captured from Postgres.  <br /></td></tr>
+<tr class="separator:afdc61f380d7bdd39f7db96e95d6c2b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb5917c5476c4d611548fdfba0679ccc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcppgres_1_1pg__exception.html#acb5917c5476c4d611548fdfba0679ccc">rethrow</a> ()</td></tr>
+<tr class="memdesc:acb5917c5476c4d611548fdfba0679ccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-throws the captured error as a Postgres error, with every field (SQLSTATE, detail, hint, context, ...) intact.  <br /></td></tr>
+<tr class="separator:acb5917c5476c4d611548fdfba0679ccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -163,6 +169,64 @@ template&lt;typename Func &gt; </td></tr>
 <tr class="memitem:a810a58066db1268390db1c0117fb947a"><td class="memTemplItemLeft" align="right" valign="top">struct&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ffi_guard</b></td></tr>
 <tr class="separator:a810a58066db1268390db1c0117fb947a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="afdc61f380d7bdd39f7db96e95d6c2b96" name="afdc61f380d7bdd39f7db96e95d6c2b96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdc61f380d7bdd39f7db96e95d6c2b96">&#9670;&#160;</a></span>error_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const ::ErrorData * cppgres::pg_exception::error_data </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The complete error record captured from Postgres. </p>
+<p>Valid for the lifetime of the exception object. </p>
+
+</div>
+</div>
+<a id="acb5917c5476c4d611548fdfba0679ccc" name="acb5917c5476c4d611548fdfba0679ccc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb5917c5476c4d611548fdfba0679ccc">&#9670;&#160;</a></span>rethrow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cppgres::pg_exception::rethrow </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Re-throws the captured error as a Postgres error, with every field (SQLSTATE, detail, hint, context, ...) intact. </p>
+<p>Intended to be called from a <code>catch</code> block once cleanup is done and the error should continue propagating to Postgres. Never returns.</p>
+<p>The longjmp does not run this object's destructor, so the exception's backing storage is handed to Postgres to be released when ErrorContext is reset — that is, once the error has been fully handled. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/cppgres/<a class="el" href="exception_8hpp_source.html">exception.hpp</a></li>
 <li>src/cppgres/<a class="el" href="exception__impl_8hpp_source.html">exception_impl.hpp</a></li>

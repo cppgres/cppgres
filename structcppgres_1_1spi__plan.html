@@ -155,6 +155,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abc579f89951ace0273c9d629d3035842"><td class="memItemLeft" align="right" valign="top"><a id="abc579f89951ace0273c9d629d3035842" name="abc579f89951ace0273c9d629d3035842"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>keep</b> ()</td></tr>
 <tr class="separator:abc579f89951ace0273c9d629d3035842"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16542ea405274a009e0c37cea7c77bd8"><td class="memItemLeft" align="right" valign="top">::SPIPlanPtr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1spi__plan.html#a16542ea405274a009e0c37cea7c77bd8">release</a> () noexcept</td></tr>
+<tr class="memdesc:a16542ea405274a009e0c37cea7c77bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Releases ownership of the plan to the caller.  <br /></td></tr>
+<tr class="separator:a16542ea405274a009e0c37cea7c77bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -162,6 +165,37 @@ Friends</h2></td></tr>
 struct&#160;</td><td class="memItemRight" valign="bottom"><b>spi_executor</b></td></tr>
 <tr class="separator:adbb6cddc90059def7be967fec161a160"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a16542ea405274a009e0c37cea7c77bd8" name="a16542ea405274a009e0c37cea7c77bd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16542ea405274a009e0c37cea7c77bd8">&#9670;&#160;</a></span>release()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;convertible_from_nullable_datum... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">::SPIPlanPtr <a class="el" href="structcppgres_1_1spi__plan.html">cppgres::spi_plan</a>&lt; Args &gt;::release </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Releases ownership of the plan to the caller. </p>
+<p>Returns the raw plan pointer and disarms this object's destructor. Typically used after keep() when the plan's lifetime is managed elsewhere (for example, stored in a procedural language's function AST). </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cppgres/<a class="el" href="executor_8hpp_source.html">executor.hpp</a></li>
 </ul>

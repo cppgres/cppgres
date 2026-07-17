@@ -158,10 +158,25 @@ $(document).ready(function(){initNavTree('exception__impl_8hpp_source.html','');
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">inline</span> pg_exception::~pg_exception() { memory_context(error_cxt).delete_context(); }</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>} <span class="comment">// namespace cppgres</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classcppgres_1_1pg__exception.html#acb5917c5476c4d611548fdfba0679ccc">   22</a></span>[[noreturn]] <span class="keyword">inline</span> <span class="keywordtype">void</span> pg_exception::rethrow() {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="comment">// ReThrowError copies the record into Postgres&#39; error stack (strings into</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="comment">// ErrorContext) and then longjmps, which skips ~pg_exception.  Register a</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="comment">// reset callback on ErrorContext so our backing context is freed once the</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="comment">// error has been fully handled (FlushErrorState resets ErrorContext).</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">auto</span> *cb = <span class="keyword">static_cast&lt;</span>::MemoryContextCallback *<span class="keyword">&gt;</span>(</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      <a class="code hl_struct" href="structcppgres_1_1ffi__guard.html">ffi_guard</a>{::MemoryContextAlloc}(::ErrorContext, <span class="keyword">sizeof</span>(::MemoryContextCallback)));</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  cb-&gt;func = [](<span class="keywordtype">void</span> *arg) { ::MemoryContextDelete(<span class="keyword">static_cast&lt;</span>::MemoryContext<span class="keyword">&gt;</span>(arg)); };</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  cb-&gt;arg = error_cxt;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  ::MemoryContextRegisterResetCallback(::ErrorContext, cb);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  ::ReThrowError(error);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  __builtin_unreachable();</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>} <span class="comment">// namespace cppgres</span></div>
 <div class="ttc" id="aexception_8hpp_html"><div class="ttname"><a href="exception_8hpp.html">exception.hpp</a></div></div>
 <div class="ttc" id="aguard_8hpp_html"><div class="ttname"><a href="guard_8hpp.html">guard.hpp</a></div></div>
 <div class="ttc" id="amemory_8hpp_html"><div class="ttname"><a href="memory_8hpp.html">memory.hpp</a></div></div>
+<div class="ttc" id="astructcppgres_1_1ffi__guard_html"><div class="ttname"><a href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a></div><div class="ttdef"><b>Definition:</b> guard.hpp:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

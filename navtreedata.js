@@ -49,7 +49,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "aggregate_8hpp_source.html",
-"structcppgres_1_1type__traits_3_01int8__t_01_4.html"
+"structcppgres_1_1type__traits_3_01datum_01_4.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

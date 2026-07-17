@@ -622,7 +622,7 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>  <span class="keywordflow">return</span> function&lt;const char *, T&gt;(foutoid);</div>
 <div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>}</div>
 <div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span> </div>
-<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span><span class="keyword">static</span> function&lt;const char *, cppgres::value&gt; output_function(<span class="keyword">const</span> type &amp;t) {</div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span><span class="keyword">inline</span> function&lt;const char *, cppgres::value&gt; output_function(<span class="keyword">const</span> type &amp;t) {</div>
 <div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>  ::Oid foutoid;</div>
 <div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>  <span class="keywordtype">bool</span> typisvarlena;</div>
 <div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>  ffi_guard{::getTypeOutputInfo}(t.oid, &amp;foutoid, &amp;typisvarlena);</div>
@@ -637,7 +637,7 @@ $(document).ready(function(){initNavTree('function_8hpp_source.html',''); initRe
 <div class="ttc" id="aconceptcppgres_1_1datumable__iterator_html"><div class="ttname"><a href="conceptcppgres_1_1datumable__iterator.html">cppgres::datumable_iterator</a></div><div class="ttdef"><b>Definition:</b> set.hpp:15</div></div>
 <div class="ttc" id="aconceptcppgres_1_1has__type__traits_html"><div class="ttname"><a href="conceptcppgres_1_1has__type__traits.html">cppgres::has_type_traits</a></div><div class="ttdef"><b>Definition:</b> type.hpp:51</div></div>
 <div class="ttc" id="aconceptcppgres_1_1utils_1_1is__optional_html"><div class="ttname"><a href="conceptcppgres_1_1utils_1_1is__optional.html">cppgres::utils::is_optional</a></div><div class="ttdef"><b>Definition:</b> utils.hpp:39</div></div>
-<div class="ttc" id="acppgres_8hpp_html_a37c77119ae05c0662ba21ee00d28c843"><div class="ttname"><a href="cppgres_8hpp.html#a37c77119ae05c0662ba21ee00d28c843">postgres_function</a></div><div class="ttdeci">#define postgres_function(name, function)</div><div class="ttdoc">Export a C++ function as a Postgres function.</div><div class="ttdef"><b>Definition:</b> cppgres.hpp:100</div></div>
+<div class="ttc" id="acppgres_8hpp_html_a37c77119ae05c0662ba21ee00d28c843"><div class="ttname"><a href="cppgres_8hpp.html#a37c77119ae05c0662ba21ee00d28c843">postgres_function</a></div><div class="ttdeci">#define postgres_function(name, function)</div><div class="ttdoc">Export a C++ function as a Postgres function.</div><div class="ttdef"><b>Definition:</b> cppgres.hpp:101</div></div>
 <div class="ttc" id="adatum_8hpp_html"><div class="ttname"><a href="datum_8hpp.html">datum.hpp</a></div></div>
 <div class="ttc" id="afunction__traits_8hpp_html"><div class="ttname"><a href="function__traits_8hpp.html">function_traits.hpp</a></div></div>
 <div class="ttc" id="aguard_8hpp_html"><div class="ttname"><a href="guard_8hpp.html">guard.hpp</a></div></div>

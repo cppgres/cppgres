@@ -156,10 +156,17 @@ $(document).ready(function(){initNavTree('exception_8hpp_source.html',''); initR
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *message() <span class="keyword">const</span> <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> error-&gt;message; }</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <a class="code hl_class" href="classcppgres_1_1pg__exception.html">~pg_exception</a>();</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>};</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>} <span class="comment">// namespace cppgres</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classcppgres_1_1pg__exception.html#afdc61f380d7bdd39f7db96e95d6c2b96">   26</a></span>  const ::ErrorData *<a class="code hl_function" href="classcppgres_1_1pg__exception.html#afdc61f380d7bdd39f7db96e95d6c2b96">error_data</a>() const noexcept { <span class="keywordflow">return</span> error; }</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  [[noreturn]] <span class="keywordtype">void</span> <a class="code hl_function" href="classcppgres_1_1pg__exception.html#acb5917c5476c4d611548fdfba0679ccc">rethrow</a>();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_class" href="classcppgres_1_1pg__exception.html">~pg_exception</a>();</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>};</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>} <span class="comment">// namespace cppgres</span></div>
 <div class="ttc" id="aclasscppgres_1_1pg__exception_html"><div class="ttname"><a href="classcppgres_1_1pg__exception.html">cppgres::pg_exception</a></div><div class="ttdef"><b>Definition:</b> exception.hpp:7</div></div>
+<div class="ttc" id="aclasscppgres_1_1pg__exception_html_acb5917c5476c4d611548fdfba0679ccc"><div class="ttname"><a href="classcppgres_1_1pg__exception.html#acb5917c5476c4d611548fdfba0679ccc">cppgres::pg_exception::rethrow</a></div><div class="ttdeci">void rethrow()</div><div class="ttdoc">Re-throws the captured error as a Postgres error, with every field (SQLSTATE, detail,...</div><div class="ttdef"><b>Definition:</b> exception_impl.hpp:22</div></div>
+<div class="ttc" id="aclasscppgres_1_1pg__exception_html_afdc61f380d7bdd39f7db96e95d6c2b96"><div class="ttname"><a href="classcppgres_1_1pg__exception.html#afdc61f380d7bdd39f7db96e95d6c2b96">cppgres::pg_exception::error_data</a></div><div class="ttdeci">const ::ErrorData * error_data() const noexcept</div><div class="ttdoc">The complete error record captured from Postgres.</div><div class="ttdef"><b>Definition:</b> exception.hpp:26</div></div>
 <div class="ttc" id="astructcppgres_1_1ffi__guard_html"><div class="ttname"><a href="structcppgres_1_1ffi__guard.html">cppgres::ffi_guard</a></div><div class="ttdef"><b>Definition:</b> guard.hpp:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

@@ -139,6 +139,7 @@ $(document).ready(function(){initNavTree('structcppgres_1_1spi__executor.html','
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="structcppgres_1_1spi__executor-members.html">List of all members</a>  </div>
@@ -188,6 +189,9 @@ Public Member Functions</h2></td></tr>
 template&lt;convertible_into_nullable_datum_and_has_a_type... Args&gt; </td></tr>
 <tr class="memitem:a343f5fe7db5dd435d3af0d0f6ff6abe7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1spi__plan.html">spi_plan</a>&lt; Args... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>plan</b> (utils::convertible_to_cstring auto <a class="el" href="structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578">query</a>)</td></tr>
 <tr class="separator:a343f5fe7db5dd435d3af0d0f6ff6abe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bccebef7075d04fb8d36ea30bed5750"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1spi__plan.html">spi_plan</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1spi__executor.html#a1bccebef7075d04fb8d36ea30bed5750">plan</a> (utils::convertible_to_cstring auto <a class="el" href="structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578">query</a>, const ::SPIPrepareOptions &amp;opts)</td></tr>
+<tr class="memdesc:a1bccebef7075d04fb8d36ea30bed5750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepares a plan with full ::SPIPrepareOptions.  <br /></td></tr>
+<tr class="separator:a1bccebef7075d04fb8d36ea30bed5750"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57d1a17b0381a37df4085d22fc6df295"><td class="memTemplParams" colspan="2"><a id="a57d1a17b0381a37df4085d22fc6df295" name="a57d1a17b0381a37df4085d22fc6df295"></a>
 template&lt;typename Ret , convertible_into_nullable_datum... Args&gt; </td></tr>
 <tr class="memitem:a57d1a17b0381a37df4085d22fc6df295"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structcppgres_1_1spi__executor_1_1results.html">results</a>&lt; Ret &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>query</b> (<a class="el" href="structcppgres_1_1spi__plan.html">spi_plan</a>&lt; Args... &gt; &amp;query, Args &amp;&amp;...args)</td></tr>
@@ -205,6 +209,12 @@ template&lt;convertible_into_nullable_datum_and_has_a_type... Args&gt; </td></tr
 <tr class="memitem:a58d36d3a7fec3b8d2038be20f3e194f9"><td class="memTemplItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>execute</b> (std::string_view <a class="el" href="structcppgres_1_1spi__executor.html#a8359eb7667f973a7370981baa0b2b578">query</a>, <a class="el" href="structcppgres_1_1spi__executor_1_1options.html">options</a> &amp;&amp;opts, Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a58d36d3a7fec3b8d2038be20f3e194f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a8f2caf81d5918c596c23e8a125d3d3c2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structcppgres_1_1spi__executor.html">spi_executor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcppgres_1_1spi__executor.html#a8f2caf81d5918c596c23e8a125d3d3c2">current</a> ()</td></tr>
+<tr class="memdesc:a8f2caf81d5918c596c23e8a125d3d3c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The innermost live SPI executor.  <br /></td></tr>
+<tr class="separator:a8f2caf81d5918c596c23e8a125d3d3c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a89cd080750b7aebc0ecc0c9dd2494fa8"><td class="memItemLeft" align="right" valign="top"><a id="a89cd080750b7aebc0ecc0c9dd2494fa8" name="a89cd080750b7aebc0ecc0c9dd2494fa8"></a>
@@ -220,6 +230,78 @@ static std::stack&lt; <a class="el" href="structcppgres_1_1spi__executor.html">s
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a href="https://www.postgresql.org/docs/current/spi.html">SPI</a> executor API </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8f2caf81d5918c596c23e8a125d3d3c2" name="a8f2caf81d5918c596c23e8a125d3d3c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f2caf81d5918c596c23e8a125d3d3c2">&#9670;&#160;</a></span>current()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structcppgres_1_1spi__executor.html">spi_executor</a> &amp; cppgres::spi_executor::current </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The innermost live SPI executor. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if no SPI executor is in scope </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1bccebef7075d04fb8d36ea30bed5750" name="a1bccebef7075d04fb8d36ea30bed5750"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bccebef7075d04fb8d36ea30bed5750">&#9670;&#160;</a></span>plan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structcppgres_1_1spi__plan.html">spi_plan</a> cppgres::spi_executor::plan </td>
+          <td>(</td>
+          <td class="paramtype">utils::convertible_to_cstring auto&#160;</td>
+          <td class="paramname"><em>query</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ::SPIPrepareOptions &amp;&#160;</td>
+          <td class="paramname"><em>opts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prepares a plan with full ::SPIPrepareOptions. </p>
+<p>This is the preparation entry point procedural language implementations need: parameter types are resolved through the options' parser hooks (<code>parserSetup</code>/<code>parserSetupArg</code>) rather than a static argument list, and the options carry the raw parse mode and cursor options. </p>
+
+</div>
+</div>
 <a id="a8359eb7667f973a7370981baa0b2b578" name="a8359eb7667f973a7370981baa0b2b578"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8359eb7667f973a7370981baa0b2b578">&#9670;&#160;</a></span>query() <span class="overload">[1/2]</span></h2>
 

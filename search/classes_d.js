@@ -1,12 +1,10 @@
 var searchData=
 [
-  ['security_5fcontext_0',['security_context',['../structcppgres_1_1security__context.html',1,'cppgres']]],
-  ['set_5fiterator_5ftraits_1',['set_iterator_traits',['../structcppgres_1_1set__iterator__traits.html',1,'cppgres']]],
-  ['spi_5fexecutor_2',['spi_executor',['../structcppgres_1_1spi__executor.html',1,'cppgres']]],
-  ['spi_5fnonatomic_5fexecutor_3',['spi_nonatomic_executor',['../structcppgres_1_1spi__nonatomic__executor.html',1,'cppgres']]],
-  ['spi_5fplan_4',['spi_plan',['../structcppgres_1_1spi__plan.html',1,'cppgres']]],
-  ['syscache_5',['syscache',['../structcppgres_1_1syscache.html',1,'cppgres']]],
-  ['syscache_5ftraits_6',['syscache_traits',['../structcppgres_1_1syscache__traits.html',1,'cppgres']]],
-  ['syscache_5ftraits_3c_20form_5fpg_5fproc_20_3e_7',['syscache_traits&lt; Form_pg_proc &gt;',['../structcppgres_1_1syscache__traits_3_01Form__pg__proc_01_4.html',1,'cppgres']]],
-  ['syscache_5ftraits_3c_20form_5fpg_5ftype_20_3e_8',['syscache_traits&lt; Form_pg_type &gt;',['../structcppgres_1_1syscache__traits_3_01Form__pg__type_01_4.html',1,'cppgres']]]
+  ['raw_5fexpr_5fnode_5fwalker_0',['raw_expr_node_walker',['../structcppgres_1_1raw__expr__node__walker.html',1,'cppgres']]],
+  ['record_1',['record',['../structcppgres_1_1record.html',1,'cppgres']]],
+  ['remove_5foptional_2',['remove_optional',['../structcppgres_1_1utils_1_1remove__optional.html',1,'cppgres::utils']]],
+  ['remove_5foptional_3c_20std_3a_3aoptional_3c_20t_20_3e_20_3e_3',['remove_optional&lt; std::optional&lt; T &gt; &gt;',['../structcppgres_1_1utils_1_1remove__optional_3_01std_1_1optional_3_01T_01_4_01_4.html',1,'cppgres::utils']]],
+  ['result_5fiterator_4',['result_iterator',['../structcppgres_1_1spi__executor_1_1result__iterator.html',1,'cppgres::spi_executor']]],
+  ['results_5',['results',['../structcppgres_1_1spi__executor_1_1results.html',1,'cppgres::spi_executor']]],
+  ['role_6',['role',['../structcppgres_1_1role.html',1,'cppgres']]]
 ];

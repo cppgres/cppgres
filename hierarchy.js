@@ -122,6 +122,8 @@ var hierarchy =
     [ "cppgres::internal_subtransaction", "structcppgres_1_1internal__subtransaction.html", null ],
     [ "cppgres::utils::function_traits::invoke_result_from_tuple< Func, Tuple >", "structcppgres_1_1utils_1_1function__traits_1_1invoke__result__from__tuple.html", null ],
     [ "cppgres::utils::function_traits::invoke_result_from_tuple< Func, std::tuple< Args... > >", "structcppgres_1_1utils_1_1function__traits_1_1invoke__result__from__tuple_3_01Func_00_01std_1_1tuple_3_01Args_8_8_8_01_4_01_4.html", null ],
+    [ "cppgres::list< T >::iterator", "structcppgres_1_1list_1_1iterator.html", null ],
+    [ "cppgres::list< T >", "structcppgres_1_1list.html", null ],
     [ "cppgres::utils::maybe_ref< T >", "structcppgres_1_1utils_1_1maybe__ref.html", null ],
     [ "cppgres::utils::maybe_ref<::BackgroundWorker >", "structcppgres_1_1utils_1_1maybe__ref.html", null ],
     [ "cppgres::memory_context_allocator< T, Context >", "structcppgres_1_1memory__context__allocator.html", null ],
