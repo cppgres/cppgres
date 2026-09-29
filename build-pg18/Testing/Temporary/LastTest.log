@@ -1,0 +1,406 @@
+Start testing: Jul 17 09:35 PDT
+----------------------------------------------------------
+1/1 Testing: cppgres_tests
+1/1 Test: cppgres_tests
+Command: "/usr/bin/env" "PG_CONFIG=/Users/yrashk/Projects/cppgres/cppgres/.pg/Darwin-Debug/18.4/build/bin/pg_config" "TEST_MODULE_PATH=/Users/yrashk/Projects/cppgres/cppgres/build-pg18/libcppgres_tests.so" "/Users/yrashk/Projects/cppgres/cppgres/test.sh"
+Directory: /Users/yrashk/Projects/cppgres/cppgres
+"cppgres_tests" start time: Jul 17 09:35 PDT
+Output:
+----------------------------------------------------------
+The files belonging to this database system will be owned by user "yrashk".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "C".
+The default text search configuration will be set to "english".
+
+Data page checksums are enabled.
+
+fixing permissions on existing directory /var/folders/wm/m8k4mfkj6gbd32qf9v04pfkw0000gn/T/cppgres-testdb.7aMzTN ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default "max_connections" ... 100
+selecting default "shared_buffers" ... 128MB
+selecting default time zone ... America/Vancouver
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+
+Sync to disk skipped.
+The data directory might become corrupt if the operating system crashes.
+
+initdb: warning: enabling "trust" authentication for local connections
+initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+
+Success. You can now start the database server using:
+
+    /Users/yrashk/Projects/cppgres/cppgres/.pg/Darwin-Debug/18.4/build/bin/pg_ctl -D /var/folders/wm/m8k4mfkj6gbd32qf9v04pfkw0000gn/T//cppgres-testdb.7aMzTN -l logfile start
+
+waiting for server to start....2026-07-17 09:35:31.339 PDT [12431] LOG:  starting PostgreSQL 18.4 on aarch64-apple-darwin25.3.0, compiled by Apple clang version 17.0.0 (clang-1700.6.3.2), 64-bit
+2026-07-17 09:35:31.339 PDT [12431] LOG:  listening on Unix socket "/private/var/folders/wm/m8k4mfkj6gbd32qf9v04pfkw0000gn/T/cppgres-testdb.7aMzTN/.s.PGSQL.5432"
+2026-07-17 09:35:31.344 PDT [12437] LOG:  database system was shut down at 2026-07-17 09:35:31 PDT
+2026-07-17 09:35:31.346 PDT [12431] LOG:  database system is ready to accept connections
+ done
+server started
+LOAD
+NOTICE:  a_eoh_flattening
+NOTICE:  return type flattening_tracker is only a shell
+NOTICE:  argument type flattening_tracker is only a shell
+LINE 1:     create function flattening_tracker_out(flattening_tracke...
+                                                   ^
+QUERY:      create function flattening_tracker_out(flattening_tracker)
+        returns cstring
+    as
+    '/Users/yrashk/Projects/cppgres/cppgres/build-pg18/libcppgres_tests.so',
+    'flattening_tracker_out'
+        language c immutable
+                   strict
+
+NOTICE:  a_eoh_flattening: passed
+NOTICE:  aggregate_aligned_state
+NOTICE:  aggregate_aligned_state: passed
+NOTICE:  aggregate_convertible
+NOTICE:  aggregate_convertible: passed
+NOTICE:  aggregate_convertible_combine
+NOTICE:  aggregate_convertible_combine: passed
+NOTICE:  aggregate_destructor
+NOTICE:  aggregate_destructor: passed
+NOTICE:  aggregate_destructor_parallel
+NOTICE:  aggregate_destructor_parallel: passed
+NOTICE:  aggregate_simple
+NOTICE:  aggregate_simple: passed
+NOTICE:  aggregate_simple_2arg
+NOTICE:  aggregate_simple_2arg: passed
+NOTICE:  aggregate_simple_empty
+NOTICE:  aggregate_simple_empty: passed
+NOTICE:  aggregate_simple_serial
+NOTICE:  aggregate_simple_serial: passed
+NOTICE:  alloc_set_context
+NOTICE:  alloc_set_context: passed
+NOTICE:  allocator
+NOTICE:  allocator: passed
+NOTICE:  backend_atexit
+NOTICE:  backend_atexit: passed
+NOTICE:  bgworker
+2026-07-17 09:35:37.187 PDT [12616] FATAL:  terminating background worker "test_bgw" due to administrator command
+2026-07-17 09:35:37.187 PDT [12431] LOG:  background worker "test_bgw" (PID 12616) exited with exit code 1
+NOTICE:  bgworker: passed
+NOTICE:  catch_error
+NOTICE:  catch_error: passed
+NOTICE:  converting_into_nullable_datum
+0
+1
+NOTICE:  converting_into_nullable_datum: passed
+NOTICE:  converting_null_nullable_datum_into_datum
+NOTICE:  converting_null_nullable_datum_into_datum: passed
+NOTICE:  cstring_fun_test
+NOTICE:  cstring_fun_test: passed
+NOTICE:  cstring_into_datum_copies_input
+NOTICE:  cstring_into_datum_copies_input: passed
+NOTICE:  current_memory_context
+NOTICE:  current_memory_context: passed
+NOTICE:  current_postgres_function
+NOTICE:  current_postgres_function: passed
+NOTICE:  current_role
+NOTICE:  current_role: passed
+NOTICE:  custom_type
+NOTICE:  custom_type: passed
+NOTICE:  detoasted_varlena_tracks_detoast_context
+NOTICE:  detoasted_varlena_tracks_detoast_context: passed
+NOTICE:  enforce_return_type
+NOTICE:  enforce_return_type: passed
+NOTICE:  eoh_smoke
+NOTICE:  flatten_into
+NOTICE:  flatten_into
+NOTICE:  eoh_smoke: passed
+NOTICE:  exception_to_error
+NOTICE:  exception_to_error: passed
+NOTICE:  executing_within_memory_context
+NOTICE:  executing_within_memory_context: passed
+NOTICE:  find_a_role
+NOTICE:  find_a_role: passed
+NOTICE:  from_double
+NOTICE:  from_double: passed
+NOTICE:  from_float
+NOTICE:  from_float: passed
+NOTICE:  function_call
+NOTICE:  function_call: passed
+NOTICE:  function_oid_rejects_extra_args
+NOTICE:  function_oid_rejects_extra_args: passed
+NOTICE:  function_returns_function
+NOTICE:  function_returns_function: passed
+NOTICE:  function_strict_null_short_circuit
+NOTICE:  function_strict_null_short_circuit: passed
+NOTICE:  function_takes_a_function
+NOTICE:  function_takes_a_function: passed
+NOTICE:  function_takes_a_function_with_value
+NOTICE:  function_takes_a_function_with_value: passed
+NOTICE:  handle_produced_error
+NOTICE:  handle_produced_error: passed
+NOTICE:  internal_subtransaction_commit
+NOTICE:  internal_subtransaction_commit: passed
+NOTICE:  internal_subtransaction_exception_rolls_back
+NOTICE:  internal_subtransaction_exception_rolls_back: passed
+NOTICE:  internal_subtransaction_one
+NOTICE:  internal_subtransaction_one: passed
+NOTICE:  internal_subtransaction_rollback
+NOTICE:  internal_subtransaction_rollback: passed
+NOTICE:  lazy_detoast
+NOTICE:  lazy_detoast: passed
+NOTICE:  membership
+NOTICE:  membership: passed
+NOTICE:  memory_context_for_ptr
+NOTICE:  memory_context_for_ptr: passed
+NOTICE:  memory_context_scope
+NOTICE:  memory_context_scope: passed
+NOTICE:  name_long_input_is_terminated
+NOTICE:  name_long_input_is_terminated: passed
+NOTICE:  named_type
+NOTICE:  named_type: passed
+NOTICE:  named_type_string_view_bounds
+NOTICE:  named_type_string_view_bounds: passed
+NOTICE:  node_convert
+NOTICE:  node_convert: passed
+NOTICE:  node_init
+NOTICE:  node_init: passed
+NOTICE:  node_search
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  {RANGEVAR :catalogname <> :schemaname <> :relname pg_class :inh true :relpersistence p :alias <> :location -1}
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  unknown void *
+NOTICE:  {RANGETBLENTRY :alias <> :eref {ALIAS :aliasname pg_class :colnames ("oid" "relname" "relnamespace" "reltype" "reloftype" "relowner" "relam" "relfilenode" "reltablespace" "relpages" "reltuples" "relallvisible" "relallfrozen" "reltoastrelid" "relhasindex" "relisshared" "relpersistence" "relkind" "relnatts" "relchecks" "relhasrules" "relhastriggers" "relhassubclass" "relrowsecurity" "relforcerowsecurity" "relispopulated" "relreplident" "relispartition" "relrewrite" "relfrozenxid" "relminmxid" "relacl" "reloptions" "relpartbound")} :rtekind 0 :relid 1259 :inh true :relkind r :rellockmode 1 :perminfoindex 1 :tablesample <> :lateral false :inFromCl true :securityQuals <>}
+NOTICE:  unknown void *
+NOTICE:  node_search: passed
+NOTICE:  node_visit
+NOTICE:  node_visit: passed
+NOTICE:  nullable_datum_enforcement
+NOTICE:  nullable_datum_enforcement: passed
+NOTICE:  nullable_type_to_non_optional
+NOTICE:  nullable_type_to_non_optional: passed
+NOTICE:  owned_memory_context
+NOTICE:  owned_memory_context: passed
+NOTICE:  owned_memory_context_move_transfers_ownership
+NOTICE:  owned_memory_context_move_transfers_ownership: passed
+NOTICE:  postgres_function_rejects_too_few_fmgr_args
+NOTICE:  postgres_function_rejects_too_few_fmgr_args: passed
+NOTICE:  record_defining
+NOTICE:  record_defining: passed
+NOTICE:  record_fun
+NOTICE:  record_fun: passed
+NOTICE:  record_iterator_constructor_nulls
+NOTICE:  record_iterator_constructor_nulls: passed
+NOTICE:  record_test
+NOTICE:  record_test: passed
+NOTICE:  security_context
+NOTICE:  security_context: passed
+NOTICE:  security_context_escape
+NOTICE:  security_context_escape: passed
+NOTICE:  spi
+NOTICE:  spi: passed
+NOTICE:  spi_argless
+NOTICE:  spi_argless: passed
+NOTICE:  spi_args_convert_once
+NOTICE:  spi_args_convert_once: passed
+NOTICE:  spi_count
+NOTICE:  spi_count: passed
+NOTICE:  spi_empty
+NOTICE:  spi_empty: passed
+NOTICE:  spi_execute
+NOTICE:  spi_execute: passed
+NOTICE:  spi_execute_readonly
+NOTICE:  spi_execute_readonly: passed
+NOTICE:  spi_execute_string_length
+NOTICE:  spi_execute_string_length: passed
+NOTICE:  spi_interleave
+NOTICE:  spi_interleave: passed
+NOTICE:  spi_keep_plan
+NOTICE:  spi_keep_plan: passed
+NOTICE:  spi_multiparam
+NOTICE:  spi_multiparam: passed
+NOTICE:  spi_non_opt
+NOTICE:  spi_non_opt: passed
+NOTICE:  spi_pfr
+NOTICE:  spi_pfr: passed
+NOTICE:  spi_plan
+NOTICE:  spi_plan: passed
+NOTICE:  spi_plan_count
+NOTICE:  spi_plan_count: passed
+NOTICE:  spi_plan_gone
+NOTICE:  spi_plan_gone: passed
+NOTICE:  spi_plan_mismatch
+NOTICE:  spi_plan_mismatch: passed
+NOTICE:  spi_plan_readonly
+NOTICE:  spi_plan_readonly: passed
+NOTICE:  spi_plan_string_length
+NOTICE:  spi_plan_string_length: passed
+NOTICE:  spi_plural_tuple
+NOTICE:  spi_plural_tuple: passed
+NOTICE:  spi_ptr_gone
+NOTICE:  spi_ptr_gone: passed
+NOTICE:  spi_query_dml
+NOTICE:  spi_query_dml: passed
+NOTICE:  spi_readonly
+NOTICE:  spi_readonly: passed
+NOTICE:  spi_result_iterator_random_access_operations
+NOTICE:  spi_result_iterator_random_access_operations: passed
+NOTICE:  spi_result_iterator_sparse_cache
+NOTICE:  spi_result_iterator_sparse_cache: passed
+NOTICE:  spi_single
+NOTICE:  spi_single: passed
+NOTICE:  spi_string_length
+NOTICE:  spi_string_length: passed
+NOTICE:  spi_tupdesc_access
+NOTICE:  spi_tupdesc_access: passed
+NOTICE:  spi_type_mismatch
+NOTICE:  spi_type_mismatch: passed
+NOTICE:  spi_value_type
+NOTICE:  spi_value_type: passed
+NOTICE:  spi_vector
+NOTICE:  spi_vector: passed
+NOTICE:  spi_vector_mismatch
+NOTICE:  spi_vector_mismatch: passed
+NOTICE:  srf
+NOTICE:  srf: passed
+NOTICE:  srf_mismatch_size
+NOTICE:  srf_mismatch_size: passed
+NOTICE:  srf_mismatch_types
+NOTICE:  srf_mismatch_types: passed
+NOTICE:  srf_non_record
+NOTICE:  srf_non_record: passed
+NOTICE:  srf_non_record_non_tup
+NOTICE:  srf_non_record_non_tup: passed
+NOTICE:  srf_non_record_non_tup_type_mismatch
+NOTICE:  srf_non_record_non_tup_type_mismatch: passed
+NOTICE:  srf_non_srf
+NOTICE:  srf_non_srf: passed
+NOTICE:  srf_pfr
+NOTICE:  srf_pfr: passed
+NOTICE:  syscache
+NOTICE:  syscache: passed
+NOTICE:  syscache_get_attribute
+NOTICE:  syscache_get_attribute: passed
+NOTICE:  syscache_type_inference
+NOTICE:  syscache_type_inference: passed
+NOTICE:  syscache_type_inference_priority
+NOTICE:  syscache_type_inference_priority: passed
+NOTICE:  threading
+NOTICE:  threading: passed
+NOTICE:  threading_non_main_thread
+NOTICE:  threading_non_main_thread: passed
+NOTICE:  to_double
+NOTICE:  to_double: passed
+NOTICE:  to_float
+NOTICE:  to_float: passed
+NOTICE:  tracking_memory_context_copy_keeps_original_valid
+NOTICE:  tracking_memory_context_copy_keeps_original_valid: passed
+NOTICE:  tracking_memory_context_copy_shares_reset_state
+NOTICE:  tracking_memory_context_copy_shares_reset_state: passed
+NOTICE:  tuples_are_records
+NOTICE:  tuples_are_records: passed
+NOTICE:  type_name_smoke
+NOTICE:  type_name_smoke: passed
+NOTICE:  value_output
+NOTICE:  value_output: passed
+NOTICE:  varlena_byte_array
+NOTICE:  varlena_byte_array: passed
+NOTICE:  varlena_bytea
+NOTICE:  varlena_bytea: passed
+NOTICE:  varlena_text
+NOTICE:  varlena_text: passed
+NOTICE:  varlena_text_from_strings
+NOTICE:  varlena_text_from_strings: passed
+NOTICE:  varlena_text_into_strings
+NOTICE:  varlena_text_into_strings: passed
+NOTICE:  heap_tuple
+NOTICE:  heap_tuple: passed
+CALL
+2026-07-17 09:35:37.245 PDT [12431] LOG:  received fast shutdown request
+2026-07-17 09:35:37.245 PDT [12431] LOG:  aborting any active transactions
+2026-07-17 09:35:37.246 PDT [12431] LOG:  background worker "logical replication launcher" (PID 12440) exited with exit code 1
+2026-07-17 09:35:37.247 PDT [12435] LOG:  shutting down
+2026-07-17 09:35:37.247 PDT [12435] LOG:  checkpoint starting: shutdown immediate
+2026-07-17 09:35:37.261 PDT [12435] LOG:  checkpoint complete: wrote 116 buffers (0.7%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 11 recycled; write=0.005 s, sync=0.003 s, total=0.015 s; sync files=70, longest=0.001 s, average=0.001 s; distance=189127 kB, estimate=189127 kB; lsn=0/CFC1AC8, redo lsn=0/CFC1AC8
+2026-07-17 09:35:37.264 PDT [12431] LOG:  database system is shut down
+<end of output>
+Test time =   7.36 sec
+----------------------------------------------------------
+Test Passed.
+"cppgres_tests" end time: Jul 17 09:35 PDT
+"cppgres_tests" time elapsed: 00:00:07
+----------------------------------------------------------
+
+End testing: Jul 17 09:35 PDT

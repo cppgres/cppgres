@@ -1,0 +1,5 @@
+/Users/yrashk/Projects/cppgres/cppgres/build-pg18/CMakeFiles/cppgres_tests.dir
+/Users/yrashk/Projects/cppgres/cppgres/build-pg18/CMakeFiles/cppgres_abi.dir
+/Users/yrashk/Projects/cppgres/cppgres/build-pg18/CMakeFiles/test.dir
+/Users/yrashk/Projects/cppgres/cppgres/build-pg18/CMakeFiles/edit_cache.dir
+/Users/yrashk/Projects/cppgres/cppgres/build-pg18/CMakeFiles/rebuild_cache.dir
